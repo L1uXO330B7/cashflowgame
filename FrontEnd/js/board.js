@@ -1,5 +1,6 @@
 APP.board = {
     square: [
+        //二維陣列，渲染文字與背景
         ["OPPORTUNITY", "#21940f"],
         ["LIABILITY", "#cc1f00"],
         ["OPPORTUNITY", "#21940f"],
@@ -26,10 +27,12 @@ APP.board = {
         ["OFFER", "#0082e3"]
     ],
     printSquares: function() {
+        //抓老鼠圈圖渲染文字
         document.getElementById("cell0").innerHTML =
             "<div id='tokenSection0'><div class ='cellx'><p>" +
             APP.board.square[0][0] +
             " </p></div></div>";
+            //square[0]中的[0]
         document.getElementById("cell1").innerHTML =
             "<div id='tokenSection1'><div class ='cellx'><p>" +
             APP.board.square[1][0] +
