@@ -43,8 +43,10 @@ APP.display = {
         'background: rgb(212,212,212); background: radial-gradient(circle, rgba(212,212,212,1) 0%, rgba(246,246,246,1) 0%, rgba(255,255,255, 0.98) 93%);'
     ],
     colorGamePiece: function(num, color){
+        // 玩家數+顏色傳入
         var p = 'player' + parseInt(num, 10) + '-piece';
         var player = document.getElementById(p);
+        
 
         switch(color){
             case 'Green':
@@ -79,6 +81,7 @@ APP.display = {
     },
     updatePlayerColor: function(type, player){
         if (type === 'menu'){
+            //選擇玩家顏色
             var p = document.getElementById('color-input-player' + parseInt( player, 10));
             
             switch(p.options[p.selectedIndex].value){
@@ -121,7 +124,8 @@ APP.display = {
             }
         }
 
-        if (type === 'table row'){    
+        if (type === 'table row'){
+            //秀出玩家顏色    
             var row = document.getElementById(("table-row-player" + parseInt(player, 10)));
 
             switch(APP.players[player-1].color){

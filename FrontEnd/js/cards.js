@@ -1,6 +1,9 @@
 APP.cards = {
+    //卡片模組，機會
     smallDeal: {
+        //小交易
         mutual01: {
+            //共同基金
             type: "Mutual Fund",
             name: "GRO4US Fund",
             description: "Lower interest rates drive market and fund to strong showing.",
@@ -60,6 +63,7 @@ APP.cards = {
             id: "gro4us40",
             shares: 0
         },
+        //股票
         stock001: {
             type: "Stock",
             name: "MYT4U Electronics Co.",
@@ -348,6 +352,7 @@ APP.cards = {
             id: "on2u10",
             shares: 0
         },
+        //股票分割 > 除權/息 配股 反向分割
         stockSplit1: {
             type: "Stock Split",
             name: "MYT4U Electronics Co.",
@@ -376,6 +381,7 @@ APP.cards = {
             rule: "Everyone who owns OK4U shares cuts shares owned to 1/2 previous value.",
             symbol: "OK4U"
         },
+        //特別股 
         preferredStock1: {
             type: "Preferred Stock",
             name: "2BIG Power",
@@ -400,6 +406,7 @@ APP.cards = {
             id: "1globe",
             shares: 0
         },
+        //房地產
         realEstateS1: {
             type: "Real Estate",
             name: "You Find a Great Deal!",
@@ -662,10 +669,10 @@ APP.cards = {
             type: "Real Estate",
             description: "Reinvesting owner offers 8-plex for sale at reasonable price. Financing already in place. All it needs is your down payment.",
             rule: "Use this yourself or sell to another pl;ayer. 51% ROI, may sell for $200,000 to $280,000.",
-            roi: 0.51,
+            roi: 0.51,//投報率
             cost: 220000,
-            downPayment: 40000,
-            mortgage: 180000,
+            downPayment: 40000,//頭期款
+            mortgage: 180000,//抵押
             cashFlow: 1700,
             tag: "8PLEX",
             landType: "plex",
@@ -1132,6 +1139,7 @@ APP.cards = {
             tag: "6Br/6Ba",
             landType: "6Br/6Ba"
         },
+        //有限合夥
 		limitedPartnershipB1: {
             name: "Limited Partner Wanted",
             type: "Limited Partnership",
@@ -1225,6 +1233,7 @@ APP.cards = {
         },
         */
         propertyDamage1: {
+            //資產損壞
             name: "Sewer Line Breaks",
             type: "Property Damage",
             description: "Water everywhere at your 8-plex! Broken sewer line needs repair immediately. <br> If you own an 8-plex, pay $2,000 for new line. (Bank loan available on usual terms.)",
@@ -1243,6 +1252,7 @@ APP.cards = {
 		//property damage mansion - weather protectiom
     },
     offer: {
+        //提案
         offer1: {
             name: "Plex Buyer",
             description: "Buyer offers $30,000 per unit for all units in any combination of duplexes, 4-plexes, or 8-plexes. Has own financing.",
@@ -1628,6 +1638,7 @@ APP.cards = {
         },*/
     },
     doodad: {
+        //額外東西雜事
 		doodad1: {
             name: "Water Heater Leaks",
             cost: 450,
