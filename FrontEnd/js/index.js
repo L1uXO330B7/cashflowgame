@@ -24,7 +24,7 @@ var APP = APP || {
     currentPlayerArrPos: function() {
         return APP.currentPlayer - 1;
     },
-    // 以前的玩家
+    // 上一位玩家
     previousPlayer: function() {
         var prevPlayer;
 
@@ -38,8 +38,8 @@ var APP = APP || {
     },
     // 初始選擇幾位玩家的部份的 Id 他是寫死的不知原因，藉由丟進來的數字可以在 143 行再丟到設定檔內
     name: function(playerNumber) {
-        var player = "player" + parseInt(playerNumber, 10) + "name";
-        var name = document.getElementById(player).value;
+        var player = "player" + parseInt(playerNumber, 10) + "name";//html id 為 player[i]name
+        var name = document.getElementById(player).value; //再抓輸入的value
         return name;
     },
     // 判斷是因為這專案起的蠻早的 2018 此處是用 jq 去監聽事件，對我寫框架經驗大於較原生地寫法來說有點不習慣看他這樣寫
@@ -47,7 +47,7 @@ var APP = APP || {
         // 起始按鈕
         $("#home-screen").click(function() {
             // 此處有分了一個 display 模組在 display.js 主要是用來控制 CSS
-            APP.display.hideHomeScreen();
+            APP.display.hideHomeScreen(); 
             APP.display.showGameSelectionScreen();
             window.setTimeout(function() {
                 if ($("#game-selection-screen").css('display') != 'none' && $("#turn-info").css('display') != 'inline-block') {
