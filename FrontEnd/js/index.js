@@ -14,6 +14,7 @@
 // https://stackoverflow.com/questions/16284724/what-does-var-app-app-do
 // 避免重複名稱蓋到別人的 APP
 var APP = APP || {
+    //應該是拿來存檔用的Obj?
     players: [],
     pCount: 1,
     turnCount: 1,
@@ -28,7 +29,7 @@ var APP = APP || {
         var prevPlayer;
 
         if (this.currentPlayer === 1) {
-            prevPlayer = this.pCount;
+            prevPlayer = this.pCount; //應該是利用玩家人數控制回合或控制當回合是誰的回合?
         } else {
             prevPlayer = APP.currentPlayerArrPos();
         }
