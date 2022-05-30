@@ -24,7 +24,7 @@ var APP = APP || {
     currentPlayerArrPos: function() {
         return APP.currentPlayer - 1;
     },
-    // 以前的玩家
+    // 前一位玩家
     previousPlayer: function() {
         var prevPlayer;
 
@@ -79,6 +79,7 @@ var APP = APP || {
         //APP.saveKey = Math.random().toString(36).substring(7);
     },
     setup: function(gameState) {
+        // 新遊戲靠 html click 丟參數近來判別
         if (gameState == 'new game') {
             // Create players
             var pn = document.getElementById("player-number");
