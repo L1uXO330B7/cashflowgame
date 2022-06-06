@@ -21,7 +21,10 @@ var OPTIONS = {
 	oneCentAway: document.getElementById("oo-one-cent-away"),
 	noLoans: document.getElementById("oo-no-loans"),
 	manualDice: document.getElementById("oo-manual-dice"),
+    // 目前看起來只是單純確認設定的這些選項是困難或簡單模式而去更改 word ，但怕他會去撈 value 或 innerHTML 去做其他事需要關注
     checkState: function() {
+
+        // 調整顯示高光
         if (this.smallRE.checked == true && this.bigRE.checked == true && this.stocks.checked == true && this.mutuals.checked == true && this.preferredStocks.checked == true && this.cds.checked == true && this.coins.checked == true && this.limitedPartnership.checked == true && this.companies.checked == true && this.startingSavings.value == 1 && this.kids.checked == false && this.paycheckDoodads.checked == false && this.instantFastTrack.checked == false && this.oneCentAway.checked == false && this.noLoans.checked == false && this.manualDice.checked == false) {
             $("#default-game-indicator").css("color", "#FDD835");
             $("#custom-game-indicator").css("color", "#4E342E");
@@ -72,15 +75,16 @@ var OPTIONS = {
 		}
 
 		if (this.slider.value == 0) {
-            OPTIONS.output.innerHTML = "None";
+            OPTIONS.output.innerHTML = "None 無";
         } else if (this.slider.value == 1) {
-            OPTIONS.output.innerHTML = "Normal";
+            OPTIONS.output.innerHTML = "Normal 正常";
         } else if (this.slider.value == 2) {
-            OPTIONS.output.innerHTML = "Salary";
+            OPTIONS.output.innerHTML = "Salary 薪水";
         } else if (this.slider.value == 3) {
-            OPTIONS.output.innerHTML = "2x Salary";
+            OPTIONS.output.innerHTML = "2x Salary 薪水兩倍";
         }
     },
+    // 預設模式
     defaultOptions: function() {
         this.smallRE.checked = true;
         this.bigRE.checked = true;
@@ -101,7 +105,9 @@ var OPTIONS = {
 
         OPTIONS.checkState();
     },
+    // 這是這個模組的重點，透過選項看那些卡片要移除
     setup: function() {
+        // 移除小地產卡片
         // if an asset is unchecked delete
         if (this.smallRE.checked == false) {
             // remove deals from cards object
@@ -115,6 +121,7 @@ var OPTIONS = {
             delete APP.cards.offer.offer35;
 
         }
+         // 移除大地產卡片
         if (this.bigRE.checked == false) {
             for (var i = 1; i <= 33; i++) {
                 var deal = "realEstateB" + String(i);
@@ -213,6 +220,8 @@ var OPTIONS = {
             delete APP.cards.offer.offer38;
             delete APP.cards.offer.offer42;
         }
+
+        // 手動骰子輸入 ?
 		if (this.manualDice.checked == true) {
 			//replace roll button with roll input
 			document.getElementById("manual-dice-input").style.display = 'block';
@@ -220,10 +229,13 @@ var OPTIONS = {
 			document.getElementById("manual-dice-input").style.display = 'none';
 			
 		}
+
+        // 循環遍歷所有玩家以應用遊戲設置
 		//loop through all players to apply game settings
         for (var j = 0; j < APP.players.length; j++) {
             var player = APP.players[j];
 
+            // 設置起始儲蓄
             //set starting savings
             if (this.startingSavings.value == 0) {
                 player.cash = 0;
@@ -235,6 +247,7 @@ var OPTIONS = {
                 player.cash = player.jobTitle[1] * 2;
             }
 
+            // 設置孩子限制打開或關閉
             //set kid limit on or off
             if (this.kids.checked == true) {
                 player.kidLimit = false;
@@ -242,11 +255,13 @@ var OPTIONS = {
                 player.kidLimit = true;
             }
 			
+            // 預付 ?
 			// mortgage prepay
 			if (this.mortgagePrepay.checked == true) {
 				player.mortgagePrepay = true;
 			}
 		
+            // 即時快車道
 			// instant fast track		
 			if (this.instantFastTrack.checked == true) {		
 				player.fastTrackOption = true;
@@ -289,6 +304,8 @@ var OPTIONS = {
             }
         }
 	},
+
+    // 選擇遊玩模式
 	selectGameMode: function() {
 		var title = document.getElementById("custom-game-indicator");
 		
@@ -296,7 +313,7 @@ var OPTIONS = {
 			//fast track mode
 			$(title).text("Fast");
 			
-			this.smallRE.checked = true;
+			this.smallRE.checked = true; // 小型房地產
 			this.bigRE.checked = true;
 			this.stocks.checked = true;
 			this.mutuals.checked = true;
