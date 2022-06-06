@@ -193,10 +193,12 @@ var APP = APP || {
             // 另一個 options 模組，在畫面上會在起始遊戲前選擇觸發 defaultOptions、selectGameMode
             OPTIONS.setup();
 
+            // dream 模組
             // Start dream phase (phase 1)
             APP.dreamPhase.openDreamPhase();
             APP.dreamPhase.dreamPhaseOn = true;
 
+            // 開始遊戲
             // Show game menu
             $("#game-menu").show();
 
@@ -282,6 +284,7 @@ var APP = APP || {
             curPlayerRowId.style.border = "3pt groove #FDD835";
         }
     },
+    // 擲骰
     rollDie: function (dieCount) {
         var dieTotal = 0;
 
@@ -292,6 +295,7 @@ var APP = APP || {
 
         return dieTotal;
     },
+    // 移動玩家棋子rolledDie的數量
     movePlayer: function (dieCount) {
         // Move player piece the amount of rolledDie
         var player = APP.currentPlayerArrPos();
@@ -301,6 +305,7 @@ var APP = APP || {
         var manualDice = document.getElementById("manual-dice-input");
 
         if (OPTIONS.manualDice.checked == true) {
+            // 顯示骰子輸入
             //show dice input
             dice = manualDice.value;
         } else {
@@ -314,14 +319,17 @@ var APP = APP || {
 
         var token = APP.display.tokens[player];
 
+        // 刪除舊片
         // Remove old piece
         var playerTokenEle = document.getElementById(
             ("player" + parseInt(APP.currentPlayer, 10) + "-piece")
         );
 
         playerTokenEle.remove();
+        // 更新棋盤位置
         // Update board position
         this.updatePosition(dice);
+        // 將令牌添加到新部分
         // Add token to new section
         var token = APP.display.tokens[player].ele;
         var currentPosition = pObj.position;
@@ -342,9 +350,11 @@ var APP = APP || {
             }
         }
 
+        // 當玩家降落在方形負載卡上時
         // When player lands on square load card
         APP.loadCard(currentPosition);
 
+        // 如果通過薪水獲得發薪日 - 當前設置為薪水
         // If pass paycheck get payday - currently set to salary
         if (previousPosition < 5 && currentPosition >= 5) {
             pObj.cash += pObj.payday;
@@ -354,8 +364,10 @@ var APP = APP || {
             pObj.cash += pObj.payday;
         }
 
+        // finance 金融模組 財務報表
         APP.finance.statement();
     },
+    // 更新位置
     updatePosition: function (dice) {
         var p = APP.players[APP.currentPlayerArrPos()];
 
@@ -388,6 +400,7 @@ var APP = APP || {
         $(".card-title").css("text-shadow", ".2px .2px .2px #7DCEA0");
         $(".card-title").css("color", "#4E342E");
 
+        // 隱藏上一個資產並顯示當前資產
         //hide prev assets and show current assets
         if (player.stockAssets.length >= 0) {
             var stockRowClass =
@@ -2253,12 +2266,15 @@ APP.loadCard = function (boardPosition) {
     }
 };
 
+// 夢想階段
 APP.dreamPhase = {
     dreamPhaseOn: true,
     dreamArrPos: 0,
+    // 夢想設定檔
     openDreamPhase: function () {
         this.dreamPhaseOn = true;
 
+        // 顯示夢想的標題和信息
         // show dream title and info
         var dream = document.getElementById("dream-text");
         var dreamDescription = document.getElementById("dream-des");
@@ -2267,9 +2283,11 @@ APP.dreamPhase = {
         dreamDescription.innerHTML =
             APP.dreamPhase.dreamDescriptions[APP.dreamPhase.dreamArrPos];
 
+        // 顯示球員的工作、收入和儲蓄
         // show player job, income and savings
         $("#job-text").show();
 
+        // 顯示開始場景
         this.showStartScenario(0);
     },
     showStartScenario: function (player) {
@@ -2278,6 +2296,7 @@ APP.dreamPhase = {
         var vowelRegex = "^[aieouAIEOU].*";
         var matched = playerJob.match(vowelRegex);
         if (matched) {
+            // 如果工作以元音開頭，則在職位前添加一個 n 和一個空格
             //add an n and a space before job title if job begins with vowel
             var job = "n " + playerJob;
         } else {
@@ -2316,6 +2335,7 @@ APP.dreamPhase = {
         id.innerHTML = APP.dreamPhase.dreams[this.dreamArrPos];
         desId.innerHTML = APP.dreamPhase.dreamDescriptions[this.dreamArrPos];
     },
+    // 綁定夢想
     dreamChoiceBtn: function () {
         //save dream
         var chosenDream = this.dreams[this.dreamArrPos];
@@ -2333,6 +2353,7 @@ APP.dreamPhase = {
         //show job and savings info
         APP.dreamPhase.showStartScenario(APP.currentPlayerArrPos()); //+ 1
     },
+    // 隱藏夢想選單
     endDreamPhase: function () {
         APP.display.hideDreamPhase();
         APP.display.showRacePhase();
@@ -2341,54 +2362,54 @@ APP.dreamPhase = {
         $("#finance-box").show();
     },
     dreams: [
-        "STOCK MARKET FOR KIDS",
-        "YACHT RACING",
-        "CANNES FILM FESTIVAL",
-        "PRIVATE FISHING CABIN ON A MONTANA LAKE",
-        "PARK NAMED AFTER YOU",
-        "RUN FOR MAYOR",
-        "GIFT OF FAITH",
-        "HELI SKI THE SWISS ALPS",
-        "DINNER WITH THE PRESIDENT",
-        "RESEARCH CENTER FOR CANCER AND AIDS",
-        "7 WONDERS OF THE WORLD",
-        "SAVE THE OCEAN MAMMALS",
-        "BE A JET SETTER",
-        "GOLF AROUND THE WORLD",
-        "A KIDS LIBRARY",
-        "SOUTH SEA ISLAND FANTASY",
-        "CAPITALISTS PEACE CORPS",
-        "CRUISE THE MEDITERRANEAN",
-        "MINI FARM IN THE CITY",
-        "AFRICAN PHOTO SAFARI",
-        "BUY A FOREST",
-        "PRO TEAM BOX SEATS",
-        "ANCIENT ASIAN CITIES"
+        "STOCK MARKET FOR KIDS 兒童股票市場",
+        "YACHT RACING 遊艇比賽",
+        "CANNES FILM FESTIVAL 戛納電影節",
+        "PRIVATE FISHING CABIN ON A MONTANA LAKE 蒙大拿湖上的私人釣魚小屋",
+        "PARK NAMED AFTER YOU 以你命名的公園",
+        "RUN FOR MAYOR 競選市長",
+        "GIFT OF FAITH 信心的恩賜",
+        "HELI SKI THE SWISS ALPS 直升機滑雪瑞士阿爾卑斯山",
+        "DINNER WITH THE PRESIDENT 與總統共進晚餐",
+        "RESEARCH CENTER FOR CANCER AND AIDS 癌症和艾滋病研究中心",
+        "7 WONDERS OF THE WORLD 世界七大奇蹟",
+        "SAVE THE OCEAN MAMMALS 拯救海洋哺乳動物",
+        "BE A JET SETTER 做一個噴氣式飛機二傳手",
+        "GOLF AROUND THE WORLD 全球高爾夫",
+        "A KIDS LIBRARY 兒童圖書館",
+        "SOUTH SEA ISLAND FANTASY 南海島奇幻",
+        "CAPITALISTS PEACE CORPS 資本家和平隊",
+        "CRUISE THE MEDITERRANEAN 巡航地中海",
+        "MINI FARM IN THE CITY 城市裡的迷你農場",
+        "AFRICAN PHOTO SAFARI 非洲攝影之旅",
+        "BUY A FOREST 購買森林",
+        "PRO TEAM BOX SEATS 專業團隊包廂座位",
+        "ANCIENT ASIAN CITIES 亞洲古代城市"
     ],
     dreamDescriptions: [
-        "Fund a business and investment school for young capitalists, teaching the the basics of business. School includes a mini stock exchange run by the students.",
-        "You and your crew fly to Perth, Australia. Spend one week racing a 12-meter against the fastest boats in the world.",
-        "Party with the stars! Tour France, plus one week in Cannes rubbing elbows with celebrities. You even land a starring role!",
-        "Fish from the dock of the remote cabin. Enjoy 6 months of solitude. Use of float plane included.",
-        "Tear down an abandoned warehouse and build a new recreational park. Donate police sub-station for park safety.",
-        "Your financial expertise spurs masses of people to beg you to lead the city. You run and, of course, win. This is the start of your Presidential race.",
-        "Your religious organization is growing by leaps and bounds. New buildings are needed.",
-        "A winter of helicopter skiing by day and playing at the glamorous hot spots at night. A medieval castle is your accomodation.",
-        "Buy a table for 10 friends to dine with te President at a gala ball for visiting dignitaries from around the world.",
-        "Your money brings together top researchers & doctors in one place, dedication to eliminating these two diseases.",
-        "Go by plane, boat, bicycle, camel, canoe & limo to the 7 Wonders of the World. First class luxury all the way",
-        "Fund and be a crew member on a month-long research expedition to protect endangered sea animals.",
-        "Have your own personal jet available for one year to whisk you away whenever and wherever your heart desires.",
-        "You take 3 friends on a first-class, 5-star resort tour to play the 50 best golf courses in the world.",
-        "Add a wing to your city's library devoted to young writers and artists. Art celebrities visit often to support your work.",
-        "Pampered in luxury for two full months. Relax, unwind in warm waters, deserted beaches, and romantic nights.",
-        "Set up entrepreneurial business schools in 3rd world nations. Instructors are business people donating their knowledge & time.",
-        "Visit small harbors in Italy, France, and Greece for a month with 12 friends on your private yacht.",
-        "Create a hands-on farm eco-system for city kids to learn and care for animals and plants.",
-        "Take 6 friends on a wild safari photographing the most exotic animals in the world. Enjoy 5-star luxury in your tent.",
-        "Stop the loss of ancient trees. Donate 1,000 acres of forest and create a nature walk for all to enjoy.",
-        "License a 12 person private skybox booth with food and beverage service at your favorite team's stadium.",
-        "A private plane and guide take you and 5 friends to the most remote spots of Asia... where no tourists have gone before."
+        "Fund a business and investment school for young capitalists, teaching the the basics of business. School includes a mini stock exchange run by the students. 資助一所面向年輕資本家的商業和投資學校，教授商業基礎知識。 學校包括一個由學生經營的小型證券交易所。",
+        "You and your crew fly to Perth, Australia. Spend one week racing a 12-meter against the fastest boats in the world.你和你的船員飛往澳大利亞珀斯。花一周時間與世界上最快的船進行 12 米的比賽。",
+        "Party with the stars! Tour France, plus one week in Cannes rubbing elbows with celebrities. You even land a starring role!與明星聚會！環遊法國，在戛納與名人擦肩而過一周。你甚至獲得了一個主演的角色！",
+        "Fish from the dock of the remote cabin. Enjoy 6 months of solitude. Use of float plane included.從偏遠小屋的碼頭釣魚。享受 6 個月的孤獨。包括使用水上飛機。",
+        "Tear down an abandoned warehouse and build a new recreational park. Donate police sub-station for park safety.拆除廢棄倉庫，新建遊樂公園。捐贈派出所，保障公園安全。",
+        "Your financial expertise spurs masses of people to beg you to lead the city. You run and, of course, win. This is the start of your Presidential race.你的金融專業知識促使人們請求你領導這座城市。你跑了，當然，贏了。這是你總統競選的開始。",
+        "Your religious organization is growing by leaps and bounds. New buildings are needed.你們的宗教組織正在突飛猛進地發展。需要新的建築。",
+        "A winter of helicopter skiing by day and playing at the glamorous hot spots at night. A medieval castle is your accomodation.一個冬天的白天直升機滑雪，晚上在迷人的熱點玩耍。中世紀的城堡是你的住宿。",
+        "Buy a table for 10 friends to dine with te President at a gala ball for visiting dignitaries from around the world.為 10 位朋友購買一張餐桌，與總統在一個盛大的舞會上共進晚餐，為來自世界各地的來訪貴賓。",
+        "Your money brings together top researchers & doctors in one place, dedication to eliminating these two diseases.您的資金將頂級研究人員和醫生聚集在一個地方，致力於消除這兩種疾病。",
+        "Go by plane, boat, bicycle, camel, canoe & limo to the 7 Wonders of the World. First class luxury all the way 乘飛機、船、自行車、駱駝、獨木舟和豪華轎車去世界七大奇蹟。一路頭等艙",
+        "Fund and be a crew member on a month-long research expedition to protect endangered sea animals.資助並成為為期一個月的研究探險的船員，以保護瀕臨滅絕的海洋動物。",
+        "Have your own personal jet available for one year to whisk you away whenever and wherever your heart desires.擁有您自己的私人飛機一年，隨時隨地帶您離開。",
+        "You take 3 friends on a first-class, 5-star resort tour to play the 50 best golf courses in the world.你帶 3 位朋友參加一流的 5 星級度假村之旅，去玩世界上 50 個最好的高爾夫球場。",
+        "Add a wing to your city's library devoted to young writers and artists. Art celebrities visit often to support your work.為您所在城市的圖書館增加一個專門為年輕作家和藝術家服務的側翼。藝術名人經常訪問以支持您的工作。",
+        "Pampered in luxury for two full months. Relax, unwind in warm waters, deserted beaches, and romantic nights.整整兩個月的奢華享受。在溫暖的海水、荒涼的海灘和浪漫的夜晚放鬆身心。",
+        "Set up entrepreneurial business schools in 3rd world nations. Instructors are business people donating their knowledge & time.在第三世界國家建立創業商學院。導師是商人，他們貢獻了他們的知識和時間。",
+        "Visit small harbors in Italy, France, and Greece for a month with 12 friends on your private yacht.在您的私人遊艇上與 12 位朋友一起遊覽意大利、法國和希臘的小港口一個月。",
+        "Create a hands-on farm eco-system for city kids to learn and care for animals and plants.為城市孩子們創造一個動手實踐的農場生態系統，讓他們學習和照顧動植物。",
+        "Take 6 friends on a wild safari photographing the most exotic animals in the world. Enjoy 5-star luxury in your tent.帶 6 位朋友參加野外探險，拍攝世界上最奇特的動物。在您的帳篷裡享受 5 星級奢華。",
+        "Stop the loss of ancient trees. Donate 1,000 acres of forest and create a nature walk for all to enjoy.杜絕古樹流失。捐出1000畝森林，打造人人共享的自然步道。",
+        "License a 12 person private skybox booth with food and beverage service at your favorite team's stadium.在您最喜歡的球隊的體育場為 12 人私人天空包廂提供餐飲服務的許可。",
+        "A private plane and guide take you and 5 friends to the most remote spots of Asia... where no tourists have gone before.一架私人飛機和導遊帶你和 5 位朋友前往亞洲最偏遠的地方……以前沒有遊客去過的地方。"
     ]
 };
 
