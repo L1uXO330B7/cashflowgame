@@ -458,6 +458,7 @@ var APP = APP || {
             $("#turn-info-box").hide();
         }
 
+        // 換 turn
         if (APP.currentPlayer < APP.pCount) {
             APP.currentPlayer++;
         } else {
@@ -465,6 +466,7 @@ var APP = APP || {
         }
         player = APP.players[APP.currentPlayerArrPos()];
 
+        // 顯示其餘資產
         if (player.stockAssets.length >= 0) {
             var stockRowId =
                 ".stock-shares" + parseInt(APP.currentPlayerArrPos(), 10) + "-row";
@@ -488,6 +490,7 @@ var APP = APP || {
 
         $("#turn-info--").html("Turn: " + APP.turnCount);
 
+        // 捐款給慈善單位顯示特殊骰子
         if (player.charityTurns === 0) {
             $("#roll2-btn").hide();
             $("#ft-roll2-btn").hide();
@@ -500,6 +503,7 @@ var APP = APP || {
             player.charityTurns--;
         }
 
+        // 不準動 ?
         if (player.downsizedTurns != 0) {
             player.downsizedTurns--;
             if (APP.pCount != 1) {
@@ -525,10 +529,13 @@ var APP = APP || {
             }
         }
 
+        // 計算財務報表 我猜
         APP.finance.statement();
 
+        // 檢查破產
         APP.checkBankruptcy();
     },
+    // 結束這回合 ( 在每個卡片事件結束後 call )
     finishTurn: function () {
         // hide card
         $("#turn-instructions").hide();
@@ -541,6 +548,7 @@ var APP = APP || {
         APP.display.clearCards();
         APP.display.clearBtns();
 
+        // 顯示指令、銀行選項和結束回合 btn
         // show instructions, bank options, and end turn btn
         $("#finish-turn-container").show();
         $("#finish-instructions").show();
@@ -592,8 +600,10 @@ var APP = APP || {
             }
         }
 
+        // 計算財務報表
         APP.finance.statement();
     },
+    // 額外東西雜事
     getDoodad: function () {
         var player = APP.players[APP.currentPlayerArrPos()];
 
@@ -636,10 +646,12 @@ var APP = APP || {
             player.tvPayment = 120;
         }
 
+        // 顯示額外東西雜事按鈕
         //display doodad
         document.getElementById("doodad-title").innerHTML = doodadName;
         document.getElementById("doodad-text").innerHTML = text;
     },
+    // 取得報價
     getOffer: function () {
         var player = APP.players[APP.currentPlayerArrPos()];
 
@@ -659,6 +671,7 @@ var APP = APP || {
         document.getElementById("offer-rule1").innerHTML = currentOffer.rule1;
         document.getElementById("offer-rule2").innerHTML = currentOffer.rule2;
 
+        // 如果玩家在其資產中具有該類型的屬性，則顯示出售/適當按鈕
         //if player has the type of property in their assets show sell/appropriate button
         var offerType = APP.currentOffer.type;
 
@@ -708,6 +721,7 @@ var APP = APP || {
                 }
                 break;
             case "3Br/2Ba+":
+                //  3br2ba 成本增加 50000
                 //add 50000 to 3br2ba costs
                 for (var i = 0; i < assetArr.length; i++) {
                     if (assetArr[i].landType == "3Br/2Ba") {
@@ -717,7 +731,7 @@ var APP = APP || {
                 break;
             case "3Br/2Ba-":
                 //Remove 3br2ba and cashFlow
-
+                // 刪除 3br2ba 和 cashFlow
                 for (var i = 0; i < assetArr.length; i++) {
 
                     if (assetArr[i].landType == "3Br/2Ba") {
@@ -803,6 +817,7 @@ var APP = APP || {
                 break;
         }
     },
+    // 結算
     getSettlement: function (row, debt) {
         var player = APP.players[APP.currentPlayerArrPos()];
         var currentId = row;
@@ -819,8 +834,10 @@ var APP = APP || {
             index = Number(currentId[5]);
         }
 
+        // 當前結算指數
         this.currentSettlementIndex = index;
 
+        // 如果有債務或沒債務
         if (debt === true) {
             var bankruptcySettlement = player.realEstateAssets[index].downPayment / 2;
 
@@ -867,6 +884,7 @@ var APP = APP || {
             $("#settlement-offer").html(APP.display.numWithCommas(APP.currentSettlement));
         }
     },
+    // 小交易
     smallDeal: function () {
         var player = APP.players[APP.currentPlayerArrPos()];
 
@@ -893,6 +911,7 @@ var APP = APP || {
 
         APP.display.showCurrentDeal();
     },
+    // 大交易
     bigDeal: function () {
         var player = APP.players[APP.currentPlayerArrPos()];
         var obj = APP.cards.bigDeal;
@@ -916,6 +935,7 @@ var APP = APP || {
 
         APP.display.showCurrentDeal();
     },
+    // 清除金額用於下一回合與新遊戲開始時
     clearAmounts: function () {
         APP.finance.loanAmount = 1000;
         APP.finance.mortgagePrepay = false;
@@ -933,6 +953,7 @@ var APP = APP || {
         document.getElementById("share-amt-input").value = 1;
         document.getElementById("share-amt-input-sell").value = 1;
     },
+    // 擁有股份
     ownedShares: function () {
         var player = APP.players[APP.currentPlayerArrPos()];
         var arr = player.stockAssets;
@@ -951,6 +972,7 @@ var APP = APP || {
             return 0;
         }
     },
+    // 檢查破產
     checkBankruptcy: function (amountOwed) {
         var player = APP.players[APP.currentPlayerArrPos()];
         var propertyAssets = player.realEstateAssets;
@@ -977,6 +999,18 @@ var APP = APP || {
             - sell assets
         */
 
+        /* 由觸發- 財務報表
+        
+                     觸發時
+                     - 當玩家欠錢時
+                         - 支付小飾品
+                         - 發薪日
+        
+                     怎麼了
+                     - 破產卡
+                     - 出售資產
+                 */
+
         if (player.payday < 0 && player.cash < 0) {
             player.debt = true;
 
@@ -985,6 +1019,7 @@ var APP = APP || {
             APP.display.clearBtns();
 
             // if the player has no assets to sell they lose the game, else allow selling assets at half the downpayment
+            // 如果玩家沒有資產可以出售，他們就輸了，否則允許以一半的首付出售資產
 
             /*if ((player.realEstateAssets.length &&
                         player.businessAssets.length &&
@@ -1026,16 +1061,17 @@ var APP = APP || {
     }
 };
 
+// 重點模組 財務模組
 APP.finance = {
     statement: function () {
         // get current player
         var player = APP.players[APP.currentPlayerArrPos()];
 
-        // Income
+        // Income 收入
         document.getElementById("player-job-income").innerHTML = APP.display.numWithCommas(player.jobTitle[0]);
         document.getElementById("player-salary-income").innerHTML = APP.display.numWithCommas(player.jobTitle[1]);
 
-        // Expenses
+        // Expenses 花費
         APP.finance.getTaxes();
         document.getElementById("expenses-taxes").innerHTML = APP.display.numWithCommas(player.jobTitle[3]);
         document.getElementById("expenses-mortgage").innerHTML = APP.display.numWithCommas(player.jobTitle[4]);
@@ -1047,13 +1083,13 @@ APP.finance = {
         document.getElementById("child-count").innerHTML = player.children;
         document.getElementById("expenses-loans").innerHTML = APP.display.numWithCommas(player.loanPayment);
 
-        if (player.boatLoan > 0) {
+        if (player.boatLoan > 0) { // 船
             $("#exp-boat-row").show();
             document.getElementById("expenses-boatloan").innerHTML = APP.display.numWithCommas(player.boatPayment);
         } else {
             $("#exp-boat-row").hide();
         }
-        if (player.insurance > 0) {
+        if (player.insurance > 0) { // 保險
             $("#exp-insurance-row").show();
             document.getElementById("expenses-insurance").innerHTML = APP.display.numWithCommas(player.insurance);
         } else {
@@ -1062,14 +1098,16 @@ APP.finance = {
 
         // Summary
         if (APP.players[APP.currentPlayerArrPos()].hasInsurance == true) {
-            this.getInsurance(APP.currentPlayerArrPos());
+            this.getInsurance(APP.currentPlayerArrPos()); // 獲得保險
         }
-        this.getExpenses(APP.currentPlayerArrPos());
-        this.getIncome(APP.currentPlayerArrPos());
-        this.getPayday(APP.currentPlayerArrPos());
+        this.getExpenses(APP.currentPlayerArrPos()); // 獲取費用
+        this.getIncome(APP.currentPlayerArrPos()); // 獲得收入
+        this.getPayday(APP.currentPlayerArrPos()); // 發薪日
 
+        // 如果玩家處於快車道，則顯示獲勝所需的金額
         // Show amount needed to win if player is in the fast track
         if (player.fastTrack == true) {
+            // 隱藏總費用並顯示winpay金額
             //hide total expenses and show winpay amount
             $("#total-expenses-header").hide();
             $("#win-pay-header").show();
@@ -1078,6 +1116,7 @@ APP.finance = {
         } else {
             $("#total-expenses-header").show();
             $("#win-pay-header").hide();
+            // 顯示總費用
             //show total expenses
             document.getElementById("summary-total-expenses").innerHTML = APP.display.numWithCommas(player.totalExpenses);
             document.getElementById("summary-total-expenses-bar").innerHTML = APP.display.numWithCommas(player.totalExpenses);
@@ -1231,6 +1270,7 @@ APP.finance = {
 
         return player.totalIncome;
     },
+    // 獲取費用
     getExpenses: function (currentPlayer) {
         //total expenses = liabilities + bills
         var player = APP.players[currentPlayer];
@@ -1933,6 +1973,7 @@ APP.finance = {
     }
 };
 
+// 依據格子類別讀取卡片
 APP.loadCard = function (boardPosition) {
     var playerObj = APP.players[APP.currentPlayerArrPos()];
     //hide turn instructions
