@@ -1000,12 +1000,12 @@ var APP = APP || {
         */
 
         /* 由觸發- 財務報表
-        
+
                      觸發時
                      - 當玩家欠錢時
                          - 支付小飾品
                          - 發薪日
-        
+
                      怎麼了
                      - 破產卡
                      - 出售資產
@@ -1128,14 +1128,14 @@ APP.finance = {
         document.getElementById("summary-total-income").innerHTML = APP.display.numWithCommas(player.totalIncome);
         document.getElementById("summary-payday").innerHTML = APP.display.numWithCommas(player.payday);
 
-        // get asset table
+        // get asset table 獲取資產表
         APP.display.renderStockTable();
         APP.display.renderAssetTable();
 
-        // get liabilities table
+        // get liabilities table 獲取負債表
         APP.display.renderLiabilitiesTable();
 
-        // amount needed for fast track progress bar
+        // amount needed for fast track progress bar 快速跟踪進度條所需的數量
         this.progressBar();
 
         var expenseBarEle = document.getElementById("income-expense-bar");
@@ -1163,7 +1163,7 @@ APP.finance = {
             }
         }
 
-        //Check for Fast Track
+        //Check for Fast Track 檢查快速通道
         if (player.fastTrack == true) {
             APP.display.renderFtAssets();
             $("#income-table").hide();
@@ -1194,10 +1194,11 @@ APP.finance = {
             $("#asset-statement").css("width", "98%");
         }
     },
+    // 進度條
     progressBar: function () {
         var player = APP.players[APP.currentPlayerArrPos()];
         var expenseBarEle = document.getElementById("income-expense-bar");
-        var expenses = this.getExpenses(APP.currentPlayerArrPos());
+        var expenses = this.getExpenses(APP.currentPlayerArrPos()); // 獲取費用
         var width;
 
         if (player.fastTrack == true) {
@@ -1209,7 +1210,7 @@ APP.finance = {
                 expenseBarEle.style.width = Math.round(width) + "%";
             }
         } else {
-            width = 100 * (player.passiveIncome / expenses);
+            width = 100 * (player.passiveIncome / expenses); // 被動收入
 
             if (width > 100) {
                 expenseBarEle.style.width = "100%";
@@ -1224,19 +1225,20 @@ APP.finance = {
             expenseBarEle.style.width = Math.round(width) + "%";
         }
     },
+    // 獲得收入
     getIncome: function (currentPlayer) {
         var player = APP.players[currentPlayer];
-        var salary = player.jobTitle[1];
-        var dividends = 0;
-        var assetIncome = 0;
-        var fastTrackIncome = 0;
+        var salary = player.jobTitle[1]; // 薪水
+        var dividends = 0; // 股息
+        var assetIncome = 0; // 資產收益
+        var fastTrackIncome = 0; // 快速通道收入
 
-        var stockArr = player.stockAssets;
-        var realEstateArr = player.realEstateAssets;
-        var businessArr = player.businessAssets;
-        var ftArr = player.fastTrackAssets;
+        var stockArr = player.stockAssets; // 庫存
+        var realEstateArr = player.realEstateAssets; // 房地產
+        var businessArr = player.businessAssets; // 商業資產
+        var ftArr = player.fastTrackAssets; // 快速通道資產
 
-        // get income from stocks, assets and businesses
+        // get income from stocks, assets and businesses 從股票、資產和業務中獲得收入
         for (var i = 0; i < stockArr.length; i++) {
             if (stockArr[i].type == "Preferred Stock" || stockArr[i].type == "Certificate of Deposit") {
                 var stockReturn = stockArr[i].shares * stockArr[i].dividend;
@@ -1260,7 +1262,7 @@ APP.finance = {
             }
         }
 
-        // get total income
+        // get total income 獲得總收入
         if (player.fastTrack == false) {
             player.totalIncome = salary + /*player.assetIncome +*/ assetIncome + dividends;
             player.passiveIncome = assetIncome + dividends;
@@ -1272,19 +1274,20 @@ APP.finance = {
     },
     // 獲取費用
     getExpenses: function (currentPlayer) {
-        //total expenses = liabilities + bills
+        //total expenses = liabilities + bills 總費用 = 負債 + 賬單
         var player = APP.players[currentPlayer];
 
-        var taxes = APP.players[currentPlayer].jobTitle[3];
-        var mortgage = APP.players[currentPlayer].jobTitle[4];
-        var car = APP.players[currentPlayer].jobTitle[5];
-        var credit = APP.players[currentPlayer].jobTitle[6];
-        var retail = APP.players[currentPlayer].jobTitle[7];
-        var other = APP.players[currentPlayer].jobTitle[8];
+        var taxes = APP.players[currentPlayer].jobTitle[3]; // 稅
+        var mortgage = APP.players[currentPlayer].jobTitle[4]; // 抵押貸款
+        var car = APP.players[currentPlayer].jobTitle[5]; // 車貸
+        var credit = APP.players[currentPlayer].jobTitle[6]; // 信用卡
+        var retail = APP.players[currentPlayer].jobTitle[7]; // 零售
+        var other = APP.players[currentPlayer].jobTitle[8]; // 雜費
         var children = player.childExpense;
-        var loanPayment = player.loanPayment;
-        var boatPayment = player.boatPayment;
-        var insurance = player.insurance;
+        var loanPayment = player.loanPayment; // 貸款
+        var boatPayment = player.boatPayment; // 船貸
+
+        var insurance = player.insurance; // 保險
 
         if (player.hasInsurance == true) {
             this.getInsurance(currentPlayer);
@@ -1308,10 +1311,11 @@ APP.finance = {
 
         return player.totalExpenses;
     },
+    // 獲得發薪日 ( 收入扣花費 )
     getPayday: function (currentPlayer) {
         var player = APP.players[currentPlayer];
-        var income = this.getIncome(currentPlayer);
-        var expenses = this.getExpenses(currentPlayer);
+        var income = this.getIncome(currentPlayer); // 獲得收入
+        var expenses = this.getExpenses(currentPlayer); // 獲取費用
         var pay = income - expenses;
         if (player.fastTrack == false) {
             player.payday = pay;
@@ -1319,7 +1323,9 @@ APP.finance = {
             player.payday = player.cashFlowDay + income;
         }
     },
+    // 獲取稅收
     getTaxes: function () {
+        // 基於 2019 年美國聯邦所得稅等級
         //based on 2019 United States federal income tax brackets
         var player = APP.players[APP.currentPlayerArrPos()];
         var taxes = player.jobTitle[3];
@@ -1339,12 +1345,13 @@ APP.finance = {
         player.jobTitle[3] = Math.round(taxes);
         return Math.round(taxes);
     },
+    // 獲得保險
     getInsurance: function (player) {
         //player income
         var curPlayer = APP.players[player];
         var income = this.getIncome(player);
 
-        //pay a base 8% and 1% for every dependent
+        //pay a base 8% and 1% for every dependent 為每個受撫養人支付基本 8% 和 1%
         if (curPlayer.children > 0) {
             curPlayer.insurance = Math.round(income * (0.08 + (0.01 * APP.players[player].children)));
 
@@ -1355,6 +1362,7 @@ APP.finance = {
 
         return curPlayer.insurance;
     },
+    // 小玩意
     payDoodad: function () {
         var player = APP.players[APP.currentPlayerArrPos()];
 
@@ -1369,8 +1377,9 @@ APP.finance = {
             this.loanOffer(APP.currentDoodad.cost);
         }
     },
+    // 裁員
     payDownsize: function () {
-        //show liability card
+        //show liability card 出示責任卡
         var player = APP.players[APP.currentPlayerArrPos()];
         var boardPosition = player.position;
         var downsizedAmount = player.totalExpenses;
@@ -1387,6 +1396,7 @@ APP.finance = {
             }
         }
     },
+    // 賠償財產損失
     payPropertyDamage: function () {
         var player = APP.players[APP.currentPlayerArrPos()];
         var cost = APP.currentDeal.cost;
@@ -1398,6 +1408,7 @@ APP.finance = {
             APP.finishTurn();
         }
     },
+    // 捐款
     donate: function () {
         var dPlayer = APP.players[APP.currentPlayerArrPos()];
         var donation = dPlayer.totalIncome * 0.1;
@@ -1418,6 +1429,7 @@ APP.finance = {
             $("#done-repay-btn").show();
         }
     },
+    // 增加貸款
     increaseLoan: function () {
         var player = APP.players[APP.currentPlayerArrPos()];
         var value1 = parseInt(document.getElementById("loan-amt-input").value, 10);
@@ -1440,6 +1452,7 @@ APP.finance = {
             document.getElementById("loan-amt-input2").value = value2;
         }
     },
+    // 減少貸款
     decreaseLoan: function () {
         var value = parseInt(document.getElementById("loan-amt-input").value, 10);
 
@@ -1460,6 +1473,7 @@ APP.finance = {
         }
         document.getElementById("loan-amt-input2").value = value2;
     },
+    // 拿出貸款
     takeOutLoan: function () {
         var loan = parseInt(document.getElementById("loan-amt-input").value, 10);
         var player = APP.players[APP.currentPlayerArrPos()];
@@ -1470,12 +1484,13 @@ APP.finance = {
 
         APP.finishTurn();
     },
+    // 償還貸款
     repayLoan: function () {
         var loan = parseInt(document.getElementById("loan-amt-input2").value, 10);
         var player = APP.players[APP.currentPlayerArrPos()];
         loan = isNaN(loan) ? 0 : loan;
 
-        //if player can afford load
+        //if player can afford load 如果玩家負擔得起
         if (player.loanId == "liability-mortgage") {
             player.cash -= loan;
             player.jobTitle[9] -= loan;
@@ -1500,18 +1515,20 @@ APP.finance = {
         $("#confirm-pay-btn").hide();
         APP.display.highlightLiabilities(2);
     },
+    // 貸款支付
     loanPayment: function (currentPlayer) {
         var player = APP.players[currentPlayer];
         var loanPayment = player.loans * 0.1;
         player.loanPayment = loanPayment;
         return loanPayment;
     },
+    // 支付
     pay: function () {
         var player = APP.players[APP.currentPlayerArrPos()];
         var loanId = player.loanId;
 
         switch (loanId) {
-            case "liability-mortgage":
+            case "liability-mortgage": // 負債抵押
                 if (this.mortgagePrepay == true) {
                     $("#cancel-btn").hide();
                     $("#pay-confirm-card").hide();
@@ -1630,6 +1647,7 @@ APP.finance = {
         }
         APP.finance.statement();
     },
+    // 購買股票
     buyStock: function () {
         var player = APP.players[APP.currentPlayerArrPos()];
 
@@ -1683,6 +1701,7 @@ APP.finance = {
 
         APP.finance.statement();
     },
+    // 賣出股票
     sellStock: function () {
         //--
         var player = APP.players[APP.currentPlayerArrPos()];
@@ -1736,6 +1755,7 @@ APP.finance = {
         }
         APP.finance.statement();
     },
+    // 股票分割
     stockSplit: function (type) {
         var player = APP.players[APP.currentPlayerArrPos()];
         var arr = player.stockAssets;
@@ -1754,6 +1774,7 @@ APP.finance = {
             }
         }
     },
+    // 購買房地產
     buyRealEstate: function () {
         var player = APP.players[APP.currentPlayerArrPos()];
         var downPayment = APP.currentDeal.downPayment;
@@ -1771,6 +1792,7 @@ APP.finance = {
             this.loanOffer(downPayment);
         }
     },
+    // 購買硬幣
     buyCoin: function () {
         var player = APP.players[APP.currentPlayerArrPos()];
         var cost = APP.currentDeal.cost;
@@ -1778,10 +1800,10 @@ APP.finance = {
         var arr = player.coinAssets;
         var index = arr.findIndex(x => x.name == name);
 
-        // if player can afford coin, buy. if not offer loan
+        // if player can afford coin, buy. if not offer loan 如果玩家買得起硬幣，請購買。如果不提供貸款
         if (cost <= player.cash) {
             player.cash -= cost;
-            //check if player already owns coins
+            //check if player already owns coins 檢查玩家是否已經擁有硬幣
             if (index in arr) {
                 if (cost == 500) {
                     arr[index].amount += 1;
@@ -1797,6 +1819,7 @@ APP.finance = {
             this.loanOffer(cost);
         }
     },
+    // 購買業務
     buyBusiness: function () {
         var player = APP.players[APP.currentPlayerArrPos()];
         var downPayment = APP.currentDeal.downPayment;
@@ -1819,8 +1842,9 @@ APP.finance = {
             this.loanOffer(downPayment);
         }
     },
+    // 出售資產
     sellAsset: function () {
-        //Settlement = Sales Price – RE Mortgage
+        //Settlement = Sales Price – RE Mortgage 結算 = 銷售價格 -可再生能源抵押
         var player = APP.players[APP.currentPlayerArrPos()];
         var assetArr = player.realEstateAssets;
         var coinArr = player.coinAssets;
@@ -1833,20 +1857,20 @@ APP.finance = {
 
             $("#confirm-settlement-btn").hide();
 
-            //if player cash is high enough to pay for doodad
+            //if player cash is high enough to pay for doodad 如果玩家現金足夠支付小飾品
             if (APP.currentDoodad) {
                 if (APP.currentDoodad.cost < player.cash) {
                     $("#return-to-card-btn").show();
                 }
             }
 
-            //if downsize
+            //if downsize 裁員
             if (player.position == 19) {
                 if (APP.finance.getIncome(APP.currentPlayerArrPos()) < player.cash) {
                     $("#return-to-card-btn").show();
                 }
             } else {
-                //if payday or any spot not an opp space
+                //if payday or any spot not an opp space 如果發薪日或任何地點不是 opp 空間
                 if (0 < player.cash) {
                     $("#return-to-card-btn").show();
                 }
@@ -1884,7 +1908,8 @@ APP.finance = {
 
         APP.finance.statement();
     },
-    loanAmount: 1000,
+    loanAmount: 1000, // 貸款額度
+    // 貸款優惠
     loanOffer: function (cost) {
         var player = APP.players[APP.currentPlayerArrPos()];
         const amountToCover = cost;
@@ -1896,7 +1921,7 @@ APP.finance = {
 
         $("#ft-enter-btn").hide();
 
-        //update to check if player has income for loan
+        //update to check if player has income for loan 更新以檢查玩家是否有貸款收入
 
         player.loanApproval = true;
 
@@ -1931,6 +1956,7 @@ APP.finance = {
 
         APP.finance.statement();
     },
+    // 循環貸款
     roundLoan: function (cost) {
         var player = APP.players[APP.currentPlayerArrPos()];
         var val = cost - player.cash;
@@ -1941,6 +1967,7 @@ APP.finance = {
             this.loanAmount = Math.ceil(val / 1000) * 1000;
         }
     },
+    // 獲得貸款
     getLoan: function () {
         var player = APP.players[APP.currentPlayerArrPos()];
         var boardPosition = player.position;
@@ -1955,6 +1982,7 @@ APP.finance = {
 
         APP.display.returnToCard();
     },
+    // 沒有貸款
     noLoan: function () {
         var player = APP.players[APP.currentPlayerArrPos()];
         var boardPosition = player.position;
@@ -2331,6 +2359,7 @@ APP.dreamPhase = {
         // 顯示開始場景
         this.showStartScenario(0);
     },
+    // 顯示開始場景
     showStartScenario: function (player) {
         var player = APP.players[APP.currentPlayerArrPos()];
         var playerJob = player.jobTitle[0];
@@ -2629,6 +2658,7 @@ $(document).ready(function () {
         OPTIONS.checkState();
     };
 
+    // 顯示選定數量的玩家的玩家選項，更新每個輸入
     // Show player options for selected amount of players, updates each input
     var playerInputs = document.querySelectorAll("div.player-input");
 

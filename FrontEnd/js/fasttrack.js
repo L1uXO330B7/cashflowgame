@@ -17,14 +17,14 @@ var FASTTRACK = {
         playerObj.fastTrack = true;
         playerObj.fastTrackTurn = 1;
 
-        // new savings and salary
+        // new savings and salary 新的儲蓄和工資
         playerObj.cash += playerObj.payday * 100;
         playerObj.cashFlowDay = playerObj.payday + 50000;
         playerObj.winPay = playerObj.cashFlowDay + 50000;
 
         //playerObj.totalIncome += APP.display.getExpenses(APP.currentPlayerArrPos());
 
-        // remove assets
+        // remove assets 移除資產
         playerObj.stockAssets.splice(0, playerObj.stockAssets.length);
         playerObj.realEstateAssets.splice(0, playerObj.realEstateAssets.length);
         playerObj.businessAssets.splice(0, playerObj.businessAssets.length);
@@ -128,15 +128,15 @@ var FASTTRACK = {
     },
     updatePosition: function(dice) {
         var player = APP.players[APP.currentPlayerArrPos()];
-		
-		//-- for testing	
+
+		//-- for testing
 		//if (player.position + dice <= 24) {
        //     player.position += dice;
        // } else {
            //player.position = 23;
        // }
-		
-		
+
+
         if (player.position + dice <= 40) {
             player.position += dice;
         } else {
@@ -656,7 +656,7 @@ var FASTTRACK = {
         var asset = this.square[currentSquare];
 
         $("#ft-opp-prompt").hide();
-		
+
 		//subtract cost from cash
 		player.cash -= asset.cost;
 		//update income
@@ -665,17 +665,17 @@ var FASTTRACK = {
 		asset.id = APP.finance.newId();
 		//add asset to player assets
 		player.fastTrackAssets.push(asset);
-			
+
 		if (currentSquare == "square17") {
 			//roll for outcome
 			var dieNum = this.rollDie(1);
-			
-			
+
+
 			$("#ft-end-turn-btn").show();
-			
+
 			$("#ft-opp-buy-btn").hide();
 			$("#ft-pass-btn").hide();
-			
+
 			if (dieNum == 6) {
 				$("#ft-opp-prompt").show();
 				$("#ft-opp-prompt").html("<p>You rolled a " + dieNum + ".</p><p>Deal Successful!</p>");
@@ -687,18 +687,18 @@ var FASTTRACK = {
 				$("#ft-opp-prompt").html("<p>You rolled a " + dieNum + ".</p><p>Deal Unsuccessful</p>");
 				//do not increase player cash flow
 				asset.cashFlow = 0;
-			}	
-			
+			}
+
 		    APP.finance.statement();
 		} else if (currentSquare == "square23"){
 			//roll for outcome
 			var dieNum = this.rollDie(1);
-			
+
 			$("#ft-end-turn-btn").show();
-			
+
 			$("#ft-opp-buy-btn").hide();
 			$("#ft-pass-btn").hide();
-			
+
 			if (dieNum == 6) {
 				$("#ft-opp-prompt").show();
 				$("#ft-opp-prompt").html("<p>You rolled a " + dieNum + ".</p><p>Stock purchase was a huge success! Purchase yielded $250,000</p>");
@@ -708,17 +708,17 @@ var FASTTRACK = {
 				$("#ft-opp-prompt").show();
 				$("#ft-opp-prompt").html("<p>You rolled a " + dieNum + ".</p><p>Stock purchase yielded $0</p>");
 			}
-			
+
 			APP.finance.statement();
 		} else if (currentSquare == "square33"){
 			//roll for outcome
 			var dieNum = this.rollDie(1);
-			
+
 			$("#ft-end-turn-btn").show();
-			
+
 			$("#ft-opp-buy-btn").hide();
 			$("#ft-pass-btn").hide();
-			
+
 			if (dieNum ==  5 || dieNum == 6) {
 				$("#ft-opp-prompt").show();
 				$("#ft-opp-prompt").html("<p>You rolled a " + dieNum + ".</p><p>IPO was a huge success! Investment yielded $500,000</p>");
@@ -728,7 +728,7 @@ var FASTTRACK = {
 				$("#ft-opp-prompt").show();
 				$("#ft-opp-prompt").html("<p>You rolled a " + dieNum + ".</p><p>IPO floped due to high costs and debt. Investment yielded $0</p>");
 			}
-			
+
 			APP.finance.statement();
 		} else {
 			APP.finance.statement();
@@ -744,11 +744,11 @@ var FASTTRACK = {
         switch (boardPosition) {
             case 1:
                 var newRoll = APP.rollDie(1);
-				
+
 				// Roll for outcome
                 if (newRoll >= 4) {
 					doodadNode.innerHTML = "You rolled a " + newRoll + ". You spend all of your cash for the expenses.";
-									
+
 					player.cash = 0;
                 } else {
 					doodadNode.innerHTML = "You rolled a " + newRoll + ". You're covered.";
@@ -771,19 +771,19 @@ var FASTTRACK = {
                 var assets = player.fastTrackAssets.sort(function(a, b){
 					return a.cashFlow - b.cashFlow;
 				});
-				// find lowest asset 
+				// find lowest asset
 				var lowestAssetId = assets[0].id;
 
                 console.log("sorted array: ", assets);
 
                 $("#ft-doodad-text2").hide();
                 $("#lowestAsset").text(assets[0].title);
-				
+
 				console.log("before: ", player.fastTrackAssets);
-				
+
 				player.totalIncome -= assets[0].cashFlow;
                 delete player.fastTrackAssets.id;
-				
+
 				console.log("after: ", player.fastTrackAssets);
                 break;
             case 34:
@@ -796,13 +796,13 @@ var FASTTRACK = {
                 });
 
                 console.log(lowest);
-				
+
 				var assets = player.fastTrackAssets.sort(function(a, b){
 					return a.cashFlow - b.cashFlow;
 				});
-				// find lowest asset 
+				// find lowest asset
 				var lowestAssetId = assets[0].id;
-				
+
 				lowest= lowestAsse
                 // pay ten times lowest asset or lose it
                 if ((10 * lowest) < player.cash) {
@@ -819,31 +819,31 @@ var FASTTRACK = {
         }
 
         $("#ft-end-turn-btn").show();
-		
+
 		APP.finance.statement();
     },
     dream: function() {
 		var player = APP.players[APP.currentPlayerArrPos()];
 		var dreamCost = Math.floor(Math.random() * 125000) + 50000;
-		var node = document.createElement("div"); 
+		var node = document.createElement("div");
 		var textNode = document.createElement("h2");
-				
+
 		this.dreamCost = dreamCost;
-		
-		node.setAttribute("id", "dream-roll-text");		
+
+		node.setAttribute("id", "dream-roll-text");
 		textNode.setAttribute("id", "dream-header-node-text");
-		
+
 		document.getElementById("ft-card-text").appendChild(node);
 
 		document.getElementById("dream-roll-text").innerHTML = "Your dream will cost $" + APP.display.numWithCommas(dreamCost);
-		
+
 		if (player.cash < dreamCost) {
 			$("#ft-end-turn-btn").show();
 			$("#ft-dream-roll-btn").hide();
 			$("#ft-pass-btn").hide();
-			
+
 			node.appendChild(textNode);
-			document.getElementById("dream-header-node-text").innerText = "Insufficient funds";	
+			document.getElementById("dream-header-node-text").innerText = "Insufficient funds";
 		} else {
 			$("#ft-dream-roll-btn").show();
 			$("#ft-pass-btn").show();
@@ -852,101 +852,101 @@ var FASTTRACK = {
 	dreamRoll: function(){
 		var roll = APP.rollDie(1);
 		var player = APP.players[APP.currentPlayerArrPos()];
-		
+
 		document.getElementById("dream-roll-text").innerHTML = "Congratulations!";
-		
+
 		$("#ft-deal-cost-table").hide();
 		$("#ft-pass-btn").hide();
 		$("#ft-dream-roll-btn").hide();
-		
+
 		player.cash -= this.dreamCost;
-		 			
+
 		if (roll % 2 == 0) {
 			$("#ft-opp-title").text("Dream Successful");
-			
+
 			$(".card-title").css("color", "#43A047");
 
 			$("#ft-win-continue-btn").show();
-			
-			var rollTextNode = document.createElement("div"); 
-			var textNode = document.createTextNode("You rolled a " + roll + ".");    
-			
-			rollTextNode.setAttribute("id", "dream-roll-text");				
-			rollTextNode.appendChild(textNode);                          
-			
+
+			var rollTextNode = document.createElement("div");
+			var textNode = document.createTextNode("You rolled a " + roll + ".");
+
+			rollTextNode.setAttribute("id", "dream-roll-text");
+			rollTextNode.appendChild(textNode);
+
 			document.getElementById("ft-card-text").appendChild(rollTextNode);
 		} else {
 			$("#ft-opp-title").text("Dream Unsuccessful");
-			
+
 			$(".card-title").css("color", "#212121");
-			
+
 			$("#ft-end-turn-btn").show();
-			
-			/*	
-			//card 
-				//show instructions 
+
+			/*
+			//card
+				//show instructions
 				//show roll btn , message saying 'no going back if if successful'
 				//show chance for success
-			
+
 			//after roll
 				//show success or failure
 					//success - win game
 					//failure - get random event with outcome
-				
+
 			*/
 
 			var scenarioText;
 			var outcomeText;
-			
+
 			function outcomeScenario(occupation, dream){
 				var playerInfo = [occupation];
 				var lifeVars = function(
 					occupation,
-					children, 
+					children,
 					assets
 				) {
 					this.children = children;
 					this.assets = assets;
 					this.occupation = occupation;
 				}
-				
+
 				//check if player has children and add to array
 				if (player.children > 0) {
 					playerInfo.push(true);
-				} else { 
+				} else {
 					playerInfo.push(false);
 				}
-				
+
 				//check if player has assets
 				if (player.fastTrackAssets.length > 0) {
 					playerInfo.push(true);
-				} else { 
+				} else {
 					playerInfo.push(false);
 				}
-				
+
 				var playerStatus = new lifeVars(playerInfo);
-				
+
 				var scenarioObj = FASTTRACK.dreamScenarios;
-				
-				//functions for outcome event; 
+
+				//functions for outcome event;
 					//types of outcome events;
-						//universal 
-						//family 
+						//universal
+						//family
 						//occupation
-					
+
 				function universalEvent(){
 					// Get the size of scenario object
 					Object.size = function(obj) {
 						var size = 0, key;
-						
+
 						for (key in obj) {
 							if (obj.hasOwnProperty(key)) size++;
 							console.log(size);
 						}
-						
+
 						return size;
 					};
-					
+
 					// get random event scenario from obj
 					var eventsLength = Object.size(scenarioObj.universal);
 					var selectedEvent = 'event' + String(Math.floor(Math.random() * eventsLength) + 1);
@@ -954,78 +954,78 @@ var FASTTRACK = {
 					// check type of scenario
 					if (scenarioObj.universal[selectedEvent].type == 'income'){
 						var income = Math.floor(Math.random() * 500000);
-						
+
 						outcomeText = " You receive $" + APP.display.numWithCommas(income) + " from the deal";
-						
+
 						player.cash += income;
 					}
-					
+
 					if (scenarioObj.universal[selectedEvent].type == 'expense'){
 						var expense = Math.floor(Math.random() * 500000);
-						
+
 						outcomeText = " You pay $" + APP.display.numWithCommas(expense) + " to cover the venture and losses.";
-						
+
 						if (player.cash <= expense){
 							player.cash = 0;
 						} else {
 							player.cash -= expense;
 						}
 					}
-					
+
 					if (scenarioObj.universal[selectedEvent].type ==  'nothing'){
 						outcomeText = "Conditions were unfavorable for the plan you had. Good luck next time.";
 					}
-					
+
 					if (scenarioObj.universal[selectedEvent].type ==  'asset gain'){
 						outcomeText = "Receive a business";
-						
+
 						//get random asset
 						var assetsLength = Object.size(scenarioObj.assets);
 						var selectedAsset = 'asset' + String(Math.floor(Math.random() * assetsLength) + 1);
 						//add to player.fastTrackAssets
 						player.fastTrackAssets.push(scenarioObj.assets[selectedAsset]);
 					}
-					
+
 					if (scenarioObj.universal[selectedEvent].type ==  'asset loss'){
 						outcomeText = "Lose one business. After covering sunk costs with the cash from the deal, you come out even.";
 					}
-					
+
 					if (scenarioObj.universal[selectedEvent].type ==  'asset loss, nothing'){
 						outcomeText = "After covering sunk costs with the cash from the deal, you come out even.";
 					}
-					
+
 					if (scenarioObj.universal[selectedEvent].type ==  'roll'){
 						outcomeText = "You get one more attempt.";
 						$("#ft-dream-roll-btn").show();
-						
+
 					}
-					
+
 					if (scenarioObj.universal[selectedEvent].type ==  'charity'){
 						outcomeText = "You receive three charity rolls.";
 						player.charityTurns += 3;
 					}
-					// Other outcomes 
+					// Other outcomes
 						// lose next turn outcome - lose next turn(s)
-						
+
 						// insurance - insured for next doodad
-					
-					
-					//print heading and save scenario text 
+
+
+					//print heading and save scenario text
 					document.getElementById("ft-card-text").innerHTML = "You rolled a " + roll + "." + "<h2>" + scenarioObj.universal[selectedEvent].name + "</h2>";
-					
+
 					scenarioText = scenarioObj.universal[selectedEvent].text;
 				}
-				
+
 				function occupationEvent(){
 					var occupationEventObj = scenarioObj.occupation;
-					
+
 					switch (occupation) {
 						case "Airline Pilot":
 						case "Business Manager":
 						case "Doctor (MD)":
 						case "Engineer":
 						case "Janitor":
-						case "Lawyer": 
+						case "Lawyer":
 						case "Mechanic":
 						case "Nurse":
 						case "Police Officer":
@@ -1034,49 +1034,49 @@ var FASTTRACK = {
 						case "Truck Driver":
 						case "CEO":
 							break;
-					}	
+					}
 				}
-				
+
 				function familyEvent(){
 					var familyEventObj = scenarioObj.family;
 				}
-				
+
 				//determine type of event and run associated function
 				if (playerStatus.family == true){
 					//make scenarios available
 				}
-				
+
 				if (playerStatus.assets == true){
 					//make scenarios available
 				}
-				
+
 				universalEvent();
-				
+
 				return scenarioText;
-					
+
 			}
-			
+
 			//create nodes for dream outcome
-			var rollTextNode = document.createElement("p"); 
+			var rollTextNode = document.createElement("p");
 			var dreamTextNode = document.createElement("p");
 			var breakNode = document.createElement("br");
-			
+
 			//set ids for nodes
 			rollTextNode.setAttribute("id", "dream-roll-text");
 			dreamTextNode.setAttribute("id", "dream-outcome-text");
-			
+
 			//create and add text nodes
-			var eventNode = document.createTextNode(outcomeScenario(player.jobTitle[0], APP.players[APP.currentPlayerArrPos()].dream)); 
+			var eventNode = document.createTextNode(outcomeScenario(player.jobTitle[0], APP.players[APP.currentPlayerArrPos()].dream));
 			var outcomeNode = document.createTextNode(outcomeText);
-			
-			dreamTextNode.appendChild(eventNode);   
-			dreamTextNode.appendChild(breakNode); 
-			dreamTextNode.appendChild(outcomeNode);   	
-						
-			//add nodes to page			
+
+			dreamTextNode.appendChild(eventNode);
+			dreamTextNode.appendChild(breakNode);
+			dreamTextNode.appendChild(outcomeNode);
+
+			//add nodes to page
 			document.getElementById("ft-card-text").appendChild(rollTextNode);
 			document.getElementById("ft-card-text").appendChild(dreamTextNode);
-			
+
 			APP.finance.statement();
 		}
     },
@@ -1138,7 +1138,7 @@ var FASTTRACK = {
 				type: "charity",
 				name: "Honorary Award for Charity",
 				text: "Opportunity to conduct research to combat a disease presented itself while you sought your dream. Your research and sponsorhip has led to a breakthrough that has already saved many lives.
-				
+
 				Research you sponsored to help combat a dangerous disease has led to a breakthrough and the majority of patients in the study have gone into remission."
 			}*/
 		},
@@ -1190,7 +1190,7 @@ var FASTTRACK = {
 				cashFlow: 5000,
 				cost: 120000
 			}
-			
+
 		}
 	},
 	roll: function() {
@@ -1220,7 +1220,7 @@ var FASTTRACK = {
 
         APP.display.clearCards();
         APP.display.clearBtns();
-		
+
         // check for winning payday
         if (player.cashFlowDay >= player.winPay) {
             this.winGame();
@@ -1244,7 +1244,7 @@ var FASTTRACK = {
     },
 	winGame: function() {
 		var player = APP.players[APP.currentPlayerArrPos()];
-		
+
 		APP.display.clearCards();
 		APP.display.clearBtns();
 
@@ -1258,7 +1258,7 @@ var FASTTRACK = {
 
 		APP.remainingPlayers -= 1;
 		player.finished = true;
-					
+
 			//remove player
 			//skip player if they finished game
 			//add player to finished players array
@@ -1269,7 +1269,7 @@ var FASTTRACK = {
 			document.getElementById("win-asset-amount").innerHTML = APP.display.numWithCommas(player.realEstateAssets.length);
 
 		}
-		
+
 		if (APP.remainingPlayers > 0) {
 			$("#ft-end-turn-btn").show();
 		} else {
