@@ -79,7 +79,7 @@ var APP = APP || {
         //APP.saveKey = Math.random().toString(36).substring(7);
     },
     setup: function (gameState) {
-        // 新遊戲靠 html click 丟參數近來判別
+        // 新遊戲靠 html click 丟字串參數近來判別
         if (gameState == 'new game') {
             // Create players
             var pn = document.getElementById("player-number");
