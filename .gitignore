@@ -10,4 +10,8 @@ obj/
 /node_modules
 /wwwroot/node_modules
 
+# 專案
+
+.vs
+
 # End of https://www.toptal.com/developers/gitignore/api/dotnetcore
