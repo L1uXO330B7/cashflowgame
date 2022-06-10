@@ -3,6 +3,7 @@
 ## WebSocket
 
 1. [ASP.NET Core 6 Websocket 香草 JS](https://blog.darkthread.net/blog/aspnet-core-websocket-chatroom/)
+2. 照著參考弄了一版跨域都不會擋感覺有點危險的版本
 
 ## SignalR
 

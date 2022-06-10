@@ -1,10 +1,11 @@
-﻿using System.Collections.Concurrent;
+﻿using BaseCommon;
+using System.Collections.Concurrent;
 using System.Net.WebSockets;
 using System.Text;
 
 namespace WebSocketDemo
 {
-    public class WebSocketHandler
+    public class WebSocketHandler : ControllerHandler
     {
         private readonly ILogger<WebSocketHandler> _logger;
 
@@ -59,6 +60,9 @@ namespace WebSocketDemo
                         Broadcast($"{userName}:\t{cmd}");
                     }
                 }
+
+                // 計算連線數量
+                ConnectionsCount = WebSockets.Count();
 
                 // While 前再次刷新非同步要求
                 res = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
