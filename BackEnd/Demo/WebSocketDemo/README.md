@@ -4,10 +4,16 @@
 
 1. [ASP.NET Core 6 Websocket 香草 JS](https://blog.darkthread.net/blog/aspnet-core-websocket-chatroom/)
 2. 照著參考弄了一版跨域都不會擋感覺有點危險的版本
+3. [ASP.NET Core 中的 WebSockets 支援 - Microsoft Docs](https://docs.microsoft.com/zh-tw/aspnet/core/fundamentals/websockets?view=aspnetcore-6.0)
+4. 原來大大是參考微軟範本，裡面就有講到 net core controller websocket
 
 ## SignalR
 
 1. [我與 ASP.NET Core 的 30天系列 第 25 篇](https://ithelp.ithome.com.tw/articles/10251470)
+
+## Angular WeSocket
+
+1. [在 Angular 当中使用 WebSocket](https://heptaluan.github.io/2019/05/20/Angular/15/)
 
 ## 功能
 
@@ -15,7 +21,7 @@
 2. 客戶端可發送訊息給伺服器取得回應
 3. 伺服器端也要能主動派發訊息給指定對象或對所有 WebSocket 連線廣播
 4. 即時偵測到某條 WebSocket 被關閉做出因應
-5. 斷線自動重連
+5. 斷線自動重連 [實測SignalR自動重連特性](https://blog.darkthread.net/blog/test-signalr-reconnect/)
 6. 瀏覽器不支援 WebSocket 的備援
 
 上述有些利用 SignalR 做會更省事，此 Demo 兩種都試看看
