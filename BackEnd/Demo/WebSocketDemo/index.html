@@ -11,6 +11,11 @@
 <body>
     <div class="container" id="app">
         <div class="row">
+            <!-- localhost 會被 chrome 自動亂轉成 ws://127.0.0.1:5500/ws -->
+            <input class="col-6 m-1" id="url" value="ws:localhost:24940/ws" />
+            <button class="col-1 m-1" id="ReConnect">ReConnect</button>
+        </div>
+        <div class="row">
             <input class="col-4 m-1" id="userName" />
             <input class="col-6 m-1" id="message" placeholder="message" />
             <button class="col-1 m-1" id="send">Send</button>
@@ -45,8 +50,9 @@
             }
         }
         function connect() {
-            console.log('wsUrl',wsUrl);
-            wsUrl = 'ws:localhost:24940/ws'
+            console.log('wsUrl', wsUrl);
+            wsUrl = 'ws:localhost:24940/ws';
+            wsUrl = 'ws:localhost:24940/WebSocket/ws';
             socket = new WebSocket(wsUrl);
             socket.onopen = function () {
                 logWebSocketStatus();
@@ -73,7 +79,7 @@
             if (socket && socket.readyState == WebSocket.OPEN)
                 socket.send(msg);
         }
-        connect();
+
         var userName = document.getElementById('userName');
         userName.value = 'User' + (new Date().getTime() % 10000);
         userName.onchange = function () {
@@ -90,6 +96,23 @@
             console.log('send.addEventListener');
             sendMessage(message.value);
         });
+
+        var Url = document.getElementById('url');
+        Url.addEventListener('keydown', function () {
+            console.log('UrlKeydown');
+            wsUrl = Url.value;
+        });
+
+        window.onload = function() {
+            console.log('window.onload');
+            connect();
+        };
+
+        var ReConnect = document.getElementById('ReConnect');
+        ReConnect.addEventListener('click', function () {
+            connect();
+        });
+
     </script>
 </body>
 
