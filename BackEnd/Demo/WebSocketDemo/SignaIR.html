@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/3.1.7/signalr.js"></script>
+</head>
+
+<body>
+    <script>
+        //設定 SignalR 的連線資訊
+        var Connection = new signalR.HubConnectionBuilder().withUrl("http://localhost:24940/SignalRHub").build();
+
+        //開啟 ReceiveMessage 的通道，Server 只要呼叫 ReceiveMessage，這邊就會接著執行 function
+        Connection.on("ReceiveMessage", function (user, message) {
+            alert(`Connect ${user} ${message}`)
+        });
+
+        //與 Server 建立連線
+        Connection
+        .start({
+            jsonp: true
+         })
+        .done(function() {
+            commHub.register("XSS");
+         })
+         .then(function () {
+            //呼叫 Hub 中的 SendMessage 方法，並傳入參數（參數數量要相等，不然會報錯）
+            connection.invoke("SendMessage", 'User', 'Message').catch(function (err) {
+                return console.error(err.toString());
+            });
+        })
+        .catch(function (err) {
+            return console.error(err.toString());
+        });
+    </script>
+</body>
+
+</html>

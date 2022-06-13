@@ -10,6 +10,12 @@
 ## SignalR
 
 1. [我與 ASP.NET Core 的 30天系列 第 25 篇](https://ithelp.ithome.com.tw/articles/10251470)
+   * SignalR
+   1. 自動處理連接管理
+   2. 同時將訊息傳送給所有已連線的用戶端
+   3. 將訊息傳送給特定用戶端或用戶端群組
+   4. 調整以處理增加的流量
+2. [SignaIR-Cross](https://blog.darkthread.net/blog/signalr-cross-domain/)
 
 ## Angular WeSocket
 
