@@ -11,11 +11,10 @@ namespace WebSocketDemo
 
         // 參考 https://blog.darkthread.net/blog/aspnet-core-websocket-chatroom/
 
-        ConcurrentDictionary<int, WebSocket> WebSockets; // 放置連線資訊的容器，可以讓"多個執行緒併發呼叫"
-
-        public WebSocketHandler(ILogger<WebSocketHandler> logger)
+        public WebSocketHandler(ILogger<WebSocketHandler>? logger)
         {
             _logger = logger;
+            // 放置連線資訊的容器，可以讓"多個執行緒併發呼叫" 宣告在 ControllerHandler 以便 Controller 層共用
             WebSockets = new ConcurrentDictionary<int, WebSocket>();
         }
 
@@ -45,7 +44,10 @@ namespace WebSocketDemo
                 if (!string.IsNullOrEmpty(cmd))
                 {
                     // 格式化並寫入資訊記錄訊息 Log
-                    _logger.LogInformation(cmd);
+                    if (_logger != null)
+                    {
+                        _logger.LogInformation(cmd);
+                    }
 
                     // StartsWith 檢查字串是否是以指定子字符串開頭
                     if (cmd.StartsWith("/USER "))
@@ -60,9 +62,6 @@ namespace WebSocketDemo
                         Broadcast($"{userName}:\t{cmd}");
                     }
                 }
-
-                // 計算連線數量
-                ConnectionsCount = WebSockets.Count();
 
                 // While 前再次刷新非同步要求
                 res = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);

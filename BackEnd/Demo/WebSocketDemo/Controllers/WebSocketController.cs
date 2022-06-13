@@ -17,7 +17,28 @@ namespace WebSocketDemo.Controllers
         [HttpGet]
         public int Get()
         {
-            return ConnectionsCount;
+            return WebSockets.Count;
+        }
+
+        /// <summary>
+        /// Swagger 使用 WebSock 方式
+        /// </summary>
+        /// <returns></returns>
+        [Route("ws")]
+        [HttpGet]
+        public async Task WebSocketGet()
+        {
+            if (HttpContext.WebSockets.IsWebSocketRequest)
+            {
+                using (var webSocket = await HttpContext.WebSockets.AcceptWebSocketAsync())
+                {
+                   await new WebSocketHandler(null).ProcessWebSocket(webSocket);
+                }
+            }
+            else
+            {
+                HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
+            }
         }
     }
 }
