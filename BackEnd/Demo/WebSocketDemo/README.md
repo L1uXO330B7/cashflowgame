@@ -16,6 +16,7 @@
    3. 將訊息傳送給特定用戶端或用戶端群組
    4. 調整以處理增加的流量
 2. [SignaIR-Cross](https://blog.darkthread.net/blog/signalr-cross-domain/)
+3. [SignaIR-Cross 需直接設定 app.UseCors](https://docs.microsoft.com/zh-tw/aspnet/core/signalr/security?view=aspnetcore-6.0)
 
 ## Angular WeSocket
 

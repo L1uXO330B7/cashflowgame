@@ -14,8 +14,20 @@ Builder.Services.AddSingleton<WebSocketHandler>();
 
 Builder.Services.AddSignalR();
 
+Builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy",
+        builder => builder
+        .AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader());
+});
+
 var App = Builder.Build();
 // いざ糷把σ https://blog.darkthread.net/blog/aspnetcore-middleware-lab/
+
+// 阁办把σ https://stackoverflow.com/questions/53675850/how-to-fix-the-cors-protocol-does-not-allow-specifying-a-wildcard-any-origin
+App.UseCors("CorsPolicy");
 
 // Configure the HTTP request pipeline.
 if (App.Environment.IsDevelopment())
@@ -29,7 +41,7 @@ App.UseAuthorization();
 App.MapControllers();
 
 //硈钡 SignalR 隔パ籔皌癸 Hub
-App.MapHub<SignalRHub>("/SignalRHub"); 
+App.MapHub<SignalRHub>("/SignalRHub");
 
 // WebSocket 把σ https://blog.darkthread.net/blog/aspnet-core-websocket-chatroom/
 
