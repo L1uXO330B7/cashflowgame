@@ -15,18 +15,22 @@ Builder.Services.AddSingleton<WebSocketHandler>();
 Builder.Services.AddSignalR();
 
 Builder.Services.AddCors(options =>
-{
-    options.AddPolicy("CorsPolicy",
-        builder => builder
-        .AllowAnyOrigin()
-        .AllowAnyMethod()
-        .AllowAnyHeader());
-});
+  {
+      options.AddPolicy("CorsPolicy",
+          builder =>
+          {
+              builder.AllowAnyHeader()
+                     .AllowAnyMethod()
+                     .SetIsOriginAllowed((host) => true)
+                     .AllowCredentials();
+          });
+  }
+);
 
 var App = Builder.Build();
 // いざ糷把σ https://blog.darkthread.net/blog/aspnetcore-middleware-lab/
 
-// 阁办把σ https://stackoverflow.com/questions/53675850/how-to-fix-the-cors-protocol-does-not-allow-specifying-a-wildcard-any-origin
+// 阁办把σ https://stackoverflow.com/questions/54823650/cors-policy-dont-want-to-work-with-signalr-and-asp-net-core
 App.UseCors("CorsPolicy");
 
 // Configure the HTTP request pipeline.
@@ -38,10 +42,15 @@ if (App.Environment.IsDevelopment())
 
 App.UseAuthorization();
 
+App.UseRouting();
+
 App.MapControllers();
 
 //硈钡 SignalR 隔パ籔皌癸 Hub
-App.MapHub<SignalRHub>("/SignalRHub");
+App.UseEndpoints(routes =>
+{
+    routes.MapHub<SignalRHub>("/SignalRHub");
+});
 
 // WebSocket 把σ https://blog.darkthread.net/blog/aspnet-core-websocket-chatroom/
 
@@ -68,7 +77,9 @@ App.Use(async (context, next) =>
             }
         }
         else
+        {
             context.Response.StatusCode = (int)System.Net.HttpStatusCode.BadRequest;
+        }
     }
     else await next();
 });
