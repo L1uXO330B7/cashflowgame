@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script crossorigin src="https://unpkg.com/react/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+
+    <script>
+        window.onerror = function (message, source, line, col, error) {
+            var text = error ? error.stack || error : message + ' (at ' + source + ':' + line + ':' + col + ')';
+            errors.textContent += text + '\n';
+            errors.style.display = '';
+        };
+        console.error = (function (old) {
+            return function error() {
+                errors.textContent += Array.prototype.slice.call(arguments).join(' ') + '\n';
+                errors.style.display = '';
+                old.apply(this, arguments);
+            }
+        })(console.error);
+    </script>
+
+    <!-- 寫法參考 https://codepen.io/gaearon/pen/gWWZgR?editors=0010 -->
+    <script type="text/babel">
+        // https://stackoverflow.com/questions/59834741/cdn-links-for-react-packages-and-how-to-import-it-when-using-react-using-the-scr
+        class FQ extends React.Component {
+
+            constructor(props) {
+                super(props);
+                this.state = {
+                    stockYield: 3,
+                    cashDividend: undefined,
+                    sharePrice: undefined,
+                };
+
+                const [stockYield, setStockYield] = useState(this.state.stockYield);
+                const [cashDividend, setCashDividend] = useState(this.state.cashDividend);
+                const [sharePrice, setSharePrice] = useState(this.state.sharePrice);
+            }
+
+            handleInputChange(event) {
+                console.log('handleInputChange', event);
+            }
+
+
+
+            render() {
+
+                return (
+                    <div>
+                        <div>
+                            <p>股票殖利率 {stockYield} = 現金股利 {cashDividend} ÷ 股價 {sharePrice}</p>
+                            <p>
+                                <span>
+                                    <input
+                                        type="number"
+                                        name="stockYield"
+                                        value={this.state.stockYield}
+                                        onChange={(e) = stockYield(e.target.value)}
+                                        placeholder="股票殖利率"
+                                    />%
+                                </span> =
+                                <span>
+                                    <input
+                                        type="number"
+                                        name="cashDividend"
+                                        value={this.state.cashDividend}
+                                        onChange={this.handleInputChange}
+                                        placeholder="現金股利"
+                                    />
+                                </span>÷
+                                <span>
+                                    <input
+                                        type="number"
+                                        name="sharePrice"
+                                        value={this.state.sharePrice}
+                                        onChange={this.handleInputChange}
+                                        placeholder="股價"
+                                    />
+                                </span>
+                            </p>
+                        </div>
+                        <div>
+                            <p>股票殖利率 = 每月無投入複利之現金股利 ÷ 股票帳面價值 </p>
+                            <p>
+                                <span>{ }</span> =
+                                <span>{ }</span> ÷
+                                <span>{ }</span>
+                            </p>
+                        </div>
+                    </div>);
+            }
+        }
+        const root = ReactDOM.createRoot(document.getElementById("root"));
+        root.render(<FQ />);
+    </script>
+</body>
+
+</html>
