@@ -33,3 +33,11 @@
 
 上述有些利用 SignalR 做會更省事，此 Demo 兩種都試看看
 
+## 架構閱讀
+
+[Furion 大陸 net core 框架](https://dotnetchina.gitee.io/furion/)
+
+透過研讀開源框架了解有什麼基礎設施可以使用
+
+1. MiniProfiler 性能分析和监听 必須要整合至 swagger
+
