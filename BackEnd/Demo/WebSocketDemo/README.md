@@ -42,3 +42,4 @@
 1. MiniProfiler 性能分析和监听 必須要整合至 swagger
 2. 设置 Swagger 自动授权
 3. [Docker Simple](https://github.com/twtrubiks/docker-tutorial)
+4. [swagger 根據规范化文档產生 api js code](https://dotnetchina.gitee.io/furion/docs/clientapi) 或許可以寫成程式碼產生器，只需置換之類的
