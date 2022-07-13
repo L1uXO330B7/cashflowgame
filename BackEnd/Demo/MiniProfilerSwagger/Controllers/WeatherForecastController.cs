@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using MiniProfilerSwagger.EF;
 using StackExchange.Profiling;
 
 namespace MiniProfilerSwagger.Controllers
@@ -31,11 +32,44 @@ namespace MiniProfilerSwagger.Controllers
             .ToArray();
         }
 
+        /// <summary>
+        /// 故意報錯
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Route("GetError")]
-        public IActionResult GetError()
+        public int GetError()
         {
-            return new NotFoundResult();
+            int i = 0;
+            i = 1 / i;
+            return i;
+        }
+
+        /// <summary>
+        /// Sql 查詢
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("GetUsers")]
+        public List<User> GetUsers()
+        {
+            //var _MiniProfiler = MiniProfiler.Current;
+            //using (_MiniProfiler.Step("GetUsers")) // 寫成 AOP 掛在攔截器或篩選器
+            //{
+
+            using (var Db = new MiniProfilerDbContext())
+            {
+                try
+                {
+                    return Db.Users.ToList();
+                }
+                catch (Exception ex)
+                {
+                    throw;
+                }
+            }
+
+            //}
         }
 
         /// <summary>

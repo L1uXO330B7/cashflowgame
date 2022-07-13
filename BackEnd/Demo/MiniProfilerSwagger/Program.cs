@@ -1,7 +1,15 @@
 using Microsoft.OpenApi.Models;
+using MiniProfilerSwagger.Filter;
+using StackExchange.Profiling.Storage;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// AOP 篩選器
+builder.Services.AddMvc(config =>
+{
+    config.Filters.Add(new MiniProfilerActionFilter());
+});
 
 // Add services to the container.
 
@@ -20,10 +28,33 @@ builder.Services.AddSwaggerGen(c =>
     );
 });
 
+// 注入MiniProfiler
 builder.Services.AddMiniProfiler(o =>
 {
+    // 訪問地址路由根目錄；預設為：/mini-profiler-resources
     o.RouteBasePath = "/profiler";
+    // 資料快取時間
+    (o.Storage as MemoryCacheStorage).CacheDuration = TimeSpan.FromMinutes(60);
+    // sql 格式化設定
+    o.SqlFormatter = new StackExchange.Profiling.SqlFormatters.InlineFormatter();
+    // 跟蹤連線開啟關閉
+    o.TrackConnectionOpenClose = true;
+    // 介面主題顏色方案;預設淺色
+    o.ColorScheme = StackExchange.Profiling.ColorScheme.Dark;
+    // .net core 3.0以上：對MVC過濾器進行分析
+    o.EnableMvcFilterProfiling = true;
+    // 對檢視進行分析
+    o.EnableMvcViewProfiling = true;
+
+    // 控制訪問頁面授權，預設所有人都能訪問
+    //options.ResultsAuthorize;
+    // 要控制分析哪些請求，預設說有請求都分析
+    //options.ShouldProfile;
+
+    // 內部異常處理
+    //options.OnInternalError = e => MyExceptionLogger(e);
 })
+// 監控 EntityFrameworkCore 生成的 SQL
 .AddEntityFramework();
 
 var app = builder.Build();
@@ -31,6 +62,7 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    // 該方法必須在app.UseEndpoints以前
     app.UseMiniProfiler();
 
     app.UseSwagger();
@@ -46,7 +78,7 @@ if (app.Environment.IsDevelopment())
             c.IndexStream = () => typeof(Program).GetTypeInfo()
                                                   .Assembly
                                                   .GetManifestResourceStream("MiniProfilerSwagger.index.html");
-    });
+        });
 }
 
 app.UseAuthorization();
