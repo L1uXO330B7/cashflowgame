@@ -8,6 +8,7 @@ namespace MiniProfilerSwagger.Controllers
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {
+        private readonly MiniProfilerDbContext _db;
         private static readonly string[] Summaries = new[]
         {
            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
@@ -15,9 +16,10 @@ namespace MiniProfilerSwagger.Controllers
 
         private readonly ILogger<WeatherForecastController> _logger;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, MiniProfilerDbContext db)
         {
             _logger = logger;
+            _db = db;
         }
 
         [HttpGet(Name = "GetWeatherForecast")]
@@ -72,10 +74,8 @@ namespace MiniProfilerSwagger.Controllers
             var _MiniProfiler = MiniProfiler.Current;
             using (_MiniProfiler.Step("GetEFCore")) // 寫成 AOP 掛在攔截器或篩選器
             {
-                using (var Db = new MiniProfilerDbContext())
-                {
-                    return Db.Users.ToList();
-                }
+ 
+                    return _db.Users.ToList();
             }
         }
 

@@ -1,9 +1,15 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using MiniProfilerSwagger.EF;
 using MiniProfilerSwagger.Filter;
 using StackExchange.Profiling.Storage;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
+// µù¥Udb
+var ConnectionString = builder.Configuration.GetConnectionString("MiniProfilerDb");
+builder.Services.AddDbContext<MiniProfilerDbContext>(options =>
+       options.UseSqlServer(ConnectionString));
 
 // AOP ¿z¿ï¾¹
 builder.Services.AddMvc(config =>
