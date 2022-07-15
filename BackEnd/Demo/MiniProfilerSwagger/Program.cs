@@ -42,17 +42,17 @@ builder.Services.AddMiniProfiler(o =>
     // 介面主題顏色方案;預設淺色
     o.ColorScheme = StackExchange.Profiling.ColorScheme.Dark;
     // .net core 3.0以上：對MVC過濾器進行分析
-    o.EnableMvcFilterProfiling = true;
+    //o.EnableMvcFilterProfiling = true;
     // 對檢視進行分析
-    o.EnableMvcViewProfiling = true;
+    //o.EnableMvcViewProfiling = true;
 
     // 控制訪問頁面授權，預設所有人都能訪問
-    //options.ResultsAuthorize;
+    //o.ResultsAuthorize;
     // 要控制分析哪些請求，預設說有請求都分析
-    //options.ShouldProfile;
+    //o.ShouldProfile;
 
     // 內部異常處理
-    //options.OnInternalError = e => MyExceptionLogger(e);
+    o.OnInternalError = e => Console.WriteLine(e);
 })
 // 監控 EntityFrameworkCore 生成的 SQL
 .AddEntityFramework();

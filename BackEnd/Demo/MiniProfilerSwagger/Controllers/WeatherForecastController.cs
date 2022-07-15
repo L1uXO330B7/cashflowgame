@@ -10,8 +10,8 @@ namespace MiniProfilerSwagger.Controllers
     {
         private static readonly string[] Summaries = new[]
         {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
+           "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+        };
 
         private readonly ILogger<WeatherForecastController> _logger;
 
@@ -50,26 +50,33 @@ namespace MiniProfilerSwagger.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [Route("GetUsers")]
-        public List<User> GetUsers()
+        [Route("GetLinq")]
+        public dynamic GetLinq()
         {
-            //var _MiniProfiler = MiniProfiler.Current;
-            //using (_MiniProfiler.Step("GetUsers")) // 寫成 AOP 掛在攔截器或篩選器
-            //{
-
-            using (var Db = new MiniProfilerDbContext())
+            var _MiniProfiler = MiniProfiler.Current;
+            using (_MiniProfiler.Step("GetLinq")) // 寫成 AOP 掛在攔截器或篩選器
             {
-                try
+                var test = new List<string>() { "aa", "bb", "cc", "dd" };
+                return test.Where(x => x == "aa").ToList();
+            }
+        }
+
+        /// <summary>
+        /// Sql 查詢
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("GetEFCore")]
+        public dynamic GetEFCore()
+        {
+            var _MiniProfiler = MiniProfiler.Current;
+            using (_MiniProfiler.Step("GetEFCore")) // 寫成 AOP 掛在攔截器或篩選器
+            {
+                using (var Db = new MiniProfilerDbContext())
                 {
                     return Db.Users.ToList();
                 }
-                catch (Exception ex)
-                {
-                    throw;
-                }
             }
-
-            //}
         }
 
         /// <summary>
