@@ -3,15 +3,16 @@ using StackExchange.Profiling;
 
 namespace MiniProfilerSwagger.Filter
 {
-    public class ExceptionFilter : IExceptionFilter
+    public class ExceptionFilter : IAsyncExceptionFilter
     {
-        public void OnException(ExceptionContext _ExceptionContext)
+        public Task OnExceptionAsync(ExceptionContext _ExceptionContext)
         {
-            //var step = _ExceptionContext.HttpContext.Items["step"] as IDisposable;
-            //if (step != null)
-            //{
-            //    step.Dispose();
-            //}
+            using (var step = MiniProfiler.Current.CustomTimingIf("Exception", _ExceptionContext.Exception.Message, 5))
+            {
+                step.Errored = true;
+            }
+
+            return Task.CompletedTask;
         }
     }
 }

@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+ï»¿using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using MiniProfilerSwagger.EF;
 using MiniProfilerSwagger.Filter;
@@ -6,14 +6,15 @@ using StackExchange.Profiling.Storage;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
-// µù¥Udb
+// è¨»å†Šdb
 var ConnectionString = builder.Configuration.GetConnectionString("MiniProfilerDb");
 builder.Services.AddDbContext<MiniProfilerDbContext>(options =>
        options.UseSqlServer(ConnectionString));
 
-// AOP ¿z¿ï¾¹
+// AOP ç¯©é¸å™¨
 builder.Services.AddMvc(config =>
 {
+    config.Filters.Add(new ExceptionFilter());
     config.Filters.Add(new MiniProfilerActionFilter());
 });
 
@@ -25,42 +26,78 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc(
-                    // §ñÃö SwaggerDocument ªº URL ¦ì¸m¡C
+                    // æ”¸é—œ SwaggerDocument çš„ URL ä½ç½®ã€‚
                     name: "v1",
-                    // ¬O¥Î©ó SwaggerDocument ª©¥»¸ê°TªºÅã¥Ü ( ¤º®e«D¥²¶ñ )¡C
+                    // æ˜¯ç”¨æ–¼ SwaggerDocument ç‰ˆæœ¬è³‡è¨Šçš„é¡¯ç¤º ( å…§å®¹éå¿…å¡« )ã€‚
                     info: new OpenApiInfo
                     {
                     }
     );
 });
 
-// ª`¤JMiniProfiler
-builder.Services.AddMiniProfiler(o =>
+// æ³¨å…¥MiniProfiler
+builder.Services.AddMiniProfiler(options =>
 {
-    // ³X°İ¦a§}¸ô¥Ñ®Ú¥Ø¿ı¡F¹w³]¬°¡G/mini-profiler-resources
-    o.RouteBasePath = "/profiler";
-    // ¸ê®Æ§Ö¨ú®É¶¡
-    (o.Storage as MemoryCacheStorage).CacheDuration = TimeSpan.FromMinutes(60);
-    // sql ®æ¦¡¤Æ³]©w
-    o.SqlFormatter = new StackExchange.Profiling.SqlFormatters.InlineFormatter();
-    // ¸òÂÜ³s½u¶}±ÒÃö³¬
-    o.TrackConnectionOpenClose = true;
-    // ¤¶­±¥DÃDÃC¦â¤è®×;¹w³]²L¦â
-    o.ColorScheme = StackExchange.Profiling.ColorScheme.Dark;
-    // .net core 3.0¥H¤W¡G¹ïMVC¹LÂo¾¹¶i¦æ¤ÀªR
-    //o.EnableMvcFilterProfiling = true;
-    // ¹ïÀËµø¶i¦æ¤ÀªR
-    //o.EnableMvcViewProfiling = true;
+    // ALL of this is optional. You can simply call .AddMiniProfiler() for all defaults
+    // Defaults: In-Memory for 30 minutes, everything profiled, every user can see
 
-    // ±±¨î³X°İ­¶­±±ÂÅv¡A¹w³]©Ò¦³¤H³£¯à³X°İ
-    //o.ResultsAuthorize;
-    // ­n±±¨î¤ÀªR­ş¨Ç½Ğ¨D¡A¹w³]»¡¦³½Ğ¨D³£¤ÀªR
-    //o.ShouldProfile;
+    // Path to use for profiler URLs, default is /mini-profiler-resources
+    options.RouteBasePath = "/profiler";
 
-    // ¤º³¡²§±`³B²z
-    o.OnInternalError = e => Console.WriteLine(e);
+    // Control storage - the default is 30 minutes
+    //(options.Storage as MemoryCacheStorage).CacheDuration = TimeSpan.FromMinutes(60);
+    //options.Storage = new SqlServerStorage("Data Source=.;Initial Catalog=MiniProfiler;Integrated Security=True;");
+
+    // Control which SQL formatter to use, InlineFormatter is the default
+    options.SqlFormatter = new StackExchange.Profiling.SqlFormatters.SqlServerFormatter();
+
+    // To control authorization, you can use the Func<HttpRequest, bool> options:
+    //options.ResultsAuthorize = _ => !Program.DisableProfilingResults;
+    //options.ResultsListAuthorize = request => MyGetUserFunction(request).CanSeeMiniProfiler;
+    //options.ResultsAuthorizeAsync = async request => (await MyGetUserFunctionAsync(request)).CanSeeMiniProfiler;
+    //options.ResultsAuthorizeListAsync = async request => (await MyGetUserFunctionAsync(request)).CanSeeMiniProfilerLists;
+
+    // To control which requests are profiled, use the Func<HttpRequest, bool> option:
+    //options.ShouldProfile = request => MyShouldThisBeProfiledFunction(request);
+
+    // Profiles are stored under a user ID, function to get it:
+    //options.UserIdProvider =  request => MyGetUserIdFunction(request);
+
+    // Optionally swap out the entire profiler provider, if you want
+    // The default handles async and works fine for almost all applications
+    //options.ProfilerProvider = new MyProfilerProvider();
+
+    // Optionally disable "Connection Open()", "Connection Close()" (and async variants).
+    //options.TrackConnectionOpenClose = false;
+
+    // Optionally use something other than the "light" color scheme.
+    options.ColorScheme = StackExchange.Profiling.ColorScheme.Auto;
+
+    // Enabled sending the Server-Timing header on responses
+    options.EnableServerTimingHeader = true;
+
+    // Optionally disable MVC filter profiling
+    //options.EnableMvcFilterProfiling = false;
+    // Or only save filters that take over a certain millisecond duration (including their children)
+    //options.MvcFilterMinimumSaveMs = 1.0m;
+
+    // Optionally disable MVC view profiling
+    //options.EnableMvcViewProfiling = false;
+    // Or only save views that take over a certain millisecond duration (including their children)
+    //options.MvcViewMinimumSaveMs = 1.0m;
+
+    // This enables debug mode with stacks and tooltips when using memory storage
+    // It has a lot of overhead vs. normal profiling and should only be used with that in mind
+    //options.EnableDebugMode = true;
+
+    // Optionally listen to any errors that occur within MiniProfiler itself
+    //options.OnInternalError = e => MyExceptionLogger(e);
+
+    //options.IgnoredPaths.Add("/lib");
+    //options.IgnoredPaths.Add("/css");
+    //options.IgnoredPaths.Add("/js");
 })
-// ºÊ±± EntityFrameworkCore ¥Í¦¨ªº SQL
+// ç›£æ§ EntityFrameworkCore ç”Ÿæˆçš„ SQL
 .AddEntityFramework();
 
 var app = builder.Build();
@@ -68,16 +105,16 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    // ¸Ó¤èªk¥²¶·¦bapp.UseEndpoints¥H«e
+    // è©²æ–¹æ³•å¿…é ˆåœ¨app.UseEndpointsä»¥å‰
     app.UseMiniProfiler();
 
     app.UseSwagger();
     app.UseSwaggerUI(c =>
         {
             c.SwaggerEndpoint(
-                // »İ°t¦X SwaggerDoc ªº name¡C "/swagger/{SwaggerDoc name}/swagger.json"
+                // éœ€é…åˆ SwaggerDoc çš„ nameã€‚ "/swagger/{SwaggerDoc name}/swagger.json"
                 url: "/swagger/v1/swagger.json",
-                // ©ó Swagger UI ¥k¤W¨¤¿ï¾Ü¤£¦Pª©¥»ªº SwaggerDocument Åã¥Ü¦WºÙ¨Ï¥Î¡C
+                // æ–¼ Swagger UI å³ä¸Šè§’é¸æ“‡ä¸åŒç‰ˆæœ¬çš„ SwaggerDocument é¡¯ç¤ºåç¨±ä½¿ç”¨ã€‚
                 name: "RESTful API v1.0.0"
             );
 
