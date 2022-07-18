@@ -6,7 +6,7 @@ using StackExchange.Profiling.Storage;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
-// 註冊db
+// 註冊 Db
 var ConnectionString = builder.Configuration.GetConnectionString("MiniProfilerDb");
 builder.Services.AddDbContext<MiniProfilerDbContext>(options =>
        options.UseSqlServer(ConnectionString));
