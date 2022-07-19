@@ -20,7 +20,7 @@
 
 5. Common Layer：
 
-   負責一些容易用到的例如 Model / DTO / ViewModel / Enum，基本上需要相依於其餘所有專案。
+   負責一些容易用到的例如 Model / DTO / ViewModel / Enum，基本上需要相依於所有專案。
 
 ### 還有很多種其餘定義，其實就是看架構師怎去定義什麼東西寫在哪，達到
 
