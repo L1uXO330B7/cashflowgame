@@ -1,4 +1,4 @@
-﻿# CashFlowAPP
+# CashFlowAPP
 
 ## 分層式架構
 
@@ -13,6 +13,9 @@
 
 4. Data Persistence Layer ( DPL )：
 負責向一個或者多個數據存儲器中操作數據，其實就是 EF 相關。
+
+5. Common Layer：
+負責一些容易用到的例如 Model / DTO / ViewModel / Enum，基本上需要相依於其餘所有專案。
 
 ### 還有很多種其餘定義，其實就是看架構師怎去定義什麼東西寫在哪，達到
 
