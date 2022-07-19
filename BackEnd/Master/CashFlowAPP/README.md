@@ -4,23 +4,23 @@
 
 1. Application Programming Interface ( API ) 應用程式介面層：
 
-利用路由 Controller 與 Action 作為一個程式路口串起來其他層，Global 類別也可以寫在這如 Filter。
+   利用路由 Controller 與 Action 作為一個程式路口串起來其他層，Global 類別也可以寫在這如 Filter。
 
 2. Business Logic Layer ( BLL ) 業務邏輯層：
 
-主要提供 Service 類別，供 API 層操作功能 ( 業務邏輯 ) 、回傳資料。
+   主要提供 Service 類別，供 API 層操作功能 ( 業務邏輯 ) 、回傳資料。
 
 3. Data Access Layer ( DAL ) 資料訪問層：
 
-主要不是針對資料庫是針對資料去做處理，但專案小的狀況下可以與 BLL 合併寫再一起利用 Linq 處理就好。
+   主要不是針對資料庫是針對資料去做處理，但專案小的狀況下可以與 BLL 合併寫再一起利用 Linq 處理就好。
 
 4. Data Persistence Layer ( DPL ) 數據持久層：
 
-負責向一個或者多個數據存儲器中操作數據，其實就是 EF 相關。
+   負責向一個或者多個數據存儲器中操作數據，其實就是 EF 相關。
 
 5. Common Layer：
 
-負責一些容易用到的例如 Model / DTO / ViewModel / Enum，基本上需要相依於其餘所有專案。
+   負責一些容易用到的例如 Model / DTO / ViewModel / Enum，基本上需要相依於其餘所有專案。
 
 ### 還有很多種其餘定義，其實就是看架構師怎去定義什麼東西寫在哪，達到
 
