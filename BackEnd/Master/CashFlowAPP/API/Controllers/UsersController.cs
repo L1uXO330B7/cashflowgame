@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-
+using DPL.EF;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace API.Controllers
@@ -8,6 +8,15 @@ namespace API.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
+        private readonly CashFlowDbContext _db;
+
+
+        public UsersController(CashFlowDbContext db) //建構子注入
+        {
+ 
+            _db= db;
+        }
+
         // GET: api/<UsersController>
         [HttpGet]
         public IEnumerable<string> Get()
@@ -24,8 +33,12 @@ namespace API.Controllers
 
         // POST api/<UsersController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public ActionResult<User> Post([FromBody] User item)
         {
+            _db.Users.Add(item);
+            _db.SaveChanges();
+
+            return CreatedAtAction(nameof(Get), new { id = item.Id }, item);
         }
 
         // PUT api/<UsersController>/5
