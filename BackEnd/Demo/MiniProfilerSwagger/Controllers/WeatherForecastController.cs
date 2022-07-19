@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using MiniProfilerSwagger.EF;
+using MiniProfilerSwagger.Filter;
 using StackExchange.Profiling;
 
 namespace MiniProfilerSwagger.Controllers
@@ -43,8 +44,25 @@ namespace MiniProfilerSwagger.Controllers
         public int GetError()
         {
             int i = 0;
-            i = 1 / i;
+
+            Error();
+
+            i = GetOne();
+
             return i;
+        }
+
+        [ApiExplorerSettings(IgnoreApi = true)]
+        public void Error()
+        {
+            int i = 0;
+            i = 1 / i;
+        }
+
+        [ApiExplorerSettings(IgnoreApi = true)]
+        public int GetOne()
+        {
+            return 1;
         }
 
         /// <summary>
@@ -55,12 +73,12 @@ namespace MiniProfilerSwagger.Controllers
         [Route("GetLinq")]
         public dynamic GetLinq()
         {
-            var _MiniProfiler = MiniProfiler.Current;
-            using (_MiniProfiler.Step("GetLinq")) // 寫成 AOP 掛在攔截器或篩選器
-            {
-                var test = new List<string>() { "aa", "bb", "cc", "dd" };
-                return test.Where(x => x == "aa").ToList();
-            }
+            //var _MiniProfiler = MiniProfiler.Current;
+            //using (_MiniProfiler.Step("GetLinq")) // 寫成 AOP 掛在攔截器或篩選器
+            //{
+            var test = new List<string>() { "aa", "bb", "cc", "dd" };
+            return test.Where(x => x == "aa").ToList();
+            //}
         }
 
         /// <summary>
@@ -71,12 +89,17 @@ namespace MiniProfilerSwagger.Controllers
         [Route("GetEFCore")]
         public dynamic GetEFCore()
         {
-            var _MiniProfiler = MiniProfiler.Current;
-            using (_MiniProfiler.Step("GetEFCore")) // 寫成 AOP 掛在攔截器或篩選器
-            {
- 
-                    return _db.Users.ToList();
-            }
+            //var _MiniProfiler = MiniProfiler.Current;
+            //using (_MiniProfiler.Step("GetEFCore")) // 寫成 AOP 掛在攔截器或篩選器
+            //{
+
+            _db.Users.ToList();
+
+            return _db.Users
+                .Where(x => !string.IsNullOrEmpty(x.Name))
+                .ToList();
+
+            //}
         }
 
         /// <summary>
