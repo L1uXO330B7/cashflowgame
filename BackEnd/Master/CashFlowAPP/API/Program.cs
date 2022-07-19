@@ -1,3 +1,5 @@
+using BLL.IServices;
+using BLL.Services;
 using DPL.EF;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,6 +15,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<CashFlowDbContext>(options =>
        options.UseSqlServer(builder.Configuration.GetConnectionString("CashFlowMDF")));
+
+builder.Services.AddScoped<IUsersService, UsersService>();
 
 var app = builder.Build();
 
