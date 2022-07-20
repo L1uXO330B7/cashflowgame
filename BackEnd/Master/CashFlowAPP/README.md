@@ -12,7 +12,7 @@
 
 2. Business Logic Layer ( BLL ) 業務邏輯層：
 
-   主要提供 Service 類別，供 API 層操作功能 ( 業務邏輯 ) 、回傳資料。
+   主要提供 Service 類別，供 API 層操作 EF 功能 ( 業務邏輯 ) 、回傳資料。
 
 3. Data Access Layer ( DAL ) 資料訪問層：
 

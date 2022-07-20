@@ -8,33 +8,39 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase, ICrudController<string, string, string, string>
+    public class UsersController : ControllerBase, ICrudController<CreateUserArgs, string, int, int>
     {
-        private IUsersService<string, string, string, string> userService;
+        private IUsersService<CreateUserArgs, string, string, string, string> userService;
 
         public UsersController(
-            IUsersService<string, string, string, string> _IUsersService
-        ) //建構子注入
+            IUsersService<CreateUserArgs, string, string, string, string> _IUsersService
+        ) // 建構子注入
         {
             userService = _IUsersService;
         }
 
-        public Task<ApiResponse> Create([FromBody] ApiRequest<string> Args)
+        [HttpPost("Create")]
+        public async Task<ApiResponse> Create([FromBody] ApiRequest<CreateUserArgs> Req)
+        {
+           return await userService.Create(Req);
+        }
+        [HttpPost("Delete")]
+        public Task<ApiResponse> Delete([FromBody] ApiRequest<int> Req)
         {
             throw new NotImplementedException();
         }
-
-        public Task<ApiResponse> Delete([FromBody] ApiRequest<string> Args)
+        [HttpPost("Read")]
+        public Task<ApiResponse> Read([FromBody] ApiRequest<string> Req)
         {
             throw new NotImplementedException();
         }
-
-        public Task<ApiResponse> Read([FromBody] ApiRequest<string> Args)
+        [HttpPost("ReadAll")]
+        public Task<ApiResponse> ReadAll([FromBody] ApiRequest<string> Req)
         {
             throw new NotImplementedException();
         }
-
-        public Task<ApiResponse> Update([FromBody] ApiRequest<string> Args)
+        [HttpPost("Update")]
+        public Task<ApiResponse> Update([FromBody] ApiRequest<int> Req)
         {
             throw new NotImplementedException();
         }
