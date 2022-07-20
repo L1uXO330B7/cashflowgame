@@ -1,5 +1,6 @@
 using BLL.IServices;
 using BLL.Services;
+using Common.Model;
 using DPL.EF;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,11 +13,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
 builder.Services.AddDbContext<CashFlowDbContext>(options =>
-       options.UseSqlServer(builder.Configuration.GetConnectionString("CashFlowMDF")));
+       options.UseSqlServer(builder.Configuration.GetConnectionString("OnlineCashFlow")));
 
-builder.Services.AddScoped<IUsersService<string, string, string, string>, UsersService>();
+builder.Services.AddScoped<IUsersService<CreateUserArgs, string, string, string, string>, UsersService>();
 
 var app = builder.Build();
 
