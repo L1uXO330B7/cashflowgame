@@ -8,7 +8,7 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase, ICRUD<string, string, string, string>
+    public class UsersController : ControllerBase, ICrudController<string, string, string, string>
     {
         private IUsersService userService;
 

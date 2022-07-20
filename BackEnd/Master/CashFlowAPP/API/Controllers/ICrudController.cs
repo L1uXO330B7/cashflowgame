@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.IController
 {
-    public interface ICRUD<CreateArgs, ReadArgs, UpdateArgs, DeleteArgs>
+    public interface ICrudController<CreateArgs, ReadArgs, UpdateArgs, DeleteArgs>
     {
         [HttpPost]
         Task<ApiResponse> Create([FromBody] ApiRequest<CreateArgs> Args);
