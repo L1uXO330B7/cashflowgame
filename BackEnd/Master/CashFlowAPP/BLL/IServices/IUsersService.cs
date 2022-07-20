@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 
 namespace BLL.IServices
 {
-    public interface IUsersService
+    public interface IUsersService : ICrudService
     {
-        public void test(string username, CashFlowDbContext db);
     }
 }

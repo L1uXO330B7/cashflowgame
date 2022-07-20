@@ -1,30 +1,43 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using DPL.EF;
 using BLL.IServices;
+using API.IController;
+using Common.Model;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class UsersController : ControllerBase, ICRUD
     {
-        private readonly CashFlowDbContext _db;
-        private IUsersService _UserService;
+        private IUsersService userService;
 
         public UsersController(
-            CashFlowDbContext db,
-            IUsersService UserService
-            ) //建構子注入
+            IUsersService _IUsersService
+        ) //建構子注入
         {
-            _db = db;
-            _UserService = UserService;
+            userService = _IUsersService;
         }
 
-        [HttpPost]
-        public void Post([FromBody] User item)
+        public Task<ApiResponse> Create<T>(ApiRequest<T> Args)
         {
-            _UserService.test(item.Name, _db);
+            throw new NotImplementedException();
+        }
+
+        public Task<ApiResponse> Delete<T>(ApiRequest<T> Args)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ApiResponse> Read<T>(ApiRequest<T> Args)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ApiResponse> Update<T>(ApiRequest<T> Args)
+        {
+            throw new NotImplementedException();
         }
     }
 }

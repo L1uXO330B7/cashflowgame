@@ -7,9 +7,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", "API\API.csproj", "{E
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BLL", "BLL\BLL.csproj", "{47B3E63C-3FAC-429A-A109-1E7211C7F61B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DPL", "DPL\DPL.csproj", "{D5420FC9-0695-44E3-9A2C-10DA7D64B626}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DPL", "DPL\DPL.csproj", "{D5420FC9-0695-44E3-9A2C-10DA7D64B626}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{19C63DDD-490A-4E58-A685-5EC4852C8899}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common.csproj", "{19C63DDD-490A-4E58-A685-5EC4852C8899}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "方案項目", "方案項目", "{CA8E2C13-34EA-4C5E-B054-A4E753EF2D85}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "UnitTest\UnitTest.csproj", "{28A329FC-0641-4633-91E9-237BFA75726C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +40,10 @@ Global
 		{19C63DDD-490A-4E58-A685-5EC4852C8899}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{19C63DDD-490A-4E58-A685-5EC4852C8899}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{19C63DDD-490A-4E58-A685-5EC4852C8899}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28A329FC-0641-4633-91E9-237BFA75726C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28A329FC-0641-4633-91E9-237BFA75726C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28A329FC-0641-4633-91E9-237BFA75726C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28A329FC-0641-4633-91E9-237BFA75726C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
