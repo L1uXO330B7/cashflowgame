@@ -1,15 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using DPL.EF;
-using BLL.IServices;
 using API.IController;
 using Common.Model;
+using BLL.IServices;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase, ICRUD
+    public class UsersController : ControllerBase, ICRUD<string, string, string, string>
     {
         private IUsersService userService;
 
@@ -20,22 +19,22 @@ namespace API.Controllers
             userService = _IUsersService;
         }
 
-        public Task<ApiResponse> Create<T>(ApiRequest<T> Args)
+        public Task<ApiResponse> Create([FromBody] ApiRequest<string> Args)
         {
             throw new NotImplementedException();
         }
 
-        public Task<ApiResponse> Delete<T>(ApiRequest<T> Args)
+        public Task<ApiResponse> Delete([FromBody] ApiRequest<string> Args)
         {
             throw new NotImplementedException();
         }
 
-        public Task<ApiResponse> Read<T>(ApiRequest<T> Args)
+        public Task<ApiResponse> Read([FromBody] ApiRequest<string> Args)
         {
             throw new NotImplementedException();
         }
 
-        public Task<ApiResponse> Update<T>(ApiRequest<T> Args)
+        public Task<ApiResponse> Update([FromBody] ApiRequest<string> Args)
         {
             throw new NotImplementedException();
         }
