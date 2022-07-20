@@ -10,10 +10,10 @@ namespace API.Controllers
     [ApiController]
     public class UsersController : ControllerBase, ICrudController<string, string, string, string>
     {
-        private IUsersService userService;
+        private IUsersService<string, string, string, string> userService;
 
         public UsersController(
-            IUsersService _IUsersService
+            IUsersService<string, string, string, string> _IUsersService
         ) //建構子注入
         {
             userService = _IUsersService;

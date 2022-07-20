@@ -16,7 +16,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<CashFlowDbContext>(options =>
        options.UseSqlServer(builder.Configuration.GetConnectionString("CashFlowMDF")));
 
-builder.Services.AddScoped<IUsersService, UsersService>();
+builder.Services.AddScoped<IUsersService<string, string, string, string>, UsersService>();
 
 var app = builder.Build();
 

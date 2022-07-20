@@ -1,4 +1,5 @@
 ﻿using BLL.IServices;
+using Common.Model;
 using DPL.EF;
 using System;
 using System.Collections.Generic;
@@ -8,10 +9,25 @@ using System.Threading.Tasks;
 
 namespace BLL.Services
 {
-    public class UsersService : ServiceBase, IUsersService
+    public class UsersService : ServiceBase, IUsersService<string,string,string,string>
     {
         public UsersService(CashFlowDbContext _CashFlowDbContext) : base(_CashFlowDbContext)
         {
+        }
+
+        public Task<ApiResponse> Create(ApiRequest<string> Args)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ApiResponse> Delete(ApiRequest<string> Args)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ApiResponse> Read(ApiRequest<string> Args)
+        {
+            throw new NotImplementedException();
         }
 
         public void test(string username)
@@ -40,6 +56,11 @@ namespace BLL.Services
             {
                 throw;
             }
+        }
+
+        public Task<ApiResponse> Update(ApiRequest<string> Args)
+        {
+            throw new NotImplementedException();
         }
     }
 }
