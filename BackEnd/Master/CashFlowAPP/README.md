@@ -43,7 +43,7 @@
 
 ![新增單元測試專案](https://github.com/L1uXO330B7/CashFlowProject/blob/master/BackEnd/Master/Images/%E6%96%B0%E5%A2%9E%E5%96%AE%E5%85%83%E6%B8%AC%E8%A9%A6%E5%B0%88%E6%A1%88.png)
 
-## 2. 混和式 API 架構
+## 2. 混和式 API 架構 x CRUD 介面 ( 設計圖 ) 繼承與實作
 
 [閒聊 - Web API 是否一定要 RESTful?](https://blog.darkthread.net/blog/is-restful-required/)
 
@@ -59,3 +59,4 @@
 
 https://editor.swagger.io
 
+### Task

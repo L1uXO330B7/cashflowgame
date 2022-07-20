@@ -16,32 +16,9 @@ namespace BLL.Services
 
         }
 
-        public void test(string username)
+        public int test()
         {
-            try
-            {
-                var _Users = new User();
-                _Users.Email = "ccc";
-                _Users.Password = "bbb";
-                _Users.Name = "aaa";
-                _Users.Status = 1;
-                _Users.RoleId = 1;
-
-                cashFlowDbContext.Users.Add(_Users);
-                cashFlowDbContext.SaveChanges();
-                cashFlowDbContext.Dispose();
-
-                // var UserList = cashFlowDbContext.Users.ToList(); // 會錯因為已經斷開連線
-
-                using (var db = cashFlowDbContext) // 再次連線
-                {
-                    var UserList = db.Users.ToList();
-                } // 斷開連線
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            return cashFlowDbContext.Users.ToList().Count;
         }
 
         public async Task<ApiResponse> Create(ApiRequest<CreateUserArgs> Req)
