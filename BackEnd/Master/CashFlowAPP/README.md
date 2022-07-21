@@ -69,6 +69,9 @@ https://editor.swagger.io
 
 1. 確定需要 CRUD 的 Table 列清單給我 ( 我先確定一下不然白寫 )
 
-其實不用全部去繼承 CRUD 設計圖的類別 Class ( 包含 Controller / Service )，需要的才做
+   其實不用全部去繼承 CRUD 設計圖的類別 Class ( 包含 Controller / Service )，需要的才做
  
-2. 
+2. Step 如下
+
+   1. 新增一個空白 Controller ( 實例 / 實作 / Class ) 並繼承 ICrudController
+   2. 這個新增的 Controller ( 實例 / 實作 / Class ) 基本要完成 CRUD 四種接口
