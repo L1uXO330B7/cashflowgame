@@ -10,10 +10,10 @@ namespace API.Controllers
     [ApiController]
     public class UsersController : ControllerBase, ICrudController<CreateUserArgs, string, int, int>
     {
-        private IUsersService<CreateUserArgs, string, string, string, string> _UserService;
+        private IUsersService<CreateUserArgs, int, string, int> _UserService;
 
         public UsersController(
-            IUsersService<CreateUserArgs, string, string, string, string> IUsersService
+            IUsersService<CreateUserArgs, int, string,int> IUsersService
         ) // 建構子注入
         {
             _UserService = IUsersService;
@@ -25,11 +25,11 @@ namespace API.Controllers
            return await _UserService.Create(Req);
         }
         [HttpPost("Delete")]
-        public Task<ApiResponse> Delete([FromBody] ApiRequest<int> Req)
+        public async Task<ApiResponse> Delete([FromBody] ApiRequest<int> Req)
         {
             var New = new ApiRequest<string>();
             New.Args = Req.Args.ToString();
-            return _UserService.Delete(New);
+            return await _UserService.Delete(Req);
         }
         [HttpPost("Read")]
         public Task<ApiResponse> Read([FromBody] ApiRequest<string> Req)

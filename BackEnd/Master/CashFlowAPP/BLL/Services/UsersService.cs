@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BLL.Services
 {
-    public class UsersService : ServiceBase, IUsersService<CreateUserArgs, int, string, string, string>
+    public class UsersService : ServiceBase, IUsersService<CreateUserArgs,int,string,int>
     {
         public UsersService(CashFlowDbContext _CashFlowDbContext) : base(_CashFlowDbContext)
         {

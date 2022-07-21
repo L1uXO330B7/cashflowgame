@@ -24,10 +24,10 @@ builder.Services.AddSwaggerGen();
 
 // µù¥U DbContext
 builder.Services.AddDbContext<CashFlowDbContext>(options =>
-       options.UseSqlServer(builder.Configuration.GetConnectionString("OnlineCashFlow")));
+       options.UseSqlServer(builder.Configuration.GetConnectionString("SchoolSQL")));
 
 // µù¥U Services
-builder.Services.AddScoped<IUsersService<CreateUserArgs, int, string, string, string>, UsersService>();
+builder.Services.AddScoped<IUsersService<CreateUserArgs, int, string, int>, UsersService>();
 
 // µù¥U MiniProfiler
 //builder.Services.AddMiniProfiler(options =>

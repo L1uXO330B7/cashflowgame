@@ -8,8 +8,5 @@ using System.Threading.Tasks;
 
 namespace BLL.IServices
 {
-    public interface IUsersService<CreateArgs, ReadArgs, UpdateArgs, DeleteArgs, ReadAllArgs> : ICrudService<CreateArgs, ReadArgs, UpdateArgs, DeleteArgs>
-    {
-        Task<ApiResponse> ReadAll(ApiRequest<ReadAllArgs> Req);
-    }
+    public interface IUsersService<CreateArgs, ReadArgs, UpdateArgs, DeleteArgs> : ICrudService<CreateArgs, ReadArgs, UpdateArgs, DeleteArgs> { }
 }
