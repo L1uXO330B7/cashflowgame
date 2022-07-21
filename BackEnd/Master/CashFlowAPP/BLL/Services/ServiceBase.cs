@@ -4,12 +4,12 @@ namespace BLL.Services
 {
     public class ServiceBase
     {
-        public CashFlowDbContext cashFlowDbContext;
+        public CashFlowDbContext _CashFlowDbContext;
         public ServiceBase(
-            CashFlowDbContext _CashFlowDbContext
+            CashFlowDbContext CashFlowDbContext
         )
         {
-            cashFlowDbContext = _CashFlowDbContext;
+            _CashFlowDbContext = CashFlowDbContext;
         }
     }
 }

@@ -16,7 +16,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<CashFlowDbContext>(options =>
        options.UseSqlServer(builder.Configuration.GetConnectionString("OnlineCashFlow")));
 
-builder.Services.AddScoped<IUsersService<CreateUserArgs, string, string, string, string>, UsersService>();
+builder.Services.AddScoped<IUsersService<CreateUserArgs, int, string, string, string>, UsersService>();
 
 var app = builder.Build();
 
