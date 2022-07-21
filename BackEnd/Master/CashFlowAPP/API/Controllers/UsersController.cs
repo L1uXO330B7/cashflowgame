@@ -27,7 +27,9 @@ namespace API.Controllers
         [HttpPost("Delete")]
         public Task<ApiResponse> Delete([FromBody] ApiRequest<int> Req)
         {
-            throw new NotImplementedException();
+            var New = new ApiRequest<string>();
+            New.Args = Req.Args.ToString();
+            return _UserService.Delete(New);
         }
         [HttpPost("Read")]
         public Task<ApiResponse> Read([FromBody] ApiRequest<string> Req)

@@ -61,17 +61,20 @@
 
 https://editor.swagger.io
 
-![介面實作與繼承](https://github.com/L1uXO330B7/CashFlowProject/blob/master/BackEnd/Master/Images/%E4%BB%8B%E9%9D%A2%E5%AF%A6%E4%BD%9C%E8%88%87%E7%B9%BC%E6%89%BF.png?raw=true)
-
-![介面泛型](https://github.com/L1uXO330B7/CashFlowProject/blob/master/BackEnd/Master/Images/%E6%B3%9B%E5%9E%8B.png?raw=true)
-
 ### Task
 
 1. 確定需要 CRUD 的 Table 列清單給我 ( 我先確定一下不然白寫 )
 
    其實不用全部去繼承 CRUD 設計圖的類別 Class ( 包含 Controller / Service )，需要的才做
  
-2. Step 如下
+2. Step 如下以下其實都可以在同個專案做，但我們有分專案或分資料夾，方便尋找與單元測試
 
-   1. 新增一個空白 Controller ( 實例 / 實作 / Class ) 並繼承 ICrudController
-   2. 這個新增的 Controller ( 實例 / 實作 / Class ) 基本要完成 CRUD 四種接口
+   1. 新增一個空白 Controller ( 實例 / 實作 / Class ) 如果需要 CRUD 請繼承 ICrudController
+   2. 這個新增的 Controller ( 實例 / 實作 / Class ) 基本要完成 ICRUD 介面所定義的四種接口，其餘的可以自己新增
+   ![介面泛型](https://github.com/L1uXO330B7/CashFlowProject/blob/master/BackEnd/Master/Images/%E6%B3%9B%E5%9E%8B.png?raw=true)
+   3. 新增一個給這四個接口使用的空類別 Class 定義它為 Service ( 處理業務邏輯的類別的命名規則 XXX Service )
+   4. 如果需要 CRUD 就新增一個 Class 介面定義它為 IService 並繼承 ICrudService 這裡為何要父子介面 ?
+   ![介面實作與繼承](https://github.com/L1uXO330B7/CashFlowProject/blob/master/BackEnd/Master/Images/%E4%BB%8B%E9%9D%A2%E5%AF%A6%E4%BD%9C%E8%88%87%E7%B9%BC%E6%89%BF.png?raw=true)
+
+
+![注入多型錯誤500注入Mapping不到]()
