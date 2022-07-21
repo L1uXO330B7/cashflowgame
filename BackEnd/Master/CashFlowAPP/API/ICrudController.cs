@@ -1,7 +1,7 @@
 ﻿using Common.Model;
 using Microsoft.AspNetCore.Mvc;
 
-namespace API.IController
+namespace API
 {
     public interface ICrudController<CreateArgs, ReadArgs, UpdateArgs, DeleteArgs>
     {

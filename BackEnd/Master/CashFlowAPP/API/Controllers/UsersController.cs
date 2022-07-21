@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using API.IController;
 using Common.Model;
 using BLL.IServices;
+using StackExchange.Profiling;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace API.Controllers
@@ -43,6 +43,18 @@ namespace API.Controllers
         public Task<ApiResponse> Update([FromBody] ApiRequest<int> Req)
         {
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// 獲取 MiniProfiler HTML 片段
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("GetMiniProfilerScript")]
+        public IActionResult GetMiniProfilerScript()
+        {
+            var html = MiniProfiler.Current.RenderIncludes(HttpContext);
+            return Ok(html.Value);
         }
     }
 }
