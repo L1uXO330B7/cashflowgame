@@ -27,7 +27,7 @@ namespace API.Controllers
         [HttpPost("Delete")]
         public async Task<ApiResponse> Delete([FromBody] ApiRequest<int> Req)
         {
-            var New = new ApiRequest<string>();
+            var New = new ApiRequest<string>(); //轉型多此一舉
             New.Args = Req.Args.ToString();
             return await _UserService.Delete(Req);
         }
