@@ -6,6 +6,8 @@
 
 ## 1. 分層式架構
 
+[[ 控制反轉 ] 以 Mock 進行 Unit Test 為例](https://dotblogs.com.tw/JesperLai/2018/03/23/154708)
+
 1. Application Programming Interface ( API ) 應用程式介面層：
 
    利用路由 Controller 與 Action 作為一個程式路口串起來其他層，Global 類別也可以寫在這如 Filter。
@@ -59,6 +61,14 @@
 
 https://editor.swagger.io
 
+![介面實作與繼承](https://github.com/L1uXO330B7/CashFlowProject/blob/master/BackEnd/Master/Images/%E4%BB%8B%E9%9D%A2%E5%AF%A6%E4%BD%9C%E8%88%87%E7%B9%BC%E6%89%BF.png?raw=true)
 
+![介面泛型](https://github.com/L1uXO330B7/CashFlowProject/blob/master/BackEnd/Master/Images/%E6%B3%9B%E5%9E%8B.png?raw=true)
 
 ### Task
+
+1. 確定需要 CRUD 的 Table 列清單給我 ( 我先確定一下不然白寫 )
+
+其實不用全部去繼承 CRUD 設計圖的類別 Class ( 包含 Controller / Service )，需要的才做
+ 
+2. 
