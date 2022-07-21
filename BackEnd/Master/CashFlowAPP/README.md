@@ -65,16 +65,23 @@ https://editor.swagger.io
 
 1. 確定需要 CRUD 的 Table 列清單給我 ( 我先確定一下不然白寫 )
 
-   其實不用全部去繼承 CRUD 設計圖的類別 Class ( 包含 Controller / Service )，需要的才做
+   其實不用全部去繼承 CRUD 設計圖的介面 ( 包含 Controller / Service )，需要的才去繼承這個設計圖
  
-2. Step 如下以下其實都可以在同個專案做，但我們有分專案或分資料夾，方便尋找與單元測試
+2. Step 如下以下其實都可以在同個專案做[可以參考這篇](https://dotblogs.com.tw/JesperLai/2018/03/23/154708)，但我們有分專案或分資料夾，方便尋找與單元測試
 
-   1. 新增一個空白 Controller ( 實例 / 實作 / Class ) 如果需要 CRUD 請繼承 ICrudController
-   2. 這個新增的 Controller ( 實例 / 實作 / Class ) 基本要完成 ICRUD 介面所定義的四種接口，其餘的可以自己新增
+   1. 新增一個空白 XxxxxController ( 實例 / 實作 / Class ) 如果需要 CRUD 請繼承 ICrudController
+   2. 這個新增的 XxxxxController ( 實例 / 實作 / Class ) 基本要完成 ICRUD 介面所定義的四種接口，其餘的可以自己新增
    ![介面泛型](https://github.com/L1uXO330B7/CashFlowProject/blob/master/BackEnd/Master/Images/%E6%B3%9B%E5%9E%8B.png?raw=true)
    3. 新增一個給這四個接口使用的空類別 Class 定義它為 Service ( 處理業務邏輯的類別的命名規則 XXX Service )
-   4. 如果需要 CRUD 就新增一個 Class 介面定義它為 IService 並繼承 ICrudService 這裡為何要父子介面 ?
+   4. 如果需要 CRUD 就新增一個子介面 IXxxxService ( 介面 / Interface ) 並繼承父介面 ICrudService 這裡為何要父子介面 ?
    ![介面實作與繼承](https://github.com/L1uXO330B7/CashFlowProject/blob/master/BackEnd/Master/Images/%E4%BB%8B%E9%9D%A2%E5%AF%A6%E4%BD%9C%E8%88%87%E7%B9%BC%E6%89%BF.png?raw=true)
-
-
-![注入多型錯誤500注入Mapping不到]()
+   `你注入是利用介面去 New Class 給你，你介面沒定義的在 Controller 使用注入的 Service 時就使用不到`
+   `所以當你繼承的是 ICrudService 因為指定義四種 Function 你在 Controller 就只能使用這四種`
+   `而如果用 IUserService 去繼承 ICrudService 則你有意新增的如 Function DeleteAll 就可以定義在 IUserService 無需去改 ICrudService`
+   5. 第二種思路則是像你講的變成用參數去解決，因為參數我們是用泛型，可以定義一些程式規則如某參數是 Null 或空則撈全部或刪除全部之類
+   6. 接著新增一個 XxxxService 的 Class 並繼承上述 4. IXxxxService 實作此介面所定義的 Function 即可
+   7. 接著回到 XxxxxController 為了使用 XxxxxService 我們有兩種方式 
+      1. var XXX = new XxxxxService(); 直接使用 [為什麼不使用可以參考這篇](https://dotblogs.com.tw/JesperLai/2018/03/23/154708)
+      2. 在 XxxxxController 的建構子注入，這裡有個知識點 1. 必須要到 Program.cs 定義 Interface 與 Class 的 Mapping 有機會遇到以下問題，與 4. 取不到方法的問題
+      ![注入多型錯誤500注入Mapping不到](https://github.com/L1uXO330B7/CashFlowProject/blob/master/BackEnd/Master/Images/%E6%B3%A8%E5%85%A5%E5%A4%9A%E5%9E%8B%E9%8C%AF%E8%AA%A4500%E6%B3%A8%E5%85%A5Mapping%E4%B8%8D%E5%88%B0.png?raw=true)
+      ![避免ControllerReq型別與ServiceReq型別不一樣導致脫褲子放屁](https://github.com/L1uXO330B7/CashFlowProject/blob/master/BackEnd/Master/Images/%E9%81%BF%E5%85%8DControllerReq%E5%9E%8B%E5%88%A5%E8%88%87ServiceReq%E5%9E%8B%E5%88%A5%E4%B8%8D%E4%B8%80%E6%A8%A3%E5%B0%8E%E8%87%B4%E8%84%AB%E8%A4%B2%E5%AD%90%E6%94%BE%E5%B1%81.png?raw=true)
