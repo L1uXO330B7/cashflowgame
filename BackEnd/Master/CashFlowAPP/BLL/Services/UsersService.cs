@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BLL.Services
 {
-    public class UsersService : ServiceBase, IUsersService<CreateUserArgs,int,string,int>
+    public class UsersService : ServiceBase, IUsersService<CreateUserArgs,int?,string,int?>
     {
         public UsersService(CashFlowDbContext _CashFlowDbContext) : base(_CashFlowDbContext)
         {
@@ -32,6 +32,7 @@ namespace BLL.Services
             _CashFlowDbContext.Add(Users);
             _CashFlowDbContext.SaveChanges();//不做銷毀dispose動作，交給 DI 容器處理
 
+
             var Res = new ApiResponse();
             Res.Success = true;
             Res.Code = "0000";
@@ -39,54 +40,52 @@ namespace BLL.Services
 
             return Res;
         }
+        public Task<ApiResponse> Read(ApiRequest<int?> Req)
+        {
+            throw new NotImplementedException();
 
-        public async Task<ApiResponse> Delete(ApiRequest<int> Req)
+        }
+
+        public Task<ApiResponse> Update(ApiRequest<string> Req)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<ApiResponse> Delete(ApiRequest<int?> Req)
         {
             var Res = new ApiResponse();
-           
-            var user = _CashFlowDbContext.Users.Find(Req.Args);
-            if (user == null)
+            if (Req.Args == null)
             {
                 Res.Success = true;
                 Res.Code = "0001";
-                Res.Message = "失敗";
+                Res.Message = "刪除全部";
             }
             else
             {
-                _CashFlowDbContext.Users.Remove(user);
-                _CashFlowDbContext.SaveChanges();
-                Res.Success = true;
-                Res.Code = "0000";
-                Res.Message = "成功刪除";
-            }
+                var user = _CashFlowDbContext.Users.Find(Req.Args);
+                if (user == null)
+                {
+                    Res.Success = true;
+                    Res.Code = "0010";
+                    Res.Message = "失敗";
+                }
+                else
+                {
+                    _CashFlowDbContext.Users.Remove(user);
+                    _CashFlowDbContext.SaveChanges();
+                    Res.Success = true;
+                    Res.Code = "0000";
+                    Res.Message = "成功刪除";
+                }
 
+            }
+           
             return Res;
 
         }
 
-        public Task<ApiResponse> Read(ApiRequest<string> Args)
-        {
-            throw new NotImplementedException();
-        }
 
-        public Task<ApiResponse> ReadAll(ApiRequest<string> Args)
-        {
-            throw new NotImplementedException();
-        }
 
-        public Task<ApiResponse> Update(ApiRequest<string> Args)
-        {
-            throw new NotImplementedException();
-        }
 
-        public Task<ApiResponse> Read(ApiRequest<int> Req)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<ApiResponse> Delete(ApiRequest<string> Req)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
