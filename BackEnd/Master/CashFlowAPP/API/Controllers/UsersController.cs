@@ -8,12 +8,12 @@ namespace API.Controllers
 {
    [Route("api/[controller]/[action]")]
     [ApiController]
-    public class UsersController : ControllerBase, ICrudController<CreateUserArgs, int, int, int>
+    public class UsersController : ControllerBase, ICrudController<CreateUserArgs, int?, UpdateUserArgs, int?>
     {
-        private IUsersService<CreateUserArgs, int?, string, int?> _UserService;
+        private IUsersService<CreateUserArgs, int?, UpdateUserArgs, int?> _UserService;
 
         public UsersController(
-            IUsersService<CreateUserArgs, int?, string, int?> IUsersService
+            IUsersService<CreateUserArgs, int?, UpdateUserArgs, int?> IUsersService
         ) // 建構子注入
         {
             _UserService = IUsersService;
@@ -28,20 +28,22 @@ namespace API.Controllers
         {
             return _UserService.Delete(Req);
         }
-        [HttpPost("Read")]
-        public async Task<ApiResponse> Read([FromBody] ApiRequest<int> Req)
+
+        /// <summary>
+        /// Req.args 如為 null 則查全部喔 !
+        /// </summary>
+        /// <param name="Req"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<ApiResponse> Read([FromBody] ApiRequest<int?> Req)
         {
             return await _UserService.Read(Req);
         }
-        [HttpPost("ReadAll")]
-        public Task<ApiResponse> ReadAll([FromBody] ApiRequest<string> Req)
-        {
-            throw new NotImplementedException();
-        }
+
         [HttpPost]
-        public Task<ApiResponse> Update([FromBody] ApiRequest<string> Req)
+        public async Task<ApiResponse> Update([FromBody] ApiRequest<UpdateUserArgs> Req)
         {
-            throw new NotImplementedException();
+            return await _UserService.Update(Req);
         }
 
         /// <summary>

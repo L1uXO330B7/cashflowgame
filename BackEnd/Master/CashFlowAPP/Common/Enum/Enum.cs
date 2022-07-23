@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace Common.Enum
 {
-    internal class Enum
+    public enum ResponseStatusCode
     {
+      Success = 0000,
+      CannotFind = 2001,
+      ExMessage = 2002,
     }
 }

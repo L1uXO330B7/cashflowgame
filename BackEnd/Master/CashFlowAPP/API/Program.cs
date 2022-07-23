@@ -38,7 +38,7 @@ builder.Services.AddDbContext<CashFlowDbContext>(options =>
        options.UseSqlServer(builder.Configuration.GetConnectionString("OnlineCashFlow")));
 
 // ���U Services
-builder.Services.AddScoped<IUsersService<CreateUserArgs, int?, string, int?>, UsersService>();
+builder.Services.AddScoped<IUsersService<CreateUserArgs, int?, UpdateUserArgs, int?>, UsersService>();
 
 // ���U MiniProfiler
 builder.Services.AddMiniProfiler(options =>

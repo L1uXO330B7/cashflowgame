@@ -37,7 +37,7 @@
         /// <summary>
         /// 結果代碼 ( 0000 = 成功，其餘為錯誤代號 )
         /// </summary>
-        public string? Code { get; set; }
+        public int? Code { get; set; }
         /// <summary>
         /// 訊息
         /// </summary>

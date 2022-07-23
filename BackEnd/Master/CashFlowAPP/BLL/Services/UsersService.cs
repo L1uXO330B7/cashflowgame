@@ -1,15 +1,12 @@
 ﻿using BLL.IServices;
 using Common.Model;
 using DPL.EF;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Common.Enum;
+
 
 namespace BLL.Services
 {
-    public class UsersService : ServiceBase, IUsersService<CreateUserArgs, int?, string, int?>
+    public class UsersService : ServiceBase, IUsersService<CreateUserArgs, int?, UpdateUserArgs, int?>
     {
         public UsersService(CashFlowDbContext _CashFlowDbContext) : base(_CashFlowDbContext)
         {
@@ -23,19 +20,19 @@ namespace BLL.Services
 
         public async Task<ApiResponse> Create(ApiRequest<CreateUserArgs> Req)
         {
-            User Users = new User();
-            Users.Email = Req.Args.Email;
-            Users.Password = Req.Args.Password;
-            Users.Name = Req.Args.Name;
-            Users.Status = Req.Args.Status;
-            Users.RoleId = Req.Args.RoleId;
-            _CashFlowDbContext.Add(Users);
+            User User = new User();
+            User.Email = Req.Args.Email;
+            User.Password = Req.Args.Password;
+            User.Name = Req.Args.Name;
+            User.Status = Req.Args.Status;
+            User.RoleId = Req.Args.RoleId;
+            _CashFlowDbContext.Add(User);
             _CashFlowDbContext.SaveChanges();//不做銷毀dispose動作，交給 DI 容器處理
 
 
             var Res = new ApiResponse();
             Res.Success = true;
-            Res.Code = "0000";
+            Res.Code = (int)ResponseStatusCode.Success;
             Res.Message = "成功";
 
             return Res;
@@ -46,7 +43,7 @@ namespace BLL.Services
             if (Req.Args == null)
             {
                 Res.Success = true;
-                Res.Code = "0000";
+                Res.Code = (int)ResponseStatusCode.Success;
                 Res.Message = "成功";
                 Res.Data = _CashFlowDbContext.Users.ToList();
             }
@@ -56,14 +53,14 @@ namespace BLL.Services
                 if (User == null)
                 {
                     Res.Success = true;
-                    Res.Code = "0010";
+                    Res.Code = (int)ResponseStatusCode.CannotFind;
                     Res.Message = "無此用戶";
                 }
                 else
                 {
                     Res.Data = User;
                     Res.Success = true;
-                    Res.Code = "0000";
+                    Res.Code = (int)ResponseStatusCode.Success;
                     Res.Message = "成功讀取";
                 }
             }
@@ -71,7 +68,7 @@ namespace BLL.Services
         }
 
 
-        public async Task<ApiResponse> Update(ApiRequest<string> Req)
+        public async Task<ApiResponse> Update(ApiRequest<UpdateUserArgs> Req)
         {
             var Res = new ApiResponse();
 
@@ -81,23 +78,31 @@ namespace BLL.Services
                 if (User == null)
                 {
                     Res.Success = true;
-                    Res.Code = "0010";
+                    Res.Code = (int)ResponseStatusCode.CannotFind;
                     Res.Message = "無此用戶";
                 }
                 else
                 {
+                    User.Email = Req.Args.Email;
+                    User.Password = Req.Args.Password;
+                    User.Name = Req.Args.Name;
+                    User.Status = Req.Args.Status;
+                    User.RoleId = Req.Args.RoleId;
+                    _CashFlowDbContext.SaveChanges();
+
+
                     Res.Data = User;
                     Res.Success = true;
-                    Res.Code = "0000";
-                    Res.Message = "成功讀取";
-
-
-
+                    Res.Code = (int)ResponseStatusCode.Success;
+                    Res.Message = "成功更改";
                 }
             }
             catch (Exception ex) 
-            { 
-                throw;
+            {
+                Res.Data = ex;
+                Res.Success = false;
+                Res.Code =(int)ResponseStatusCode.ExMessage;
+                Res.Message = "伺服器忙碌中";
             }
 
             return Res;
@@ -109,7 +114,7 @@ namespace BLL.Services
             if (Req.Args == null)
             {
                 Res.Success = true;
-                Res.Code = "0001";
+                Res.Code = (int)ResponseStatusCode.Success; 
                 Res.Message = "刪除全部";
             }
             else
@@ -118,7 +123,7 @@ namespace BLL.Services
                 if (user == null)
                 {
                     Res.Success = true;
-                    Res.Code = "0010";
+                    Res.Code = (int)ResponseStatusCode.CannotFind;
                     Res.Message = "無此用戶";
                 }
                 else
@@ -126,7 +131,7 @@ namespace BLL.Services
                     _CashFlowDbContext.Users.Remove(user);
                     _CashFlowDbContext.SaveChanges();
                     Res.Success = true;
-                    Res.Code = "0000";
+                    Res.Code = (int)ResponseStatusCode.Success;
                     Res.Message = "成功刪除";
                 }
 
