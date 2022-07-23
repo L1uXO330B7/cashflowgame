@@ -11,4 +11,8 @@
     <ProjectReference Include="..\DPL\DPL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\ClientSide\" />
+  </ItemGroup>
+
 </Project>

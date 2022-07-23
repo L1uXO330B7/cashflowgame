@@ -1,6 +1,6 @@
 using API.Filter;
 using BLL.IServices;
-using BLL.Services;
+using BLL.Services.AdminSide;
 using Common.Model;
 using DPL.EF;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +9,7 @@ using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ���U AOP Filters 嗨你好 我很好
+// 註冊 AOP Filters
 builder.Services.AddMvc(config =>
 {
     config.Filters.Add(new ExceptionFilter());
@@ -33,14 +33,14 @@ builder.Services.AddSwaggerGen(c =>
     );
 });
 
-// ���U DbContext
+// 註冊 DbContext
 builder.Services.AddDbContext<CashFlowDbContext>(options =>
        options.UseSqlServer(builder.Configuration.GetConnectionString("OnlineCashFlow")));
 
-// ���U Services
+// 註冊 Services
 builder.Services.AddScoped<IUsersService<CreateUserArgs, int?, UpdateUserArgs, int?>, UsersService>();
 
-// ���U MiniProfiler
+// 註冊 MiniProfiler
 builder.Services.AddMiniProfiler(options =>
 {
     options.RouteBasePath = "/profiler";

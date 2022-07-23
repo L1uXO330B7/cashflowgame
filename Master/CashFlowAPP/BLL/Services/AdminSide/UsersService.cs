@@ -4,7 +4,7 @@ using DPL.EF;
 using Common.Enum;
 
 
-namespace BLL.Services
+namespace BLL.Services.AdminSide
 {
     public class UsersService : ServiceBase, IUsersService<CreateUserArgs, int?, UpdateUserArgs, int?>
     {
@@ -97,11 +97,11 @@ namespace BLL.Services
                     Res.Message = "成功更改";
                 }
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 Res.Data = ex;
                 Res.Success = false;
-                Res.Code =(int)ResponseStatusCode.ExMessage;
+                Res.Code = (int)ResponseStatusCode.ExMessage;
                 Res.Message = "伺服器忙碌中";
             }
 
@@ -114,7 +114,7 @@ namespace BLL.Services
             if (Req.Args == null)
             {
                 Res.Success = true;
-                Res.Code = (int)ResponseStatusCode.Success; 
+                Res.Code = (int)ResponseStatusCode.Success;
                 Res.Message = "刪除全部";
             }
             else

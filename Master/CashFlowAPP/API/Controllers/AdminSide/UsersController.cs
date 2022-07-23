@@ -4,9 +4,9 @@ using BLL.IServices;
 using StackExchange.Profiling;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace API.Controllers
+namespace API.Controllers.AdminSide
 {
-   [Route("api/[controller]/[action]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class UsersController : ControllerBase, ICrudController<CreateUserArgs, int?, UpdateUserArgs, int?>
     {
@@ -45,23 +45,6 @@ namespace API.Controllers
         {
             return await _UserService.Update(Req);
         }
-
-        /// <summary>
-        /// 獲取 MiniProfiler HTML 片段
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        [Route("GetMiniProfilerScript")]
-        public IActionResult GetMiniProfilerScript()
-        {
-            // https://stackoverflow.com/questions/57489830/how-to-return-javascript-from-controller
-            var Script = MiniProfiler.Current.RenderIncludes(HttpContext);
-            var JavaScriptResult = new ContentResult();
-            JavaScriptResult.Content = Script.ToString();
-            JavaScriptResult.ContentType = "application/javascript";
-            return JavaScriptResult;
-        }
-
     }
 }
 
