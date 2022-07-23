@@ -8,7 +8,7 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase, ICrudController<CreateUserArgs, string, int, int>
+    public class UsersController : ControllerBase, ICrudController<CreateUserArgs, int, int, int>
     {
         private IUsersService<CreateUserArgs, int, string, int> _UserService;
 
@@ -32,9 +32,9 @@ namespace API.Controllers
             return await _UserService.Delete(Req);
         }
         [HttpPost("Read")]
-        public Task<ApiResponse> Read([FromBody] ApiRequest<string> Req)
+        public async Task<ApiResponse> Read([FromBody] ApiRequest<int> Req)
         {
-            throw new NotImplementedException();
+            return await _UserService.Read(Req);
         }
         [HttpPost("ReadAll")]
         public Task<ApiResponse> ReadAll([FromBody] ApiRequest<string> Req)
@@ -55,8 +55,12 @@ namespace API.Controllers
         [Route("GetMiniProfilerScript")]
         public IActionResult GetMiniProfilerScript()
         {
-            var html = MiniProfiler.Current.RenderIncludes(HttpContext);
-            return Ok(html.Value);
+            // https://stackoverflow.com/questions/57489830/how-to-return-javascript-from-controller
+            var Script = MiniProfiler.Current.RenderIncludes(HttpContext);
+            var JavaScriptResult = new ContentResult();
+            JavaScriptResult.Content = Script.ToString();
+            JavaScriptResult.ContentType = "application/javascript";
+            return JavaScriptResult;
         }
     }
 }

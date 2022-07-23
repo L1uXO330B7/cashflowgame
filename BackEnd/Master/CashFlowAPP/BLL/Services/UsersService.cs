@@ -64,29 +64,15 @@ namespace BLL.Services
 
         }
 
-        public Task<ApiResponse> Read(ApiRequest<string> Args)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<ApiResponse> ReadAll(ApiRequest<string> Args)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<ApiResponse> Update(ApiRequest<string> Args)
         {
             throw new NotImplementedException();
         }
 
-        public Task<ApiResponse> Read(ApiRequest<int> Req)
+        public async Task<ApiResponse> Read(ApiRequest<int> Req)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<ApiResponse> Delete(ApiRequest<string> Req)
-        {
-            throw new NotImplementedException();
+            var Res = new ApiResponse();
+            return Res;
         }
     }
 }

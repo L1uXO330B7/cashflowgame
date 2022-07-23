@@ -1,0 +1,120 @@
+<!-- HTML for static distribution bundle build -->
+
+<script async="async" id="mini-profiler" src="/profiler/includes.min.js?v=4.2.22+4563a9e1ab" data-version="4.2.22+4563a9e1ab" data-path="/profiler/" data-current-id="2eb2ed11-4d4c-44a8-9f85-e6b67ad0634d" data-ids="3e417a54-2a9b-42df-93ff-593bcc5d8b5f,64222177-cc52-44f1-a795-ff243c79b543,f4f8680d-42d4-4013-957f-b08f0e86530b,01300e93-3ce4-4670-8e06-2e2230b68a61,a1860a1d-fe2e-4253-a1f3-da63b87fb26b,2d93d28e-032e-446a-9d29-f66a527b3332,055f2da5-0f2c-48f0-ac4f-1f1149c5ddd3,4a8fd1ec-30c4-487c-bbe9-519c6d1518ed,2eb2ed11-4d4c-44a8-9f85-e6b67ad0634d" data-position="Left" " data-scheme="Auto" data-authorized="true" data-max-traces="15" data-toggle-shortcut="Alt+P" data-trivial-milliseconds="2.0" data-ignored-duplicate-execute-types="Open,OpenAsync,Close,CloseAsync"></script>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>%(DocumentTitle)</title>
+    <link rel="stylesheet" type="text/css" href="./swagger-ui.css">
+    <link rel="icon" type="image/png" href="./favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="./favicon-16x16.png" sizes="16x16" />
+    <style>
+
+        html {
+            box-sizing: border-box;
+            overflow: -moz-scrollbars-vertical;
+            overflow-y: scroll;
+        }
+
+        *,
+        *:before,
+        *:after {
+            box-sizing: inherit;
+        }
+
+        body {
+            margin: 0;
+            background: #fafafa;
+        }
+    </style>
+    %(HeadContent)
+</head>
+
+<body>
+    <div id="swagger-ui"></div>
+
+    <!-- Workaround for https://github.com/swagger-api/swagger-editor/issues/1371 -->
+    <script>
+        if (window.navigator.userAgent.indexOf("Edge") > -1) {
+            console.log("Removing native Edge fetch in favor of swagger-ui's polyfill")
+            window.fetch = undefined;
+        }
+    </script>
+
+    <script src="./swagger-ui-bundle.js"></script>
+    <script src="./swagger-ui-standalone-preset.js"></script>
+    <script>
+        /* Source: https://gist.github.com/lamberta/3768814
+         * Parse a string function definition and return a function object. Does not use eval.
+         * @param {string} str
+         * @return {function}
+         *
+         * Example:
+         *  var f = function (x, y) { return x * y; };
+         *  var g = parseFunction(f.toString());
+         *  g(33, 3); //=> 99
+         */
+        function parseFunction(str) {
+            if (!str) return void (0);
+
+            var fn_body_idx = str.indexOf('{'),
+                fn_body = str.substring(fn_body_idx + 1, str.lastIndexOf('}')),
+                fn_declare = str.substring(0, fn_body_idx),
+                fn_params = fn_declare.substring(fn_declare.indexOf('(') + 1, fn_declare.lastIndexOf(')')),
+                args = fn_params.split(',');
+
+            args.push(fn_body);
+
+            function Fn() {
+                return Function.apply(this, args);
+            }
+            Fn.prototype = Function.prototype;
+
+            return new Fn();
+        }
+
+        window.onload = function () {
+            var configObject = JSON.parse('%(ConfigObject)');
+            var oauthConfigObject = JSON.parse('%(OAuthConfigObject)');
+
+            // Workaround for https://github.com/swagger-api/swagger-ui/issues/5945
+            configObject.urls.forEach(function (item) {
+                if (item.url.startsWith("http") || item.url.startsWith("/")) return;
+                item.url = window.location.href.replace("index.html", item.url).split('#')[0];
+            });
+
+            // If validatorUrl is not explicitly provided, disable the feature by setting to null
+            if (!configObject.hasOwnProperty("validatorUrl"))
+                configObject.validatorUrl = null
+
+            // If oauth2RedirectUrl isn't specified, use the built-in default
+            if (!configObject.hasOwnProperty("oauth2RedirectUrl"))
+                configObject.oauth2RedirectUrl = (new URL("oauth2-redirect.html", window.location.href)).href;
+
+            // Apply mandatory parameters
+            configObject.dom_id = "#swagger-ui";
+            configObject.presets = [SwaggerUIBundle.presets.apis, SwaggerUIStandalonePreset];
+            configObject.layout = "StandaloneLayout";
+
+            // Parse and add interceptor functions
+            var interceptors = JSON.parse('%(Interceptors)');
+            if (interceptors.RequestInterceptorFunction)
+                configObject.requestInterceptor = parseFunction(interceptors.RequestInterceptorFunction);
+            if (interceptors.ResponseInterceptorFunction)
+                configObject.responseInterceptor = parseFunction(interceptors.ResponseInterceptorFunction);
+
+            // Begin Swagger UI call region
+
+            const ui = SwaggerUIBundle(configObject);
+
+            ui.initOAuth(oauthConfigObject);
+
+            // End Swagger UI call region
+
+            window.ui = ui
+        }
+    </script>
+</body>
+</html>
