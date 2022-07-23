@@ -40,15 +40,56 @@ namespace BLL.Services
 
             return Res;
         }
-        public Task<ApiResponse> Read(ApiRequest<int?> Req)
+        public async Task<ApiResponse> Read(ApiRequest<int?> Req)
         {
-            throw new NotImplementedException();
-
+          var Res = new ApiResponse();
+            if (Req.Args == null)
+            {
+                Res.Success = true;
+                Res.Code = "0000";
+                Res.Message = "成功";
+                Res.Data = _CashFlowDbContext.Users.ToList();
+            }
+            else
+            {
+                var User = _CashFlowDbContext.Users.Find(Req.Args);
+                if (User == null)
+                {
+                    Res.Success = true;
+                    Res.Code = "0010";
+                    Res.Message = "無此用戶";
+                }
+                else
+                {
+                    Res.Data = User;
+                    Res.Success = true;
+                    Res.Code = "0000";
+                    Res.Message = "成功讀取";
+                }
+            }
+            return Res; 
         }
 
-        public Task<ApiResponse> Update(ApiRequest<string> Req)
+
+        public async Task<ApiResponse> Update(ApiRequest<string> Req)
         {
-            throw new NotImplementedException();
+            var Res = new ApiResponse();
+
+                var User = _CashFlowDbContext.Users.Find(Req.Args.Id);
+                if (User == null)
+                {
+                    Res.Success = true;
+                    Res.Code = "0010";
+                    Res.Message = "無此用戶";
+                }
+                else
+                {
+                    Res.Data = User;
+                    Res.Success = true;
+                    Res.Code = "0000";
+                    Res.Message = "成功讀取";
+                }        
+            return Res;
         }
 
         public async Task<ApiResponse> Delete(ApiRequest<int?> Req)
@@ -67,7 +108,7 @@ namespace BLL.Services
                 {
                     Res.Success = true;
                     Res.Code = "0010";
-                    Res.Message = "失敗";
+                    Res.Message = "無此用戶";
                 }
                 else
                 {
