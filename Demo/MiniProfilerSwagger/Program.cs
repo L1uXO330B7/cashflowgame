@@ -2,7 +2,6 @@
 using Microsoft.OpenApi.Models;
 using MiniProfilerSwagger.EF;
 using MiniProfilerSwagger.Filter;
-using StackExchange.Profiling.Storage;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);

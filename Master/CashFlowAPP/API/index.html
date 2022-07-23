@@ -1,6 +1,6 @@
 <!-- HTML for static distribution bundle build -->
 
-<script async="async" id="mini-profiler" src="/profiler/includes.min.js?v=4.2.22+4563a9e1ab" data-version="4.2.22+4563a9e1ab" data-path="/profiler/" data-current-id="2eb2ed11-4d4c-44a8-9f85-e6b67ad0634d" data-ids="3e417a54-2a9b-42df-93ff-593bcc5d8b5f,64222177-cc52-44f1-a795-ff243c79b543,f4f8680d-42d4-4013-957f-b08f0e86530b,01300e93-3ce4-4670-8e06-2e2230b68a61,a1860a1d-fe2e-4253-a1f3-da63b87fb26b,2d93d28e-032e-446a-9d29-f66a527b3332,055f2da5-0f2c-48f0-ac4f-1f1149c5ddd3,4a8fd1ec-30c4-487c-bbe9-519c6d1518ed,2eb2ed11-4d4c-44a8-9f85-e6b67ad0634d" data-position="Left" " data-scheme="Auto" data-authorized="true" data-max-traces="15" data-toggle-shortcut="Alt+P" data-trivial-milliseconds="2.0" data-ignored-duplicate-execute-types="Open,OpenAsync,Close,CloseAsync"></script>
+<script async="async" id="mini-profiler" src="/profiler/includes.min.js?v=4.2.22+4563a9e1ab" data-version="4.2.22+4563a9e1ab" data-path="/profiler/" data-current-id="4d4c8b6e-0068-44e7-ad26-fe774ca08fe3" data-ids="4d4c8b6e-0068-44e7-ad26-fe774ca08fe3" data-position="Left" " data-scheme="Auto" data-authorized="true" data-max-traces="15" data-toggle-shortcut="Alt+P" data-trivial-milliseconds="2.0" data-ignored-duplicate-execute-types="Open,OpenAsync,Close,CloseAsync"></script>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -22,12 +22,30 @@
         *:before,
         *:after {
             box-sizing: inherit;
+            color:white;
         }
 
         body {
             margin: 0;
-            background: #fafafa;
+            background: black;
         }
+
+        .swagger-ui .opblock .opblock-section-header {
+            background: hsla(0,0%,100%,.2);
+        }
+
+        .swagger-ui .btn {
+            color: white;
+        }
+
+        .swagger-ui .opblock .opblock-summary-description {
+            color: white;
+        }
+
+        .swagger-ui .opblock-description-wrapper p, .swagger-ui .opblock-external-docs-wrapper p, .swagger-ui .opblock-title_normal p {
+            color: white;
+        }
+
     </style>
     %(HeadContent)
 </head>

@@ -1,4 +1,5 @@
 ﻿using DPL.EF;
+using System.Text;
 
 namespace BLL.Services
 {
