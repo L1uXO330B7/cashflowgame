@@ -9,7 +9,7 @@ using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// µù¥U AOP Filters
+// ï¿½ï¿½ï¿½U AOP Filters
 builder.Services.AddMvc(config =>
 {
     config.Filters.Add(new ExceptionFilter());
@@ -24,23 +24,23 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc(
-                    // §ñÃö SwaggerDocument ªº URL ¦ì¸m¡C
+                    // ï¿½ï¿½ï¿½ï¿½ SwaggerDocument ï¿½ï¿½ URL ï¿½ï¿½mï¿½C
                     name: "v1",
-                    // ¬O¥Î©ó SwaggerDocument ª©¥»¸ê°TªºÅã¥Ü ( ¤º®e«D¥²¶ñ )¡C
+                    // ï¿½Oï¿½Î©ï¿½ SwaggerDocument ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Tï¿½ï¿½ï¿½ï¿½ï¿½ ( ï¿½ï¿½ï¿½eï¿½Dï¿½ï¿½ï¿½ï¿½ )ï¿½C
                     info: new OpenApiInfo
                     {
                     }
     );
 });
 
-// µù¥U DbContext
+// ï¿½ï¿½ï¿½U DbContext
 builder.Services.AddDbContext<CashFlowDbContext>(options =>
        options.UseSqlServer(builder.Configuration.GetConnectionString("OnlineCashFlow")));
 
-// µù¥U Services
-builder.Services.AddScoped<IUsersService<CreateUserArgs, int, string, int>, UsersService>();
+// ï¿½ï¿½ï¿½U Services
+builder.Services.AddScoped<IUsersService<CreateUserArgs, int?, string, int?>, UsersService>();
 
-// µù¥U MiniProfiler
+// ï¿½ï¿½ï¿½U MiniProfiler
 builder.Services.AddMiniProfiler(options =>
 {
     options.RouteBasePath = "/profiler";
@@ -48,23 +48,23 @@ builder.Services.AddMiniProfiler(options =>
     options.ColorScheme = StackExchange.Profiling.ColorScheme.Auto;
     options.EnableServerTimingHeader = true;
 })
-.AddEntityFramework(); // ºÊ±± EntityFrameworkCore ¥Í¦¨ªº SQL
+.AddEntityFramework(); // ï¿½Ê±ï¿½ EntityFrameworkCore ï¿½Í¦ï¿½ï¿½ï¿½ SQL
 
 var app = builder.Build();
 
-// ¸Ó¤èªk¥²¶·¦bapp.UseEndpoints¥H«e
+// ï¿½Ó¤ï¿½kï¿½ï¿½ï¿½ï¿½ï¿½bapp.UseEndpointsï¿½Hï¿½e
 app.UseMiniProfiler();
 
 // Configure the HTTP request pipeline.
-// if (app.Environment.IsDevelopment()) // ¶}µoªÌ¼Ò¦¡
+// if (app.Environment.IsDevelopment()) // ï¿½}ï¿½oï¿½Ì¼Ò¦ï¿½
 // {
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint(
-        // »Ý°t¦X SwaggerDoc ªº name¡C "/swagger/{SwaggerDoc name}/swagger.json"
+        // ï¿½Ý°tï¿½X SwaggerDoc ï¿½ï¿½ nameï¿½C "/swagger/{SwaggerDoc name}/swagger.json"
         url: "/swagger/v1/swagger.json",
-        // ©ó Swagger UI ¥k¤W¨¤¿ï¾Ü¤£¦Pª©¥»ªº SwaggerDocument Åã¥Ü¦WºÙ¨Ï¥Î¡C
+        // ï¿½ï¿½ Swagger UI ï¿½kï¿½Wï¿½ï¿½ï¿½ï¿½Ü¤ï¿½ï¿½Pï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ SwaggerDocument ï¿½ï¿½Ü¦Wï¿½Ù¨Ï¥Î¡C
         name: "RESTful API v1.0.0"
     );
 

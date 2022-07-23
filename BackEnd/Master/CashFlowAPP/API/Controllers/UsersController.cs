@@ -6,30 +6,27 @@ using StackExchange.Profiling;
 
 namespace API.Controllers
 {
-    [Route("api/[controller]")]
+   [Route("api/[controller]/[action]")]
     [ApiController]
     public class UsersController : ControllerBase, ICrudController<CreateUserArgs, int, int, int>
     {
-        private IUsersService<CreateUserArgs, int, string, int> _UserService;
+        private IUsersService<CreateUserArgs, int?, string, int?> _UserService;
 
         public UsersController(
-            IUsersService<CreateUserArgs, int, string,int> IUsersService
+            IUsersService<CreateUserArgs, int?, string, int?> IUsersService
         ) // 建構子注入
         {
             _UserService = IUsersService;
         }
-
-        [HttpPost("Create")]
-        public async Task<ApiResponse> Create([FromBody] ApiRequest<CreateUserArgs> Req)
+        [HttpPost]
+        public Task<ApiResponse> Create([FromBody] ApiRequest<CreateUserArgs> Req)
         {
-           return await _UserService.Create(Req);
+            return _UserService.Create(Req);
         }
-        [HttpPost("Delete")]
-        public async Task<ApiResponse> Delete([FromBody] ApiRequest<int> Req)
+        [HttpPost]
+        public Task<ApiResponse> Delete([FromBody] ApiRequest<int?> Req)
         {
-            var New = new ApiRequest<string>(); //轉型多此一舉
-            New.Args = Req.Args.ToString();
-            return await _UserService.Delete(Req);
+            return _UserService.Delete(Req);
         }
         [HttpPost("Read")]
         public async Task<ApiResponse> Read([FromBody] ApiRequest<int> Req)
@@ -41,8 +38,8 @@ namespace API.Controllers
         {
             throw new NotImplementedException();
         }
-        [HttpPost("Update")]
-        public Task<ApiResponse> Update([FromBody] ApiRequest<int> Req)
+        [HttpPost]
+        public Task<ApiResponse> Update([FromBody] ApiRequest<string> Req)
         {
             throw new NotImplementedException();
         }
@@ -62,5 +59,8 @@ namespace API.Controllers
             JavaScriptResult.ContentType = "application/javascript";
             return JavaScriptResult;
         }
+
     }
 }
+
+
