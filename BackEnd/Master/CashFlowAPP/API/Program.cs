@@ -9,7 +9,7 @@ using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ���U AOP Filters 嗨你好
+// ���U AOP Filters 嗨你好 我很好
 builder.Services.AddMvc(config =>
 {
     config.Filters.Add(new ExceptionFilter());
