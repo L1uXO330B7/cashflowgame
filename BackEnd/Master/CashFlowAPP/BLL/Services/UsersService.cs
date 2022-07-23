@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BLL.Services
 {
-    public class UsersService : ServiceBase, IUsersService<CreateUserArgs,int?,string,int?>
+    public class UsersService : ServiceBase, IUsersService<CreateUserArgs, int?, string, int?>
     {
         public UsersService(CashFlowDbContext _CashFlowDbContext) : base(_CashFlowDbContext)
         {
@@ -42,7 +42,7 @@ namespace BLL.Services
         }
         public async Task<ApiResponse> Read(ApiRequest<int?> Req)
         {
-          var Res = new ApiResponse();
+            var Res = new ApiResponse();
             if (Req.Args == null)
             {
                 Res.Success = true;
@@ -75,6 +75,8 @@ namespace BLL.Services
         {
             var Res = new ApiResponse();
 
+            try
+            {
                 var User = _CashFlowDbContext.Users.Find(Req.Args.Id);
                 if (User == null)
                 {
@@ -88,7 +90,16 @@ namespace BLL.Services
                     Res.Success = true;
                     Res.Code = "0000";
                     Res.Message = "成功讀取";
+
+
+
                 }
+            }
+            catch (Exception ex) 
+            { 
+                throw;
+            }
+
             return Res;
         }
 
