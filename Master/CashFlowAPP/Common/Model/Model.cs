@@ -55,4 +55,14 @@
         /// </summary>
         public int? TotalDataCount { get; set; }
     }
+    public class SMTP
+    {
+            public string Port{get;set;}
+            public string IsSSL{get;set;}
+            public string AdminMails{get;set;}
+            public string Server{get;set;}
+            public string Account{get;set;}
+            public string Password{get;set;}
+            public string SenderMail{get;set;}
+    }
 }

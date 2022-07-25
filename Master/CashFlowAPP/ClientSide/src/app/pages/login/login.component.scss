@@ -1,0 +1,50 @@
+.loginCard {
+  border-radius: 5px;
+  width: 50%;
+  height: 400px;
+  background: rgba(255, 255, 255, 1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  button {
+    width: 100px;
+  }
+}
+.info {
+  width: 50%;
+}
+.bar {
+  justify-content: space-between;
+  padding: 0px 50px;
+  display: flex;
+  align-items: center;
+  border-radius: 15px;
+  max-width: 70%;
+  height: 250px;
+  background: rgba(0, 0, 0, 0.7);
+  transition: all 1s;
+}
+.bg {
+  display: flex;
+  align-items: center;
+  background: url(https://images.unsplash.com/photo-1631730486784-5456119f69ae?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=775&q=80);
+  height: 100vh;
+  background-size: cover;
+}
+@media (max-width: 968px) {
+  .bar {
+    flex-direction: column;
+    justify-content: center;
+    width: 300px;
+    height: 580px;
+    padding: 0px;
+  }
+  .info {
+    margin-top: 50px;
+    width: 100%;
+  }
+  .loginCard {
+    width: 350px;
+    height: 300px;
+  }
+}

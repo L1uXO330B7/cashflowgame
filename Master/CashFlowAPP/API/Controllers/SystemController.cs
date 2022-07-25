@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BLL.Services;
+using Common.Model;
+using DPL.EF;
+using Microsoft.AspNetCore.Mvc;
 using StackExchange.Profiling;
 using System.IO;
 using System.Text;
@@ -7,11 +10,38 @@ namespace API.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
+
     public class SystemController : Controller
     {
-        public SystemController()
+        public CashFlowDbContext _CashFlowDbContext;
+        public IConfiguration _Configuration;
+        public SystemController(
+            CashFlowDbContext CashFlowDbContext,
+            IConfiguration Configuration
+        )
         {
+            _Configuration = Configuration;
+            _CashFlowDbContext = CashFlowDbContext;
         }
+
+        [HttpGet]
+        public async Task<ApiResponse> TestSendMail([FromQuery]string email)
+        {
+            var smtp = new SMTP();
+            smtp.Port = _Configuration["SMTP:Port"];
+            smtp.IsSSL = _Configuration["SMTP:IsSSL"];
+            smtp.AdminMails = _Configuration["SMTP:AdminMails"];
+            smtp.Server = _Configuration["SMTP:Server"];
+            smtp.Account = _Configuration["SMTP:Account"];
+            smtp.Password = _Configuration["SMTP:Password"];
+            smtp.SenderMail = _Configuration["SMTP:SenderMail"];
+
+
+
+            return await new ServiceBase(_CashFlowDbContext).SendMail(smtp,email);
+        }
+
+
 
         /// <summary>
         /// 獲取 MiniProfiler HTML 片段

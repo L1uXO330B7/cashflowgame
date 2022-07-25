@@ -1,0 +1,62 @@
+<div class="container-fluid bg">
+  <div class="container bar" #bar>
+    <form class="loginCard px-5" [style]="Card" #card>
+      <label for="account" class="h3">Account</label>
+      <input
+        type="email"
+        class="form-control mt-2"
+        id="account"
+        placeholder="請輸入電子信箱"
+      />
+      <label for="account" class="h3 mt-3">Password</label>
+      <input
+        type="text"
+        class="form-control mt-2"
+        id="account"
+        placeholder="請輸入密碼"
+      />
+      <input
+       *ngIf="change"
+        type="text"
+        class="form-control mt-2"
+        id="account"
+        placeholder="請確認密碼"
+      />
+
+      <button
+        type="submit"
+        class="btn btn-primary mt-2 mt-md-5 align-self-end"
+        *ngIf="!change"
+      >
+        登入
+      </button>
+      <button
+      *ngIf="change"
+      type="submit"
+        class="btn btn-primary mt-2 mt-md-5 align-self-end"
+      >
+        註冊
+      </button>
+    </form>
+    <div class="info" [style]="Info">
+      <h4 class="text-light"  *ngIf="!change">還沒註冊帳號嗎?</h4>
+      <h4 class="text-light"  *ngIf="change">已經有帳號了嗎?</h4>
+      <button
+        (click)="changeLogin()"
+        type="button"
+        class="btn btn-outline-primary mt-4"
+        *ngIf="!change"
+      >
+        註冊
+      </button>
+      <button
+        (click)="changeLogin()"
+        type="button"
+        class="btn btn-outline-primary mt-4"
+        *ngIf="change"
+      >
+        登入
+      </button>
+    </div>
+  </div>
+</div>
