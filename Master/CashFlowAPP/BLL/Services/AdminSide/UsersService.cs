@@ -8,10 +8,12 @@ namespace BLL.Services.AdminSide
 {
     public class UsersService : ServiceBase, IUsersService<CreateUserArgs, int?, UpdateUserArgs, int?>
     {
-        public UsersService(CashFlowDbContext _CashFlowDbContext) : base(_CashFlowDbContext)
+        private readonly CashFlowDbContext _CashFlowDbContext;
+        public UsersService(CashFlowDbContext cashFlowDbContext)
         {
-
+            _CashFlowDbContext = cashFlowDbContext;
         }
+
 
         public async Task<ApiResponse> Create(ApiRequest<CreateUserArgs> Req)
         {

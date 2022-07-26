@@ -1,4 +1,6 @@
-﻿namespace Common.Model
+﻿using DPL.EF;
+
+namespace Common.Model
 {
     /// <summary>
     /// API呼叫時，統一要求
@@ -94,9 +96,26 @@
 
     public class Mail
     {
+        /// <summary>
+        /// 寄信對象
+        /// </summary>
         public string SendToEmail { get; set; }
+        /// <summary>
+        /// 寄信對象姓名
+        /// </summary>
         public string SendToName { get; set; }
+        /// <summary>
+        /// 信件標題
+        /// </summary>
         public string Title { get; set; }
+        /// <summary>
+        /// 信件內容
+        /// </summary>
         public string Content { get; set; }
+    }
+    public class UserSignUpDTO:User
+    {
+        public string ValidateCode { get; set; }
+        public string JWTcode { get; set; }
     }
 }

@@ -34,7 +34,7 @@ namespace API.Controllers
         [HttpPost]
         public async Task<ApiResponse> TestSendMail([FromBody] Mail mail)
         {
-            return await new ServiceBase(_CashFlowDbContext).SendMail(_SmtpConfig, mail);
+            return await new ServiceBase().SendMail(_SmtpConfig, mail);
         }
 
         /// <summary>

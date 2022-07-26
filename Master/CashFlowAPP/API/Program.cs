@@ -1,6 +1,7 @@
 using API.Filter;
 using BLL.IServices;
 using BLL.Services.AdminSide;
+using BLL.Services.ClientSide;
 using Common.Model;
 using DPL.EF;
 using Microsoft.EntityFrameworkCore;
@@ -44,6 +45,7 @@ builder.Services.AddDbContext<CashFlowDbContext>(options =>
 
 // 註冊 Services
 builder.Services.AddScoped<IUsersService<CreateUserArgs, int?, UpdateUserArgs, int?>, UsersService>();
+builder.Services.AddScoped<IClientSideService, ClientSideService>();
 
 // 註冊 MiniProfiler 如果更改設定需產生 MiniProfiler Script 貼於於 Swagger Index 內
 builder.Services.AddMiniProfiler(options =>

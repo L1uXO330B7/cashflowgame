@@ -23,5 +23,21 @@ namespace Common.Enum
         /// 例外
         /// </summary>
         ExMessage = 2002,
+        /// <summary>
+        /// 驗證碼錯誤
+        /// </summary>
+        ValidateFail = 2003,
     }
+    public enum StatusCode
+    {
+        /// <summary>
+        /// 啟用
+        /// </summary>
+        Enable = 1,
+        /// <summary>
+        /// 未啟用
+        /// </summary>
+        Disable = 0,
+    }
+
 }

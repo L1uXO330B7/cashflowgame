@@ -12,10 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\ClientSide\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="jose-jwt" Version="4.0.0" />
     <PackageReference Include="NETCore.MailKit" Version="2.1.0" />
   </ItemGroup>
