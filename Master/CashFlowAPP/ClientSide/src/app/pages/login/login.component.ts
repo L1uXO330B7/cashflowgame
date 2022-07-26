@@ -14,56 +14,52 @@ export class LoginComponent implements OnInit {
   change=false;
   windowWidth=window.innerWidth;
   distance=0;
-  Card= {
-    transition: "all 1s",
-    transform: "",
-  };
-  Info= {
-    transition: "all 1s",
-    transform: "",
-    textAlign: "center",
-  };
+  Card="";
+  Info="";
 
   CardMove() {
-    console.log(this.windowWidth);
+    console.log("windowWidth",this.windowWidth);
+    console.log("change",this.change);
     if (this.windowWidth <= 968) {
       if (this.change) {
-        this.Card.transform = `translateY(10rem) !important`;
+        this.Card = `translateY(10rem) !important`;
       } else {
-        this.Card.transform = `translateX(0em) !important`;
+        this.Card = `translateX(0em) !important`;
       }
     } else {
       if (this.change) {
-        this.Card.transform = `translateX(${this.distance}px) !important`;
+        this.Card = `translateX(${this.distance}px) !important`;
+        console.log(this.Card);
       } else {
-        this.Card.transform = `translateX(0em) !important`;
+        this.Card = `translateX(0px) !important`;
       }
     }
   }
   InfoMove() {
-    console.log(this.distance);
-    console.log(this.windowWidth);
+    console.log("barDOM",this.barDOM);
+    console.log("distance",this.distance);
+    console.log("InfoWidth",this.windowWidth);
     if (this.windowWidth <= 968) {
       if (this.change) {
-        this.Info.transform = `translateY(-20rem) !important`;
+        this.Info = `translateY(-20rem) !important`;
       } else {
-        this.Info.transform = `translateY(0em) !important`;
+        this.Info = `translateY(0em) !important`;
       }
     } else {
       if (this.change) {
-        this.Info.transform = `translateX(-${this.distance}px) !important`;
+        this.Info= `translateX(-${this.distance}px) !important`;
       } else {
-        this.Info.transform = `translateX(0em) !important`;
+        this.Info = `translateX(0em) !important`;
       }
     }
   }
-  @ViewChild('bar', { static: true }) barDOM?: any;
-  @ViewChild('card', { static: true }) cardDOM?: any;
+  @ViewChild('bar', { static: true }) barDOM: any;
+  @ViewChild('card', { static: true }) cardDOM: any;
   changeLogin() {
-
     this.change = !this.change;
     this.distance =
-      this.barDOM?.clientWidth - (this.cardDOM?.clientWidth + 100);
+      this.barDOM.nativeElement.clientWidth - (this.cardDOM.nativeElement.clientWidth + 100);
+      console.log("changeLogin",this.barDOM.nativeElement.clientWidth);
     this.CardMove();
     this.InfoMove();
   }
