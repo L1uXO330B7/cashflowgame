@@ -18,11 +18,13 @@ namespace API.Controllers.AdminSide
         {
             _UserService = IUsersService;
         }
+
         [HttpPost]
         public Task<ApiResponse> Create([FromBody] ApiRequest<CreateUserArgs> Req)
         {
             return _UserService.Create(Req);
         }
+
         [HttpPost]
         public Task<ApiResponse> Delete([FromBody] ApiRequest<int?> Req)
         {

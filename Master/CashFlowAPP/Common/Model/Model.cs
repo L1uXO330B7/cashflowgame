@@ -55,14 +55,48 @@
         /// </summary>
         public int? TotalDataCount { get; set; }
     }
-    public class SMTP
+    public class SmtpConfig
     {
-            public string Port{get;set;}
-            public string IsSSL{get;set;}
-            public string AdminMails{get;set;}
-            public string Server{get;set;}
-            public string Account{get;set;}
-            public string Password{get;set;}
-            public string SenderMail{get;set;}
+        /// <summary>
+        /// 連接埠
+        /// </summary>
+        public string? Port { get; set; }
+        /// <summary>
+        /// 是否使用 SSL
+        /// </summary>
+        public string? IsSSL { get; set; }
+        /// <summary>
+        /// 管理員信箱以逗點分號
+        /// </summary>
+        public string? AdminEmails { get; set; }
+        /// <summary>
+        /// 郵件伺服器網址
+        /// </summary>
+        public string? Server { get; set; }
+        /// <summary>
+        /// 郵件伺服器帳號
+        /// </summary>
+        public string? Account { get; set; }
+        /// <summary>
+        /// 郵件伺服器密碼
+        /// </summary>
+        public string? Password { get; set; }
+        /// <summary>
+        /// 寄件人信箱
+        /// </summary>
+        public string? SenderEmail { get; set; }
+    }
+
+    public class MailBag
+    {
+        public List<Mail>? Mails { get; set; }
+    }
+
+    public class Mail
+    {
+        public string SendToEmail { get; set; }
+        public string SendToName { get; set; }
+        public string Title { get; set; }
+        public string Content { get; set; }
     }
 }

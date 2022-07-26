@@ -3,6 +3,9 @@ using StackExchange.Profiling;
 
 namespace API.Filter
 {
+    /// <summary>
+    /// 全域分析器
+    /// </summary>
     public class MiniProfilerActionFilter : IActionFilter
     {
         public void OnActionExecuting(ActionExecutingContext _ActionExecutingContext)
