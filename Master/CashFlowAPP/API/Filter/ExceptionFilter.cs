@@ -7,6 +7,9 @@ using StackExchange.Profiling;
 
 namespace API.Filter
 {
+    /// <summary>
+    /// 全域例外處理
+    /// </summary>
     public class ExceptionFilter : IAsyncExceptionFilter
     {
         public Task OnExceptionAsync(ExceptionContext _ExceptionContext)
