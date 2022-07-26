@@ -14,35 +14,28 @@ namespace API.Controllers
 
     public class SystemController : Controller
     {
+        public static SmtpConfig _SmtpConfig = new SmtpConfig();
         public CashFlowDbContext _CashFlowDbContext;
-        public IConfiguration _Configuration;
         public SystemController(
             CashFlowDbContext CashFlowDbContext,
             IConfiguration Configuration
         )
         {
-            _Configuration = Configuration;
             _CashFlowDbContext = CashFlowDbContext;
+            _SmtpConfig.Port = Configuration["SMTP:Port"];
+            _SmtpConfig.IsSSL = Configuration["SMTP:IsSSL"];
+            _SmtpConfig.AdminEmails = Configuration["SMTP:AdminEmails"];
+            _SmtpConfig.Server = Configuration["SMTP:Server"];
+            _SmtpConfig.Account = Configuration["SMTP:Account"];
+            _SmtpConfig.Password = Configuration["SMTP:Password"];
+            _SmtpConfig.SenderEmail = Configuration["SMTP:SenderEmail"];
         }
 
-        [HttpGet]
-        public async Task<ApiResponse> TestSendMail([FromQuery]string email)
+        [HttpPost]
+        public async Task<ApiResponse> TestSendMail([FromBody] Mail mail)
         {
-            var smtp = new SMTP();
-            smtp.Port = _Configuration["SMTP:Port"];
-            smtp.IsSSL = _Configuration["SMTP:IsSSL"];
-            smtp.AdminMails = _Configuration["SMTP:AdminMails"];
-            smtp.Server = _Configuration["SMTP:Server"];
-            smtp.Account = _Configuration["SMTP:Account"];
-            smtp.Password = _Configuration["SMTP:Password"];
-            smtp.SenderMail = _Configuration["SMTP:SenderMail"];
-
-
-
-            return await new ServiceBase(_CashFlowDbContext).SendMail(smtp,email);
+            return await new ServiceBase(_CashFlowDbContext).SendMail(_SmtpConfig, mail);
         }
-
-
 
         /// <summary>
         /// 獲取 MiniProfiler HTML 片段
