@@ -1,15 +1,13 @@
 ﻿using Common.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using static Common.Model.ClientSideModel;
 
 namespace BLL.IServices
 {
     public interface IClientSideService
     {
         Task<ApiResponse> UserSignUp(ApiRequest<UserSignUpDTO> Req);
+        Task<ApiResponse> UserLogin(ApiRequest<ClientUserLogin> Req);
+        Task<ApiResponse> GetJwtValidateCode();
 
     }
 }

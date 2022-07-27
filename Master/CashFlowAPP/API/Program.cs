@@ -35,6 +35,37 @@ builder.Services.AddSwaggerGen(c =>
                     }
     );
 
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description =
+        $@"JWT Authorization header 使用 Bearer 格式。\r\n\r\n 
+           請輸入 'Bearer' [空白鍵] 和你的 Token 在輸入框內。\r\n\r\n
+           Example: Bearer 12345abcdef",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            },
+                            Scheme = "oauth2",
+                            Name = "Bearer",
+                            In = ParameterLocation.Header,
+
+                        },
+                        new List<string>()
+                    }
+                });
+
     var FilePath = Path.Combine(AppContext.BaseDirectory, "API.xml");
     c.IncludeXmlComments(FilePath);
 });

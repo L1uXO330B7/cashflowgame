@@ -27,6 +27,10 @@ namespace Common.Enum
         /// 驗證碼錯誤
         /// </summary>
         ValidateFail = 2003,
+        /// <summary>
+        /// 識別值無法重複建立
+        /// </summary>
+        IsCreated = 2004,
     }
     public enum StatusCode
     {

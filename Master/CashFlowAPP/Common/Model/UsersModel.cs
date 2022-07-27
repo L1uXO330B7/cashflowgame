@@ -31,4 +31,5 @@ namespace Common.Model
 
         public int RoleId { get; set; }
     }
+
 }

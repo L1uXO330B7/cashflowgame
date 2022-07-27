@@ -66,5 +66,8 @@ namespace BLL.Services
             Res.Data = JWTcode;
             return Res;
         }
+        
+        
+
     }
 }

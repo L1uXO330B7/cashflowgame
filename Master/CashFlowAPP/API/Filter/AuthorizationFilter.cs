@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using System.Text;
+using static Common.Model.ClientSideModel;
 
 namespace API.Filter
 {
@@ -21,62 +23,37 @@ namespace API.Filter
         /// <param name="_ActionExecutingContext"></param>
         public override void OnActionExecuting(ActionExecutingContext _ActionExecutingContext)
         {
-            //var secret = AppSettingHelper.GetSection("TokenSecret").Value; //加密字串
 
-            //string Authorization = actionContext.HttpContext.Request.Headers["Authorization"];
+            string Authorization = _ActionExecutingContext.HttpContext.Request.Headers["Authorization"];
 
-            //if (Authorization != null && Authorization.StartsWith("Bearer"))
-            //{
-            //    try
-            //    {
-            //        //get service
-            //        var authService = actionContext.HttpContext.RequestServices.GetService<IAuthService>();
-            //        //get client ip 
-            //        var iP = IpHelper.GetClinetIPAddress(actionContext.HttpContext);
+            // 滿足這兩項條件就滿足 OAuth 2.0
+            // https://ithelp.ithome.com.tw/articles/10197166
+            if (Authorization != null && Authorization.StartsWith("Bearer"))
+            {
+                // 取得客戶端 IP 
+                var ClientIp = _ActionExecutingContext.HttpContext.Connection.RemoteIpAddress;
 
-            //        var jwtToken = Authorization.Substring("Bearer ".Length).Trim();
-            //        var jwtObject = Jose.JWT.Decode<JWTPayload>(
-            //                jwtToken,
-            //                Encoding.UTF8.GetBytes(secret),
-            //                JwsAlgorithm.HS256);
+                //  取得 Authorization 後，要用 Trim() 去掉其中的空白，跟 Substring() 去掉其中 Bearer 字串
+                var JwtToken = Authorization.Substring("Bearer ".Length).Trim();
 
-            //        // TODO 驗證是否存在
-            //        //var taskCheckJWTLive = _service.CheckJWTLive(jwtObject.UserId, jwtToken);
-            //        //taskCheckJWTLive.Wait();
-            //        var isLive = true;
+                // 解密
+                var JwtObject = Jose.JWT.Decode<UserInfo>(
+                        JwtToken, Encoding.UTF8.GetBytes("錢董"),
+                        Jose.JwsAlgorithm.HS256);
+                // 確定 Token 生命週期
+                var IsLiving = (JwtObject.TokenCreatedTime
+                    .AddHours(JwtObject.TokenExpiredHours)) > DateTime.Now;
+                if (IsLiving)
+                {   // 在 HTTP 封包塞入 Key:Value
+                    _ActionExecutingContext.HttpContext.Items.Add("UserInfo", JwtObject);
 
-            //        if (isLive)
-            //        {
-            //            //actionContext.HttpContext.Items.Add("jwtPayload", jwtObject);
-            //            //驗權限
-            //            var isRoleResult = authService.CheckAuth(new UserAuthArgs() { FunctionId = this.EnumFunctionId, Ip = iP }, jwtObject).Result;
-            //            var isRole = isRoleResult.Entries;
-
-            //            if (isRole)
-            //                actionContext.HttpContext.Items.Add("jwtPayload", jwtObject);
-            //            else // 沒權限
-            //                actionContext.Result = new CustomForbiddenResult("權限不足");
-            //        }
-            //        else // 過期
-            //            actionContext.Result = new UnauthorizedResult();
-
-
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        actionContext.Result = new UnauthorizedResult();
-            //    }
-            //}
-            //else
-            //{
-            //    // 前台頁面不處理
-            //    if (this.EnumFunctionId != (int)Enum.Functions.none)
-            //    {
-            //        actionContext.Result = new UnauthorizedResult();
-            //    }
-            //}
-
-            //base.OnActionExecuting(_ActionExecutingContext);
+                }
+                else
+                {   // 過期
+                    _ActionExecutingContext.Result = new UnauthorizedResult();
+                }
+            }
         }
+
     }
 }

@@ -1,9 +1,7 @@
 ﻿using BLL.IServices;
-using BLL.Services;
-using BLL.Services.ClientSide;
 using Common.Model;
-using DPL.EF;
 using Microsoft.AspNetCore.Mvc;
+using static Common.Model.ClientSideModel;
 
 namespace API.Controllers.ClientSide
 {
@@ -19,27 +17,23 @@ namespace API.Controllers.ClientSide
       )
         {
             _ClientSideService = ClientSideService;
-            _SmtpConfig.Port = Configuration["SMTP:Port"];
-            _SmtpConfig.IsSSL = Configuration["SMTP:IsSSL"];
-            _SmtpConfig.AdminEmails = Configuration["SMTP:AdminEmails"];
-            _SmtpConfig.Server = Configuration["SMTP:Server"];
-            _SmtpConfig.Account = Configuration["SMTP:Account"];
-            _SmtpConfig.Password = Configuration["SMTP:Password"];
-            _SmtpConfig.SenderEmail = Configuration["SMTP:SenderEmail"];
+            //_SmtpConfig.Port = Configuration["SMTP:Port"];
+            //_SmtpConfig.IsSSL = Configuration["SMTP:IsSSL"];
+            //_SmtpConfig.AdminEmails = Configuration["SMTP:AdminEmails"];
+            //_SmtpConfig.Server = Configuration["SMTP:Server"];
+            //_SmtpConfig.Account = Configuration["SMTP:Account"];
+            //_SmtpConfig.Password = Configuration["SMTP:Password"];
+            //_SmtpConfig.SenderEmail = Configuration["SMTP:SenderEmail"];
         }
         /// <summary>
-        /// 寄送驗證信
+        /// 取得數字驗證碼
         /// </summary>
-        /// <param name="mail"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
         [HttpPost]
-
-        public async Task<ApiResponse> SendVerificationMail([FromBody] Mail mail)
+        public async Task<ApiResponse> GetVerificationCode()
         {
-            mail.Title = "";
-            mail.Content = "";
-            return await new ServiceBase().SendMail(_SmtpConfig, mail);
+            return await _ClientSideService.GetJwtValidateCode();
         }
 
 
@@ -52,7 +46,6 @@ namespace API.Controllers.ClientSide
         [HttpPost]
         public async Task<ApiResponse> UserSignUp(ApiRequest<UserSignUpDTO> Req)
         {
-
             return await _ClientSideService.UserSignUp(Req);
         }
 
@@ -63,9 +56,9 @@ namespace API.Controllers.ClientSide
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
         [HttpPost]
-        public async Task<ApiResponse> UserLogin(ApiRequest<UserSignUpDTO> Req)
+        public async Task<ApiResponse> UserLogin(ApiRequest<ClientUserLogin> Req)
         {
-            return  await _ClientSideService.UserSignUp(Req);
+            return  await _ClientSideService.UserLogin(Req);
         }
     }
 }

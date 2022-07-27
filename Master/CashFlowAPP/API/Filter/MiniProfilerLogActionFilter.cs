@@ -10,7 +10,7 @@ namespace API.Filter
     {
         public void OnActionExecuting(ActionExecutingContext _ActionExecutingContext)
         {
-            var Context = $"{DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")} 當前執行:{_ActionExecutingContext.ActionDescriptor.DisplayName}";
+            var Context = $"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")} 當前執行:{_ActionExecutingContext.ActionDescriptor.DisplayName}";
             var step = MiniProfiler.Current.CustomTimingIf("MiniProfiler", Context, 5);
             _ActionExecutingContext.HttpContext.Items["step"] = step;
         }

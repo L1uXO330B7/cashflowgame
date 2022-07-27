@@ -47,7 +47,7 @@ namespace Common.Model
         /// <summary>
         /// 資料時間
         /// </summary>
-        public DateTime DataTime { get; set; } = DateTime.UtcNow;
+        public DateTime DataTime { get; set; } = DateTime.Now;
         /// <summary>
         /// 資料本體
         /// </summary>
@@ -113,9 +113,5 @@ namespace Common.Model
         /// </summary>
         public string Content { get; set; }
     }
-    public class UserSignUpDTO:User
-    {
-        public string ValidateCode { get; set; }
-        public string JWTcode { get; set; }
-    }
+
 }
