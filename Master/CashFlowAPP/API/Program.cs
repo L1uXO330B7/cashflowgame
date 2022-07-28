@@ -32,6 +32,21 @@ builder.Services.AddSwaggerGen(c =>
                     // 是用於 SwaggerDocument 版本資訊的顯示 ( 內容非必填 )。
                     info: new OpenApiInfo
                     {
+                        Title = "API 文件",
+                        Version = "1.0.0",
+                        Description = "人生就像射箭，箭靶子都找不到努力拉弓有什麼意義",
+                        TermsOfService = new Uri("https://editor.swagger.io/"),
+                        Contact = new OpenApiContact
+                        {
+                            Name = "Swagger 編輯器",
+                            Url = new Uri("https://editor.swagger.io/"),
+                            Email = "carl123321@gmail.com"
+                        },
+                        License = new OpenApiLicense 
+                        {
+                            Name = "Furion 應用參考",
+                            Url = new Uri("https://dotnetchina.gitee.io/furion/docs")
+                        }
                     }
     );
 
@@ -48,23 +63,22 @@ builder.Services.AddSwaggerGen(c =>
     });
 
     c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
                 {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference
-                            {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
-                            },
-                            Scheme = "oauth2",
-                            Name = "Bearer",
-                            In = ParameterLocation.Header,
-
-                        },
-                        new List<string>()
-                    }
-                });
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                },
+                Scheme = "oauth2",
+                Name = "Bearer",
+                In = ParameterLocation.Header,
+             },
+             new List<string>()
+        }
+    });
 
     var FilePath = Path.Combine(AppContext.BaseDirectory, "API.xml");
     c.IncludeXmlComments(FilePath);
@@ -103,7 +117,7 @@ app.UseSwaggerUI(c =>
         // 需配合 SwaggerDoc 的 name。 "/swagger/{SwaggerDoc name}/swagger.json"
         url: "/swagger/v1/swagger.json",
         // 於 Swagger UI 右上角選擇不同版本的 SwaggerDocument 顯示名稱使用。
-        name: "RESTful API v1.0.0"
+        name: "API v1.0.0"
     );
 
     c.IndexStream = () => typeof(Program).GetTypeInfo()
