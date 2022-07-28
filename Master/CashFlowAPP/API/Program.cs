@@ -10,6 +10,18 @@ using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// 註冊 Cors 策略
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy", policy =>
+    {
+        policy
+        .AllowAnyOrigin()
+        .AllowAnyHeader()
+        .AllowAnyMethod();
+    });
+}
+);
 // 註冊 AOP Filters
 builder.Services.AddMvc(config =>
 {
@@ -127,7 +139,6 @@ app.UseSwaggerUI(c =>
 // }
 
 app.UseAuthorization();
-
+app.UseCors("CorsPolicy");
 app.MapControllers();
-
 app.Run();

@@ -1,4 +1,9 @@
+import { ApiRequest } from './../../models/ApiRequest';
+import { ApiResponse } from './../../models/ApiResponse';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ClientUserLogin } from 'src/app/models/ClientUserLogin';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -7,7 +12,9 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
-  constructor() { }
+  constructor(public _HttpClient: HttpClient) {
+
+  }
 
   ngOnInit(): void {
   }
@@ -64,5 +71,16 @@ export class LoginComponent implements OnInit {
     this.InfoMove();
   }
 
+  _HttpOptions = {
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+  };
+ _ClientUserLogin = new ClientUserLogin();
+ UserLogin(){
+  let ApiUrl = `${environment.ApiRoot}/ClientSide/UserLogin`;
+  let Req = new ApiRequest<ClientUserLogin>();
+  Req.Args = this._ClientUserLogin;
+  this._HttpClient.post<ApiResponse>(ApiUrl,Req,this._HttpOptions)
+    .subscribe((Res)=>{console.log(Res)});
+ }
 }
 

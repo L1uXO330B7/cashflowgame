@@ -44,7 +44,7 @@ namespace API.Controllers.ClientSide
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
         [HttpPost]
-        public async Task<ApiResponse> UserSignUp(ApiRequest<UserSignUpDTO> Req)
+        public async Task<ApiResponse> UserSignUp([FromBody]ApiRequest<UserSignUpDTO> Req)
         {
             return await _ClientSideService.UserSignUp(Req);
         }
@@ -56,7 +56,7 @@ namespace API.Controllers.ClientSide
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
         [HttpPost]
-        public async Task<ApiResponse> UserLogin(ApiRequest<ClientUserLogin> Req)
+        public async Task<ApiResponse> UserLogin([FromBody]ApiRequest<ClientUserLogin> Req)
         {
             return  await _ClientSideService.UserLogin(Req);
         }

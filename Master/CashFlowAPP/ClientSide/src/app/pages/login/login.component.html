@@ -1,12 +1,13 @@
 <div class="container-fluid bg">
   <div class="container bar" #bar>
-    <form class="loginCard p-5" [style.transform]="Card" #card>
+    <div class="loginCard p-5" [style.transform]="Card" #card>
       <label for="account" class="h3">Account</label>
       <input
         type="email"
         class="form-control mt-2"
         id="account"
         placeholder="請輸入電子信箱"
+        [(ngModel)]="_ClientUserLogin.Email"
       />
 
       <label for="account" class="h3 mt-3">Password</label>
@@ -15,6 +16,7 @@
         class="form-control mt-2"
         id="account"
         placeholder="請輸入密碼"
+        [(ngModel)]="_ClientUserLogin.Password"
       />
       <input
        *ngIf="change"
@@ -31,6 +33,7 @@
         type="submit"
         class="btn btn-primary mt-2 mt-md-5 align-self-end"
         *ngIf="!change"
+        (click)="UserLogin()"
       >
         登入
       </button>
@@ -41,7 +44,7 @@
       >
         註冊
       </button>
-    </form>
+    </div>
     <div class="info" [style.transform]="Info">
       <h4 class="text-light"  *ngIf="!change">還沒註冊帳號嗎?</h4>
       <h4 class="text-light"  *ngIf="change">已經有帳號了嗎?</h4>
