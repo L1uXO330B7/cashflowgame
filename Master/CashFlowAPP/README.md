@@ -88,10 +88,11 @@ https://editor.swagger.io
 
 ## 接續的部分因為較繁瑣改為紀錄實作了什麼方便以後參考
 
-1. 拆分業務邏輯為 ClientSide 與 AdminSide 由於 ClientSide 可能不會像後台每張表幾乎都要 CRUD 所以獨立一個 Controller、Service
-2. 並實作以 JWT 方式 Encode Decode 的 Login 驗證模式、與 Email 驗證碼 SignUp 的三支 API
-3. 接著就進入 Angular 熟悉 Typescript 與 Module、Component、Services 如何開發前端
-4. 利用 HttpClient 實作有別於 Promise 行為模式的觀察者模式 Observer、Subscribe
-5. 4 著重於在一支 Typescript 完成所有事，接著要熟悉 Service
-6. Module
-7. Pipe
+1. 全局異常處理、全局 MiniProfile、Swagger 設定
+2. 拆分業務邏輯為 ClientSide 與 AdminSide 由於 ClientSide 可能不會像後台每張表幾乎都要 CRUD 所以獨立一個 Controller、Service
+3. 並實作以 JWT 方式 Encode Decode 的 Login 驗證模式、與 Email 驗證碼 SignUp 的三支 API
+4. 接著就進入 Angular 熟悉 Typescript 與 Module、Component、Services 如何開發前端
+5. 利用 HttpClient 實作有別於 Promise 行為模式的觀察者模式 Observer、Subscribe
+6. 4 著重於在一支 Typescript 完成所有事，接著要熟悉 Service
+7. Module
+8. Pipe
