@@ -5,7 +5,7 @@ namespace BLL.IServices
 {
     public interface IClientSideService
     {
-        Task<ApiResponse> UserSignUp(ApiRequest<UserSignUpDTO> Req);
+        Task<ApiResponse> UserSignUp(ApiRequest<UserSignUpDto> Req);
         Task<ApiResponse> UserLogin(ApiRequest<ClientUserLogin> Req);
         Task<ApiResponse> GetJwtValidateCode();
 

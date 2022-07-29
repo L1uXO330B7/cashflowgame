@@ -1,4 +1,5 @@
 ﻿using DPL.EF;
+using System.ComponentModel.DataAnnotations;
 
 namespace Common.Model
 {
@@ -6,16 +7,20 @@ namespace Common.Model
     {
         public class ClientUserLogin
         {
+            [Required(ErrorMessage ="帳號格式錯誤")]
+            [EmailAddress]
             public string Email { get; set; }
+            [Required]
+            //[RegularExpression("Aa-Zz0-9{9}")]
             public string Password { get; set; }
 
         }
-        public class UserSignUpDTO
+        public class UserSignUpDto
         {
             public string Email { get; set; }
             public string Password { get; set; }
             public string ValidateCode { get; set; }
-            public string JWTcode { get; set; }
+            public string JwtCode { get; set; }
         }
         public class UserInfo
         {   /// <summary>

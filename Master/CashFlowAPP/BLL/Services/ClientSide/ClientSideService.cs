@@ -37,7 +37,7 @@ namespace BLL.Services.ClientSide
             };
             return Res;
         }
-        public async Task<ApiResponse> UserSignUp(ApiRequest<UserSignUpDTO> Req)
+        public async Task<ApiResponse> UserSignUp(ApiRequest<UserSignUpDto> Req)
         {
             var Res = new ApiResponse();
             var IsCreated = _CashFlowDbContext.Users.Any(m => m.Email == Req.Args.Email);
@@ -51,7 +51,7 @@ namespace BLL.Services.ClientSide
             }
 
 
-            var DeJWTcode = Jose.JWT.Decode(Req.Args.JWTcode, Encoding.UTF8.GetBytes("錢董"), Jose.JwsAlgorithm.HS256);
+            var DeJWTcode = Jose.JWT.Decode(Req.Args.JwtCode, Encoding.UTF8.GetBytes("錢董"), Jose.JwsAlgorithm.HS256);
             if (Req.Args.ValidateCode != DeJWTcode)
             {
                 Res.Success = false;

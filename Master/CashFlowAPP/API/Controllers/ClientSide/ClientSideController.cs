@@ -1,6 +1,7 @@
 ﻿using BLL.IServices;
 using Common.Model;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 using static Common.Model.ClientSideModel;
 
 namespace API.Controllers.ClientSide
@@ -44,7 +45,7 @@ namespace API.Controllers.ClientSide
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
         [HttpPost]
-        public async Task<ApiResponse> UserSignUp([FromBody]ApiRequest<UserSignUpDTO> Req)
+        public async Task<ApiResponse> UserSignUp([FromBody]ApiRequest<UserSignUpDto> Req)
         {
             return await _ClientSideService.UserSignUp(Req);
         }
@@ -58,7 +59,9 @@ namespace API.Controllers.ClientSide
         [HttpPost]
         public async Task<ApiResponse> UserLogin([FromBody]ApiRequest<ClientUserLogin> Req)
         {
-            return  await _ClientSideService.UserLogin(Req);
+
+            return await _ClientSideService.UserLogin(Req);
+        
         }
     }
 }
