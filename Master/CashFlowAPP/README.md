@@ -85,3 +85,13 @@ https://editor.swagger.io
       2. 在 XxxxxController 的建構子注入，這裡有個知識點 1. 必須要到 Program.cs 定義 Interface 與 Class 的 Mapping 有機會遇到以下問題，與 4. 取不到方法的問題
       ![注入多型錯誤500注入Mapping不到](https://github.com/L1uXO330B7/CashFlowProject/blob/master/BackEnd/Master/Images/%E6%B3%A8%E5%85%A5%E5%A4%9A%E5%9E%8B%E9%8C%AF%E8%AA%A4500%E6%B3%A8%E5%85%A5Mapping%E4%B8%8D%E5%88%B0.png?raw=true)
       ![避免ControllerReq型別與ServiceReq型別不一樣導致脫褲子放屁](https://github.com/L1uXO330B7/CashFlowProject/blob/master/BackEnd/Master/Images/%E9%81%BF%E5%85%8DControllerReq%E5%9E%8B%E5%88%A5%E8%88%87ServiceReq%E5%9E%8B%E5%88%A5%E4%B8%8D%E4%B8%80%E6%A8%A3%E5%B0%8E%E8%87%B4%E8%84%AB%E8%A4%B2%E5%AD%90%E6%94%BE%E5%B1%81.png?raw=true)
+
+## 接續的部分因為較繁瑣改為紀錄實作了什麼方便以後參考
+
+1. 拆分業務邏輯為 ClientSide 與 AdminSide 由於 ClientSide 可能不會像後台每張表幾乎都要 CRUD 所以獨立一個 Controller、Service
+2. 並實作以 JWT 方式 Encode Decode 的 Login 驗證模式、與 Email 驗證碼 SignUp 的三支 API
+3. 接著就進入 Angular 熟悉 Typescript 與 Module、Component、Services 如何開發前端
+4. 利用 HttpClient 實作有別於 Promise 行為模式的觀察者模式 Observer、Subscribe
+5. 4 著重於在一支 Typescript 完成所有事，接著要熟悉 Service
+6. Module
+7. Pipe
