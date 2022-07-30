@@ -35,6 +35,10 @@ namespace Common.Enum
         /// 格式驗證錯誤
         /// </summary>
         FormatValidationError = 2005,
+        /// <summary>
+        /// 尚未授權
+        /// </summary>
+        Unauthorized = 2006,
     }
     public enum StatusCode
     {

@@ -14,7 +14,7 @@ import { ApiService } from 'src/app/service/api.service';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(public _HttpClient: HttpClient, private _Router: Router,public _ApiService: ApiService){
+  constructor(public _HttpClient: HttpClient, private _Router: Router, public _ApiService: ApiService) {
   }
 
   ngOnInit(): void {
@@ -77,16 +77,18 @@ export class LoginComponent implements OnInit {
   };
   _ClientUserLogin: any = {};
   UserLogin() {
-    let ApiUrl = `${environment.ApiRoot}/ClientSide/UserLogin`;
     let Req = new ApiRequest<ClientUserLogin>();
     Req.Args = this._ClientUserLogin;
-    this._ApiService.UserLogin(Req).subscribe((Res) => { console.log(Res)});
-  }
+    this._ApiService.UserLogin(Req).subscribe((Res) => { console.log(Res);
+      if(Res.Success){
+        localStorage.setItem('token',Res.Data);
+      }
+    });
+    }
 
   VerificationCode: any = {};
   GetVerificationCode() {
-    let ApiUrl = `${environment.ApiRoot}/ClientSide/GetVerificationCode`;
-    this._HttpClient.post<ApiResponse>(ApiUrl, this._HttpOptions)
+    this._ApiService.GetVerificationCode()
       .subscribe((Res) => {
         console.log(Res);
         this.VerificationCode = Res.Data;
@@ -102,11 +104,21 @@ export class LoginComponent implements OnInit {
     let Req = new ApiRequest<any>();
     this._ClientUserLogin.JwtCode = this.VerificationCode.JwtCode;
     Req.Args = this._ClientUserLogin;
-    this._HttpClient.post<ApiResponse>(ApiUrl, Req, this._HttpOptions)
+    // this._HttpClient.post<ApiResponse>(ApiUrl, Req, this._HttpOptions)  改為使用 Service
+    this._ApiService.UserSignUp(Req)
       .subscribe((Res) => {
         console.log(Res);
-        alert("okay"); this.CardMove();
+        alert("okay");
+        this.CardMove();
       });
+  }
+  test(){
+    let ApiUrl = `http://localhost:46108/api/System/GetMiniProfilerScript`;
+        this._HttpClient.get(ApiUrl, this._HttpOptions)
+        .subscribe((Res) => {
+          console.log(Res);
+          alert("okay");
+        });
   }
 }
 

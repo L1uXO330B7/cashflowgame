@@ -14,11 +14,15 @@ export class ApiService {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
   };
   UserLogin(Req:any):Observable<ApiResponse>{
-    this._ApiUrl += `/ClientSide/UserLogin`
-   return this._HttpClient.post<ApiResponse>(this._ApiUrl, Req, this._HttpOptions);
+    let Url = `${this._ApiUrl}/ClientSide/UserLogin`;
+   return this._HttpClient.post<ApiResponse>(Url, Req, this._HttpOptions);
   }
   GetVerificationCode(){
-
+    let Url = `${this._ApiUrl}/ClientSide/GetVerificationCode`;
+    return this._HttpClient.post<ApiResponse>(Url, this._HttpOptions);
   }
-  UserSignUp(){}
+  UserSignUp(Req:any){
+    let Url = `${this._ApiUrl}/ClientSide/UserSignUp`;
+    return this._HttpClient.post<ApiResponse>(Url, Req, this._HttpOptions);
+  }
 }

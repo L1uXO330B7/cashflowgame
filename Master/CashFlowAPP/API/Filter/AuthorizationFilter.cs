@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Common.Enum;
+using Common.Model;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Newtonsoft.Json;
 using System.Text;
 using static Common.Model.ClientSideModel;
 
@@ -26,15 +29,17 @@ namespace API.Filter
 
             string Authorization = _ActionExecutingContext.HttpContext.Request.Headers["Authorization"];
 
+            //  取得 Authorization 後，要用 Trim() 去掉其中的空白，跟 Substring() 去掉其中 Bearer 字串
+            var JwtToken = Authorization.Substring("Bearer ".Length).Trim();
+
             // 滿足這兩項條件就滿足 OAuth 2.0
             // https://ithelp.ithome.com.tw/articles/10197166
-            if (Authorization != null && Authorization.StartsWith("Bearer"))
+            if (!string.IsNullOrEmpty(JwtToken)&&JwtToken!="null")
             {
                 // 取得客戶端 IP 
                 var ClientIp = _ActionExecutingContext.HttpContext.Connection.RemoteIpAddress;
 
-                //  取得 Authorization 後，要用 Trim() 去掉其中的空白，跟 Substring() 去掉其中 Bearer 字串
-                var JwtToken = Authorization.Substring("Bearer ".Length).Trim();
+      
 
                 // 解密
                 var JwtObject = Jose.JWT.Decode<UserInfo>(
@@ -52,6 +57,23 @@ namespace API.Filter
                 {   // 過期
                     _ActionExecutingContext.Result = new UnauthorizedResult();
                 }
+            }
+            else
+            {
+                var Res = new ApiResponse();
+                Res.Code = (int)ResponseStatusCode.Unauthorized;
+                Res.Message = "尚未登入";
+                Res.Success = false;
+
+                _ActionExecutingContext.Result = new ContentResult
+                {
+                    // 返回状态码设置为200，表示成功
+                    StatusCode = StatusCodes.Status200OK,
+                    // 设置返回格式
+                    ContentType = "application/json;charset=utf-8",
+                    Content = JsonConvert.SerializeObject(Res)
+                };
+
             }
         }
 
