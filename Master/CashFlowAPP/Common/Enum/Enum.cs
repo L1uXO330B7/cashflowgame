@@ -31,6 +31,10 @@ namespace Common.Enum
         /// 識別值無法重複建立
         /// </summary>
         IsCreated = 2004,
+        /// <summary>
+        /// 格式驗證錯誤
+        /// </summary>
+        FormatValidationError = 2005,
     }
     public enum StatusCode
     {

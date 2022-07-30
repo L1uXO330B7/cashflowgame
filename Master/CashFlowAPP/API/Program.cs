@@ -2,7 +2,7 @@ using API.Filter;
 using BLL.IServices;
 using BLL.Services.AdminSide;
 using BLL.Services.ClientSide;
-using Common.Model;
+using Common.Model.AdminSide;
 using DPL.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -20,20 +20,20 @@ builder.Services.AddCors(options =>
         .AllowAnyHeader()
         .AllowAnyMethod();
     });
-}
-);
+});
+
 // 註冊 AOP Filters
 builder.Services.AddMvc(config =>
 {
     config.Filters.Add(new ExceptionFilter());
     config.Filters.Add(new MiniProfilerActionFilter());
+    config.Filters.Add(new ModelStateErrorActionFilter());
 });
-
 
 // Add services to the container.
 builder.Services.AddControllers()
+    // 回傳資料大寫開頭 ( 預設小寫 )
     .AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
-
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -57,7 +57,7 @@ builder.Services.AddSwaggerGen(c =>
                             Url = new Uri("https://editor.swagger.io/"),
                             Email = "carl123321@gmail.com"
                         },
-                        License = new OpenApiLicense 
+                        License = new OpenApiLicense
                         {
                             Name = "Furion 應用參考",
                             Url = new Uri("https://dotnetchina.gitee.io/furion/docs")
@@ -125,6 +125,8 @@ app.UseMiniProfiler();
 // Configure the HTTP request pipeline.
 // if (app.Environment.IsDevelopment()) // 開發者模式
 // {
+// }
+
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
@@ -139,7 +141,6 @@ app.UseSwaggerUI(c =>
                                           .Assembly
                                           .GetManifestResourceStream("API.index.html");
 });
-// }
 
 app.UseAuthorization();
 app.UseCors("CorsPolicy");

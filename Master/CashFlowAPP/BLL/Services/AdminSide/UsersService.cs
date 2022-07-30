@@ -2,7 +2,7 @@
 using Common.Model;
 using DPL.EF;
 using Common.Enum;
-
+using Common.Model.AdminSide;
 
 namespace BLL.Services.AdminSide
 {
