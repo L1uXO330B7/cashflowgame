@@ -96,3 +96,12 @@ https://editor.swagger.io
 6. 4 著重於在一支 Typescript 完成所有事，接著要熟悉 Service
 7. Module
 8. Pipe
+
+## 前端引入 Angular ngb (Angular Bootstrap)
+
+1. 這個套件的指引是用 Angular Cli [ng add @ng-bootstrap/ng-bootstrap](https://ng-bootstrap.github.io/#/home)，但使用 NGX Cli 之後，似乎無法使用 NG 指令，所以用 NPM 分別安裝這個套件同捆包(Bundle)所需要的套件，分別是 
+   1. [NGB 本身](https://www.npmjs.com/package/@ng-bootstrap/ng-bootstrap)
+   2. [Popover](https://popper.js.org/)
+   3. [angular/localize](https://www.npmjs.com/package/@angular/localize)，要在 `polyfill.js` 使用 ```import '@angular/localize/init'```
+
+   
