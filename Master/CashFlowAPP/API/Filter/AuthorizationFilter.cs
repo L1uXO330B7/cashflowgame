@@ -35,7 +35,7 @@ namespace API.Filter
             // https://ithelp.ithome.com.tw/articles/10197166
             if (!string.IsNullOrEmpty(JwtToken)&&JwtToken!="null")
             {
-                // 取得客戶端 IP 
+                // 取得客戶端 IP 可以寫白黑名單
                 var ClientIp = _ActionExecutingContext.HttpContext.Connection.RemoteIpAddress;
 
                 // 解密

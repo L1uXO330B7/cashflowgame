@@ -123,9 +123,12 @@ https://www.tpisoftware.com/tpu/articleDetails/1084
 7. 當攔截並重新擲回例外狀況時，最好使用空白擲回方式， 因為這是保留例外狀況呼叫堆疊的最好方式。
 8. 請不要使用無參數的 catch 區塊來處理不符合 CLS 標準的例外狀況(不是衍生自 System.Exception 的例外狀況)。 可支援不是衍生自 Exception 的例外狀況之語言可以自由處理那些不符合 CLS 標準的例外狀況。
 
-### Log 資料解決方案 ( Serilog & Seq ) 搭配 CRUD 寫入 DB ( 複寫 dbContext ) & MiniProfile
+### 日誌解決方案 
 
-#### Serilog & Seq
+1. Serilog 實體 Log 日誌 
+2. 搭配 CRUD 時寫入 DB LogTable ( 複寫 dbContext ) 操作日誌
+
+#### Serilog
 
 // 參考 https://ithelp.ithome.com.tw/m/articles/10247300
 
@@ -134,3 +137,11 @@ https://www.tpisoftware.com/tpu/articleDetails/1084
 2. [.NET 6.0 如何使用 Serilog 對應用程式事件進行結構化紀錄](https://blog.miniasp.com/post/2021/11/29/How-to-use-Serilog-with-NET-6)
 
 3. [第三十八节：SeriLog日志的各种用法以及与Core MVC封装集成](https://www.cnblogs.com/yaopengfei/p/14261414.html)
+
+4. 後來發現 Seq 是另外一款 ViewLog 的程式，所以此處不使用
+
+#### 覆寫 Override DdbContext
+
+### Db First & Code First & Db Migration 資料庫移轉 ( 可版控程式碼的 Db 結構 )
+
+// 參考 https://ithelp.ithome.com.tw/m/articles/10240606
