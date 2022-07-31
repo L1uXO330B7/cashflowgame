@@ -1,4 +1,6 @@
 ﻿using MimeKit;
+using Serilog;
+using Serilog.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -71,6 +73,46 @@ namespace Common.Function
             _MimeMessage.Body = _BodyBuilder.ToMessageBody();
 
             return _MimeMessage;
+        }
+
+        /// <summary>
+        /// Serilog 程式註冊 ( 不需要設定 appsettings )
+        /// FATAL(致命错误) > ERROR（一般错误） > Warning（警告） >
+        /// Information（一般信息） > DEBUG（调试信息）>Verbose（详细模式，即全部）
+        /// </summary>
+        public static ILogger LogInit(
+        )
+        {
+            string SerilogOutputTemplate = "{NewLine}Date：{Timestamp:yyyy-MM-dd HH:mm:ss.fff}{NewLine}LogLevel：{Level}{NewLine}Message：{Message}{NewLine}{Exception}" + new string('-', 100);
+
+            return new LoggerConfiguration()
+                   .MinimumLevel.Verbose()
+                   .Enrich.FromLogContext()
+                   .WriteTo.Console(LogEventLevel.Verbose, SerilogOutputTemplate) // 將 Log 輸出到終端機
+                   .WriteTo.File(
+                            "Logs/Log-.txt",
+                            rollingInterval: RollingInterval.Day,
+                            outputTemplate: SerilogOutputTemplate
+                   )
+                   .WriteTo.File(
+                            "Logs/Information/Information-.txt",
+                            restrictedToMinimumLevel: LogEventLevel.Information,
+                            rollingInterval: RollingInterval.Day,
+                            outputTemplate: SerilogOutputTemplate
+                   )
+                   .WriteTo.File(
+                            "Logs/Debug/Debug-.txt",
+                            restrictedToMinimumLevel: LogEventLevel.Debug,
+                            rollingInterval: RollingInterval.Day,
+                            outputTemplate: SerilogOutputTemplate
+                   )
+                   .WriteTo.File(
+                            "Logs/Error/Error-.txt",
+                            restrictedToMinimumLevel: LogEventLevel.Error,
+                            rollingInterval: RollingInterval.Day,
+                            outputTemplate: SerilogOutputTemplate
+                   )
+                   .CreateLogger();
         }
     }
 }

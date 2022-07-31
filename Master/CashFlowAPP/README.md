@@ -129,3 +129,8 @@ https://www.tpisoftware.com/tpu/articleDetails/1084
 
 // 參考 https://ithelp.ithome.com.tw/m/articles/10247300
 
+1. [How to configure and use Serilog in ASP.NET Core 6?](https://stackoverflow.com/questions/71599246/how-to-configure-and-use-serilog-in-asp-net-core-6)
+
+2. [.NET 6.0 如何使用 Serilog 對應用程式事件進行結構化紀錄](https://blog.miniasp.com/post/2021/11/29/How-to-use-Serilog-with-NET-6)
+
+3. [第三十八节：SeriLog日志的各种用法以及与Core MVC封装集成](https://www.cnblogs.com/yaopengfei/p/14261414.html)

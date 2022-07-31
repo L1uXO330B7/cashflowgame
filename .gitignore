@@ -15,3 +15,4 @@ obj/
 .vs
 
 # End of https://www.toptal.com/developers/gitignore/api/dotnetcore
+Master/CashFlowAPP/API/Logs/

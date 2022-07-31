@@ -26,7 +26,6 @@ namespace API.Filter
         /// <param name="_ActionExecutingContext"></param>
         public override void OnActionExecuting(ActionExecutingContext _ActionExecutingContext)
         {
-
             string Authorization = _ActionExecutingContext.HttpContext.Request.Headers["Authorization"];
 
             //  取得 Authorization 後，要用 Trim() 去掉其中的空白，跟 Substring() 去掉其中 Bearer 字串
@@ -39,19 +38,19 @@ namespace API.Filter
                 // 取得客戶端 IP 
                 var ClientIp = _ActionExecutingContext.HttpContext.Connection.RemoteIpAddress;
 
-      
-
                 // 解密
                 var JwtObject = Jose.JWT.Decode<UserInfo>(
                         JwtToken, Encoding.UTF8.GetBytes("錢董"),
                         Jose.JwsAlgorithm.HS256);
+
                 // 確定 Token 生命週期
                 var IsLiving = (JwtObject.TokenCreatedTime
                     .AddHours(JwtObject.TokenExpiredHours)) > DateTime.Now;
-                if (IsLiving)
-                {   // 在 HTTP 封包塞入 Key:Value
-                    _ActionExecutingContext.HttpContext.Items.Add("UserInfo", JwtObject);
 
+                if (IsLiving)
+                {   
+                    // 在 HTTP 封包塞入 Key:Value
+                    _ActionExecutingContext.HttpContext.Items.Add("UserInfo", JwtObject);
                 }
                 else
                 {   // 過期
@@ -73,7 +72,6 @@ namespace API.Filter
                     ContentType = "application/json;charset=utf-8",
                     Content = JsonConvert.SerializeObject(Res)
                 };
-
             }
         }
 
