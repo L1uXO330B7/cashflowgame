@@ -11,11 +11,12 @@ namespace API.Controllers.ClientSide
     {
         private IClientSideService _ClientSideService;
         public static SmtpConfig _SmtpConfig = new SmtpConfig();
+
         public ClientSideController(
           
           IClientSideService ClientSideService,
           IConfiguration Configuration
-      )
+        )
         {
             _ClientSideService = ClientSideService;
             //_SmtpConfig.Port = Configuration["SMTP:Port"];
@@ -26,6 +27,7 @@ namespace API.Controllers.ClientSide
             //_SmtpConfig.Password = Configuration["SMTP:Password"];
             //_SmtpConfig.SenderEmail = Configuration["SMTP:SenderEmail"];
         }
+
         /// <summary>
         /// 取得數字驗證碼
         /// </summary>
@@ -36,7 +38,6 @@ namespace API.Controllers.ClientSide
         {
             return await _ClientSideService.GetJwtValidateCode();
         }
-
 
         /// <summary>
         /// 使用者註冊
@@ -59,9 +60,8 @@ namespace API.Controllers.ClientSide
         [HttpPost]
         public async Task<ApiResponse> UserLogin([FromBody]ApiRequest<ClientUserLogin> Req)
         {
-
             return await _ClientSideService.UserLogin(Req);
-        
         }
+
     }
 }

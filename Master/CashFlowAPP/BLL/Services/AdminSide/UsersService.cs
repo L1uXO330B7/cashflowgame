@@ -9,11 +9,11 @@ namespace BLL.Services.AdminSide
     public class UsersService : ServiceBase, IUsersService<CreateUserArgs, int?, UpdateUserArgs, int?>
     {
         private readonly CashFlowDbContext _CashFlowDbContext;
+
         public UsersService(CashFlowDbContext cashFlowDbContext)
         {
             _CashFlowDbContext = cashFlowDbContext;
         }
-
 
         public async Task<ApiResponse> Create(ApiRequest<CreateUserArgs> Req)
         {
@@ -33,6 +33,7 @@ namespace BLL.Services.AdminSide
 
             return Res;
         }
+
         public async Task<ApiResponse> Read(ApiRequest<int?> Req)
         {
             var Res = new ApiResponse();
@@ -62,6 +63,7 @@ namespace BLL.Services.AdminSide
             }
             return Res;
         }
+
         public async Task<ApiResponse> Update(ApiRequest<UpdateUserArgs> Req)
         {
             var Res = new ApiResponse();
@@ -122,7 +124,7 @@ namespace BLL.Services.AdminSide
             }
 
             return Res;
-
         }
+
     }
 }

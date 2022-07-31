@@ -4,6 +4,7 @@ using BLL.Services.AdminSide;
 using BLL.Services.ClientSide;
 using Common.Model.AdminSide;
 using DPL.EF;
+using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
@@ -123,9 +124,11 @@ var app = builder.Build();
 app.UseMiniProfiler();
 
 // Configure the HTTP request pipeline.
-// if (app.Environment.IsDevelopment()) // 開發者模式
-// {
-// }
+if (app.Environment.IsDevelopment()) // 開發者模式
+{
+    // 開發人員例外狀況頁面：在 Request Headers 中加入 Accept: text/html
+    app.UseDeveloperExceptionPage(); 
+}
 
 app.UseSwagger();
 app.UseSwaggerUI(c =>
@@ -141,6 +144,27 @@ app.UseSwaggerUI(c =>
                                           .Assembly
                                           .GetManifestResourceStream("API.index.html");
 });
+
+// 參考 https://ithelp.ithome.com.tw/m/articles/10243891
+
+// 重寫 Url => AddRewrite 情境 1：隱藏參數降低資安風險
+// 讓 http://www.somebloghost.com/Blogs/Posts.aspx?Year=2006&Month=12&Day=10
+// 轉 http://www.somebloghost.com/Blogs/2006/Date/12/10/
+
+// Url 重新導向 => AddRedirect 情境 2：SEO 301 永久性轉址、302 暫時性轉址
+
+// 通過設定301重新導向，你可以告訴Google你的舊網址已經無效了，你希望搜尋引擎能夠將舊網址的流量轉移到新的URL頁面。此時搜尋引擎就會將舊網址的所有流量與排名一併的轉移到新的網址。
+
+// 302重新導向常用於A/B測試或是有短期的活動頁面而使用的。他會將原本的URL導向另一個URL，但是不會讓google的排名效果下降。不過如果時間拉長，長期使用302做導向的話，SEO的分數還是會受到影響！
+
+// 情境 3：搭配 Regex 做規則
+
+//var options = new RewriteOptions()
+//        .AddRewrite("Post.aspx", "api/Post", skipRemainingRules: true)
+//        .AddRedirect("Post.php", "api/Post");
+//app.UseRewriter(options);
+
+//app.UseRouting();
 
 app.UseAuthorization();
 app.UseCors("CorsPolicy");

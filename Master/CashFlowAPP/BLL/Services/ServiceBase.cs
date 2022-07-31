@@ -11,8 +11,6 @@ namespace BLL.Services
 {
     public class ServiceBase
     {
-
-
         public async Task<ApiResponse> SendMail(SmtpConfig smtp, Mail mail)
         {
             var JWTcode = "";
@@ -66,8 +64,5 @@ namespace BLL.Services
             Res.Data = JWTcode;
             return Res;
         }
-        
-        
-
     }
 }

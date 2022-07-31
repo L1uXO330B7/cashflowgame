@@ -19,6 +19,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
   }
+
   change = false;
   windowWidth = window.innerWidth;
   distance = 0;
@@ -26,8 +27,6 @@ export class LoginComponent implements OnInit {
   Info = "";
 
   CardMove() {
-    console.log("windowWidth", this.windowWidth);
-    console.log("change", this.change);
     if (this.windowWidth <= 968) {
       if (this.change) {
         this.Card = `translateY(10rem) !important`;
@@ -37,16 +36,12 @@ export class LoginComponent implements OnInit {
     } else {
       if (this.change) {
         this.Card = `translateX(${this.distance}px) !important`;
-        console.log(this.Card);
       } else {
         this.Card = `translateX(0px) !important`;
       }
     }
   }
   InfoMove() {
-    console.log("barDOM", this.barDOM);
-    console.log("distance", this.distance);
-    console.log("InfoWidth", this.windowWidth);
     if (this.windowWidth <= 968) {
       if (this.change) {
         this.Info = `translateY(-20rem) !important`;
@@ -67,7 +62,6 @@ export class LoginComponent implements OnInit {
     this.change = !this.change;
     this.distance =
       this.barDOM.nativeElement.clientWidth - (this.cardDOM.nativeElement.clientWidth + 100);
-    console.log("changeLogin", this.barDOM.nativeElement.clientWidth);
     this.CardMove();
     this.InfoMove();
   }
@@ -79,18 +73,17 @@ export class LoginComponent implements OnInit {
   UserLogin() {
     let Req = new ApiRequest<ClientUserLogin>();
     Req.Args = this._ClientUserLogin;
-    this._ApiService.UserLogin(Req).subscribe((Res) => { console.log(Res);
-      if(Res.Success){
-        localStorage.setItem('token',Res.Data);
+    this._ApiService.UserLogin(Req).subscribe((Res) => {
+      if (Res.Success) {
+        localStorage.setItem('Token', Res.Data);
       }
     });
-    }
+  }
 
   VerificationCode: any = {};
   GetVerificationCode() {
     this._ApiService.GetVerificationCode()
       .subscribe((Res) => {
-        console.log(Res);
         this.VerificationCode = Res.Data;
       });
   }
@@ -107,18 +100,16 @@ export class LoginComponent implements OnInit {
     // this._HttpClient.post<ApiResponse>(ApiUrl, Req, this._HttpOptions)  改為使用 Service
     this._ApiService.UserSignUp(Req)
       .subscribe((Res) => {
-        console.log(Res);
         alert("okay");
         this.CardMove();
       });
   }
-  test(){
+  test() {
     let ApiUrl = `http://localhost:46108/api/System/GetMiniProfilerScript`;
-        this._HttpClient.get(ApiUrl, this._HttpOptions)
-        .subscribe((Res) => {
-          console.log(Res);
-          alert("okay");
-        });
+    this._HttpClient.get(ApiUrl, this._HttpOptions)
+      .subscribe((Res) => {
+        alert("okay");
+      });
   }
 }
 

@@ -11,17 +11,18 @@ namespace BLL.Services.ClientSide
     public class ClientSideService : IClientSideService
     {
         private readonly CashFlowDbContext _CashFlowDbContext;
+
         public ClientSideService(CashFlowDbContext cashFlowDbContext)
         {
             _CashFlowDbContext = cashFlowDbContext;
         }
+
         /// <summary>
         /// 取得數字驗證加密字串
         /// </summary>
         /// <returns></returns>
         public async Task<ApiResponse> GetJwtValidateCode()
         {
-
             // 獲取驗證碼
             var ValidateCode = Method.CreateValidateCode(4);
             // JWT 加密
@@ -37,6 +38,7 @@ namespace BLL.Services.ClientSide
             };
             return Res;
         }
+
         public async Task<ApiResponse> UserSignUp(ApiRequest<UserSignUpDto> Req)
         {
             var Res = new ApiResponse();
@@ -50,7 +52,6 @@ namespace BLL.Services.ClientSide
                 return Res;
             }
 
-
             var DeJWTcode = Jose.JWT.Decode(Req.Args.JwtCode, Encoding.UTF8.GetBytes("錢董"), Jose.JwsAlgorithm.HS256);
             if (Req.Args.ValidateCode != DeJWTcode)
             {
@@ -60,7 +61,6 @@ namespace BLL.Services.ClientSide
 
                 return Res;
             }
-
 
             var user = new User();
             user.Email = Req.Args.Email;
@@ -115,5 +115,6 @@ namespace BLL.Services.ClientSide
                 }
             }
         }
+
     }
 }

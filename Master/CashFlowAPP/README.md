@@ -104,4 +104,28 @@ https://editor.swagger.io
    2. [Popover](https://popper.js.org/)
    3. [angular/localize](https://www.npmjs.com/package/@angular/localize)，要在 `polyfill.js` 使用 ```import '@angular/localize/init'```
 
-   
+### Angular 接收 File Javascript .js 錯誤
+
+https://www.tpisoftware.com/tpu/articleDetails/1084
+
+## 錯誤處理方式與 Log 資料解決方案 ( Serilog & Seq ) 搭配 CRUD 寫入 DB ( 複寫 dbContext ) & MiniProfile 
+
+### 錯誤處理方式
+
+參考 https://ithelp.ithome.com.tw/m/articles/10246428
+
+1. 使用try /catch/ finaly來攔截可能發生的錯誤，讓例外狀況發生時，應用程式可以適當的處理錯誤或結束，保障應用程式的品質。
+2. 攔截錯誤後，進行有效資訊的紀錄，以提供開發人員有效率的偵測與檢查問題。
+3. 針對不同類型的例外事件進行攔截，不使用類似 System.Exception、System.SystemException 等非特定的例外狀況來處理錯誤。
+4. 攔截例外狀況時，不要排除任何可能的特殊例外狀況
+5. 請勿過度使用攔截， 應該經常允許例外狀況散佈到呼叫堆疊上。
+6. 請使用 try-finally 並避免使用 try-catch 來清除程式碼。 在編寫完善的例外狀況程式碼中，try-finally 遠比 try-catch 更為常用。
+7. 當攔截並重新擲回例外狀況時，最好使用空白擲回方式， 因為這是保留例外狀況呼叫堆疊的最好方式。
+8. 請不要使用無參數的 catch 區塊來處理不符合 CLS 標準的例外狀況(不是衍生自 System.Exception 的例外狀況)。 可支援不是衍生自 Exception 的例外狀況之語言可以自由處理那些不符合 CLS 標準的例外狀況。
+
+### Log 資料解決方案 ( Serilog & Seq ) 搭配 CRUD 寫入 DB ( 複寫 dbContext ) & MiniProfile
+
+#### Serilog & Seq
+
+// 參考 https://ithelp.ithome.com.tw/m/articles/10247300
+

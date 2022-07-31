@@ -11,8 +11,6 @@ namespace API.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-
-
     public class SystemController : Controller
     {
         public static SmtpConfig _SmtpConfig = new SmtpConfig();
