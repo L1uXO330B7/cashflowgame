@@ -104,7 +104,9 @@ https://editor.swagger.io
    2. [Popover](https://popper.js.org/)
    3. [angular/localize](https://www.npmjs.com/package/@angular/localize)，要在 `polyfill.js` 使用 ```import '@angular/localize/init'```
 
-### Angular 接收 File Javascript .js 錯誤
+### Angular 接收 File Javascript .js 錯誤 ( 要求 Request 時需再 Header 宣告 responseType )
+
+https://stackoverflow.com/questions/62046090/angular-unexpected-token-c-in-json-at-position-0-at-json-parse-when-expecting-a
 
 https://www.tpisoftware.com/tpu/articleDetails/1084
 

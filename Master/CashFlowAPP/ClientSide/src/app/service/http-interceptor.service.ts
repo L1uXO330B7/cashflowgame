@@ -31,7 +31,9 @@ export class HttpInterceptorService implements HttpInterceptor {
     } else {
       NewRequest = req;
     }
-    return next.handle(NewRequest).pipe(
+
+    return next.handle(NewRequest)
+    .pipe(
       map((event: HttpEvent<any>) => {
 
         // https://www.tpisoftware.com/tpu/articleDetails/1084
@@ -39,8 +41,7 @@ export class HttpInterceptorService implements HttpInterceptor {
         console.log('HttpInterceptorService event', event);
 
         return event;
-      })
-      ,
+      }),
       catchError((error: HttpErrorResponse) => {
 
         console.log('HttpInterceptorService error', error);

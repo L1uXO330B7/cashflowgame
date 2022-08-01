@@ -111,7 +111,9 @@ export class LoginComponent implements OnInit {
   }
   test() {
     let ApiUrl = `http://localhost:46108/api/System/GetMiniProfilerScript`;
-    this._HttpClient.get(ApiUrl, this._HttpOptions)
+
+    // https://stackoverflow.com/questions/62046090/angular-unexpected-token-c-in-json-at-position-0-at-json-parse-when-expecting-a
+    this._HttpClient.get(ApiUrl, { responseType: 'text' })
       .subscribe((Res) => {
         alert("okay");
       });

@@ -33,7 +33,7 @@ namespace API.Filter
 
             // 滿足這兩項條件就滿足 OAuth 2.0
             // https://ithelp.ithome.com.tw/articles/10197166
-            if (!string.IsNullOrEmpty(JwtToken)&&JwtToken!="null")
+            if (!string.IsNullOrEmpty(JwtToken) && JwtToken != "null")
             {
                 // 取得客戶端 IP 可以寫白黑名單
                 var ClientIp = _ActionExecutingContext.HttpContext.Connection.RemoteIpAddress;
@@ -48,12 +48,13 @@ namespace API.Filter
                     .AddHours(JwtObject.TokenExpiredHours)) > DateTime.Now;
 
                 if (IsLiving)
-                {   
+                {
                     // 在 HTTP 封包塞入 Key:Value
                     _ActionExecutingContext.HttpContext.Items.Add("UserInfo", JwtObject);
                 }
                 else
-                {   // 過期
+                {
+                    // 過期
                     var Res = new ApiResponse();
                     Res.Code = (int)ResponseStatusCode.Unauthorized;
                     Res.Message = "請重新登入";
