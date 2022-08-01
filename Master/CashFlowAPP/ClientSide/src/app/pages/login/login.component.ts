@@ -1,13 +1,11 @@
 import { ApiRequest } from './../../models/ApiRequest';
-import { ApiResponse } from './../../models/ApiResponse';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component,OnInit,ViewChild } from '@angular/core';
 import { ClientUserLogin } from 'src/app/models/ClientUserLogin';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/service/api.service';
 import { GlobalToastService } from 'src/app/service/global-toast.service';
-import { HtmlParser } from '@angular/compiler';
 
 @Component({
   selector: 'app-login',
@@ -76,8 +74,13 @@ export class LoginComponent implements OnInit {
     let Req = new ApiRequest<ClientUserLogin>();
     Req.Args = this._ClientUserLogin;
     this._ApiService.UserLogin(Req).subscribe((Res) => {
+      console.log(Res);
       if (Res.Success) {
         localStorage.setItem('Token', Res.Data);
+        this.ShowToast(Res.Message,'bg-success text-light','錢董通知')
+      }
+      else{
+        this.ShowToast(Res.Message,'bg-danger text-light','錢董通知')
       }
     });
   }
@@ -115,10 +118,13 @@ export class LoginComponent implements OnInit {
   }
   Toast(){
 
-    this.ShowToast()
   }
-  ShowToast() {
-    this._ToastService.show(`<strong>Toast</strong>`, {classname: 'bg-success text-light', delay: 50000});
+  ShowToast(Msg:string,CssClass:string,Header:string) {
+    this._ToastService.show(Msg,{
+      className: CssClass,
+      delay: 10000,
+      HeaderTxt:Header,
+    });
   }
   ngOnDestroy(): void {
     this._ToastService.clear();

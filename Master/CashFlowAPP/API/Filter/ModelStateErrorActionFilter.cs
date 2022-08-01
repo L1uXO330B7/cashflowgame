@@ -27,8 +27,7 @@ namespace API.Filter
 
                 var Res = new ApiResponse();
                 Res.Code = (int)ResponseStatusCode.FormatValidationError;
-                Res.Message = "格式驗證錯誤";
-                Res.Data = ErrorMsgs;
+                Res.Message = string.Join('\n', ErrorMsgs.Select((x,Index) => (Index+1)+". "+x.ErrorDescription));
                 Res.Success = false;
 
                 _ActionExecutingContext.Result = new ContentResult

@@ -4,7 +4,7 @@ export class ApiResponse {
   /**結果代碼 ( 0000 = 成功，其餘為錯誤代號 ) */
   Code: number | null = null;
   /**訊息 */
-  Message: string | null = null;
+  Message: string = "";
   /**資料時間 */
   DataTime: Date | string = "";
   /**資料本體 */

@@ -54,7 +54,19 @@ namespace API.Filter
                 }
                 else
                 {   // 過期
-                    _ActionExecutingContext.Result = new UnauthorizedResult();
+                    var Res = new ApiResponse();
+                    Res.Code = (int)ResponseStatusCode.Unauthorized;
+                    Res.Message = "請重新登入";
+                    Res.Success = false;
+
+                    _ActionExecutingContext.Result = new ContentResult
+                    {
+                        // 返回状态码设置为200，表示成功
+                        StatusCode = StatusCodes.Status200OK,
+                        // 设置返回格式
+                        ContentType = "application/json;charset=utf-8",
+                        Content = JsonConvert.SerializeObject(Res)
+                    };
                 }
             }
             else
