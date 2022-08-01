@@ -114,12 +114,11 @@ export class LoginComponent implements OnInit {
       });
   }
   Toast(){
-  
+
     this.ShowToast()
   }
   ShowToast() {
-    this._ToastService.show(`<ng-template #dangerTpl>
-    Danger Danger ! </ng-template>`, {classname: 'bg-success text-light', delay: 50000});
+    this._ToastService.show(`<strong>Toast</strong>`, {classname: 'bg-success text-light', delay: 50000});
   }
   ngOnDestroy(): void {
     this._ToastService.clear();

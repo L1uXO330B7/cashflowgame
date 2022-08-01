@@ -6,10 +6,7 @@
   [delay]="toast.delay || 5000"
   (hidden)="_ToastService.remove(toast)"
 >
-  <ng-template *ngIf="isTemplate(toast);else text">
-    <ng-template [ngTemplateOutlet]="toast.textOrTpl"></ng-template>
-  </ng-template>
-  <ng-template #text>{{toast.textOrTpl}}</ng-template>
+  <div [innerHTML]="toast.textOrTpl|safeHtml"></div >
 <button type="button" (click)="_ToastService.remove(toast)" class="btn"><i class="fa-solid fa-sack-xmark"></i></button>
 </ngb-toast>
 </div>
