@@ -1,3 +1,12 @@
-ngb-toast{
+.ToastBox{
   position: fixed;
+  ngb-toast{
+    position: relative;
+    button{
+      position: absolute;
+      right: 5px;
+      top: 0;
+      bottom: 0;  
+    }
+  }
 }

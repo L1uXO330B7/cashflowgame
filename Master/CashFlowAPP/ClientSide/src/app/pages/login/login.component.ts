@@ -6,6 +6,8 @@ import { ClientUserLogin } from 'src/app/models/ClientUserLogin';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/service/api.service';
+import { GlobalToastService } from 'src/app/service/global-toast.service';
+import { HtmlParser } from '@angular/compiler';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +16,7 @@ import { ApiService } from 'src/app/service/api.service';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(public _HttpClient: HttpClient, private _Router: Router, public _ApiService: ApiService) {
+  constructor(public _HttpClient: HttpClient, private _Router: Router, public _ApiService: ApiService,public _ToastService : GlobalToastService) {
   }
 
   ngOnInit(): void {
@@ -110,6 +112,17 @@ export class LoginComponent implements OnInit {
       .subscribe((Res) => {
         alert("okay");
       });
+  }
+  Toast(){
+
+    let dangerTpl = `danger`;
+    this.ShowToast(dangerTpl)
+  }
+  ShowToast(dangerTpl:any) {
+    this._ToastService.show(`danger`, {classname: 'bg-success text-light', delay: 50000});
+  }
+  ngOnDestroy(): void {
+    this._ToastService.clear();
   }
 }
 
