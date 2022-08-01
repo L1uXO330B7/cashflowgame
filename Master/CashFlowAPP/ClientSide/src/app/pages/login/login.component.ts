@@ -1,7 +1,7 @@
 import { ApiRequest } from './../../models/ApiRequest';
 import { ApiResponse } from './../../models/ApiResponse';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ClientUserLogin } from 'src/app/models/ClientUserLogin';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
@@ -12,7 +12,7 @@ import { HtmlParser } from '@angular/compiler';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
 
@@ -114,12 +114,12 @@ export class LoginComponent implements OnInit {
       });
   }
   Toast(){
-
-    let dangerTpl = `danger`;
-    this.ShowToast(dangerTpl)
+  
+    this.ShowToast()
   }
-  ShowToast(dangerTpl:any) {
-    this._ToastService.show(`danger`, {classname: 'bg-success text-light', delay: 50000});
+  ShowToast() {
+    this._ToastService.show(`<ng-template #dangerTpl>
+    Danger Danger ! </ng-template>`, {classname: 'bg-success text-light', delay: 50000});
   }
   ngOnDestroy(): void {
     this._ToastService.clear();

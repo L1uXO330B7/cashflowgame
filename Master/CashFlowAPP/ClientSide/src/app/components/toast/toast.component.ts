@@ -16,6 +16,8 @@ export class ToastComponent implements OnInit {
   }
   show = true;
   autohide = false;
-  isTemplate(toast:any) { return toast.textOrTpl instanceof TemplateRef; }
+  isTemplate(toast:any) {
+    console.log(toast.textOrTpl instanceof TemplateRef);
+    return toast.textOrTpl instanceof TemplateRef;}
 
 }
