@@ -47,7 +47,7 @@ namespace BLL.Services.ClientSide
             {
                 Res.Success = false;
                 Res.Code = (int)ResponseStatusCode.IsCreated;
-                Res.Message = "識別值無法重複建立";
+                Res.Message = "此帳號已存在，無法重複建立";
 
                 return Res;
             }
@@ -68,9 +68,14 @@ namespace BLL.Services.ClientSide
             user.Password = Req.Args.Password;//HashToDo
             user.RoleId = 1; //Todo
             user.Status = (byte)StatusCode.Enable;
-
+            try
+            {
             _CashFlowDbContext.Users.Add(user);
             _CashFlowDbContext.SaveChanges();
+            }catch (Exception ex)
+            {
+                throw ex;
+            }
 
             Res.Success = true;
             Res.Code = (int)ResponseStatusCode.Success;
