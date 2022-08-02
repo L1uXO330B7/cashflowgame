@@ -68,14 +68,9 @@ namespace BLL.Services.ClientSide
             user.Password = Req.Args.Password;//HashToDo
             user.RoleId = 1; //Todo
             user.Status = (byte)StatusCode.Enable;
-            try
-            {
+      
             _CashFlowDbContext.Users.Add(user);
             _CashFlowDbContext.SaveChanges();
-            }catch (Exception ex)
-            {
-                throw ex;
-            }
 
             Res.Success = true;
             Res.Code = (int)ResponseStatusCode.Success;
