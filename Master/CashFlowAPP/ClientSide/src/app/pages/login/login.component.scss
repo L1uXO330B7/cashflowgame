@@ -45,6 +45,24 @@
   text-align: center;
   padding: 5px;
 }
+.BrandBox{
+  position: absolute;
+  right: 0;
+  left:  0;
+  top: 20px;
+  a{
+    color: gold;
+  }
+  h1{
+    margin: 0 auto;
+    width: 150px;
+    font-family: 'Noto Serif TC', serif;
+    text-align: center;
+    font-weight: 900;
+    color: white;
+    text-shadow: 1px 3px 5px rgba(0, 0, 0, 0.7);;
+  }
+}
 @media (max-width: 968px) {
   .bar {
     flex-direction: column;

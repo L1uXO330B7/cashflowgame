@@ -65,6 +65,10 @@ export class LoginComponent implements OnInit {
       this.barDOM.nativeElement.clientWidth - (this.cardDOM.nativeElement.clientWidth + 100);
     this.CardMove();
     this.InfoMove();
+    this.VerificationCode={};
+    if(this.change){
+      this._ClientUserLogin={};
+    }
   }
 
   _HttpOptions = {
@@ -100,10 +104,11 @@ export class LoginComponent implements OnInit {
     this._ClientUserLogin.JwtCode = this.VerificationCode.JwtCode;
     Req.Args = this._ClientUserLogin;
     // this._HttpClient.post<ApiResponse>(ApiUrl, Req, this._HttpOptions)  改為使用 Service
-    this._ApiService.UserSignUp(Req)
-      .subscribe((Res) => {
-        alert("okay");
-        this.CardMove();
+    this._ApiService.UserSignUp(Req).subscribe((Res) => {
+        if(Res.Success){
+          console.log("signUp");
+          this.changeLogin();
+        }
       });
   }
   test() {
@@ -112,7 +117,6 @@ export class LoginComponent implements OnInit {
     // https://stackoverflow.com/questions/62046090/angular-unexpected-token-c-in-json-at-position-0-at-json-parse-when-expecting-a
     this._HttpClient.get(ApiUrl, { responseType: 'text' })
       .subscribe((Res) => {
-        alert("okay");
       });
   }
 
