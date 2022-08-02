@@ -5,7 +5,8 @@ import { ClientUserLogin } from 'src/app/models/ClientUserLogin';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/service/api.service';
-import { GlobalToastService } from 'src/app/service/global-toast.service';
+import { GlobalToastService } from 'src/app/components/toast/global-toast.service';
+
 
 @Component({
   selector: 'app-login',
@@ -77,10 +78,6 @@ export class LoginComponent implements OnInit {
       console.log(Res);
       if (Res.Success) {
         localStorage.setItem('Token', Res.Data);
-        this.ShowToast(Res.Message,'bg-success text-light','錢董通知')
-      }
-      else{
-        this.ShowToast(Res.Message,'bg-danger text-light','錢董通知')
       }
     });
   }
@@ -118,16 +115,8 @@ export class LoginComponent implements OnInit {
         alert("okay");
       });
   }
-  Toast(){
 
-  }
-  ShowToast(Msg:string,CssClass:string,Header:string) {
-    this._ToastService.show(Msg,{
-      className: CssClass,
-      delay: 10000,
-      HeaderTxt:Header,
-    });
-  }
+
   ngOnDestroy(): void {
     this._ToastService.clear();
   }

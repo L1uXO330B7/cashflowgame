@@ -119,7 +119,7 @@ try
 
     // 註冊 DbContext
     builder.Services.AddDbContext<CashFlowDbContext>(options =>
-           options.UseSqlServer(builder.Configuration.GetConnectionString("OnlineCashFlow")));
+           options.UseSqlServer(builder.Configuration.GetConnectionString("CashFlowMDF")));
 
     // 註冊 Services
     builder.Services.AddScoped<IUsersService<CreateUserArgs, int?, UpdateUserArgs, int?>, UsersService>();

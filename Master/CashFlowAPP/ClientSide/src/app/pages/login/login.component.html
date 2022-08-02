@@ -1,8 +1,9 @@
 <div class="container-fluid bg">
   <div class="container bar" #bar>
-    <div class="loginCard p-5" [style.transform]="Card" #card>
+    <div class="loginCard p-5 needs-validation" [style.transform]="Card" #card>
       <label for="account" class="h3">Account</label>
       <input
+        required
         type="email"
         class="form-control mt-2"
         id="account"
@@ -12,7 +13,8 @@
 
       <label for="account" class="h3 mt-3">Password</label>
       <input
-        type="text"
+        required
+        type="password"
         class="form-control mt-2"
         id="account"
         placeholder="請輸入密碼"
@@ -20,7 +22,7 @@
       />
       <input
        *ngIf="change"
-        type="text"
+        type="password"
         class="form-control mt-2"
         id="account"
         placeholder="請確認密碼"
@@ -31,7 +33,7 @@
       [(ngModel)]="_ClientUserLogin.ValidateCode"
       />
     </div>
-    <p class="mb-0 mt-2">{{VerificationCode.ValidateCode}}</p>
+    <p class="mb-0 mt-2 VerificationCode" *ngIf="VerificationCode.ValidateCode&&change">{{VerificationCode.ValidateCode}}</p>
       <button
         type="submit"
         class="btn btn-primary mt-2 mt-md-2 align-self-end"
@@ -68,8 +70,6 @@
       >
         登入
       </button>
-      <button (click)="test()">test</button>
-      <button class="btn btn-primary" (click)="Toast()">Standard toast</button>&nbsp;
 
     </div>
   </div>

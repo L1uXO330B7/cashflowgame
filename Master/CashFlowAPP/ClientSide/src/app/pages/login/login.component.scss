@@ -35,6 +35,16 @@
   height: 100vh;
   background-size: cover;
 }
+.VerificationCode{
+  border-radius: 5px;
+  width: 106px;
+  border-left: 5px solid black;
+  background-color: rgba(0, 0, 0, 0.3);
+  text-shadow: 1px 3px 5px rgba(0, 0, 0, 0.7);
+  color:white;
+  text-align: center;
+  padding: 5px;
+}
 @media (max-width: 968px) {
   .bar {
     flex-direction: column;

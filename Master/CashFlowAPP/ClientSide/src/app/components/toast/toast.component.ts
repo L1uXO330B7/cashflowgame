@@ -1,7 +1,7 @@
 import { SafeHtmlPipe } from './../../pipes/safe-html.pipe';
-import { GlobalToastService } from './../../service/global-toast.service';
-import { Component, OnInit, TemplateRef } from '@angular/core';
 
+import { Component, OnInit, TemplateRef } from '@angular/core';
+import { GlobalToastService } from './global-toast.service';
 
 
 @Component({

@@ -10,6 +10,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ToastComponent } from './components/toast/toast.component';
 import { SafeHtmlPipe } from './pipes/safe-html.pipe';
+import { NavbarComponent } from './components/navbar/navbar.component';
 
 
 
@@ -19,7 +20,8 @@ import { SafeHtmlPipe } from './pipes/safe-html.pipe';
     HomePageComponent,
     LoginComponent,
     ToastComponent,
-    SafeHtmlPipe
+    SafeHtmlPipe,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
