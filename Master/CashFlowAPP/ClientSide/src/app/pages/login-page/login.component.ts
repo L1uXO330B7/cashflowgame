@@ -1,4 +1,4 @@
-import { ApiRequest } from './../../models/ApiRequest';
+import { ApiRequest } from '../../models/ApiRequest';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component,OnInit,ViewChild } from '@angular/core';
 import { ClientUserLogin } from 'src/app/models/ClientUserLogin';
