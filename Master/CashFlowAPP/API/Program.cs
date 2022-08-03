@@ -1,4 +1,5 @@
 using API.Filter;
+using API.Hubs;
 using BLL.IServices;
 using BLL.Services.AdminSide;
 using BLL.Services.ClientSide;
@@ -28,17 +29,27 @@ try
     builder.Host.UseSerilog(); // 啟動 Serilog
     Serilog.Log.Information("建立 WebApplicationBuilder 物件");
 
+
+
+    // 加入 SignalR
+    builder.Services.AddSignalR();
+
+
     // 註冊 Cors 策略
+    //[CorsPolicy 指定來源](https://www.cnblogs.com/myzony/p/10511492.html)
     builder.Services.AddCors(options =>
     {
         options.AddPolicy("CorsPolicy", policy =>
         {
-            policy
-            .AllowAnyOrigin()
-            .AllowAnyHeader()
-            .AllowAnyMethod();
+            policy.AllowAnyHeader()
+                  .AllowAnyMethod()
+                  .SetIsOriginAllowed((host) => true)
+                  .AllowCredentials();
         });
     });
+
+
+
 
     // 註冊 AOP Filters
     builder.Services.AddMvc(config =>
@@ -47,6 +58,9 @@ try
         config.Filters.Add(new MiniProfilerActionFilter());
         config.Filters.Add(new ModelStateErrorActionFilter());
     });
+
+
+
 
     // Add services to the container.
     builder.Services.AddControllers()
@@ -190,6 +204,11 @@ try
     app.UseAuthorization();
     app.UseCors("CorsPolicy");
     app.MapControllers();
+
+    // 配對 ChaHub
+    app.MapHub<ChatHub>("/chatHub");
+
+
 
     // 啟動 ASP.NET Core 應用程式
     Serilog.Log.Information("啟動 ASP.NET Core 應用程式");

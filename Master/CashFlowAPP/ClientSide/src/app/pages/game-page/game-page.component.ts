@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import * as signalR from "@microsoft/signalr"
+import * as signalR from "@microsoft/signalr";
 
 @Component({
   selector: 'app-game-page',
@@ -15,9 +15,8 @@ export class GamePageComponent implements OnInit {
     this.update();
     this.UpdSelfID();
     this.UpdContent();
-    this.
   }
-  connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
+  connection = new signalR.HubConnectionBuilder().withUrl("http://localhost:46108/chatHub").build();
 
   //與Server建立連線
   connect(){
@@ -53,16 +52,19 @@ IDList:string = "";
   Content="";
   // 更新聊天內容事件
   UpdContent(){
+    console.log("UpdContent1");
     this.connection.on("UpdContent", (msg)=>{
       this.Content += `
       <li class="list-group-item">${msg}</li>
       `
+      console.log("UpdContent2",this.Content);
       // $("#Content").append($("<li></li>").attr("class", "list-group-item").text(msg));
   });
   }
   message="";
   sendToID="";
   SendMsg(){
+      console.log("SendMsg",this.message);
       let selfID = document.querySelector('#SelfID')?.innerHTML;
       this.connection.invoke("SendMessage", selfID, this.message, this.sendToID).catch(function (err) {
           alert('傳送錯誤: ' + err.toString());
