@@ -22,7 +22,7 @@ export class HomePageComponent implements OnInit,DoCheck {
   Index=0;
   AnimatedText:string="";
   TypeWriter() {
-    this.SloganText="錢董讓你懂錢，錢董讓你懂錢".split('');
+    this.SloganText="錢董讓你懂錢".split('');
     console.log("type",this.SloganText.length);
     const speed = 200;
     if (this.Index < this.SloganText.length) {
