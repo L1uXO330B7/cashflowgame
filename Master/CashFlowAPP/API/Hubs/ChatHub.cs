@@ -6,12 +6,12 @@ namespace API.Hubs
     /// <summary>
     /// 實作 WebSocket through SignalR
     /// </summary>
-    public class ChatHub:Hub
+    public class ChatHub : Hub
 
-    {        
-            /// <summary>
-            /// 建立連線
-            /// </summary>
+    {
+        /// <summary>
+        /// 建立連線
+        /// </summary>
         public static List<string> ConnIDList = new List<string>();
 
         /// <summary>
@@ -20,11 +20,11 @@ namespace API.Hubs
         /// <returns></returns>
         public override async Task OnConnectedAsync()
         {
-
             if (ConnIDList.Where(p => p == Context.ConnectionId).FirstOrDefault() == null)
             {
                 ConnIDList.Add(Context.ConnectionId);
             }
+
             // 更新連線 ID 列表
             string jsonString = JsonConvert.SerializeObject(ConnIDList);
             await Clients.All.SendAsync("UpdList", jsonString);
@@ -45,11 +45,13 @@ namespace API.Hubs
         /// <returns></returns>
         public override async Task OnDisconnectedAsync(Exception ex)
         {
-            string id = ConnIDList.Where(p => p == Context.ConnectionId).FirstOrDefault();
+            string? id = ConnIDList.Where(p => p == Context.ConnectionId).FirstOrDefault();
+
             if (id != null)
             {
                 ConnIDList.Remove(id);
             }
+
             // 更新連線 ID 列表
             string jsonString = JsonConvert.SerializeObject(ConnIDList);
             await Clients.All.SendAsync("UpdList", jsonString);

@@ -19,57 +19,57 @@ export class GamePageComponent implements OnInit {
   connection = new signalR.HubConnectionBuilder().withUrl("http://localhost:46108/chatHub").build();
 
   //與Server建立連線
-  connect(){
+  connect() {
     this.connection.start().then(function () {
       console.log("Hub 連線完成");
-  }).catch(function (err:any) {
+    }).catch(function (err: any) {
       alert('連線錯誤: ' + err.toString());
-  });
+    });
   }
 
-
-// 更新連線 ID 列表事件
-IDList:string = "";
-  update(){
-      this.connection.on("UpdList", (jsonList)=>{
+  // 更新連線 ID 列表事件
+  IDList: string = "";
+  update() {
+    this.connection.on("UpdList", (jsonList: any) => {
       var list = JSON.parse(jsonList);
       // $("#IDList li").remove();
       this.IDList = "";
-      list.forEach((value:any, index:number, array:any) => {
-        this.IDList+=`<li class='list-group-item'>${list[index]}</li>`;
+      list.forEach((value: any, index: number, array: any) => {
+        this.IDList += `<li class='list-group-item'>${list[index]}</li>`;
       })
-  });
+    });
   }
-  SelfID="";
+  SelfID = "";
   // 更新用戶個人連線 ID 事件
-  UpdSelfID(){
-    this.connection.on("UpdSelfID",(id)=>{
+  UpdSelfID() {
+    this.connection.on("UpdSelfID", (id: any) => {
       // $('#SelfID').html(id);
-      this.SelfID=id;
-  });
+      this.SelfID = id;
+    });
   }
 
-  Content="";
+  Content = "";
   // 更新聊天內容事件
-  UpdContent(){
+  UpdContent() {
     console.log("UpdContent1");
-    this.connection.on("UpdContent", (msg)=>{
+    this.connection.on("UpdContent", (msg: any) => {
       this.Content += `
       <li class="list-group-item">${msg}</li>
       `
-      console.log("UpdContent2",this.Content);
+      console.log("UpdContent2", this.Content);
       // $("#Content").append($("<li></li>").attr("class", "list-group-item").text(msg));
-  });
+    });
   }
-  message="";
-  sendToID="";
-  SendMsg(){
-      console.log("SendMsg",this.message);
-      let selfID = document.querySelector('#SelfID')?.innerHTML;
-      this.connection.invoke("SendMessage", selfID, this.message, this.sendToID).catch(function (err) {
-          alert('傳送錯誤: ' + err.toString());
-      });
+  message = "";
+  sendToID = "";
+  SendMsg() {
+    console.log("SendMsg", this.message);
+    let selfID = document.querySelector('#SelfID')?.innerHTML;
+    this.connection.invoke("SendMessage", selfID, this.message, this.sendToID).catch(function (err: any) {
+      alert('傳送錯誤: ' + err.toString());
+    });
   }
+
   //傳送訊息
   // $('#sendButton').on('click', function() {
   //     let selfID = $('#SelfID').html();
@@ -79,4 +79,5 @@ IDList:string = "";
   //         alert('傳送錯誤: ' + err.toString());
   //     });
   // });
+
 }

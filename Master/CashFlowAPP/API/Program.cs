@@ -22,18 +22,15 @@ try
     var builder = WebApplication.CreateBuilder(args);
 
     // Serilog 組態 appsettings 註冊
-    //Serilog.Log.Logger = new LoggerConfiguration()
+    // Serilog.Log.Logger = new LoggerConfiguration()
     //        .ReadFrom.Configuration(builder.Configuration)
     //        .CreateLogger();
 
     builder.Host.UseSerilog(); // 啟動 Serilog
     Serilog.Log.Information("建立 WebApplicationBuilder 物件");
 
-
-
     // 加入 SignalR
     builder.Services.AddSignalR();
-
 
     // 註冊 Cors 策略
     //[CorsPolicy 指定來源](https://www.cnblogs.com/myzony/p/10511492.html)
@@ -48,9 +45,6 @@ try
         });
     });
 
-
-
-
     // 註冊 AOP Filters
     builder.Services.AddMvc(config =>
     {
@@ -58,9 +52,6 @@ try
         config.Filters.Add(new MiniProfilerActionFilter());
         config.Filters.Add(new ModelStateErrorActionFilter());
     });
-
-
-
 
     // Add services to the container.
     builder.Services.AddControllers()
@@ -207,8 +198,6 @@ try
 
     // 配對 ChaHub
     app.MapHub<ChatHub>("/chatHub");
-
-
 
     // 啟動 ASP.NET Core 應用程式
     Serilog.Log.Information("啟動 ASP.NET Core 應用程式");
