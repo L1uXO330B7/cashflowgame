@@ -4,22 +4,34 @@ namespace Common.Model
 {
     public class ClientSideModel
     {
+        public class ChatInfo<T>
+        {
+         public T Args { get; set; }
+         public DateTime DeliveryTime { get; set; } = DateTime.Now;
+
+        }
         public class ClientUserLogin
         {
             [Display(Name = "帳號")]
-            [Required(ErrorMessage ="帳號格式錯誤")]
+            [Required(ErrorMessage ="帳號為必填")]
             //[EmailAddress]
             public string Email { get; set; }
             [Display(Name = "密碼")]
-            [Required]
+            [Required(ErrorMessage = "密碼為必填")]
             //[RegularExpression("Aa-Zz0-9{9}")]
             public string Password { get; set; }
 
         }
         public class UserSignUpDto
         {
+            [Display(Name = "帳號")]
+            [Required(ErrorMessage = "帳號為必填")]
             public string Email { get; set; }
+            [Display(Name = "密碼")]
+            [Required(ErrorMessage = "密碼為必填")]
             public string Password { get; set; }
+            [Display(Name = "驗證碼")]
+            [Required(ErrorMessage = "驗證碼為必填")]
             public string ValidateCode { get; set; }
             public string JwtCode { get; set; }
         }

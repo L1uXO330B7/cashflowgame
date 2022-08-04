@@ -18,6 +18,7 @@ namespace API.Hubs
         /// 連線事件
         /// </summary>
         /// <returns></returns>
+        [Filter.AuthorizationFilter]
         public override async Task OnConnectedAsync()
         {
             if (ConnIDList.Where(p => p == Context.ConnectionId).FirstOrDefault() == null)

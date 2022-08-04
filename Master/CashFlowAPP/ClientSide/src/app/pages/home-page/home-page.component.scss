@@ -26,6 +26,7 @@ nav{
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
 }
 .text-shadow{
   text-shadow: 1px 3px 5px black;
@@ -42,3 +43,17 @@ h1{
   font-weight: 900;
 }
 
+#caret {
+  border-right: 5px solid black;
+  margin-left: 3px;
+  animation: blink-caret 1s infinite;
+}
+
+@keyframes blink-caret {
+  from {
+    border-color: transparent;
+  }
+  to {
+    border-color: black;
+  }
+}

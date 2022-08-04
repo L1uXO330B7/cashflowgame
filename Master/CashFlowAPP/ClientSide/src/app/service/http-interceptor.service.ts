@@ -58,7 +58,7 @@ export class HttpInterceptorService implements HttpInterceptor {
         return event;
       }),
       catchError((error: HttpErrorResponse) => {
-
+        this.ShowToast('伺服器維修中，請稍後再試','bg-warning  text-dark','失敗通知 From 錢董')
         console.log('HttpInterceptorService error', error);
         console.log('req', req);
         // https://stackoverflow.com/questions/68655492/throwerrorerror-is-now-deprecated-but-there-is-no-new-errorhttperrorresponse

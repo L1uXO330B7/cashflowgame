@@ -51,7 +51,7 @@ namespace BLL.Services.ClientSide
 
                 return Res;
             }
-
+            // 驗證碼 token 解密
             var DeJWTcode = Jose.JWT.Decode(Req.Args.JwtCode, Encoding.UTF8.GetBytes("錢董"), Jose.JwsAlgorithm.HS256);
             if (Req.Args.ValidateCode != DeJWTcode)
             {
@@ -105,6 +105,7 @@ namespace BLL.Services.ClientSide
                     UserInfo.Email = user.Email;
                     UserInfo.RoleId = user.RoleId;
 
+                    // 將 User 資料，以 UserInfo 塞進 token，方便取用
                     var JwtCode = Jose.JWT.Encode(UserInfo, Encoding.UTF8.GetBytes("錢董"), Jose.JwsAlgorithm.HS256);
                     Res.Data = JwtCode;
                     Res.Success = true;

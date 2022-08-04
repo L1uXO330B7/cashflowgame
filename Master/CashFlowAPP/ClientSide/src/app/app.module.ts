@@ -13,6 +13,7 @@ import { SafeHtmlPipe } from './pipes/safe-html.pipe';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { GamePageComponent } from './pages/game-page/game-page.component';
 import { ChatroomComponent } from './components/chatroom/chatroom.component';
+import { SurveyPageComponent } from './pages/survey-page/survey-page.component';
 
 
 
@@ -25,7 +26,8 @@ import { ChatroomComponent } from './components/chatroom/chatroom.component';
     SafeHtmlPipe,
     NavbarComponent,
     GamePageComponent,
-    ChatroomComponent
+    ChatroomComponent,
+    SurveyPageComponent
   ],
   imports: [
     BrowserModule,
