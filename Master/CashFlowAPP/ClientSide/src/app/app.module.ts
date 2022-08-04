@@ -12,6 +12,7 @@ import { ToastComponent } from './components/toast/toast.component';
 import { SafeHtmlPipe } from './pipes/safe-html.pipe';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { GamePageComponent } from './pages/game-page/game-page.component';
+import { ChatroomComponent } from './components/chatroom/chatroom.component';
 
 
 
@@ -23,7 +24,8 @@ import { GamePageComponent } from './pages/game-page/game-page.component';
     ToastComponent,
     SafeHtmlPipe,
     NavbarComponent,
-    GamePageComponent
+    GamePageComponent,
+    ChatroomComponent
   ],
   imports: [
     BrowserModule,
