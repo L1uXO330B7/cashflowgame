@@ -17,6 +17,7 @@
    4. 調整以處理增加的流量
 2. [SignaIR-Cross](https://blog.darkthread.net/blog/signalr-cross-domain/)
 3. [SignaIR-Cross 需直接設定 app.UseCors](https://docs.microsoft.com/zh-tw/aspnet/core/signalr/security?view=aspnetcore-6.0)
+4.[CorsPolicy 指定來源](https://www.cnblogs.com/myzony/p/10511492.html)
 
 ## Angular WeSocket
 
