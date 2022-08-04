@@ -4,10 +4,14 @@ namespace Common.Model
 {
     public class ClientSideModel
     {
-        public class ChatInfo<T>
+        public class FromClientChat
         {
-         public T Args { get; set; }
-         public DateTime DeliveryTime { get; set; } = DateTime.Now;
+         public string sendToID { get; set;}
+         public string selfID { get; set; }
+
+         public string message { get; set; }
+
+         public string Token { get; set; }
 
         }
         public class ClientUserLogin

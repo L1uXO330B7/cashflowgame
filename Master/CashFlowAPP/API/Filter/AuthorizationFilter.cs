@@ -11,7 +11,7 @@ namespace API.Filter
     /// <summary>
     /// 驗證標籤此處就不用全域註冊，保留彈性可以 Controller 或 Action 註冊
     /// </summary>
-    public class AuthorizationFilter : ActionFilterAttribute
+    public class AuthorizationFilter : IAuthorizationFilter
     {
         /// <summary>
         /// 可注入參數 [AuthorizationFilter( XXX , XXX , XXX )]
@@ -19,14 +19,9 @@ namespace API.Filter
         public AuthorizationFilter()
         {
         }
-
-        /// <summary>
-        /// 進入 PipeLine 驗證即可
-        /// </summary>
-        /// <param name="_ActionExecutingContext"></param>
-        public override void OnActionExecuting(ActionExecutingContext _ActionExecutingContext)
+        public void OnAuthorization(AuthorizationFilterContext _AuthorizationContext)
         {
-            string Authorization = _ActionExecutingContext.HttpContext.Request.Headers["Authorization"];
+            string Authorization = _AuthorizationContext.HttpContext.Request.Headers["Authorization"];
 
             //  取得 Authorization 後，要用 Trim() 去掉其中的空白，跟 Substring() 去掉其中 Bearer 字串
             var JwtToken = Authorization.Substring("Bearer ".Length).Trim();
@@ -36,7 +31,7 @@ namespace API.Filter
             if (!string.IsNullOrEmpty(JwtToken) && JwtToken != "null")
             {
                 // 取得客戶端 IP 可以寫白黑名單
-                var ClientIp = _ActionExecutingContext.HttpContext.Connection.RemoteIpAddress;
+                var ClientIp = _AuthorizationContext.HttpContext.Connection.RemoteIpAddress;
 
                 // 解密
                 var JwtObject = Jose.JWT.Decode<UserInfo>(
@@ -50,7 +45,7 @@ namespace API.Filter
                 if (IsLiving)
                 {
                     // 在 HTTP 封包塞入 Key:Value
-                    _ActionExecutingContext.HttpContext.Items.Add("UserInfo", JwtObject);
+                    _AuthorizationContext.HttpContext.Items.Add("UserInfo", JwtObject);
                 }
                 else
                 {
@@ -60,7 +55,7 @@ namespace API.Filter
                     Res.Message = "請重新登入";
                     Res.Success = false;
 
-                    _ActionExecutingContext.Result = new ContentResult
+                    _AuthorizationContext.Result = new ContentResult
                     {
                         // 返回状态码设置为200，表示成功
                         StatusCode = StatusCodes.Status200OK,
@@ -77,7 +72,7 @@ namespace API.Filter
                 Res.Message = "尚未登入";
                 Res.Success = false;
 
-                _ActionExecutingContext.Result = new ContentResult
+                _AuthorizationContext.Result = new ContentResult
                 {
                     // 返回状态码设置为200，表示成功
                     StatusCode = StatusCodes.Status200OK,
@@ -87,6 +82,10 @@ namespace API.Filter
                 };
             }
         }
+        /// <summary>
+        /// 進入 PipeLine 驗證即可
+        /// </summary>
+        /// <param name="_ActionExecutingContext"></param>
 
     }
 }

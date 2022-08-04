@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as signalR from "@microsoft/signalr";
+import { FromClientChat } from 'src/app/models/FromClientChat';
 
 @Component({
   selector: 'app-game-page',
@@ -16,6 +17,8 @@ export class GamePageComponent implements OnInit {
     this.UpdSelfID();
     this.UpdContent();
   }
+
+
   connection = new signalR.HubConnectionBuilder().withUrl("http://localhost:46108/chatHub").build();
 
   //與Server建立連線
@@ -31,6 +34,7 @@ export class GamePageComponent implements OnInit {
   IDList: string = "";
   update() {
     this.connection.on("UpdList", (jsonList: any) => {
+
       var list = JSON.parse(jsonList);
       // $("#IDList li").remove();
       this.IDList = "";
@@ -60,12 +64,16 @@ export class GamePageComponent implements OnInit {
       // $("#Content").append($("<li></li>").attr("class", "list-group-item").text(msg));
     });
   }
-  message = "";
-  sendToID = "";
+
+  FromClientChat = new FromClientChat()
   SendMsg() {
-    console.log("SendMsg", this.message);
-    let selfID = document.querySelector('#SelfID')?.innerHTML;
-    this.connection.invoke("SendMessage", selfID, this.message, this.sendToID).catch(function (err: any) {
+    console.log("SendMsg", this.FromClientChat.message);
+    let selfID:any = document.querySelector('#SelfID')?.innerHTML;
+    this.FromClientChat.selfID = selfID;
+    let UserToken: any = localStorage.getItem("Token");
+    this.FromClientChat.Token = UserToken;
+    // invoke 去 call 後端 function 靠 名字
+    this.connection.invoke("SendMessage", this.FromClientChat).catch(function (err: any) {
       alert('傳送錯誤: ' + err.toString());
     });
   }

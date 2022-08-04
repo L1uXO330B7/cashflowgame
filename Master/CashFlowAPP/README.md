@@ -147,3 +147,13 @@ https://www.tpisoftware.com/tpu/articleDetails/1084
 ### Db First & Code First & Db Migration 資料庫移轉 ( 可版控程式碼的 Db 結構 )
 
 // 參考 https://ithelp.ithome.com.tw/m/articles/10240606
+
+## SignalR
+
+1. 連線時嘗試使用 GetHttpContext()，官方 API 取得 Header Token，但只能取到 null 的 Header
+
+2. 問題可能來自此 [ISSUE](https://github.com/dotnet/aspnetcore/issues/39894)
+
+3. 解決方式使用前端 Singal 的 API 用 WebSocket 方式，送整包含 Token 的資料回後端解析，再回傳前端
+
+4.

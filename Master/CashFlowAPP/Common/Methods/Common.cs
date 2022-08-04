@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Common.Function
+namespace Common.Mesthods
 {
     public static class Method
     {

@@ -3,7 +3,7 @@ using API.Hubs;
 using BLL.IServices;
 using BLL.Services.AdminSide;
 using BLL.Services.ClientSide;
-using Common.Function;
+using Common.Mesthods;
 using Common.Model.AdminSide;
 using DPL.EF;
 using Microsoft.AspNetCore.Rewrite;
@@ -124,7 +124,7 @@ try
 
     // 註冊 DbContext
     builder.Services.AddDbContext<CashFlowDbContext>(options =>
-           options.UseSqlServer(builder.Configuration.GetConnectionString("SchoolSQL")));
+           options.UseSqlServer(builder.Configuration.GetConnectionString("OnlineCashFlow")));
 
     // 註冊 Services
     builder.Services.AddScoped<IUsersService<CreateUserArgs, int?, UpdateUserArgs, int?>, UsersService>();

@@ -1,6 +1,6 @@
 ﻿using API.Filter;
 using BLL.Services;
-using Common.Function;
+using Common.Mesthods;
 using Common.Model;
 using DPL.EF;
 using Microsoft.AspNetCore.Mvc;
@@ -41,7 +41,7 @@ namespace API.Controllers
         /// 獲取 MiniProfiler HTML 片段
         /// </summary>
         /// <returns></returns>
-        [AuthorizationFilter]
+        [TypeFilter(typeof(AuthorizationFilter))]
         [HttpGet]
         public IActionResult GetMiniProfilerScript()
         {

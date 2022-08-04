@@ -7,11 +7,11 @@
       </span></h4>
     <div class="mb-3">
       <label for="message" class="form-label">發送訊息</label>
-      <input type="text" class="form-control" id="message" [(ngModel)]="message" >
+      <input type="text" class="form-control" id="message" [(ngModel)]="this.FromClientChat.message" >
     </div>
     <div class="mb-3">
       <label for="sendToID" class="form-label">指定 ID</label>
-      <input type="text" class="form-control" id="sendToID" [(ngModel)]="sendToID">
+      <input type="text" class="form-control" id="sendToID" [(ngModel)]="this.FromClientChat.sendToID">
     </div>
     <button type="button" class="btn btn-primary" id="sendButton" (click)="SendMsg()">傳送訊息</button>
   </div>

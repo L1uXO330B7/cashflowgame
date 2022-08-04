@@ -1,6 +1,6 @@
 ﻿using BLL.IServices;
 using Common.Enum;
-using Common.Function;
+using Common.Mesthods;
 using Common.Model;
 using DPL.EF;
 using System.Text;

@@ -1,14 +1,27 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using API.Filter;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
+using static Common.Model.ClientSideModel;
 
 namespace API.Hubs
 {
     /// <summary>
     /// 實作 WebSocket through SignalR
     /// </summary>
-    public class ChatHub : Hub
 
+    public class ChatHub : Hub
     {
+        /// <summary>
+        /// 賤狗仔
+        /// </summary>
+        public ChatHub()
+         {
+            //var info = Context.GetHttpContext();
+            //var Authorization = info.Request.Headers["Authorization"];
+        }
+
         /// <summary>
         /// 建立連線
         /// </summary>
@@ -18,9 +31,13 @@ namespace API.Hubs
         /// 連線事件
         /// </summary>
         /// <returns></returns>
-        [Filter.AuthorizationFilter]
         public override async Task OnConnectedAsync()
         {
+            //var info = Context.GetHttpContext();
+            //var Authorization = info.Request.Headers["Authorization"];
+            //var JwtObject = Jose.JWT.Decode<UserInfo>(
+            //           JwtToken, Encoding.UTF8.GetBytes("錢董"),
+            //           Jose.JwsAlgorithm.HS256);
             if (ConnIDList.Where(p => p == Context.ConnectionId).FirstOrDefault() == null)
             {
                 ConnIDList.Add(Context.ConnectionId);
@@ -46,6 +63,7 @@ namespace API.Hubs
         /// <returns></returns>
         public override async Task OnDisconnectedAsync(Exception ex)
         {
+
             string? id = ConnIDList.Where(p => p == Context.ConnectionId).FirstOrDefault();
 
             if (id != null)
@@ -70,19 +88,20 @@ namespace API.Hubs
         /// <param name="message"></param>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task SendMessage(string selfID, string message, string sendToID)
+        public async Task SendMessage(FromClientChat package)
         {
-            if (string.IsNullOrEmpty(sendToID))
+            //string selfID, string message, string sendToID
+            if (string.IsNullOrEmpty(package.sendToID))
             {
-                await Clients.All.SendAsync("UpdContent", selfID + " 說: " + message);
+                await Clients.All.SendAsync("UpdContent", package.selfID + " 說: " + package.message);
             }
             else
             {
                 // 接收人
-                await Clients.Client(sendToID).SendAsync("UpdContent", selfID + " 私訊向你說: " + message);
+                await Clients.Client(package.sendToID).SendAsync("UpdContent", package.selfID + " 私訊向你說: " + package.message);
 
                 // 發送人
-                await Clients.Client(Context.ConnectionId).SendAsync("UpdContent", "你向 " + sendToID + " 私訊說: " + message);
+                await Clients.Client(Context.ConnectionId).SendAsync("UpdContent", "你向 " + package.sendToID + " 私訊說: " + package.message);
             }
         }
     }
