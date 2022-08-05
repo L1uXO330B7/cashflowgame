@@ -18,8 +18,11 @@ export class GamePageComponent implements OnInit {
     this.UpdContent();
   }
 
-
-  connection = new signalR.HubConnectionBuilder().withUrl("http://localhost:46108/chatHub").build();
+  UserToken: any = localStorage.getItem("Token")
+  connection = new signalR.HubConnectionBuilder()
+    .withUrl(`http://localhost:46108/chatHub?token=${this.UserToken}`)
+    .withAutomaticReconnect()
+    .build();
 
   //與Server建立連線
   connect() {
@@ -33,22 +36,24 @@ export class GamePageComponent implements OnInit {
   // 更新連線 ID 列表事件
   IDList: string = "";
   update() {
-    this.connection.on("UpdList", (jsonList: any) => {
+    this.connection.on("UpdList", (jsonList: any,UserList:any) => {
 
       var list = JSON.parse(jsonList);
+      console.log("UserList",UserList);
+      console.log("UserList",jsonList)
       // $("#IDList li").remove();
       this.IDList = "";
       list.forEach((value: any, index: number, array: any) => {
-        this.IDList += `<li class='list-group-item'>${list[index]}</li>`;
+        this.IDList += `<li class='list-group-item'>${UserList[index]}</li>`;
       })
     });
   }
   SelfID = "";
   // 更新用戶個人連線 ID 事件
   UpdSelfID() {
-    this.connection.on("UpdSelfID", (id: any) => {
+    this.connection.on("UpdSelfID", (ConnectId: any,SelfName) => {
       // $('#SelfID').html(id);
-      this.SelfID = id;
+      this.SelfID = SelfName;
     });
   }
 
