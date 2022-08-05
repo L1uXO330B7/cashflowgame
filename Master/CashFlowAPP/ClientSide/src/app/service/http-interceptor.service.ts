@@ -1,5 +1,6 @@
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest,} from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { catchError, map, Observable, throwError } from 'rxjs';
 import { GlobalToastService } from '../components/toast/global-toast.service';
 
@@ -8,7 +9,7 @@ import { GlobalToastService } from '../components/toast/global-toast.service';
 })
 export class HttpInterceptorService implements HttpInterceptor {
 
-  constructor(public _ToastService : GlobalToastService
+  constructor(public _ToastService : GlobalToastService,private route:Router
   ) {
 
   }
@@ -49,6 +50,10 @@ export class HttpInterceptorService implements HttpInterceptor {
         console.log('HttpInterceptorService event', event.body);
         if(event.body!==undefined||null){
           if(event.body.Success){
+            if(event.body.Message=="成功登入"){
+              this.route.navigate(['/', 'game']);
+              this.ShowToast(event.body.Message,'bg-success text-light','成功通知 From 錢董')
+            }
             this.ShowToast(event.body.Message,'bg-success text-light','成功通知 From 錢董')
           }
           else{

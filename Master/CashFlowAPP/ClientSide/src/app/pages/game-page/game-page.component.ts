@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as signalR from "@microsoft/signalr";
+import { GlobalToastService } from 'src/app/components/toast/global-toast.service';
 import { FromClientChat } from 'src/app/models/FromClientChat';
 
 @Component({
@@ -9,13 +10,21 @@ import { FromClientChat } from 'src/app/models/FromClientChat';
 })
 export class GamePageComponent implements OnInit {
 
-  constructor() { }
+  constructor(public _ToastService : GlobalToastService) { }
 
   ngOnInit(): void {
     this.connect();
     this.update();
     this.UpdSelfID();
     this.UpdContent();
+  }
+
+  ShowToast(Msg:string,CssClass:string,Header:string) {
+    this._ToastService.show(Msg,{
+      className: CssClass,
+      delay: 10000,
+      HeaderTxt:Header,
+    });
   }
 
   UserToken: any = localStorage.getItem("Token")
@@ -26,10 +35,11 @@ export class GamePageComponent implements OnInit {
 
   //與Server建立連線
   connect() {
-    this.connection.start().then(function () {
+    this.connection.start().then(()=> {
       console.log("Hub 連線完成");
-    }).catch(function (err: any) {
-      alert('連線錯誤: ' + err.toString());
+      this.ShowToast("成功進入",'bg-success text-light','成功通知 From 錢董')
+    }).catch((err: any)=>{
+      this.ShowToast(err.toString(),'bg-success text-light','失敗通知 From 錢董')
     });
   }
 
@@ -51,9 +61,10 @@ export class GamePageComponent implements OnInit {
   SelfID = "";
   // 更新用戶個人連線 ID 事件
   UpdSelfID() {
-    this.connection.on("UpdSelfID", (ConnectId: any,SelfName) => {
+    this.connection.on("UpdSelfID", (ConnectId: any,SelfObj) => {
       // $('#SelfID').html(id);
-      this.SelfID = SelfName;
+      console.log('SelfName',SelfObj);
+      this.SelfID = SelfObj.name;
     });
   }
 

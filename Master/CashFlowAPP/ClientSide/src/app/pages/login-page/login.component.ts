@@ -15,7 +15,7 @@ import { GlobalToastService } from 'src/app/components/toast/global-toast.servic
 })
 export class LoginComponent implements OnInit {
 
-  constructor(public _HttpClient: HttpClient, private _Router: Router, public _ApiService: ApiService,public _ToastService : GlobalToastService) {
+  constructor(public _HttpClient: HttpClient, private _Router: Router, public _ApiService: ApiService,public _ToastService : GlobalToastService,private route:Router) {
   }
 
   ngOnInit(): void {

@@ -34,15 +34,16 @@ namespace API.Hubs
         /// </summary>
         public static List<UserInfo> UserList = new List<UserInfo>();
 
+        public static UserInfo _UserObject = new UserInfo();
         /// <summary>
         /// 連線事件
         /// </summary>
         /// <returns></returns>
         public override async Task OnConnectedAsync()
-        {
+            {
             var Token = Context.GetHttpContext().Request.Query["token"];
             string value = !string.IsNullOrEmpty(Token.ToString()) ? Token.ToString() : "default";
-            var JwtObject = Jose.JWT.Decode<UserInfo>(
+            _UserObject = Jose.JWT.Decode<UserInfo>(
                    Token, Encoding.UTF8.GetBytes("錢董"),
                    Jose.JwsAlgorithm.HS256);
 
@@ -55,9 +56,9 @@ namespace API.Hubs
             {
                 ConnIDList.Add(Context.ConnectionId);
             }
-            if (JwtObject != null)
+            if (_UserObject != null)
             {
-                UserList.Add(JwtObject);
+                UserList.Add(_UserObject);
             }
 
            
@@ -66,10 +67,10 @@ namespace API.Hubs
             await Clients.All.SendAsync("UpdList", jsonString, UserList.Select(x => x.Name).ToList());
 
             // 更新個人 ID
-            await Clients.Client(Context.ConnectionId).SendAsync("UpdSelfID", Context.ConnectionId, UserList);
+            await Clients.Client(Context.ConnectionId).SendAsync("UpdSelfID", Context.ConnectionId, UserList.Where(x => x.Id== _UserObject.Id).FirstOrDefault());
 
             // 更新聊天內容
-            await Clients.All.SendAsync("UpdContent", "新連線 ID: " + UserList);
+            await Clients.All.SendAsync("UpdContent", "新連線 ID: " + _UserObject.Name);
 
             await base.OnConnectedAsync();
         }
@@ -84,18 +85,20 @@ namespace API.Hubs
             
 
             string? id = ConnIDList.Where(p => p == Context.ConnectionId).FirstOrDefault();
+            var User = UserList.Where(user=>user.Id== _UserObject.Id).FirstOrDefault();
 
             if (id != null)
             {
-                ConnIDList.Remove(id);
+              UserList.Remove(User);
+              ConnIDList.Remove(id);
             }
 
             // 更新連線 ID 列表
             string jsonString = JsonConvert.SerializeObject(ConnIDList);
-            await Clients.All.SendAsync("UpdList", jsonString);
+            await Clients.All.SendAsync("UpdList", jsonString, UserList.Select(x => x.Name).ToList());
 
             // 更新聊天內容
-            await Clients.All.SendAsync("UpdContent", "已離線 ID: " + Context.ConnectionId);
+            await Clients.All.SendAsync("UpdContent", "已離線 ID: " + _UserObject.Name);
 
             await base.OnDisconnectedAsync(ex);
         }
