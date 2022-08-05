@@ -10,16 +10,15 @@ using static Common.Model.ClientSideModel;
 namespace API.Hubs
 {
     /// <summary>
-    /// 實作 WebSocket through SignalR
+    /// 實作 WebSocket through SignalR ( 這裡應該只實作 Hub Like Controller 業務邏輯請交給 Service )
     /// </summary>
-
     public class ChatHub : Hub
     {
         /// <summary>
-        /// 賤狗仔
+        /// 建構子
         /// </summary>
         public ChatHub()
-         {
+        {
             //var info = Context.GetHttpContext();
             //var Authorization = info.Request.Headers["Authorization"];
         }
@@ -40,7 +39,7 @@ namespace API.Hubs
         /// </summary>
         /// <returns></returns>
         public override async Task OnConnectedAsync()
-            {
+        {
             var Token = Context.GetHttpContext().Request.Query["token"];
             string value = !string.IsNullOrEmpty(Token.ToString()) ? Token.ToString() : "default";
             _UserObject = Jose.JWT.Decode<UserInfo>(
@@ -52,22 +51,23 @@ namespace API.Hubs
             //var JwtObject = Jose.JWT.Decode<UserInfo>(
             //           JwtToken, Encoding.UTF8.GetBytes("錢董"),
             //           Jose.JwsAlgorithm.HS256);
+
             if (ConnIDList.Where(p => p == Context.ConnectionId).FirstOrDefault() == null)
             {
                 ConnIDList.Add(Context.ConnectionId);
             }
+
             if (_UserObject != null)
             {
                 UserList.Add(_UserObject);
             }
 
-           
             // 更新連線 ID 列表
             string jsonString = JsonConvert.SerializeObject(ConnIDList);
             await Clients.All.SendAsync("UpdList", jsonString, UserList.Select(x => x.Name).ToList());
 
             // 更新個人 ID
-            await Clients.Client(Context.ConnectionId).SendAsync("UpdSelfID", Context.ConnectionId, UserList.Where(x => x.Id== _UserObject.Id).FirstOrDefault());
+            await Clients.Client(Context.ConnectionId).SendAsync("UpdSelfID", Context.ConnectionId, UserList.Where(x => x.Id == _UserObject.Id).FirstOrDefault());
 
             // 更新聊天內容
             await Clients.All.SendAsync("UpdContent", "新連線 ID: " + _UserObject.Name);
@@ -82,15 +82,13 @@ namespace API.Hubs
         /// <returns></returns>
         public override async Task OnDisconnectedAsync(Exception ex)
         {
-            
-
             string? id = ConnIDList.Where(p => p == Context.ConnectionId).FirstOrDefault();
-            var User = UserList.Where(user=>user.Id== _UserObject.Id).FirstOrDefault();
+            var User = UserList.Where(user => user.Id == _UserObject.Id).FirstOrDefault();
 
             if (id != null)
             {
-              UserList.Remove(User);
-              ConnIDList.Remove(id);
+                UserList.Remove(User);
+                ConnIDList.Remove(id);
             }
 
             // 更新連線 ID 列表
@@ -126,12 +124,12 @@ namespace API.Hubs
                 await Clients.Client(Context.ConnectionId).SendAsync("UpdContent", "你向 " + package.sendToID + " 私訊說: " + package.message);
             }
         }
+
         public async Task GetUserToken(FromClientChat package)
         {
             var JwtObject = Jose.JWT.Decode<UserInfo>(
                        package.Token, Encoding.UTF8.GetBytes("錢董"),
                        Jose.JwsAlgorithm.HS256);
-            
         }
     }
 }

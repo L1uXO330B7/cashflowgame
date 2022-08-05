@@ -19,6 +19,11 @@ namespace API.Filter
         public AuthorizationFilter()
         {
         }
+
+        /// <summary>
+        /// 進入 PipeLine 驗證即可
+        /// </summary>
+        /// <param name="_ActionExecutingContext"></param>
         public void OnAuthorization(AuthorizationFilterContext _AuthorizationContext)
         {
             string Authorization = _AuthorizationContext.HttpContext.Request.Headers["Authorization"];
@@ -82,10 +87,5 @@ namespace API.Filter
                 };
             }
         }
-        /// <summary>
-        /// 進入 PipeLine 驗證即可
-        /// </summary>
-        /// <param name="_ActionExecutingContext"></param>
-
     }
 }
