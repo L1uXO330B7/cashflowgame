@@ -42,6 +42,7 @@ namespace API.Hubs
         {
             var Token = Context.GetHttpContext().Request.Query["token"];
             string value = !string.IsNullOrEmpty(Token.ToString()) ? Token.ToString() : "default";
+
             _UserObject = Jose.JWT.Decode<UserInfo>(
                    Token, Encoding.UTF8.GetBytes("錢董"),
                    Jose.JwsAlgorithm.HS256);

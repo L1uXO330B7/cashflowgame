@@ -31,6 +31,11 @@ namespace API.Controllers
             _SmtpConfig.SenderEmail = Configuration["SMTP:SenderEmail"];
         }
 
+        /// <summary>
+        /// 測試寄信
+        /// </summary>
+        /// <param name="mail"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ApiResponse> TestSendMail([FromBody] Mail mail)
         {

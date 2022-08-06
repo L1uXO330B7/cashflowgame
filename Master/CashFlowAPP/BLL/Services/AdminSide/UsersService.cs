@@ -24,7 +24,7 @@ namespace BLL.Services.AdminSide
             User.Status = Req.Args.Status;
             User.RoleId = Req.Args.RoleId;
             _CashFlowDbContext.Add(User);
-            _CashFlowDbContext.SaveChanges();//不做銷毀dispose動作，交給 DI 容器處理
+            _CashFlowDbContext.SaveChanges(); // 不做銷毀 Dispose 動作，交給 DI 容器處理
 
             var Res = new ApiResponse();
             Res.Success = true;
@@ -46,7 +46,7 @@ namespace BLL.Services.AdminSide
             }
             else
             {
-                var User = _CashFlowDbContext.Users.Find(Req.Args);
+                var User = _CashFlowDbContext.Users.FirstOrDefault(x => x.Id == Req.Args);
                 if (User == null)
                 {
                     Res.Success = false;
@@ -70,7 +70,7 @@ namespace BLL.Services.AdminSide
 
             try
             {
-                var User = _CashFlowDbContext.Users.Find(Req.Args.Id);
+                var User = _CashFlowDbContext.Users.FirstOrDefault(x => x.Id == Req.Args.Id);
                 if (User == null)
                 {
                     Res.Success = false;

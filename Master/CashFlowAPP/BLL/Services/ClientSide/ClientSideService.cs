@@ -39,6 +39,11 @@ namespace BLL.Services.ClientSide
             return Res;
         }
 
+        /// <summary>
+        /// 使用者註冊
+        /// </summary>
+        /// <param name="Req"></param>
+        /// <returns></returns>
         public async Task<ApiResponse> UserSignUp(ApiRequest<UserSignUpDto> Req)
         {
             var Res = new ApiResponse();
@@ -68,7 +73,7 @@ namespace BLL.Services.ClientSide
             user.Password = Req.Args.Password;//HashToDo
             user.RoleId = 1; //Todo
             user.Status = (byte)StatusCode.Enable;
-      
+
             _CashFlowDbContext.Users.Add(user);
             _CashFlowDbContext.SaveChanges();
 
@@ -77,10 +82,18 @@ namespace BLL.Services.ClientSide
             Res.Message = "註冊成功";
             return Res;
         }
+
+        /// <summary>
+        /// 使用者登陸
+        /// </summary>
+        /// <param name="Req"></param>
+        /// <returns></returns>
         public async Task<ApiResponse> UserLogin(ApiRequest<ClientUserLogin> Req)
         {
             var Res = new ApiResponse();
-            var user = _CashFlowDbContext.Users.FirstOrDefault(m => m.Email == Req.Args.Email);
+            var user = _CashFlowDbContext.Users
+                .FirstOrDefault(m => m.Email == Req.Args.Email);
+
             if (user == null)
             {
                 Res.Success = false;
@@ -100,6 +113,7 @@ namespace BLL.Services.ClientSide
                 else
                 {
                     var UserInfo = new UserInfo();
+
                     UserInfo.Id = user.Id;
                     UserInfo.Name = user.Name;
                     UserInfo.Email = user.Email;
@@ -107,6 +121,7 @@ namespace BLL.Services.ClientSide
 
                     // 將 User 資料，以 UserInfo 塞進 token，方便取用
                     var JwtCode = Jose.JWT.Encode(UserInfo, Encoding.UTF8.GetBytes("錢董"), Jose.JwsAlgorithm.HS256);
+
                     Res.Data = JwtCode;
                     Res.Success = true;
                     Res.Code = (int)ResponseStatusCode.Success;
@@ -117,5 +132,15 @@ namespace BLL.Services.ClientSide
             }
         }
 
+        /// <summary>
+        /// 使用者抽卡
+        /// </summary>
+        /// <param name="Req"></param>
+        /// <returns></returns>
+        public async Task<ApiResponse> DrawCard(ApiRequest<string> Req)
+        {
+            var Res = new ApiResponse();
+            return Res;
+        }
     }
 }

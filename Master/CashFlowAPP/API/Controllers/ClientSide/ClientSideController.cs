@@ -13,7 +13,7 @@ namespace API.Controllers.ClientSide
         public static SmtpConfig _SmtpConfig = new SmtpConfig();
 
         public ClientSideController(
-          
+
           IClientSideService ClientSideService,
           IConfiguration Configuration
         )
@@ -39,6 +39,8 @@ namespace API.Controllers.ClientSide
             return await _ClientSideService.GetJwtValidateCode();
         }
 
+        #region 使用者
+
         /// <summary>
         /// 使用者註冊
         /// </summary>
@@ -46,7 +48,7 @@ namespace API.Controllers.ClientSide
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
         [HttpPost]
-        public async Task<ApiResponse> UserSignUp([FromBody]ApiRequest<UserSignUpDto> Req)
+        public async Task<ApiResponse> UserSignUp([FromBody] ApiRequest<UserSignUpDto> Req)
         {
             return await _ClientSideService.UserSignUp(Req);
         }
@@ -58,10 +60,11 @@ namespace API.Controllers.ClientSide
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
         [HttpPost]
-        public async Task<ApiResponse> UserLogin([FromBody]ApiRequest<ClientUserLogin> Req)
+        public async Task<ApiResponse> UserLogin([FromBody] ApiRequest<ClientUserLogin> Req)
         {
             return await _ClientSideService.UserLogin(Req);
         }
 
+        #endregion
     }
 }

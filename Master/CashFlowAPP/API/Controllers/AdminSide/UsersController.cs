@@ -13,23 +13,27 @@ namespace API.Controllers.AdminSide
     {
         private IUsersService<CreateUserArgs, int?, UpdateUserArgs, int?> _UserService;
 
+        /// <summary>
+        /// 建構子
+        /// </summary>
+        /// <param name="IUsersService"></param>
         public UsersController(
             IUsersService<CreateUserArgs, int?, UpdateUserArgs, int?> IUsersService
-        ) // 建構子注入
+        )
         {
             _UserService = IUsersService;
         }
 
         [HttpPost]
-        public Task<ApiResponse> Create([FromBody] ApiRequest<CreateUserArgs> Req)
+        public async Task<ApiResponse> Create([FromBody] ApiRequest<CreateUserArgs> Req)
         {
-            return _UserService.Create(Req);
+            return await _UserService.Create(Req);
         }
 
         [HttpPost]
-        public Task<ApiResponse> Delete([FromBody] ApiRequest<int?> Req)
+        public async Task<ApiResponse> Delete([FromBody] ApiRequest<int?> Req)
         {
-            return _UserService.Delete(Req);
+            return await _UserService.Delete(Req);
         }
 
         /// <summary>

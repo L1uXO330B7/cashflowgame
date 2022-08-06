@@ -18,6 +18,7 @@ namespace Common.Model.AdminSide
 
         public int RoleId { get; set; }
     }
+
     public class UpdateUserArgs
     {
         public int Id { get; set; }
@@ -32,4 +33,17 @@ namespace Common.Model.AdminSide
         public int RoleId { get; set; }
     }
 
+    public class ReadUserArgs
+    {
+        /// <summary>
+        /// 查詢條件
+        /// </summary>
+        public List<QueryCondition>? QueryConditions { get; set; }
+    }
+
+    public class QueryCondition
+    {
+        public string? Key { get; set; }
+        public dynamic? Value { get; set; }
+    }
 }
