@@ -60,5 +60,14 @@ namespace API.Controllers
             byte[] ByteArray = Encoding.ASCII.GetBytes(Script.ToString());
             return File(ByteArray, "application/javascript", "MiniProfiler.js");
         }
+
+        /// <summary>
+        /// 依表名稱產生模板檔案
+        /// </summary>
+        [HttpGet]
+        public void CreateTemplateByTableName()
+        {
+            new SystemService(_CashFlowDbContext).CreateTemplateByTableName();
+        }
     }
 }

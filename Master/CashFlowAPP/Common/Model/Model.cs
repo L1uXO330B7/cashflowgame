@@ -19,11 +19,11 @@ namespace Common.Model
         /// <summary>
         /// 第幾頁
         /// </summary>
-        public int? PageIndex { get; set; } = 1;
+        public int PageIndex { get; set; } = 1;
         /// <summary>
         /// 一頁幾筆
         /// </summary>
-        public int? PageSize { get; set; } = 50;
+        public int PageSize { get; set; } = 50;
     }
 
     /// <summary>

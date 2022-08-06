@@ -29,6 +29,10 @@ try
     builder.Host.UseSerilog(); // 啟動 Serilog
     Serilog.Log.Information("建立 WebApplicationBuilder 物件");
 
+    // 註冊 DbContext
+    builder.Services.AddDbContext<CashFlowDbContext>(options =>
+           options.UseSqlServer(builder.Configuration.GetConnectionString("OnlineCashFlow")));
+
     // 加入 SignalR
     builder.Services.AddSignalR();
 
@@ -122,13 +126,17 @@ try
         c.IncludeXmlComments(FilePath);
     });
 
-    // 註冊 DbContext
-    builder.Services.AddDbContext<CashFlowDbContext>(options =>
-           options.UseSqlServer(builder.Configuration.GetConnectionString("SchoolSQL")));
+    
 
     // 註冊 Services
-    builder.Services.AddScoped<IUsersService<CreateUserArgs, int?, UpdateUserArgs, int?>, UsersService>();
+
     builder.Services.AddScoped<IClientSideService, ClientSideService>();
+
+    builder.Services.AddScoped<
+        IUsersService<List<CreateUserArgs>, List<ReadUserArgs>, List<UpdateUserArgs>, List<int?>>,
+        UsersService
+    >();
+    
 
     // 註冊 MiniProfiler 如果更改設定需產生 MiniProfiler Script 貼於於 Swagger Index 內
     builder.Services.AddMiniProfiler(options =>

@@ -6,18 +6,16 @@ namespace Common.Model
     {
         public class FromClientChat
         {
-         public string sendToID { get; set;}
-         public string selfID { get; set; }
-
-         public string message { get; set; }
-
-         public string Token { get; set; }
-
+            public string sendToID { get; set; }
+            public string selfID { get; set; }
+            public string message { get; set; }
+            public string Token { get; set; }
         }
+
         public class ClientUserLogin
         {
             [Display(Name = "帳號")]
-            [Required(ErrorMessage ="帳號為必填")]
+            [Required(ErrorMessage = "帳號為必填")]
             //[EmailAddress]
             public string Email { get; set; }
             [Display(Name = "密碼")]

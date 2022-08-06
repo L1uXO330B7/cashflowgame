@@ -157,3 +157,11 @@ https://www.tpisoftware.com/tpu/articleDetails/1084
 3. 第一種解決方式使用前端 Singal 的 API 用 WebSocket 方式，送整包含 Token 的資料回後端解析，再回傳前端
 
 4. 後來發現第一種解決方式不太方便，且無法在連線建立時，就接受到使用者 Token，[第二種解決方式是使用連線 URL 傳參數的方式來將資料帶到後端](https://stackoverflow.com/questions/69519736/how-can-i-pass-retreive-querystring-values-in-net-core-version-of-signalr)，且第二種方式的安全性與第一種雷同，Post 是塞在標頭裡，兩種方式只要進到 Network 觀察，Token 都是無法被藏起來的
+
+## .Net Core 6 要使用 FromSqlInterpolated 執行 SQL 指令需安裝 Microsoft.EntityFrameworkCore.Relational
+
+https://stackoverflow.com/questions/51017703/error-cs1061-dbsett-does-not-contain-a-definition-for-fromsql-and-no-exte
+
+## 引入 Dapper 做動態查詢
+
+https://blog.darkthread.net/blog/dapper-with-ef-core/
