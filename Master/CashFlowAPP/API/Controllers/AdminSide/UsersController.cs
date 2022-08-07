@@ -38,6 +38,11 @@ namespace API.Controllers.AdminSide
             return await _UserService.Delete(Req);
         }
 
+        /// <summary>
+        /// Args = [] 時為未篩選條件全查
+        /// </summary>
+        /// <param name="Req"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ApiResponse> Read([FromBody] ApiRequest<List<ReadUserArgs>> Req)
         {

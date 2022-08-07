@@ -20,22 +20,30 @@ namespace BLL.Services.AdminSide
 
         public async Task<ApiResponse> Create(ApiRequest<List<CreateUserArgs>> Req)
         {
-            var Users = new List<User>();
+            var users = new List<User>();
+
+            var SussList = new List<int>();
+
             foreach (var Arg in Req.Args)
             {
-                User User = new User();
-                User.Email = Arg.Email;
-                User.Password = Arg.Password;
-                User.Name = Arg.Name;
-                User.Status = Arg.Status;
-                User.RoleId = Arg.RoleId;
-                Users.Add(User);
+                var user = new User();
+                user.Email = Arg.Email;
+                user.Password = Arg.Password;
+                user.Name = Arg.Name;
+                user.Status = Arg.Status;
+                user.RoleId = Arg.RoleId;
+                users.Add(user);
             }
 
-            _CashFlowDbContext.AddRange(Users);
-            _CashFlowDbContext.SaveChanges(); // 不做銷毀 Dispose 動作，交給 DI 容器處理
+            _CashFlowDbContext.AddRange(users);
+            _CashFlowDbContext.SaveChanges();
+            // 不做銷毀 Dispose 動作，交給 DI 容器處理
+
+            // 此處 SaveChanges 後 SQL Server 會 Tracking 回傳新增後的 Id
+            SussList = users.Select(x => x.Id).ToList();
 
             var Res = new ApiResponse();
+            Res.Data = $@"SussList：[{string.Join(',', SussList)}]";
             Res.Success = true;
             Res.Code = (int)ResponseStatusCode.Success;
             Res.Message = "成功新增";
@@ -46,7 +54,8 @@ namespace BLL.Services.AdminSide
         public async Task<ApiResponse> Read(ApiRequest<List<ReadUserArgs>> Req)
         {
             var Res = new ApiResponse();
-            if (Req.Args == null)
+
+            if (Req.Args.Count() <= 0)
             {
                 Res.Success = true;
                 Res.Code = (int)ResponseStatusCode.Success;
@@ -55,30 +64,41 @@ namespace BLL.Services.AdminSide
             }
             else
             {
-                if (Req.Args.Count() > 0)
-                {
-                    var User = _CashFlowDbContext.Users
-                        .AsNoTracking();
+                // 查詢不追蹤釋放連線，避免其餘線程衝到
+                var user = _CashFlowDbContext.Users
+                    .AsNoTracking();
 
-                    foreach (var Arg in Req.Args.Select((Val, Index) => (Val, Index)))
+                foreach (var Arg in Req.Args)
+                {
+                    if (Arg.Key == "Id") // Id 篩選條件
                     {
-                        if (Arg.Val.Key == "Id")
-                        {
-                            var Ids = JsonConvert.DeserializeObject<List<int>>(Arg.Val.JsonString);
-                            User.Where(x => Ids.Contains(x.Id));
-                        }
+                        var Ids = JsonConvert
+                            .DeserializeObject<List<int>>(Arg.JsonString);
+
+                        user = user.Where(x => Ids.Contains(x.Id));
                     }
 
-                    var Data = User
-                        .Skip((Req.PageIndex - 1) * Req.PageSize)
-                        .Take(Req.PageSize)
-                        .ToList();
+                    if (Arg.Key == "Status") // 狀態篩選條件
+                    {
+                        var Status = JsonConvert
+                            .DeserializeObject<byte>(Arg.JsonString);
 
-                    Res.Data = Data;
-                    Res.Success = true;
-                    Res.Code = (int)ResponseStatusCode.Success;
-                    Res.Message = "成功讀取";
+                        user = user.Where(x => x.Status == Status);
+                    }
                 }
+
+                var Data = user
+                    // 後端分頁
+                    // 省略幾筆 ( 頁數 * 每頁幾筆 )
+                    .Skip((Req.PageIndex - 1) * Req.PageSize)
+                    // 取得幾筆
+                    .Take(Req.PageSize)
+                    .ToList();
+
+                Res.Data = Data;
+                Res.Success = true;
+                Res.Code = (int)ResponseStatusCode.Success;
+                Res.Message = "成功讀取";
             }
             return Res;
         }
@@ -87,42 +107,35 @@ namespace BLL.Services.AdminSide
         {
             var Res = new ApiResponse();
 
-            try
+            var SussList = new List<int>();
+
+            foreach (var Arg in Req.Args)
             {
-                foreach (var Arg in Req.Args)
+                var user = _CashFlowDbContext.Users
+                    .FirstOrDefault(x => x.Id == Arg.Id);
+
+                if (user == null)
                 {
-                    var User = _CashFlowDbContext.Users
-                        .FirstOrDefault(x => x.Id == Arg.Id);
-
-                    if (User == null)
-                    {
-                        Res.Success = false;
-                        Res.Code = (int)ResponseStatusCode.CannotFind;
-                        Res.Message += $@"Id：{Arg.Id} 無此用戶\n";
-                    }
-                    else
-                    {
-                        User.Email = Arg.Email;
-                        User.Password = Arg.Password;
-                        User.Name = Arg.Name;
-                        User.Status = Arg.Status;
-                        User.RoleId = Arg.RoleId;
-                        _CashFlowDbContext.SaveChanges();
-
-                        Res.Data = User;
-                        Res.Success = true;
-                        Res.Code = (int)ResponseStatusCode.Success;
-                        Res.Message = "成功更改";
-                    }
+                    Res.Success = false;
+                    Res.Code = (int)ResponseStatusCode.CannotFind;
+                    Res.Message += $@"Id：{Arg.Id} 無此用戶\n";
+                }
+                else
+                {
+                    user.Email = Arg.Email;
+                    user.Password = Arg.Password;
+                    user.Name = Arg.Name;
+                    user.Status = Arg.Status;
+                    user.RoleId = Arg.RoleId;
+                    _CashFlowDbContext.SaveChanges();
+                    SussList.Add(user.Id);
                 }
             }
-            catch (Exception ex)
-            {
-                Res.Data = ex;
-                Res.Success = false;
-                Res.Code = (int)ResponseStatusCode.ExMessage;
-                Res.Message = "伺服器忙碌中";
-            }
+
+            Res.Data = $@"SussList：[{string.Join(',', SussList)}]";
+            Res.Success = true;
+            Res.Code = (int)ResponseStatusCode.Success;
+            Res.Message = "成功更改";
 
             return Res;
         }
@@ -131,9 +144,13 @@ namespace BLL.Services.AdminSide
         {
             var Res = new ApiResponse();
 
+            var SussList = new List<int>();
+
             foreach (var Arg in Req.Args)
             {
-                var user = _CashFlowDbContext.Users.FirstOrDefault(x => x.Id == Arg);
+                var user = _CashFlowDbContext.Users
+                    .FirstOrDefault(x => x.Id == Arg);
+
                 if (user == null)
                 {
                     Res.Success = false;
@@ -144,11 +161,14 @@ namespace BLL.Services.AdminSide
                 {
                     _CashFlowDbContext.Users.Remove(user);
                     _CashFlowDbContext.SaveChanges();
-                    Res.Success = true;
-                    Res.Code = (int)ResponseStatusCode.Success;
-                    Res.Message = "成功刪除";
+                    SussList.Add(user.Id);
                 }
             }
+
+            Res.Data = $@"SussList：[{string.Join(',', SussList)}]"; ;
+            Res.Success = true;
+            Res.Code = (int)ResponseStatusCode.Success;
+            Res.Message = "成功刪除";
 
             return Res;
         }
