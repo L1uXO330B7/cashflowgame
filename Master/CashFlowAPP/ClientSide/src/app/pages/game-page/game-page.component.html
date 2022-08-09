@@ -1,31 +1,5 @@
 
-<div class="row">
-  <div class="col-8">
-    <h4>個人 ID: <span id="SelfID">
-        {{SelfID}}
-      </span></h4>
-    <div class="mb-3">
-      <label for="message" class="form-label">發送訊息</label>
-      <input type="text" class="form-control" id="message" [(ngModel)]="this.FromClientChat.message" >
-    </div>
-    <div class="mb-3">
-      <label for="sendToID" class="form-label">指定 ID</label>
-      <input type="text" class="form-control" id="sendToID" [(ngModel)]="this.FromClientChat.sendToID">
-    </div>
-    <button type="button" class="btn btn-primary" id="sendButton" (click)="SendMsg()">傳送訊息</button>
-  </div>
-  <div class="col-4">
-    <h4>連線 ID 列表</h4>
-    <ul class="list-group" id="IDList" [innerHTML]="IDList|safeHtml">
-      {{IDList}}
-    </ul>
-  </div>
-</div>
-
-<div class="row mt-3">
-  <div class="col-12">
-    <h3>聊天內容</h3>
-    <ul class="list-group" id="Content" [innerHTML]="Content|safeHtml">
-    </ul>
-  </div>
+<div class="container-fluid">
+<app-chatroom>
+</app-chatroom>
 </div>

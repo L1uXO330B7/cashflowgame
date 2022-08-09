@@ -1,27 +1,29 @@
 import { Component, DoCheck, OnInit } from '@angular/core';
+import { ChatroomService } from 'src/app/components/chatroom/chatroom.service';
 
 @Component({
   selector: 'app-home-page',
   templateUrl: './home-page.component.html',
   styleUrls: ['./home-page.component.scss']
 })
-export class HomePageComponent implements OnInit,DoCheck {
+export class HomePageComponent implements OnInit {
 
-  constructor() {}
+  constructor(private _Chat:ChatroomService) {}
 
-  ngDoCheck(): void {
-    //Called every time that the input properties of a component or a directive are checked. Use it to extend change detection by performing a custom check.
-    //Add 'implements DoCheck' to the class.
+  UserName:string="";
 
+  StartGame(){
+    this._Chat.SetRegisterName(this.UserName);
   }
+
 
   ngOnInit(): void {
     // setTimeout(() => this.TypeWriter(), 1000);
   }
   ngAfterViewInit(): void{}
-  SloganText:string[]=[];
-  Index=0;
-  AnimatedText:string="";
+  // SloganText:string[]=[];
+  // Index=0;
+  // AnimatedText:string="";
   // TypeWriter() {
   //   this.SloganText="錢董讓你懂錢".split('');
   //   console.log("type",this.SloganText.length);
