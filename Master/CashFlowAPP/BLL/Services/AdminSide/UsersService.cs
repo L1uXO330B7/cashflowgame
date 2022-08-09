@@ -9,7 +9,12 @@ using Newtonsoft.Json;
 namespace BLL.Services.AdminSide
 {
     public class UsersService : ServiceBase,
-        IUsersService<List<CreateUserArgs>, List<ReadUserArgs>, List<UpdateUserArgs>, List<int?>>
+        IUsersService<
+            List<CreateUserArgs>, 
+            List<ReadUserArgs>, 
+            List<UpdateUserArgs>, 
+            List<int?>
+        >
     {
         private readonly CashFlowDbContext _CashFlowDbContext;
 
