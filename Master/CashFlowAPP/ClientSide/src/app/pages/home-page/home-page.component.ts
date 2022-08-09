@@ -1,5 +1,4 @@
 import { Component, DoCheck, OnInit } from '@angular/core';
-import { ChatroomService } from 'src/app/components/chatroom/chatroom.service';
 
 @Component({
   selector: 'app-home-page',
@@ -8,12 +7,12 @@ import { ChatroomService } from 'src/app/components/chatroom/chatroom.service';
 })
 export class HomePageComponent implements OnInit {
 
-  constructor(private _Chat:ChatroomService) {}
+  constructor() {}
 
   UserName:string="";
 
   StartGame(){
-    this._Chat.SetRegisterName(this.UserName);
+    localStorage.setItem("StrangerName",this.UserName);
   }
 
 

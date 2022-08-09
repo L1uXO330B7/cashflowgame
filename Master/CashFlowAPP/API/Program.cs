@@ -31,7 +31,7 @@ try
 
     // 註冊 DbContext
     builder.Services.AddDbContext<CashFlowDbContext>(options =>
-           options.UseSqlServer(builder.Configuration.GetConnectionString("OnlineCashFlow")));
+           options.UseSqlServer(builder.Configuration.GetConnectionString("SchoolSQL")));
 
     // 加入 SignalR
     builder.Services.AddSignalR();

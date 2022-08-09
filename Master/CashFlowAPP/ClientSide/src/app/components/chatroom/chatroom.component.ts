@@ -7,17 +7,15 @@ import { FromClientChat } from 'src/app/models/FromClientChat';
 @Component({
   selector: 'app-chatroom',
   templateUrl: './chatroom.component.html',
-  styleUrls: ['./chatroom.component.css']
+  styleUrls: ['./chatroom.component.scss']
 })
 export class ChatroomComponent implements OnInit {
 
   constructor(public _ToastService : GlobalToastService) { }
 
   ngOnInit(): void {
-    this.connect();
-    this.update();
-    this.UpdSelfID();
-    this.UpdContent();
+
+    this.DistinguishUser()
   }
   ShowToast(Msg:string,CssClass:string,Header:string) {
     this._ToastService.show(Msg,{
@@ -26,12 +24,29 @@ export class ChatroomComponent implements OnInit {
       HeaderTxt:Header,
     });
   }
+  UserToken: any="";
+  connection:any;
+  DistinguishUser(){
+    let Param = "";
+    this.UserToken = localStorage.getItem("Token");
+    Param = `token=${this.UserToken}`
+    console.log("this.UserToken",this.UserToken);
+    if(this.UserToken==null||undefined||""){
+      this.UserToken = localStorage.getItem("StrangerName");
+      console.log("this.UserToken",this.UserToken);
+      Param = `stranger=${this.UserToken}`
+    }
 
-  UserToken: any = localStorage.getItem("Token")
-  connection = new signalR.HubConnectionBuilder()
-    .withUrl(`http://localhost:46108/chatHub?token=${this.UserToken}`)
+    this.connection= new signalR.HubConnectionBuilder()
+    .withUrl(`http://localhost:46108/chatHub?${Param}`)
     .withAutomaticReconnect()
     .build();
+    this.connect();
+    this.update();
+    this.UpdSelfID();
+    this.UpdContent();
+  }
+
 
   //與Server建立連線
   connect() {
@@ -61,7 +76,7 @@ export class ChatroomComponent implements OnInit {
   SelfID = "";
   // 更新用戶個人連線 ID 事件
   UpdSelfID() {
-    this.connection.on("UpdSelfID", (ConnectId: any,SelfObj) => {
+    this.connection.on("UpdSelfID", (ConnectId: any,SelfObj:any) => {
       // $('#SelfID').html(id);
       console.log('SelfName',SelfObj);
       this.SelfID = SelfObj.name;
