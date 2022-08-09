@@ -1,4 +1,5 @@
 ﻿using API.Filter;
+using BLL.IServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -14,15 +15,16 @@ namespace API.Hubs
     /// </summary>
     public class ChatHub : Hub
     {
+
+        private IClientHubService _ClientHubService;
         /// <summary>
         /// 建構子
         /// </summary>
-        public ChatHub()
+        public ChatHub(IClientHubService ClientHubService)
         {
-            //var info = Context.GetHttpContext();
-            //var Authorization = info.Request.Headers["Authorization"];
+            _ClientHubService = ClientHubService;
         }
-
+ 
         /// <summary>
         /// 連線ID清單
         /// </summary>

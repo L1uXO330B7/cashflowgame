@@ -136,6 +136,7 @@ try
         IUsersService<List<CreateUserArgs>, List<ReadUserArgs>, List<UpdateUserArgs>, List<int?>>,
         UsersService
     >();
+    builder.Services.AddScoped<IClientHubService, ClientHubService>();
     
 
     // 註冊 MiniProfiler 如果更改設定需產生 MiniProfiler Script 貼於於 Swagger Index 內
