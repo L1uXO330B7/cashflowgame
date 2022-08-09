@@ -41,17 +41,19 @@ namespace API.Hubs
         public override async Task OnConnectedAsync()
         {
             var Token = Context.GetHttpContext().Request.Query["token"];
-            string value = !string.IsNullOrEmpty(Token.ToString()) ? Token.ToString() : "default";
-
+            //if (Token.Count != 0)
+            //{
+                string value = !string.IsNullOrEmpty(Token.ToString()) ? Token.ToString() : "default";
             _UserObject = Jose.JWT.Decode<UserInfo>(
                    Token, Encoding.UTF8.GetBytes("錢董"),
                    Jose.JwsAlgorithm.HS256);
+            //}
+            //else
+            //{
 
-            //var info = Context.GetHttpContext();
-            //var Authorization = info.Request.Headers["Authorization"];
-            //var JwtObject = Jose.JWT.Decode<UserInfo>(
-            //           JwtToken, Encoding.UTF8.GetBytes("錢董"),
-            //           Jose.JwsAlgorithm.HS256);
+            //    _UserObject.Name = $@"社畜{Method.CreateValidateCode(4)}";
+            //}
+            
 
             if (ConnIDList.Where(p => p == Context.ConnectionId).FirstOrDefault() == null)
             {
