@@ -7,7 +7,7 @@ namespace BLL.Services.ClientSide
     {
 
 
-        public async Task<string> GetUserToken(string? Key)
+        public string? GetUserToken(string? Key)
         {
             return Context.GetHttpContext().Request.Query[Key];
         }

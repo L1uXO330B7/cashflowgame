@@ -5,6 +5,6 @@ namespace BLL.IServices
 {
     public interface IClientHubService
     {
-        Task<string> GetUserToken(string? Key);
+        string? GetUserToken(string? Key);
     }
 }
