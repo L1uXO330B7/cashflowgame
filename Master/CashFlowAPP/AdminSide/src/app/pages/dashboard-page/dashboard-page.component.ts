@@ -11,5 +11,7 @@ export class DashboardPageComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
+  click(){
+    
+  }
 }
