@@ -1,5 +1,11 @@
-<mat-sidenav-container>
-  <mat-sidenav #sideNav>
+<mat-toolbar color="primary" class="demo-app-header">
+  <button mat-icon-button (click)="sideNav.toggle()">
+    <mat-icon>{{ sideNav.opened ? 'close' : 'menu' }}</mat-icon>
+  </button>
+  <span>IT鐵人賽－Angular Material Demo</span>
+</mat-toolbar>
+<mat-sidenav-container class="main">
+  <mat-sidenav #sideNav mode="side">
     我是左邊選單
   </mat-sidenav>
 
