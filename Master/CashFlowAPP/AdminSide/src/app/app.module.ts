@@ -7,17 +7,20 @@ import { DashboardPageComponent } from './pages/dashboard-page/dashboard-page.co
 import { SharedMaterialModule } from './common/modules/shared/shared-material.module';
 import { UsersTableComponent } from './pages/users-table/users-table.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
     DashboardPageComponent,
     UsersTableComponent,
+
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     SharedMaterialModule,
+
   ],
   providers: [],
   bootstrap: [AppComponent]

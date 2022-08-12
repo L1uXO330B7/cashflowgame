@@ -1,18 +1,32 @@
 <div class="MainCotainer">
-<mat-toolbar color="primary" class="demo-app-header">
-  <button mat-icon-button (click)="sideNav.toggle()">
-    <mat-icon>{{ sideNav.opened ? 'close' : 'menu' }}</mat-icon>
-  </button>
-  <h1>錢 董 <span>Dashboard</span></h1>
-</mat-toolbar>
-<mat-sidenav-container class="SideNav">
-  <mat-sidenav #sideNav mode="side">
-    我是左邊選單
-  </mat-sidenav>
+  <mat-toolbar color="primary" class="Header">
+    <div class="BtnBox">
+      <button mat-icon-button (click)="sideNav.toggle()">
+        <mat-icon>{{ sideNav.opened ? 'close' : 'menu' }}</mat-icon>
+      </button>
+      <span>Dashboard</span>
+    </div>
 
-  <mat-sidenav-content>
+    <div class="BrandBox">
+      <h1>錢 董</h1>
+    </div>
+    <div class="UserBox">
+      <mat-icon>face</mat-icon>
+    </div>
+  </mat-toolbar>
+  <mat-sidenav-container class="SideNavContainer">
+    <mat-sidenav #sideNav mode="side" class="SideNav">
+      <mat-nav-list class="list">
+        <h3>後台管理</h3>
+        <a [routerLink]="['/', 'dashboard', 'users']" mat-list-item>用戶管理</a>
+        <a [routerLink]="['/', 'dashboard', 'blog']" mat-list-item>部落格</a>
+        <a [routerLink]="['/', 'dashboard', 'inbox']" mat-list-item>收件夾</a>
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content class="content">
       <button mat-button (click)="sideNav.toggle()">切換左邊選單狀態</button>
       <router-outlet></router-outlet>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
 </div>
