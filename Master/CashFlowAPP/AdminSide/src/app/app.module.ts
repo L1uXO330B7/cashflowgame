@@ -6,6 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DashboardPageComponent } from './pages/dashboard-page/dashboard-page.component';
 import { SharedMaterialModule } from './common/modules/shared/shared-material.module';
 import { UsersTableComponent } from './pages/users-table/users-table.component';
+import { LoginPageComponent } from './pages/login-page/login-page.component';
 
 
 @NgModule({
@@ -13,6 +14,7 @@ import { UsersTableComponent } from './pages/users-table/users-table.component';
     AppComponent,
     DashboardPageComponent,
     UsersTableComponent,
+    LoginPageComponent,
 
   ],
   imports: [

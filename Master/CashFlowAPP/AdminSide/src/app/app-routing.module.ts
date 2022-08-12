@@ -1,3 +1,4 @@
+import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardPageComponent } from './pages/dashboard-page/dashboard-page.component';
@@ -11,7 +12,12 @@ const routes: Routes = [
         path:'users',
         component:UsersTableComponent
       }
-    ] },
+    ]
+  },
+  {
+    path:'login',
+    component:LoginPageComponent
+  },
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
 ];
 

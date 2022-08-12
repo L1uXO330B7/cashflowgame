@@ -15,12 +15,11 @@
         padding: 10px 0px;
         font-size: 24px;
         font-weight: 700;
-        background-color: rgba(0,0,0,0.3);
+        background-color: rgba(255,255,255,0.5);
       }
     }
   }
   .content{
-    background-color: white;
   }
 }
 
@@ -39,6 +38,13 @@
       font-weight: 900;
       font-size: 30px;
       text-shadow: 1px 3px 5px rgba(0,0,0,0.6);
+    }
+  }
+  .UserBox{
+    display: flex;
+    align-items: center;
+    span{
+      margin-left: 5px;
     }
   }
 }

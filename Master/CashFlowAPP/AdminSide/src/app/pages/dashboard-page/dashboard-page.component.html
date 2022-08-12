@@ -2,7 +2,7 @@
   <mat-toolbar color="primary" class="Header">
     <div class="BtnBox">
       <button mat-icon-button (click)="sideNav.toggle()">
-        <mat-icon>{{ sideNav.opened ? 'close' : 'menu' }}</mat-icon>
+        <mat-icon>{{ sideNav.opened ? 'playlist_remove' : 'menu' }}</mat-icon>
       </button>
       <span>Dashboard</span>
     </div>
@@ -11,14 +11,14 @@
       <h1>錢 董</h1>
     </div>
     <div class="UserBox">
-      <mat-icon>face</mat-icon>
+      <mat-icon>face</mat-icon><span>Admin</span>
     </div>
   </mat-toolbar>
   <mat-sidenav-container class="SideNavContainer">
-    <mat-sidenav #sideNav mode="side" class="SideNav">
+    <mat-sidenav #sideNav mode="side" class="SideNav" opened>
       <mat-nav-list class="list">
         <h3>後台管理</h3>
-        <a [routerLink]="['/', 'dashboard', 'users']" mat-list-item>用戶管理</a>
+        <a [routerLink]="['/', 'dashboard', 'users']" mat-list-item mat-ripple>用戶管理</a>
         <a [routerLink]="['/', 'dashboard', 'blog']" mat-list-item>部落格</a>
         <a [routerLink]="['/', 'dashboard', 'inbox']" mat-list-item>收件夾</a>
       </mat-nav-list>
