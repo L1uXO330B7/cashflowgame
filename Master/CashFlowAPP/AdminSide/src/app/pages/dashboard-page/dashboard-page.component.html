@@ -1,10 +1,11 @@
+<div class="MainCotainer">
 <mat-toolbar color="primary" class="demo-app-header">
   <button mat-icon-button (click)="sideNav.toggle()">
     <mat-icon>{{ sideNav.opened ? 'close' : 'menu' }}</mat-icon>
   </button>
-  <span>IT鐵人賽－Angular Material Demo</span>
+  <h1>錢 董 <span>Dashboard</span></h1>
 </mat-toolbar>
-<mat-sidenav-container class="main">
+<mat-sidenav-container class="SideNav">
   <mat-sidenav #sideNav mode="side">
     我是左邊選單
   </mat-sidenav>
@@ -14,3 +15,4 @@
       <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>
+</div>
