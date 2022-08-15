@@ -9,8 +9,7 @@ using System.Linq;
 
 namespace BLL.Services.AdminSide
 {
-    public class UsersService : ServiceBase,
-        IUsersService<
+    public class UsersService :IUsersService<
             List<CreateUserArgs>, 
             List<ReadUserArgs>, 
             List<UpdateUserArgs>, 
@@ -40,7 +39,7 @@ namespace BLL.Services.AdminSide
                 user.RoleId = Arg.RoleId;
                 users.Add(user);
             }
-
+            
             _CashFlowDbContext.AddRange(users);
             _CashFlowDbContext.SaveChanges();
             // 不做銷毀 Dispose 動作，交給 DI 容器處理

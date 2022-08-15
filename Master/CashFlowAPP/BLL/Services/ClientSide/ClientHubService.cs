@@ -11,5 +11,10 @@ namespace BLL.Services.ClientSide
         {
             return Context.GetHttpContext().Request.Query[Key];
         }
+
+        Task IClientHubService.GetUserToken(string? Key)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

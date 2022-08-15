@@ -12,6 +12,8 @@ using Microsoft.OpenApi.Models;
 using Serilog;
 using Serilog.Events;
 using System.Reflection;
+using static Common.Model.AdminSide.QuestionsModel;
+
 
 // Serilog 程式註冊 ( 改到共用函式庫撰寫 )
 Serilog.Log.Logger = Method.LogInit();
@@ -31,7 +33,7 @@ try
 
     // 註冊 DbContext
     builder.Services.AddDbContext<CashFlowDbContext>(options =>
-           options.UseSqlServer(builder.Configuration.GetConnectionString("SchoolSQL")));
+           options.UseSqlServer(builder.Configuration.GetConnectionString("LocalMDF")));
 
     // 加入 SignalR
     builder.Services.AddSignalR();
@@ -126,7 +128,7 @@ try
         c.IncludeXmlComments(FilePath);
     });
 
-    
+
 
     // 註冊 Services
 
@@ -136,8 +138,11 @@ try
         IUsersService<List<CreateUserArgs>, List<ReadUserArgs>, List<UpdateUserArgs>, List<int?>>,
         UsersService
     >();
+
+
+
     builder.Services.AddScoped<IClientHubService, ClientHubService>();
-    
+
 
     // 註冊 MiniProfiler 如果更改設定需產生 MiniProfiler Script 貼於於 Swagger Index 內
     builder.Services.AddMiniProfiler(options =>
