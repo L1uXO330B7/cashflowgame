@@ -7,6 +7,8 @@ import { DashboardPageComponent } from './pages/dashboard-page/dashboard-page.co
 import { SharedMaterialModule } from './common/modules/shared/shared-material.module';
 import { UsersTableComponent } from './pages/users-table/users-table.component';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpInterceptorService } from './common/services/http-interceptor.service';
 
 
 @NgModule({
@@ -22,9 +24,16 @@ import { LoginPageComponent } from './pages/login-page/login-page.component';
     AppRoutingModule,
     BrowserAnimationsModule,
     SharedMaterialModule,
+    HttpClientModule
 
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpInterceptorService,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
