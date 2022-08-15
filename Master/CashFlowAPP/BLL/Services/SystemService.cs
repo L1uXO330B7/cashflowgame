@@ -14,7 +14,11 @@ namespace BLL.Services
 
         public void CreateTemplateByTableName()
         {
-            var test = Type.GetType("DPL.EF, DPL");
+            // 參考 https://stackoverflow.com/questions/79693/getting-all-types-in-a-namespace-via-reflection
+            var types = AppDomain.CurrentDomain.GetAssemblies()
+                       .SelectMany(t => t.GetTypes())
+                       .Where(t => t.IsClass && t.Namespace == "DPL.EF")
+                       .ToList();
         }
     }
 }
