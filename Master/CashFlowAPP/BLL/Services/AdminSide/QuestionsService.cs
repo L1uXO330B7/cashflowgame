@@ -40,7 +40,7 @@ namespace BLL.Services.AdminSide
                 Res.Success = true;
                 Res.Code = (int)ResponseStatusCode.Success;
                 Res.Message = "成功讀取";
-                Res.Data = _CashFlowDbContext.Users.ToList();
+                Res.Data = _CashFlowDbContext.Questions.ToList();
             }
             else
             {
