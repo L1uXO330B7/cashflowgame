@@ -9,6 +9,5 @@ export class AppComponent {
   title = 'AdminSide';
   @ViewChild('dashboard', { static: true }) viewportDOM: any;
   ngOnInit(): void {
-    console.log(this.viewportDOM);
   }
 }
