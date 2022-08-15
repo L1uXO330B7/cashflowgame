@@ -1,9 +1,5 @@
 ﻿using DPL.EF;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection;
 
 namespace BLL.Services
 {
@@ -18,6 +14,7 @@ namespace BLL.Services
 
         public void CreateTemplateByTableName()
         {
+            var test = Type.GetType("DPL.EF, DPL");
         }
     }
 }
