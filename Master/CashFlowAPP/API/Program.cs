@@ -12,7 +12,6 @@ using Microsoft.OpenApi.Models;
 using Serilog;
 using Serilog.Events;
 using System.Reflection;
-using static Common.Model.AdminSide.QuestionsModel;
 
 
 // Serilog 程式註冊 ( 改到共用函式庫撰寫 )
@@ -138,7 +137,10 @@ try
         IUsersService<List<CreateUserArgs>, List<ReadUserArgs>, List<UpdateUserArgs>, List<int?>>,
         UsersService
     >();
-
+    builder.Services.AddScoped<
+      IQuestionsService<List<CreateUserArgs>, List<ReadQuestionArgs>, List<UpdateUserArgs>, List<int?>>,
+      QuestionsService
+  >();
 
 
     builder.Services.AddScoped<IClientHubService, ClientHubService>();

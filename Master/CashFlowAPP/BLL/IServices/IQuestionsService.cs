@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace BLL.IServices
 {
-    interface IQuestionsService<CreateArgs, ReadArgs, UpdateArgs, DeleteArgs> : ICrudService<CreateArgs, ReadArgs, UpdateArgs, DeleteArgs> { }
+    public interface IQuestionsService<CreateArgs, ReadArgs, UpdateArgs, DeleteArgs> : ICrudService<CreateArgs, ReadArgs, UpdateArgs, DeleteArgs> { }
 }

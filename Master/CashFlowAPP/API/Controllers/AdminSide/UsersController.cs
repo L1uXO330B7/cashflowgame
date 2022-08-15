@@ -10,7 +10,7 @@ namespace API.Controllers.AdminSide
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class UsersController : ControllerBase, 
+    public class UsersController : Controller, 
         ICrudController<List<CreateUserArgs>, List<ReadUserArgs>, List<UpdateUserArgs>, List<int?>>
     {
         private IUsersService<List<CreateUserArgs>, List<ReadUserArgs>, List<UpdateUserArgs>, List<int?>> _UserService;

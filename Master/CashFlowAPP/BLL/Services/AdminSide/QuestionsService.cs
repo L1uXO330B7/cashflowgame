@@ -5,7 +5,6 @@ using Common.Model.AdminSide;
 using DPL.EF;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
-using static Common.Model.AdminSide.QuestionsModel;
 
 namespace BLL.Services.AdminSide
 {

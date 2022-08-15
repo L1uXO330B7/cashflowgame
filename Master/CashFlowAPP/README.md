@@ -165,3 +165,11 @@ https://stackoverflow.com/questions/51017703/error-cs1061-dbsett-does-not-contai
 ## 引入 Dapper 做動態查詢
 
 https://blog.darkthread.net/blog/dapper-with-ef-core/
+
+
+
+## DataBase 比對
+
+1. 受限於條件，開發上無法使用相同的 DB，因此測試資料不一樣。
+
+2. 解決上述狀況，可使用 Visual Studio 上方工具列之工具中的 SQL Server，可以比對資料，也可以比對資料結構 
