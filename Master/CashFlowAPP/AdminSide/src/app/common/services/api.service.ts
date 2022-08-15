@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import { ApiResponse } from '../models/ApiResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -12,5 +13,8 @@ export class ApiService {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
   };
     _ApiUrl = `${environment.ApiRoot}`;
-
+    UsersRead(Req:any){
+      let Url = `${this._ApiUrl}/Users/Read`
+      return this._HttpClient.post<ApiResponse>(Url, Req, this._HttpOptions);
+    }
 }
