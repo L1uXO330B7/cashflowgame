@@ -1,4 +1,7 @@
+import { ApiRequest } from '../../common/models/ApiRequest';
 import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { ApiService } from 'src/app/common/services/api.service';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -7,11 +10,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardPageComponent implements OnInit {
 
-  constructor() { }
+  // constructor(private _HttpClient: HttpClient, private _ApiService: ApiService) { }
 
   ngOnInit(): void {
+    // this.UsersRead();
   }
-  click(){
-    
-  }
+  // UsersRead(){
+  //   let Req = new ApiRequest<any>();
+  //   this._ApiService.UsersRead(Req).subscribe((Res)=>{
+  //     if(Res.Success){
+  //       console.log("Res",Res);
+  //     }
+  //   })
+  // }
 }

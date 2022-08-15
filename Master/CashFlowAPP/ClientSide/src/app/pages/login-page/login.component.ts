@@ -99,7 +99,6 @@ export class LoginComponent implements OnInit {
       alert("請確認密碼");
       return
     }
-    let ApiUrl = `${environment.ApiRoot}/ClientSide/UserSignUp`;
     let Req = new ApiRequest<any>();
     this._ClientUserLogin.JwtCode = this.VerificationCode.JwtCode;
     Req.Args = this._ClientUserLogin;

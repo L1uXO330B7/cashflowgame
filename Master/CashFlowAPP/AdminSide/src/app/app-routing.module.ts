@@ -19,6 +19,7 @@ const routes: Routes = [
     component:LoginPageComponent
   },
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+  { path: '**', redirectTo: '/dashboard', pathMatch: 'full' },
 ];
 
 @NgModule({
