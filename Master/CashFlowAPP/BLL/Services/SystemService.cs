@@ -55,6 +55,8 @@ namespace BLL.Services
 
             foreach (var type in types)
             {
+
+
                 if (!type.FullName.ToLower().Contains("context"))
                 {
                     // XxxController.cs
@@ -72,6 +74,9 @@ namespace BLL.Services
                     File.WriteAllText(FileName, XxxController, Encoding.UTF8);
 
                     // IXxxService.cs
+                    var Properties = type.GetTypeInfo().DeclaredProperties;
+                    var Props = Properties.Select(x => new { x.Name, x.PropertyType }).ToList();
+
                     var IXxxService = Templates.BackEnd.IXxxService
                         .Replace("#UsersController", $"{type.Name}sController")
                         .Replace("#CreateUserArgs", $"Create{type.Name}Args")
@@ -170,10 +175,10 @@ namespace BLL.Services
 
         namespace BLL.Services.AdminSide
         {
-            public class UsersService :IUsersService<
-                    List<CreateUserArgs>, 
-                    List<ReadUserArgs>, 
-                    List<UpdateUserArgs>, 
+            public class #UsersService :#IUsersService<
+                    List<#CreateUserArgs>, 
+                    List<#ReadUserArgs>, 
+                    List<#UpdateUserArgs>, 
                     List<int?>
             >
             {
@@ -184,29 +189,29 @@ namespace BLL.Services
                             _CashFlowDbContext = cashFlowDbContext;
                     }
 
-                    public async Task<ApiResponse> Create(ApiRequest<List<CreateUserArgs>> Req)
+                    public async Task<ApiResponse> Create(ApiRequest<List<#CreateUserArgs>> Req)
                     {
-                        var users = new List<User>();
+                        var users = new List<#User>();
 
                         var SussList = new List<int>();
 
                         foreach (var Arg in Req.Args)
                         {
-                            var user = new User();
+                            var #user = new #User();
                             user.Email = Arg.Email;
                             user.Password = Arg.Password;
                             user.Name = Arg.Name;
                             user.Status = Arg.Status;
                             user.RoleId = Arg.RoleId;
-                            users.Add(user);
+                            #users.Add(#user);
                         }
             
-                        _CashFlowDbContext.AddRange(users);
+                        _CashFlowDbContext.AddRange(#users);
                         _CashFlowDbContext.SaveChanges();
                         // 不做銷毀 Dispose 動作，交給 DI 容器處理
 
                         // 此處 SaveChanges 後 SQL Server 會 Tracking 回傳新增後的 Id
-                        SussList = users.Select(x => x.Id).ToList();
+                        SussList = #users.Select(x => x.Id).ToList();
 
                         var Res = new ApiResponse();
                         Res.Data = $@""SussList：[{string.Join(',', SussList)}]"";
@@ -339,10 +344,8 @@ namespace BLL.Services
 
                             return Res;
                     }
-
              }
         }
-
 ";
 
             public static string XxxService = @"
