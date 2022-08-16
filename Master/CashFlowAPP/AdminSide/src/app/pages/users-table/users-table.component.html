@@ -1,1 +1,25 @@
-<p>user-table works!</p>
+<mat-table [dataSource]="UsersData">
+  <ng-container matColumnDef="user">
+    <mat-header-cell *matHeaderCellDef>編號</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{ row.Id }}</mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="account">
+    <mat-header-cell *matHeaderCellDef>帳號</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{ row.Email }}</mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="name">
+    <mat-header-cell *matHeaderCellDef>名字</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{ row.Name }}</mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="Status">
+    <mat-header-cell *matHeaderCellDef>
+      狀態
+    </mat-header-cell>
+    <mat-cell *matCellDef="let row">
+      <button mat-button color="primary">回覆</button>
+      <button mat-button color="warn">刪除</button>
+    </mat-cell>
+  </ng-container>
+  <mat-header-row *matHeaderRowDef="['user', 'account', 'name', 'Status']"></mat-header-row>
+  <mat-row *matRowDef="let UserRow; columns: ['user', 'account', 'name', 'Status']"></mat-row>
+</mat-table>
