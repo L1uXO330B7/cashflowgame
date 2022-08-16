@@ -32,7 +32,7 @@ try
 
     // 註冊 DbContext
     builder.Services.AddDbContext<CashFlowDbContext>(options =>
-           options.UseSqlServer(builder.Configuration.GetConnectionString("LocalMDF2")));
+           options.UseSqlServer(builder.Configuration.GetConnectionString("LocalMDF")));
 
     // 加入 SignalR
     builder.Services.AddSignalR();

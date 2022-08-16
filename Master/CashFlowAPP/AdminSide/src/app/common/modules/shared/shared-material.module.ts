@@ -6,6 +6,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatListModule} from '@angular/material/list';
 import {MatRippleModule} from '@angular/material/core';
+import {MatTableModule} from '@angular/material/table';
 
 @NgModule({
   declarations: [],
@@ -16,7 +17,8 @@ import {MatRippleModule} from '@angular/material/core';
     MatIconModule,
     MatToolbarModule,
     MatListModule,
-    MatRippleModule
+    MatRippleModule,
+    MatTableModule
   ],
   exports:[
     MatButtonModule,
@@ -24,7 +26,8 @@ import {MatRippleModule} from '@angular/material/core';
     MatIconModule,
     MatToolbarModule,
     MatListModule,
-    MatRippleModule
+    MatRippleModule,
+    MatTableModule
   ]
 })
 export class SharedMaterialModule { }
