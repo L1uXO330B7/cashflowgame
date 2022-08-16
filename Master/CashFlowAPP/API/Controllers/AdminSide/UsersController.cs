@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Common.Model;
 using BLL.IServices;
-using StackExchange.Profiling;
 using Common.Model.AdminSide;
-using DPL.EF;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace API.Controllers.AdminSide

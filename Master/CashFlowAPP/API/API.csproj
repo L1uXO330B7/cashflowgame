@@ -9,6 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Script\**" />
+    <Content Remove="Script\**" />
+    <EmbeddedResource Remove="Script\**" />
+    <None Remove="Script\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="index.html" />
   </ItemGroup>
 

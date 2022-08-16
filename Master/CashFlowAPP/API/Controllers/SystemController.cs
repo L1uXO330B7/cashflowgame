@@ -1,6 +1,6 @@
 ﻿using API.Filter;
 using BLL.Services;
-using Common.Mesthods;
+using Common.Methods;
 using Common.Model;
 using DPL.EF;
 using Microsoft.AspNetCore.Mvc;
@@ -67,7 +67,8 @@ namespace API.Controllers
         [HttpGet]
         public void CreateTemplateByTableName()
         {
-            new SystemService(_CashFlowDbContext).CreateTemplateByTableName();
+            var RootDirectoryPath = System.IO.Directory.GetCurrentDirectory();
+            new SystemService(_CashFlowDbContext).CreateTemplateByTableName(RootDirectoryPath);
         }
     }
 }

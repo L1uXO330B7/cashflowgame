@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Common.Mesthods
+namespace Common.Methods
 {
     public static class Method
     {
@@ -113,6 +113,20 @@ namespace Common.Mesthods
                             outputTemplate: SerilogOutputTemplate
                    )
                    .CreateLogger();
+        }
+
+        /// <summary>
+        /// 沒有目錄則創建
+        /// </summary>
+        /// <param name="Root"></param>
+        public static void CreateWithoutDirectory(string Root)
+        {
+            var IsExists = Directory.Exists(Root); // 檢查是否有該路徑的檔案或資料夾
+            if (!IsExists)
+            {
+                //存檔資料夾不存在，新增資料夾
+                Directory.CreateDirectory(Root);
+            }
         }
     }
 }

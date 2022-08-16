@@ -1,5 +1,5 @@
 ﻿using Common.Enum;
-using Common.Mesthods;
+using Common.Methods;
 using Common.Model;
 using DPL.EF;
 using MailKit.Net.Smtp;

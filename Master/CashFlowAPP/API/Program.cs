@@ -3,7 +3,7 @@ using API.Hubs;
 using BLL.IServices;
 using BLL.Services.AdminSide;
 using BLL.Services.ClientSide;
-using Common.Mesthods;
+using Common.Methods;
 using Common.Model.AdminSide;
 using DPL.EF;
 using Microsoft.AspNetCore.Rewrite;
@@ -32,7 +32,7 @@ try
 
     // 註冊 DbContext
     builder.Services.AddDbContext<CashFlowDbContext>(options =>
-           options.UseSqlServer(builder.Configuration.GetConnectionString("OnlineCashFlow")));
+           options.UseSqlServer(builder.Configuration.GetConnectionString("LocalMDF2")));
 
     // 加入 SignalR
     builder.Services.AddSignalR();
