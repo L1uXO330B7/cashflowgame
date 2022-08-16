@@ -1,4 +1,4 @@
-<mat-table [dataSource]="UsersData">
+<div class="UsersTable"><mat-table [dataSource]="UsersData">
   <ng-container matColumnDef="user">
     <mat-header-cell *matHeaderCellDef>編號</mat-header-cell>
     <mat-cell *matCellDef="let row">{{ row.Id }}</mat-cell>
@@ -22,4 +22,5 @@
   </ng-container>
   <mat-header-row *matHeaderRowDef="['user', 'account', 'name', 'Status']"></mat-header-row>
   <mat-row *matRowDef="let UserRow; columns: ['user', 'account', 'name', 'Status']"></mat-row>
-</mat-table>
+</mat-table></div>
+
