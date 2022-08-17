@@ -7,6 +7,12 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatListModule} from '@angular/material/list';
 import {MatRippleModule} from '@angular/material/core';
 import {MatTableModule} from '@angular/material/table';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
+
+
+
 
 @NgModule({
   declarations: [],
@@ -18,7 +24,10 @@ import {MatTableModule} from '@angular/material/table';
     MatToolbarModule,
     MatListModule,
     MatRippleModule,
-    MatTableModule
+    MatTableModule,
+    MatPaginatorModule,
+    MatFormFieldModule,
+    MatInputModule,
   ],
   exports:[
     MatButtonModule,
@@ -27,7 +36,10 @@ import {MatTableModule} from '@angular/material/table';
     MatToolbarModule,
     MatListModule,
     MatRippleModule,
-    MatTableModule
+    MatTableModule,
+    MatPaginatorModule,
+    MatFormFieldModule,
+    MatInputModule
   ]
 })
 export class SharedMaterialModule { }

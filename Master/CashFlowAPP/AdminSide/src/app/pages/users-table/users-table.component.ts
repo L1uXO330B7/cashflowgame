@@ -1,7 +1,10 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ApiRequest } from 'src/app/common/models/ApiRequest';
 import { ApiService } from 'src/app/common/services/api.service';
+import {MatSort} from '@angular/material/sort';
+import {MatTableDataSource} from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-users-table',
@@ -27,5 +30,15 @@ export class UsersTableComponent implements OnInit {
         this.UsersData = Res.Data;
       }
     })
+  }
+
+  displayedColumns: string[] = ['User', 'Account', 'Name', 'Status'];
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.UsersData.filter = filterValue.trim().toLowerCase();
+
+    if (this.UsersData.paginator) {
+      this.UsersData.paginator.firstPage();
+    }
   }
 }
