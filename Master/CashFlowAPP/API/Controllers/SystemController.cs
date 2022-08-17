@@ -67,8 +67,7 @@ namespace API.Controllers
         [HttpGet]
         public void CreateTemplateByTableName()
         {
-            var RootDirectoryPath = System.IO.Directory.GetCurrentDirectory();
-            new SystemService(_CashFlowDbContext).CreateTemplateByTableName(RootDirectoryPath);
+            new SystemService(_CashFlowDbContext).CreateTemplateByTableName();
         }
     }
 }

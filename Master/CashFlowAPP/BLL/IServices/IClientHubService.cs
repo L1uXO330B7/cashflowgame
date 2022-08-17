@@ -1,7 +1,4 @@
-﻿
-using Microsoft.AspNetCore.SignalR;
-
-namespace BLL.IServices
+﻿namespace BLL.IServices
 {
     public interface IClientHubService
     {

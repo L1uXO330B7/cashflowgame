@@ -14,8 +14,9 @@ namespace BLL.Services
             _CashFlowDbContext = cashFlowDbContext;
         }
 
-        public void CreateTemplateByTableName(string RootDirectoryPath)
+        public void CreateTemplateByTableName()
         {
+            var RootDirectoryPath = System.IO.Directory.GetCurrentDirectory();
             var ScriptRoot = $@"{RootDirectoryPath}\Script";
             var IsExists = Directory.Exists(ScriptRoot); // 檢查是否有該路徑的檔案或資料夾
             if (!IsExists)
@@ -55,8 +56,6 @@ namespace BLL.Services
 
             foreach (var type in types)
             {
-
-
                 if (!type.FullName.ToLower().Contains("context"))
                 {
                     // XxxController.cs
@@ -69,28 +68,28 @@ namespace BLL.Services
                         .Replace("#IUsersService", $"I{type.Name}sService")
                         ;
 
-                    var FileName = $@"{ControllersRoot}\{type.Name}sController.cs";
+                    var FilePath = $@"{ControllersRoot}\{type.Name}sController.cs";
 
-                    File.WriteAllText(FileName, XxxController, Encoding.UTF8);
+                    File.WriteAllText(FilePath, XxxController, Encoding.UTF8);
 
                     // IXxxService.cs
-                    var Properties = type.GetTypeInfo().DeclaredProperties;
-                    var Props = Properties.Select(x => new { x.Name, x.PropertyType }).ToList();
-
                     var IXxxService = Templates.BackEnd.IXxxService
-                        .Replace("#UsersController", $"{type.Name}sController")
-                        .Replace("#CreateUserArgs", $"Create{type.Name}Args")
-                        .Replace("#ReadUserArgs", $"Read{type.Name}Args")
-                        .Replace("#UpdateUserArgs", $"Update{type.Name}Args")
-                        .Replace("#UserService", $"{type.Name}sService")
                         .Replace("#IUsersService", $"I{type.Name}sService")
                         ;
 
-                    FileName = $@"{IServicesRoot}\{type.Name}sService.cs";
+                    FilePath = $@"{IServicesRoot}\{type.Name}sService.cs";
 
-                    File.WriteAllText(FileName, IXxxService, Encoding.UTF8);
+                    File.WriteAllText(FilePath, IXxxService, Encoding.UTF8);
 
                     // XxxService.cs
+                    var Properties = type.GetTypeInfo().DeclaredProperties;
+                    var Props = Properties.Select(x => new
+                    {
+                        PropName = x.Name,
+                        PropType = Templates
+                        .GetSqlDataTypeString(x.PropertyType.FullName, 2)
+                    })
+                    .ToList();
 
                     // XxxModel.cs
                 }
@@ -163,6 +162,13 @@ namespace BLL.Services
 ";
 
             public static string IXxxService = @"
+    namespace BLL.IServices
+    {
+        public interface #IUsersService<CreateArgs, ReadArgs, UpdateArgs, DeleteArgs> : ICrudService<CreateArgs, ReadArgs, UpdateArgs, DeleteArgs> { }
+    }
+";
+
+            public static string XxxService = @"
 
         using BLL.IServices;
         using Common.Model;
@@ -348,15 +354,130 @@ namespace BLL.Services
         }
 ";
 
-            public static string XxxService = @"
-";
-
             public static string XxxModel = @"
 ";
         }
 
         public static class FrontEnd
         {
+        }
+
+        /// <summary>
+        /// 轉換資料型態字串
+        /// </summary>
+        /// <param name="dataType">資料型態</param>
+        /// <param name="returnType">回傳型態 1.SQL型態 2.變數宣告 3.變數預設值 7.Angular型態 8.Angular InputType</param>
+        /// <returns></returns>
+        public static string GetSqlDataTypeString(string dataType, int returnType)
+        {
+            string typeClassString = "";
+            string typeDetailsString = "";
+            string typeDefaultString = "";
+            string returnString = "";
+            string typeAngularString = "";
+            string typeAngularInputString = "";
+
+            switch (dataType)
+            {
+                case ("System.Byte"):
+                    typeClassString = "SqlDbType.TinyInt"; // SQL 型態
+                    typeDetailsString = "byte"; // 變數宣告
+                    typeDefaultString = "Default.MyByte"; // 變數預設值
+                    typeAngularString = "number"; // Angular 型態
+                    typeAngularInputString = "number"; // Angular InputType
+                    break;
+                case ("System.Int16"):
+                    typeClassString = "SqlDbType.SmallInt";
+                    typeDetailsString = "short";
+                    typeDefaultString = "Default.MyShort";
+                    typeAngularString = "number";
+                    typeAngularInputString = "number";
+                    break;
+                case ("System.Int32"):
+                    typeClassString = "SqlDbType.Int";
+                    typeDetailsString = "int";
+                    typeDefaultString = "Default.MyInt";
+                    typeAngularString = "number";
+                    typeAngularInputString = "number";
+                    break;
+                case ("System.Int64"):
+                    typeClassString = "SqlDbType.BigInt";
+                    typeDetailsString = "long";
+                    typeDefaultString = "Default.MyLong";
+                    typeAngularString = "number";
+                    typeAngularInputString = "number";
+                    break;
+                case ("System.String"):
+                    typeClassString = "SqlDbType.NVarChar";
+                    typeDetailsString = "string";
+                    typeDefaultString = "Default.MyString";
+                    typeAngularString = "string";
+                    typeAngularInputString = "text";
+                    break;
+                case ("System.Guid"):
+                    typeClassString = "SqlDbType.UniqueIdentifier";
+                    typeDetailsString = "Guid";
+                    typeDefaultString = "Default.MyGuid";
+                    typeAngularString = "string";
+                    typeAngularInputString = "text";
+                    break;
+                case ("System.Boolean"):
+                    typeClassString = "SqlDbType.Bit";
+                    typeDetailsString = "bool";
+                    typeDefaultString = "Default.MyBoolean";
+                    typeAngularString = "boolean";
+                    typeAngularInputString = "number";
+                    break;
+                case ("System.DateTime"):
+                    typeClassString = "SqlDbType.DateTime";
+                    typeDetailsString = "DateTime";
+                    typeDefaultString = "Default.MyDateTime";
+                    typeAngularString = "Date";
+                    typeAngularInputString = "Date";
+                    break;
+                case ("System.Double"):
+                    typeClassString = "SqlDbType.Float";
+                    typeDetailsString = "double";
+                    typeDefaultString = "Default.MyDouble";
+                    typeAngularString = "number";
+                    typeAngularInputString = "number";
+                    break;
+                case ("System.Decimal"):
+                    typeClassString = "SqlDbType.Decimal";
+                    typeDetailsString = "decimal";
+                    typeDefaultString = "Default.MyDecimal";
+                    typeAngularString = "number";
+                    typeAngularInputString = "number";
+                    break;
+                case ("System.Byte[]"):
+                    typeClassString = "SqlDbType.Image";
+                    typeDetailsString = "byte[]";
+                    typeDefaultString = "Default.MyBytes";
+                    typeAngularString = "string";
+                    typeAngularInputString = "text";
+                    break;
+
+                default:
+                    typeClassString = "無法解析";
+                    typeDetailsString = "無法解析";
+                    typeDefaultString = "無法解析";
+                    typeAngularString = "無法解析";
+                    typeAngularInputString = "text";
+                    break;
+            }
+
+            if (returnType == 1)
+                returnString = typeClassString;
+            else if (returnType == 2)
+                returnString = typeDetailsString;
+            else if (returnType == 7)
+                returnString = typeAngularString;
+            else if (returnType == 8)
+                returnString = typeAngularInputString;
+            else
+                returnString = typeDefaultString;
+
+            return returnString;
         }
     }
 }
