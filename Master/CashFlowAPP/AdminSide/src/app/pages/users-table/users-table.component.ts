@@ -17,10 +17,12 @@ export class UsersTableComponent implements OnInit {
 
   ngOnInit(): void {
     this.UsersRead();
+    this.UsersData.paginator = this.paginator;
   }
 
+  @ViewChild('paginator') paginator: MatPaginator|any;
   UsersData:any;
-
+  totalCount:any;
   UsersRead(){
     let Req = new ApiRequest<any>();
     Req.Args=[];
@@ -28,17 +30,18 @@ export class UsersTableComponent implements OnInit {
       if(Res.Success){
         console.log("Res",Res);
         this.UsersData = Res.Data;
+        this.totalCount = Res.Data.length;
       }
     })
   }
 
-  displayedColumns: string[] = ['User', 'Account', 'Name', 'Status'];
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.UsersData.filter = filterValue.trim().toLowerCase();
+  // displayedColumns: string[] = ['User', 'Account', 'Name', 'Status'];
+  // applyFilter(event: Event) {
+  //   const filterValue = (event.target as HTMLInputElement).value;
+  //   this.UsersData.filter = filterValue.trim().toLowerCase();
 
-    if (this.UsersData.paginator) {
-      this.UsersData.paginator.firstPage();
-    }
-  }
+  //   if (this.UsersData.paginator) {
+  //     this.UsersData.paginator.firstPage();
+  //   }
+  // }
 }
