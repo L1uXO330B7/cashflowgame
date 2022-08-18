@@ -9,10 +9,10 @@ using System.Linq;
 
 namespace BLL.Services.AdminSide
 {
-    public class UsersService :IUsersService<
-            List<CreateUserArgs>, 
-            List<ReadUserArgs>, 
-            List<UpdateUserArgs>, 
+    public class UsersService : IUsersService<
+            List<CreateUserArgs>,
+            List<ReadUserArgs>,
+            List<UpdateUserArgs>,
             List<int?>
         >
     {
@@ -39,7 +39,7 @@ namespace BLL.Services.AdminSide
                 user.RoleId = Arg.RoleId;
                 users.Add(user);
             }
-            
+
             _CashFlowDbContext.AddRange(users);
             _CashFlowDbContext.SaveChanges();
             // 不做銷毀 Dispose 動作，交給 DI 容器處理
@@ -59,13 +59,13 @@ namespace BLL.Services.AdminSide
         public async Task<ApiResponse> Read(ApiRequest<List<ReadUserArgs>> Req)
         {
             var Res = new ApiResponse();
+            var users = new List<User>();
+
+
 
             if (Req.Args.Count() <= 0)
             {
-                Res.Success = true;
-                Res.Code = (int)ResponseStatusCode.Success;
-                Res.Message = "成功讀取";
-                Res.Data = _CashFlowDbContext.Users.ToList();
+                users = _CashFlowDbContext.Users.ToList();
             }
             else
             {
@@ -91,21 +91,22 @@ namespace BLL.Services.AdminSide
                         user = user.Where(x => x.Status == Status);
                     }
                 }
-           
 
-                var Data = user
+
+
+            }
+            var Data = users
                     // 後端分頁
                     // 省略幾筆 ( 頁數 * 每頁幾筆 )
                     .Skip(((int)Req.PageIndex - 1) * (int)Req.PageSize)
                     // 取得幾筆
-                    .Take((int)Req.PageSize)
+                    .Take((int)Req.PageSize - 1)
                     .ToList();
 
-                Res.Data = Data;
-                Res.Success = true;
-                Res.Code = (int)ResponseStatusCode.Success;
-                Res.Message = "成功讀取";
-            }
+            Res.Data = Data;
+            Res.Success = true;
+            Res.Code = (int)ResponseStatusCode.Success;
+            Res.Message = "成功讀取";
             return Res;
         }
 

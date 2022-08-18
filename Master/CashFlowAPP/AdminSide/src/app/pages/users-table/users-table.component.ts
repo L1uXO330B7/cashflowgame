@@ -17,6 +17,7 @@ export class UsersTableComponent implements OnInit {
   @ViewChild('paginator') paginator: MatPaginator | any;
 
   ngOnInit(): void {
+    this.UsersData = new MatTableDataSource();
 
     this.UsersRead(); this.GetPages(0, 5)
 
@@ -27,6 +28,7 @@ export class UsersTableComponent implements OnInit {
     this.UsersData.paginator = this.paginator;
     this.paginator.page.subscribe((page: PageEvent) => {
       this.GetPages(page.pageIndex, page.pageSize);
+      console.log(page.pageIndex, page.pageSize);
     });
   }
 
@@ -38,7 +40,7 @@ export class UsersTableComponent implements OnInit {
     this._ApiService.UsersRead(Req).subscribe((Res) => {
       if (Res.Success) {
         console.log("Res", Res);
-        this.UsersData = new MatTableDataSource(Res.Data);
+        this.UsersData = Res.Data;
         this.totalCount = Res.Data.length;
       }
     })
