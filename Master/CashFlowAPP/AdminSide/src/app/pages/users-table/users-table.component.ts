@@ -19,48 +19,48 @@ export class UsersTableComponent implements OnInit {
   ngOnInit(): void {
     this.UsersData = new MatTableDataSource();
 
-    this.UsersRead(); this.GetPages(0, 5)
-
+    this.UsersRead(0,5);
   }
 
 
   ngAfterViewInit() {
     this.UsersData.paginator = this.paginator;
     this.paginator.page.subscribe((page: PageEvent) => {
-      this.GetPages(page.pageIndex, page.pageSize);
+      this.UsersRead(page.pageIndex, page.pageSize);
       console.log(page.pageIndex, page.pageSize);
     });
   }
 
   UsersData: any;
   totalCount: any;
-  UsersRead() {
+  UsersRead(pageIndex: any, pageSize: any) {
     let Req = new ApiRequest<any>();
     Req.Args = [];
-    this._ApiService.UsersRead(Req).subscribe((Res) => {
-      if (Res.Success) {
-        console.log("Res", Res);
-        this.UsersData = Res.Data;
-        this.totalCount = Res.Data.length;
-      }
-    })
-  }
-
-
-
-  GetPages(pageIndex: any, pageSize: any) {
-    let Req = new ApiRequest<any>();
-    Req.Args = [];
-    Req.PageIndex = pageIndex;
+    Req.PageIndex = pageIndex+1;
     Req.PageSize = pageSize;
     this._ApiService.UsersRead(Req).subscribe((Res) => {
       if (Res.Success) {
         console.log("Res", Res);
         this.UsersData = Res.Data;
-        this.totalCount = Res.Data.length;
+        this.totalCount = Res.TotalDataCount;
       }
     })
   }
+
+
+
+  // GetPages(pageIndex: any, pageSize: any) {
+  //   let Req = new ApiRequest<any>();
+  //   Req.Args = [];
+  //   Req.PageIndex = pageIndex;
+  //   Req.PageSize = pageSize;
+  //   this._ApiService.UsersRead(Req).subscribe((Res) => {
+  //     if (Res.Success) {
+  //       console.log("Res", Res);
+  //       this.UsersData = Res.Data;
+  //     }
+  //   })
+  // }
 
   // displayedColumns: string[] = ['User', 'Account', 'Name', 'Status'];
   // applyFilter(event: Event) {

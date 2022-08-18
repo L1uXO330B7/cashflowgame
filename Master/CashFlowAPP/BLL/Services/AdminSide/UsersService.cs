@@ -100,13 +100,15 @@ namespace BLL.Services.AdminSide
                     // 省略幾筆 ( 頁數 * 每頁幾筆 )
                     .Skip(((int)Req.PageIndex - 1) * (int)Req.PageSize)
                     // 取得幾筆
-                    .Take((int)Req.PageSize - 1)
+                    .Take((int)Req.PageSize)
                     .ToList();
 
             Res.Data = Data;
             Res.Success = true;
             Res.Code = (int)ResponseStatusCode.Success;
             Res.Message = "成功讀取";
+            Res.TotalDataCount = users.Count;
+
             return Res;
         }
 
