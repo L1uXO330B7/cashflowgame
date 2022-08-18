@@ -66,11 +66,12 @@
     <tr mat-header-row *matHeaderRowDef="['User', 'Account', 'Name', 'Status']"></tr>
     <tr mat-row *matRowDef="let row; columns:['User', 'Account', 'Name', 'Status']"></tr>
   </table>
-
-  <mat-paginator [pageSizeOptions]="[5, 10, 20]"
-                 showFirstLastButtons
-                 aria-label="Select page of periodic elements">
-  </mat-paginator>
+  <mat-paginator #paginator
+  [length]="totalCount"
+  [pageIndex]="0"
+  [pageSize]="5"
+  [pageSizeOptions]="[5, 10, 15]">
+</mat-paginator>
 </div>
 <!-- ------------------------------- -->
 
