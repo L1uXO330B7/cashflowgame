@@ -37,21 +37,18 @@ export class HttpInterceptorService implements HttpInterceptor {
     return next.handle(NewRequest)
     .pipe(
       map((event: any) => {
-
         // https://www.tpisoftware.com/tpu/articleDetails/1084
-
-        console.log('HttpInterceptorService event', event.body);
+        // console.log('HttpInterceptorService event', event.body);
         if(event.body!==undefined||null){
           if(event.body.Success){
         }
         return event;
       }}),
       catchError((error: HttpErrorResponse) => {
-        console.log('HttpInterceptorService error', error);
-        console.log('req', req);
+        // console.log('HttpInterceptorService error', error);
+        // console.log('req', req);
         // https://stackoverflow.com/questions/68655492/throwerrorerror-is-now-deprecated-but-there-is-no-new-errorhttperrorresponse
         return throwError(() => error);
-
       }),
     );
   }

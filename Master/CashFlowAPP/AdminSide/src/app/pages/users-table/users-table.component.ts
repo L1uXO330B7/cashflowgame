@@ -1,11 +1,9 @@
 import { MatTableDataSource } from '@angular/material/table';
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ApiRequest } from 'src/app/common/models/ApiRequest';
 import { ApiService } from 'src/app/common/services/api.service';
-
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatSort,Sort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-users-table',
@@ -14,49 +12,37 @@ import { MatSort,Sort } from '@angular/material/sort';
 })
 export class UsersTableComponent implements OnInit {
 
-  constructor(private _HttpClient: HttpClient, private _ApiService: ApiService) { }
+  constructor(
+    private _HttpClient: HttpClient,
+    private _ApiService: ApiService,
+  ) {
+
+  }
+
   @ViewChild('paginator') paginator: MatPaginator | any;
-  // @ViewChild('sortTable') sortTable: MatSort | any;
+  @ViewChild('filter') filter: ElementRef | any;
 
   ngOnInit(): void {
     this.UsersData = new MatTableDataSource();
-
-    this.UsersRead(0,5);
+    this.UsersRead(0, 5);
   }
 
-
-
-  ngAfterViewInit() {
-    this.UsersData.paginator = this.paginator;
-    // this.UsersData.sort = this.sortTable;
-    this.paginator.page.subscribe((page: PageEvent) => {
-      this.UsersRead(page.pageIndex, page.pageSize);
-      console.log(page.pageIndex, page.pageSize);
+  UsersData: any;
+  FilterUsersData: any;
+  UsersRead(pageIndex: any, pageSize: any) {
+    let Req = new ApiRequest<any>();
+    Req.Args = [];
+    Req.PageIndex = pageIndex + 1;
+    Req.PageSize = pageSize;
+    this._ApiService.UsersRead(Req).subscribe((Res) => {
+      if (Res.Success) {
+        this.UsersData = Res.Data;
+        this.FilterUsersData = Res.Data;
+      }
     }, (err: any) => {
       console.log(err);
     });
   }
-
-
-  UsersData: any;
-  totalCount: any;
-  UsersRead(pageIndex: any, pageSize: any) {
-    let Req = new ApiRequest<any>();
-    Req.Args = [];
-    Req.PageIndex = pageIndex+1;
-    Req.PageSize = pageSize;
-    this._ApiService.UsersRead(Req).subscribe((Res) => {
-      if (Res.Success) {
-        console.log("Res", Res);
-        this.UsersData = Res.Data;
-        this.totalCount = Res.TotalDataCount;
-      }
-    },(err: any) => {
-      console.log(err);
-    })
-  }
-
-
 
   // GetPages(pageIndex: any, pageSize: any) {
   //   let Req = new ApiRequest<any>();
@@ -71,14 +57,33 @@ export class UsersTableComponent implements OnInit {
   //   })
   // }
 
-  // displayedColumns: string[] = ['User', 'Account', 'Name', 'Status'];
-  applyFilter(event: Event) {
-    // console.log(event);
-    // const filterValue = (event.target as HTMLInputElement).value;
-    // this.UsersData.filter = filterValue.trim().toLowerCase();
+  applyFilterFrontEnd(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
 
-    // if (this.UsersData.paginator) {
-    //   this.UsersData.paginator.firstPage();
-    // }
+    if (filterValue === '') {
+      this.UsersData = this.FilterUsersData;
+    }
+    else {
+
+      // 前端搜尋
+      this.UsersData = [];
+      this.FilterUsersData
+        .forEach(
+          (res: any) => {
+            let Check = false;
+            for (const key in res) {
+              console.log('res[key]',res[key]);
+              if (res[key].toString().match(filterValue)) {
+                Check = true;
+              }
+            }
+
+            if(Check)
+            {
+              this.UsersData.push(res);
+            }
+          }
+        );
+    }
   }
 }

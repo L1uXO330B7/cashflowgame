@@ -31,8 +31,21 @@ try
     Serilog.Log.Information("建立 WebApplicationBuilder 物件");
 
     // 註冊 DbContext
+
+    var RootPath = System.IO.Directory.GetCurrentDirectory();
+
+    string Conn;
+    if (RootPath.ToUpper().Contains("DESK"))
+    {
+        Conn = "OnlineCashFlow";
+    }
+    else
+    {
+        Conn = "LocalMDF";
+    }
+
     builder.Services.AddDbContext<CashFlowDbContext>(options =>
-           options.UseSqlServer(builder.Configuration.GetConnectionString("LocalMDF")));
+           options.UseSqlServer(builder.Configuration.GetConnectionString(Conn)));
 
     // 加入 SignalR
     builder.Services.AddSignalR();

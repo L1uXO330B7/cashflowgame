@@ -61,8 +61,6 @@ namespace BLL.Services.AdminSide
             var Res = new ApiResponse();
             var users = new List<User>();
 
-
-
             if (Req.Args.Count() <= 0)
             {
                 users = _CashFlowDbContext.Users.ToList();
@@ -91,10 +89,8 @@ namespace BLL.Services.AdminSide
                         user = user.Where(x => x.Status == Status);
                     }
                 }
-
-
-
             }
+
             var Data = users
                     // 後端分頁
                     // 省略幾筆 ( 頁數 * 每頁幾筆 )
