@@ -5,6 +5,7 @@ import { ApiRequest } from 'src/app/common/models/ApiRequest';
 import { ApiService } from 'src/app/common/services/api.service';
 
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatSort,Sort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-users-table',
@@ -15,6 +16,7 @@ export class UsersTableComponent implements OnInit {
 
   constructor(private _HttpClient: HttpClient, private _ApiService: ApiService) { }
   @ViewChild('paginator') paginator: MatPaginator | any;
+  // @ViewChild('sortTable') sortTable: MatSort | any;
 
   ngOnInit(): void {
     this.UsersData = new MatTableDataSource();
@@ -23,13 +25,18 @@ export class UsersTableComponent implements OnInit {
   }
 
 
+
   ngAfterViewInit() {
     this.UsersData.paginator = this.paginator;
+    // this.UsersData.sort = this.sortTable;
     this.paginator.page.subscribe((page: PageEvent) => {
       this.UsersRead(page.pageIndex, page.pageSize);
       console.log(page.pageIndex, page.pageSize);
+    }, (err: any) => {
+      console.log(err);
     });
   }
+
 
   UsersData: any;
   totalCount: any;
@@ -44,6 +51,8 @@ export class UsersTableComponent implements OnInit {
         this.UsersData = Res.Data;
         this.totalCount = Res.TotalDataCount;
       }
+    },(err: any) => {
+      console.log(err);
     })
   }
 
@@ -63,12 +72,13 @@ export class UsersTableComponent implements OnInit {
   // }
 
   // displayedColumns: string[] = ['User', 'Account', 'Name', 'Status'];
-  // applyFilter(event: Event) {
-  //   const filterValue = (event.target as HTMLInputElement).value;
-  //   this.UsersData.filter = filterValue.trim().toLowerCase();
+  applyFilter(event: Event) {
+    // console.log(event);
+    // const filterValue = (event.target as HTMLInputElement).value;
+    // this.UsersData.filter = filterValue.trim().toLowerCase();
 
-  //   if (this.UsersData.paginator) {
-  //     this.UsersData.paginator.firstPage();
-  //   }
-  // }
+    // if (this.UsersData.paginator) {
+    //   this.UsersData.paginator.firstPage();
+    // }
+  }
 }
