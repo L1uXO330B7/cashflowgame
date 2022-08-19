@@ -23,14 +23,12 @@ export class UsersTableComponent extends BaseComponent implements OnInit {
     super();
   }
 
-
-
   @ViewChild('paginator') paginator: MatPaginator | any;
   @ViewChild('filter') filter: ElementRef | any;
 
   ngOnInit(): void {
     this.UsersData = new MatTableDataSource();
-    this.UsersRead(this.pageIndex, this.pageSize,[]);
+    this.UsersRead(this.pageIndex, this.pageSize, []);
   }
 
   ngAfterViewInit() {
@@ -38,7 +36,7 @@ export class UsersTableComponent extends BaseComponent implements OnInit {
     this.paginator.page.subscribe((page: PageEvent) => {
       this.pageIndex = page.pageIndex;
       this.pageSize = page.pageSize;
-      this.UsersRead(page.pageIndex, page.pageSize,[]);
+      this.UsersRead(page.pageIndex, page.pageSize, []);
     }, (err: any) => {
       console.log(err);
     });
@@ -46,9 +44,7 @@ export class UsersTableComponent extends BaseComponent implements OnInit {
 
   @ViewChild('Dialog', { static: true }) Dialog: TemplateRef<any> | any;
 
-
-
-  DialogRef:MatDialogRef<any> | any;
+  DialogRef: MatDialogRef<any> | any;
   OpenDiaglog(IsNew: boolean, Id: any) {
     if (IsNew) {
       this.UserData = new UserArgs();
@@ -56,38 +52,39 @@ export class UsersTableComponent extends BaseComponent implements OnInit {
       // 取單筆
       let listInt = [Id];
       let Arg =
-        {
-          "Key": "Id",
-          "JsonString": JSON.stringify(listInt)
-        };
-      this.UsersRead(0, 5,[Arg]);
+      {
+        "Key": "Id",
+        "JsonString": JSON.stringify(listInt)
+      };
+      this.UsersRead(0, 5, [Arg]);
     }
-    this.DialogRef=this.dialog.open(this.Dialog);
-
+    this.DialogRef = this.dialog.open(this.Dialog);
   }
+
   @ViewChild('CloseDialog', { static: true }) CloseDialog: TemplateRef<any> | any;
-  CloseDialogRef:MatDialogRef<any> | any;
-  OpenCloseDialog(Id:any){
-    this.CloseDialogRef=this.dialog.open(this.CloseDialog);
+  CloseDialogRef: MatDialogRef<any> | any;
+  OpenCloseDialog(Id: any) {
+    this.CloseDialogRef = this.dialog.open(this.CloseDialog);
     this.UserData = new UserArgs();
     this.UserData.Id = Id;
   }
+
   UsersData: any;
   FilterUsersData: any;
-  UserData  = new UserArgs();
-  UsersRead(PageIndex: any, PageSize: any,Args:any) {
+  UserData = new UserArgs();
+  UsersRead(PageIndex: any, PageSize: any, Args: any) {
     let Req = new ApiRequest<any>();
     Req.Args = Args;
     Req.PageIndex = PageIndex;
     Req.PageSize = PageSize;
     this._ApiService.UsersRead(Req).subscribe((Res) => {
       if (Res.Success) {
-        if(Args.length<=0){
+        if (Args.length <= 0) {
           this.UsersData = Res.Data;
           this.FilterUsersData = Res.Data;
           this.totalDataCount = Res.TotalDataCount;
         }
-        else{
+        else {
           this.UserData = Res.Data[0];
           console.log(this.UserData);
         }
@@ -130,14 +127,15 @@ export class UsersTableComponent extends BaseComponent implements OnInit {
     Req.Args = [Id];
     this._ApiService.UserDelete(Req).subscribe((Res) => {
       if (Res.Success) {
-        this.UsersRead(this.pageIndex, this.pageSize,[]);
+        this.UsersRead(this.pageIndex, this.pageSize, []);
         this.CloseDialogRef.close();
       }
     }, (err: any) => {
       console.log(err);
     });
   }
-  UserUpdate(){
+
+  UserUpdate() {
     console.log(this.UserData.Id);
     let Req = new ApiRequest();
     Req.Args = [this.UserData];
@@ -145,13 +143,14 @@ export class UsersTableComponent extends BaseComponent implements OnInit {
       if (Res.Success) {
         console.log(Res);
         this.DialogRef.close();
-        this.UsersRead(this.pageIndex, this.pageSize,[]);
+        this.UsersRead(this.pageIndex, this.pageSize, []);
       }
     }, (err: any) => {
       console.log(err);
     });
   }
-  UserCreate(){
+
+  UserCreate() {
     console.log(this.UserData.Id);
     let Req = new ApiRequest();
     Req.Args = [this.UserData];
@@ -159,10 +158,11 @@ export class UsersTableComponent extends BaseComponent implements OnInit {
       if (Res.Success) {
         console.log(Res);
         this.DialogRef.close();
-        this.UsersRead(this.pageIndex, this.pageSize,[]);
+        this.UsersRead(this.pageIndex, this.pageSize, []);
       }
     }, (err: any) => {
       console.log(err);
     });
   }
+
 }
