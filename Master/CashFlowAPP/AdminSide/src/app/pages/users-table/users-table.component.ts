@@ -36,6 +36,8 @@ export class UsersTableComponent extends BaseComponent implements OnInit {
   ngAfterViewInit() {
     this.UsersData.paginator = this.paginator;
     this.paginator.page.subscribe((page: PageEvent) => {
+      this.pageIndex = page.pageIndex;
+      this.pageSize = page.pageSize;
       this.UsersRead(page.pageIndex, page.pageSize,[]);
     }, (err: any) => {
       console.log(err);
@@ -129,6 +131,7 @@ export class UsersTableComponent extends BaseComponent implements OnInit {
     this._ApiService.UserDelete(Req).subscribe((Res) => {
       if (Res.Success) {
         this.UsersRead(this.pageIndex, this.pageSize,[]);
+        this.CloseDialogRef.close();
       }
     }, (err: any) => {
       console.log(err);
