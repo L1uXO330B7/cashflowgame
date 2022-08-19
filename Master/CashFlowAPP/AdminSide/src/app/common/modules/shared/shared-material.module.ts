@@ -10,6 +10,7 @@ import {MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatDialogModule} from '@angular/material/dialog';
 
 
 
@@ -28,6 +29,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
     MatPaginatorModule,
     MatFormFieldModule,
     MatInputModule,
+    MatDialogModule
   ],
   exports:[
     MatButtonModule,
@@ -39,7 +41,8 @@ import {MatFormFieldModule} from '@angular/material/form-field';
     MatTableModule,
     MatPaginatorModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatDialogModule
   ]
 })
 export class SharedMaterialModule { }

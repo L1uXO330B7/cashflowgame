@@ -9,6 +9,7 @@ import { UsersTableComponent } from './pages/users-table/users-table.component';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpInterceptorService } from './common/services/http-interceptor.service';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -24,8 +25,8 @@ import { HttpInterceptorService } from './common/services/http-interceptor.servi
     AppRoutingModule,
     BrowserAnimationsModule,
     SharedMaterialModule,
-    HttpClientModule
-
+    HttpClientModule,
+    FormsModule,
   ],
   providers: [
     {

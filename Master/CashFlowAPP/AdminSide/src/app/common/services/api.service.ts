@@ -17,4 +17,17 @@ export class ApiService {
       let Url = `${this._ApiUrl}/Users/Read`
       return this._HttpClient.post<ApiResponse>(Url, Req, this._HttpOptions);
     }
+
+    UserDelete(Req:any){
+      let Url = `${this._ApiUrl}/Users/Delete`
+      return this._HttpClient.post<ApiResponse>(Url, Req, this._HttpOptions);
+    }
+    UserCreate(Req:any){
+      let Url = `${this._ApiUrl}/Users/Create`
+      return this._HttpClient.post<ApiResponse>(Url, Req, this._HttpOptions);
+    }
+    UserUpdate(Req:any){
+      let Url = `${this._ApiUrl}/Users/Update`
+      return this._HttpClient.post<ApiResponse>(Url, Req, this._HttpOptions);
+    }
 }
