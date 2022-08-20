@@ -31,138 +31,142 @@ namespace BLL.Services
                        .SelectMany(t => t.GetTypes())
                        .Where(t => t.IsClass && t.Namespace == "DPL.EF")
                        .ToList();
-
-            #region 後端
-
-            // 後端目錄
-            var BackEndRoot = $@"{ScriptRoot}\BackEnd";
-            Method.CreateWithoutDirectory(BackEndRoot); // 上面抽去共用
-
-            // XxxController.cs
-            var ControllersRoot = $@"{BackEndRoot}\Controllers";
-            Method.CreateWithoutDirectory(ControllersRoot);
-
-            // IXxxService.cs
-            var IServicesRoot = $@"{BackEndRoot}\IServices";
-            Method.CreateWithoutDirectory(IServicesRoot);
-
-            // XxxService.cs
-            var ServicesRoot = $@"{BackEndRoot}\Services";
-            Method.CreateWithoutDirectory(ServicesRoot);
-
-            // XxxModel.cs
-            var ModelsRoot = $@"{BackEndRoot}\Models";
-            Method.CreateWithoutDirectory(ModelsRoot);
-
-            var ProgramAddScoped = "";
-
-            // Script
-            foreach (var type in types)
+            if (false)
             {
-                if (!type.FullName.ToLower().Contains("context"))
+
+                #region 後端
+
+                // 後端目錄
+                var BackEndRoot = $@"{ScriptRoot}\BackEnd";
+                Method.CreateWithoutDirectory(BackEndRoot); // 上面抽去共用
+
+                // XxxController.cs
+                var ControllersRoot = $@"{BackEndRoot}\Controllers";
+                Method.CreateWithoutDirectory(ControllersRoot);
+
+                // IXxxService.cs
+                var IServicesRoot = $@"{BackEndRoot}\IServices";
+                Method.CreateWithoutDirectory(IServicesRoot);
+
+                // XxxService.cs
+                var ServicesRoot = $@"{BackEndRoot}\Services";
+                Method.CreateWithoutDirectory(ServicesRoot);
+
+                // XxxModel.cs
+                var ModelsRoot = $@"{BackEndRoot}\Models";
+                Method.CreateWithoutDirectory(ModelsRoot);
+
+                var ProgramAddScoped = "";
+
+                // Script
+                foreach (var type in types)
                 {
-                    string FilePath = "";
-                    var Properties = type.GetTypeInfo().DeclaredProperties;
-                    var Props = Properties.Select(x => new
+                    if (!type.FullName.ToLower().Contains("context"))
                     {
-                        PropName = x.Name,
-                        PropType = Method.GetSqlDataTypeString(x.PropertyType.FullName, 2)
-                    })
-                    .ToList();
-
-                    // XxxController.cs
-                    {
-                        var XxxController = Templates.BackEnd.XxxController
-                            .Replace("#UsersController", $"{type.Name}sController")
-                            .Replace("#CreateUserArgs", $"Create{type.Name}Args")
-                            .Replace("#ReadUserArgs", $"Read{type.Name}Args")
-                            .Replace("#UpdateUserArgs", $"Update{type.Name}Args")
-                            .Replace("#UserService", $"{type.Name}sService")
-                            .Replace("#IUsersService", $"I{type.Name}sService")
-                            ;
-
-                        FilePath = $@"{ControllersRoot}\{type.Name}sController.cs";
-
-                        File.WriteAllText(FilePath, XxxController, Encoding.UTF8);
-                    }
-
-                    // IXxxService.cs
-                    {
-                        var IXxxService = Templates.BackEnd.IXxxService
-                            .Replace("#IUsersService", $"I{type.Name}sService")
-                            ;
-
-                        FilePath = $@"{IServicesRoot}\I{type.Name}sService.cs";
-
-                        File.WriteAllText(FilePath, IXxxService, Encoding.UTF8);
-                    }
-
-                    // XxxService.cs
-                    {
-                        var LowerVariable = type.Name.FirstCharToLower();
-
-                        string UserArgAdd = "";
-                        foreach (var Prop in Props)
+                        string FilePath = "";
+                        var Properties = type.GetTypeInfo().DeclaredProperties;
+                        var Props = Properties.Select(x => new
                         {
-                            UserArgAdd += $"{LowerVariable}.{Prop.PropName} = Arg.{Prop.PropName};\n";
+                            PropName = x.Name,
+                            PropType = Method.GetSqlDataTypeString(x.PropertyType.FullName, 2)
+                        })
+                        .ToList();
+
+                        // XxxController.cs
+                        {
+                            var XxxController = Templates.BackEnd.XxxController
+                                .Replace("#UsersController", $"{type.Name}sController")
+                                .Replace("#CreateUserArgs", $"Create{type.Name}Args")
+                                .Replace("#ReadUserArgs", $"Read{type.Name}Args")
+                                .Replace("#UpdateUserArgs", $"Update{type.Name}Args")
+                                .Replace("#UserService", $"{type.Name}sService")
+                                .Replace("#IUsersService", $"I{type.Name}sService")
+                                ;
+
+                            FilePath = $@"{ControllersRoot}\{type.Name}sController.cs";
+
+                            File.WriteAllText(FilePath, XxxController, Encoding.UTF8);
                         }
 
-                        var XxxService = Templates.BackEnd.XxxService
-                            .Replace("#UserArgAdd", $"{UserArgAdd}")
-                            .Replace("#UserArgUpdate", $"{UserArgAdd}")
-                            .Replace("#UsersService", $"{type.Name}sService")
-                            .Replace("#IUsersService", $"I{type.Name}sService")
-                            .Replace("#CreateUserArgs", $"Create{type.Name}Args")
-                            .Replace("#ReadUserArgs", $"Read{type.Name}Args")
-                            .Replace("#UpdateUserArgs", $"Update{type.Name}Args")
-                            .Replace("#user", $"{LowerVariable}")
-                            .Replace("#User", $"{type.Name}")
-                            ;
-
-                        FilePath = $@"{ServicesRoot}\{type.Name}sService.cs";
-
-                        File.WriteAllText(FilePath, XxxService, Encoding.UTF8);
-                    }
-
-                    // XxxModel.cs
-                    {
-                        string CreateUserArgsModel = "";
-                        foreach (var Prop in Props)
+                        // IXxxService.cs
                         {
-                            CreateUserArgsModel += $"public {Prop.PropType} {Prop.PropName} {{ get;set; }} \n";
+                            var IXxxService = Templates.BackEnd.IXxxService
+                                .Replace("#IUsersService", $"I{type.Name}sService")
+                                ;
+
+                            FilePath = $@"{IServicesRoot}\I{type.Name}sService.cs";
+
+                            File.WriteAllText(FilePath, IXxxService, Encoding.UTF8);
                         }
 
-                        var XxxModel = Templates.BackEnd.XxxModel
-                            .Replace("#CreateUserArgsModel", $"{CreateUserArgsModel}")
-                            .Replace("#UpdateUserArgsModel", $"{CreateUserArgsModel}")
-                            .Replace("#ReadUserArgsModel", $"")
-                            .Replace("#User", $"{type.Name}")
-                            .Replace("#CreateUserArgs", $"Create{type.Name}Args")
-                            .Replace("#UpdateUserArgs", $"Update{type.Name}Args")
-                            .Replace("#ReadUserArgs", $"Read{type.Name}Args")
-                            ;
+                        // XxxService.cs
+                        {
+                            var LowerVariable = type.Name.FirstCharToLower();
 
-                        FilePath = $@"{ModelsRoot}\{type.Name}sModel.cs";
+                            string UserArgAdd = "";
+                            foreach (var Prop in Props)
+                            {
+                                UserArgAdd += $"{LowerVariable}.{Prop.PropName} = Arg.{Prop.PropName};\n";
+                            }
 
-                        File.WriteAllText(FilePath, XxxModel, Encoding.UTF8);
+                            var XxxService = Templates.BackEnd.XxxService
+                                .Replace("#UserArgAdd", $"{UserArgAdd}")
+                                .Replace("#UserArgUpdate", $"{UserArgAdd}")
+                                .Replace("#UsersService", $"{type.Name}sService")
+                                .Replace("#IUsersService", $"I{type.Name}sService")
+                                .Replace("#CreateUserArgs", $"Create{type.Name}Args")
+                                .Replace("#ReadUserArgs", $"Read{type.Name}Args")
+                                .Replace("#UpdateUserArgs", $"Update{type.Name}Args")
+                                .Replace("#user", $"{LowerVariable}")
+                                .Replace("#User", $"{type.Name}")
+                                ;
+
+                            FilePath = $@"{ServicesRoot}\{type.Name}sService.cs";
+
+                            File.WriteAllText(FilePath, XxxService, Encoding.UTF8);
+                        }
+
+                        // XxxModel.cs
+                        {
+                            string CreateUserArgsModel = "";
+                            foreach (var Prop in Props)
+                            {
+                                CreateUserArgsModel += $"public {Prop.PropType} {Prop.PropName} {{ get;set; }} \n";
+                            }
+
+                            var XxxModel = Templates.BackEnd.XxxModel
+                                .Replace("#CreateUserArgsModel", $"{CreateUserArgsModel}")
+                                .Replace("#UpdateUserArgsModel", $"{CreateUserArgsModel}")
+                                .Replace("#ReadUserArgsModel", $"")
+                                .Replace("#User", $"{type.Name}")
+                                .Replace("#CreateUserArgs", $"Create{type.Name}Args")
+                                .Replace("#UpdateUserArgs", $"Update{type.Name}Args")
+                                .Replace("#ReadUserArgs", $"Read{type.Name}Args")
+                                ;
+
+                            FilePath = $@"{ModelsRoot}\{type.Name}sModel.cs";
+
+                            File.WriteAllText(FilePath, XxxModel, Encoding.UTF8);
+                        }
+
+                        // AddScoped
+                        ProgramAddScoped += Templates.BackEnd.ProgramAddScoped
+                                .Replace("#IUsersService", $"I{type.Name}sService")
+                                .Replace("#CreateUserArgs", $"Create{type.Name}Args")
+                                .Replace("#ReadUserArgs", $"Read{type.Name}Args")
+                                .Replace("#UpdateUserArgs", $"Update{type.Name}Args")
+                                .Replace("#UsersService", $"{type.Name}sService")
+                                + "\n";
+                        ;
                     }
-
-                    // AddScoped
-                    ProgramAddScoped += Templates.BackEnd.ProgramAddScoped
-                            .Replace("#IUsersService", $"I{type.Name}sService")
-                            .Replace("#CreateUserArgs", $"Create{type.Name}Args")
-                            .Replace("#ReadUserArgs", $"Read{type.Name}Args")
-                            .Replace("#UpdateUserArgs", $"Update{type.Name}Args")
-                            .Replace("#UsersService", $"{type.Name}sService")
-                            + "\n";
-                    ;
                 }
+
+                // ProgramAddScoped.cs
+                File.WriteAllText($@"{BackEndRoot}\ProgramAddScoped.txt", ProgramAddScoped, Encoding.UTF8);
+
+                #endregion
+
             }
-
-            // ProgramAddScoped.cs
-            File.WriteAllText($@"{BackEndRoot}\ProgramAddScoped.txt", ProgramAddScoped, Encoding.UTF8);
-
-            #endregion
 
             #region 前端
 
@@ -188,7 +192,7 @@ namespace BLL.Services
                     var Props = Properties.Select(x => new
                     {
                         PropName = x.Name,
-                        PropType = Method.GetSqlDataTypeString(x.PropertyType.FullName, 4)
+                        PropType = Method.GetSqlDataTypeString(x.PropertyType.FullName, 7)
                     })
                     .ToList();
 
@@ -274,12 +278,11 @@ namespace BLL.Services
                         var Models = "";
                         foreach (var Prop in Props)
                         {
-                            Models += Templates.FrontEnd.xxxmodelts
-                                .Replace("#Props", $"{Prop.PropName}: {Prop.PropType} | undefined;")
-                                + "\n";
+                            Models += $"{Prop.PropName}: {Prop.PropType} | undefined;\n";
                         }
 
                         var xxxmodelts = Templates.FrontEnd.xxxmodelts
+                                .Replace("#UserArgs", $"{type.Name}Args")
                                 .Replace("#Props", $"{Models}")
                                 ;
 
@@ -588,7 +591,7 @@ namespace BLL.Services
 
         <ng-container matColumnDef=""#Id"">
             <th mat-header-cell* matHeaderCellDef class="" text-center"" color="" primary"">#Id</th>
-            <td mat-cell* matCellDef = ""let element"" class=""text-center"" > {{element.#Id}} </td>
+            <td mat-cell *matCellDef=""let element"" class=""text-center"" > {{element.#Id}} </td>
         </ng-container>
 
 ";

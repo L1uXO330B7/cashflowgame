@@ -32,25 +32,9 @@
 
 
 
-        <ng-container matColumnDef="Email">
-            <th mat-header-cell* matHeaderCellDef class=" text-center" color=" primary">Email</th>
-            <td mat-cell *matCellDef="let element" class="text-center" > {{element.Email}} </td>
-        </ng-container>
-
-
-
-
-        <ng-container matColumnDef="Password">
-            <th mat-header-cell* matHeaderCellDef class=" text-center" color=" primary">Password</th>
-            <td mat-cell *matCellDef="let element" class="text-center" > {{element.Password}} </td>
-        </ng-container>
-
-
-
-
-        <ng-container matColumnDef="Name">
-            <th mat-header-cell* matHeaderCellDef class=" text-center" color=" primary">Name</th>
-            <td mat-cell *matCellDef="let element" class="text-center" > {{element.Name}} </td>
+        <ng-container matColumnDef="Description">
+            <th mat-header-cell* matHeaderCellDef class=" text-center" color=" primary">Description</th>
+            <td mat-cell *matCellDef="let element" class="text-center" > {{element.Description}} </td>
         </ng-container>
 
 
@@ -59,14 +43,6 @@
         <ng-container matColumnDef="Status">
             <th mat-header-cell* matHeaderCellDef class=" text-center" color=" primary">Status</th>
             <td mat-cell *matCellDef="let element" class="text-center" > {{element.Status}} </td>
-        </ng-container>
-
-
-
-
-        <ng-container matColumnDef="RoleId">
-            <th mat-header-cell* matHeaderCellDef class=" text-center" color=" primary">RoleId</th>
-            <td mat-cell *matCellDef="let element" class="text-center" > {{element.RoleId}} </td>
         </ng-container>
 
 
@@ -88,8 +64,8 @@
 
       <!-- ------------------------------- -->
 
-      <tr mat-header-row *matHeaderRowDef="['Id','Email','Password','Name','Status','RoleId','button']"></tr>
-      <tr mat-row *matRowDef="let row; columns:['Id','Email','Password','Name','Status','RoleId','button']"></tr>
+      <tr mat-header-row *matHeaderRowDef="['Id','Description','Status','button']"></tr>
+      <tr mat-row *matRowDef="let row; columns:['Id','Description','Status','button']"></tr>
 
     </table>
 
@@ -122,24 +98,8 @@
 
 
         <mat-form-field class="full-width" appearance="fill">
-            <mat-label>Email</mat-label>
-            <input matInput placeholder="" [(ngModel)]="Item.Email" type="Email" name="Email" required>
-        </mat-form-field>
-
-
-
-
-        <mat-form-field class="full-width" appearance="fill">
-            <mat-label>Password</mat-label>
-            <input matInput placeholder="" [(ngModel)]="Item.Password" type="Password" name="Password" required>
-        </mat-form-field>
-
-
-
-
-        <mat-form-field class="full-width" appearance="fill">
-            <mat-label>Name</mat-label>
-            <input matInput placeholder="" [(ngModel)]="Item.Name" type="Name" name="Name" required>
+            <mat-label>Description</mat-label>
+            <input matInput placeholder="" [(ngModel)]="Item.Description" type="Description" name="Description" required>
         </mat-form-field>
 
 
@@ -153,14 +113,6 @@
 
 
 
-        <mat-form-field class="full-width" appearance="fill">
-            <mat-label>RoleId</mat-label>
-            <input matInput placeholder="" [(ngModel)]="Item.RoleId" type="RoleId" name="RoleId" required>
-        </mat-form-field>
-
-
-
-
       </form>
     </mat-dialog-content>
 
@@ -168,12 +120,12 @@
 
     <mat-dialog-actions align="end">
 
-      <button mat-raised-button mat-icon-button color="primary" type="submit" (click)="UsersCreate()"
+      <button mat-raised-button mat-icon-button color="primary" type="submit" (click)="FunctionsCreate()"
         *ngIf="!Item.Id">
         <mat-icon>done</mat-icon>
       </button>
 
-      <button mat-raised-button mat-icon-button color="primary" type="submit" (click)="UsersUpdate()"
+      <button mat-raised-button mat-icon-button color="primary" type="submit" (click)="FunctionsUpdate()"
         *ngIf="Item.Id">
         <mat-icon>done</mat-icon>
       </button>
@@ -194,7 +146,7 @@
       確定要刪除 ID: {{Item.Id}} 的用戶資料嗎?
     </mat-dialog-content>
     <mat-dialog-actions align="end">
-      <button mat-raised-button mat-icon-button color="warn" type="submit" (click)="UsersDelete(Item.Id)">
+      <button mat-raised-button mat-icon-button color="warn" type="submit" (click)="FunctionsDelete(Item.Id)">
         <mat-icon>done</mat-icon>
       </button>
       <button mat-raised-button mat-icon-button matDialogClose color="primary">
