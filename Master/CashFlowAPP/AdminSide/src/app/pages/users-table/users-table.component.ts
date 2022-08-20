@@ -27,12 +27,12 @@ export class UsersTableComponent extends BaseComponent implements OnInit {
   @ViewChild('filter') filter: ElementRef | any;
 
   ngOnInit(): void {
-    this.UsersData = new MatTableDataSource();
+    this.Items = new MatTableDataSource();
     this.UsersRead(this.pageIndex, this.pageSize, []);
   }
 
   ngAfterViewInit() {
-    this.UsersData.paginator = this.paginator;
+    this.Items.paginator = this.paginator;
     this.paginator.page.subscribe((page: PageEvent) => {
       this.pageIndex = page.pageIndex;
       this.pageSize = page.pageSize;
@@ -46,7 +46,7 @@ export class UsersTableComponent extends BaseComponent implements OnInit {
   DialogRef: MatDialogRef<any> | any;
   OpenDiaglog(IsNew: boolean, Id: any) {
     if (IsNew) {
-      this.UserData = new UserArgs();
+      this.Item = new UserArgs();
     } else {
       // 取單筆
       let listInt = [Id];
@@ -64,13 +64,13 @@ export class UsersTableComponent extends BaseComponent implements OnInit {
   CloseDialogRef: MatDialogRef<any> | any;
   OpenCloseDialog(Id: any) {
     this.CloseDialogRef = this.dialog.open(this.CloseDialog);
-    this.UserData = new UserArgs();
-    this.UserData.Id = Id;
+    this.Item = new UserArgs();
+    this.Item.Id = Id;
   }
 
-  UsersData: any;
-  FilterUsersData: any;
-  UserData = new UserArgs();
+  Items: any;
+  FilterItems: any;
+  Item = new UserArgs();
   UsersRead(PageIndex: any, PageSize: any, Args: any) {
     let Req = new ApiRequest<any>();
     Req.Args = Args;
@@ -79,13 +79,12 @@ export class UsersTableComponent extends BaseComponent implements OnInit {
     this._ApiService.UsersRead(Req).subscribe((Res) => {
       if (Res.Success) {
         if (Args.length <= 0) {
-          this.UsersData = Res.Data;
-          this.FilterUsersData = Res.Data;
+          this.Items = Res.Data;
+          this.FilterItems = Res.Data;
           this.totalDataCount = Res.TotalDataCount;
         }
         else {
-          this.UserData = Res.Data[0];
-          console.log(this.UserData);
+          this.Item = Res.Data[0];
         }
       }
     }, (err: any) => {
@@ -97,12 +96,12 @@ export class UsersTableComponent extends BaseComponent implements OnInit {
     const filterValue = (event.target as HTMLInputElement).value;
 
     if (filterValue === '') {
-      this.UsersData = this.FilterUsersData;
+      this.Items = this.FilterItems;
     }
     else {
       // 前端搜尋
-      this.UsersData = [];
-      this.FilterUsersData
+      this.Items = [];
+      this.FilterItems
         .forEach(
           (data: any) => {
             let Check = false;
@@ -113,17 +112,17 @@ export class UsersTableComponent extends BaseComponent implements OnInit {
             }
 
             if (Check) {
-              this.UsersData.push(data);
+              this.Items.push(data);
             }
           }
         );
     }
   }
 
-  UserDelete(Id: any) {
+  UsersDelete(Id: any) {
     let Req = new ApiRequest();
     Req.Args = [Id];
-    this._ApiService.UserDelete(Req).subscribe((Res) => {
+    this._ApiService.UsersDelete(Req).subscribe((Res) => {
       if (Res.Success) {
         this.UsersRead(this.pageIndex, this.pageSize, []);
         this.CloseDialogRef.close();
@@ -133,13 +132,11 @@ export class UsersTableComponent extends BaseComponent implements OnInit {
     });
   }
 
-  UserUpdate() {
-    console.log(this.UserData.Id);
+  UsersUpdate() {
     let Req = new ApiRequest();
-    Req.Args = [this.UserData];
-    this._ApiService.UserUpdate(Req).subscribe((Res) => {
+    Req.Args = [this.Item];
+    this._ApiService.UsersUpdate(Req).subscribe((Res) => {
       if (Res.Success) {
-        console.log(Res);
         this.DialogRef.close();
         this.UsersRead(this.pageIndex, this.pageSize, []);
       }
@@ -148,13 +145,11 @@ export class UsersTableComponent extends BaseComponent implements OnInit {
     });
   }
 
-  UserCreate() {
-    console.log(this.UserData.Id);
+  UsersCreate() {
     let Req = new ApiRequest();
-    Req.Args = [this.UserData];
-    this._ApiService.UserCreate(Req).subscribe((Res) => {
+    Req.Args = [this.Item];
+    this._ApiService.UsersCreate(Req).subscribe((Res) => {
       if (Res.Success) {
-        console.log(Res);
         this.DialogRef.close();
         this.UsersRead(this.pageIndex, this.pageSize, []);
       }

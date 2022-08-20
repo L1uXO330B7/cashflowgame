@@ -1,0 +1,23 @@
+﻿
+
+        export class #UserArgs {
+                
+
+        export class #UserArgs {
+                Id: Default.MyInt | undefined;
+        }
+
+
+
+        export class #UserArgs {
+                Description: Default.MyString | undefined;
+        }
+
+
+
+        export class #UserArgs {
+                Status: Default.MyByte | undefined;
+        }
+
+
+        }

@@ -181,18 +181,124 @@ namespace BLL.Services
             // Script
             foreach (var type in types)
             {
-                // xxx-table 目錄
-                var ComponentRoot = $@"{FrontEndRoot}\Components\{type.Name.ToLower()}s-table";
-                Method.CreateWithoutDirectory(ComponentRoot);
+                if (!type.FullName.ToLower().Contains("context"))
+                {
+                    string FilePath = "";
+                    var Properties = type.GetTypeInfo().DeclaredProperties;
+                    var Props = Properties.Select(x => new
+                    {
+                        PropName = x.Name,
+                        PropType = Method.GetSqlDataTypeString(x.PropertyType.FullName, 4)
+                    })
+                    .ToList();
 
-                // xxx-table.component.html
-                // xxx-table.component.scss
-                // xxx-table.component.spec.ts
-                // xxx-table.component.ts
+                    // xxx-table 目錄
+                    var ComponentRoot = $@"{FrontEndRoot}\Components\{type.Name.ToLower()}s-table";
+                    Method.CreateWithoutDirectory(ComponentRoot);
 
-                // XxxModel.ts
+                    // xxx-table.component.html
+                    {
+                        // HeaderColumn 待取 SQL Server 註解覆蓋 Label
+                        var HeaderColumn = "";
+                        var FormField = "";
 
-                // api.service.ts
+                        foreach (var Prop in Props)
+                        {
+                            HeaderColumn += Templates.FrontEnd.HeaderColumn
+                                .Replace("#Id", $"{Prop.PropName}")
+                                + "\n";
+
+                            FormField += Templates.FrontEnd.FormField
+                                .Replace("#Id", $"{Prop.PropName}")
+                                + "\n";
+                        }
+
+                        var PropsString = Props.Select(x => $"'{x.PropName}'").ToList();
+
+                        var matHeaderRowDef = $"[{string.Join(',', PropsString)},'button']";
+
+                        var xxxhtml = Templates.FrontEnd.xxxhtml
+                                .Replace("#HeaderColumn", $"{HeaderColumn}")
+                                .Replace("#matHeaderRowDef", $"{matHeaderRowDef}")
+                                .Replace("#FormField", $"{FormField}")
+                                .Replace("#UsersCreate", $"{type.Name}sCreate")
+                                .Replace("#UsersUpdate", $"{type.Name}sUpdate")
+                                .Replace("#UsersDelete", $"{type.Name}sDelete")
+                                ;
+
+                        FilePath = $@"{ComponentRoot}\{type.Name.ToLower()}-table.component.html";
+
+                        File.WriteAllText(FilePath, xxxhtml, Encoding.UTF8);
+                    }
+
+                    // xxx-table.component.scss
+                    {
+                        FilePath = $@"{ComponentRoot}\{type.Name.ToLower()}-table.component.scss";
+                        File.WriteAllText(FilePath, "", Encoding.UTF8);
+                    }
+
+                    // xxx-table.component.spec.ts
+                    {
+                        var xxxspec = Templates.FrontEnd.xxxspec
+                                .Replace("#UsersTableComponent", $"{type.Name}sTableComponent")
+                                .Replace("#users-table.component", $"{type.Name.ToLower()}-table.component")
+                                ;
+
+                        FilePath = $@"{ComponentRoot}\{type.Name.ToLower()}-table.component.spec.ts";
+
+                        File.WriteAllText(FilePath, xxxspec, Encoding.UTF8);
+                    }
+
+                    // xxx-table.component.ts
+                    {
+                        var xxxts = Templates.FrontEnd.xxxts
+                                .Replace("#UserArgs", $"{type.Name}Args")
+                                .Replace("#UserModel", $"{type.Name}Model")
+                                .Replace("#app-users-table", $"app-{type.Name.ToLower()}-table")
+                                .Replace("#users-table.component.html", $"{type.Name.ToLower()}-table.component.html")
+                                .Replace("#users-table.component.scss", $"{type.Name.ToLower()}-table.component.scss")
+                                .Replace("#UsersTableComponent", $"{type.Name}sTableComponent")
+                                .Replace("#UsersRead", $"{type.Name}sRead")
+                                .Replace("#UsersDelete", $"{type.Name}sDelete")
+                                .Replace("#UsersUpdate", $"{type.Name}sUpdate")
+                                .Replace("#UsersCreate", $"{type.Name}sCreate")
+                                ;
+
+                        FilePath = $@"{ComponentRoot}\{type.Name.ToLower()}-table.component.ts";
+
+                        File.WriteAllText(FilePath, xxxts, Encoding.UTF8);
+                    }
+
+                    // XxxModel.ts
+                    {
+                        var Models = "";
+                        foreach (var Prop in Props)
+                        {
+                            Models += Templates.FrontEnd.xxxmodelts
+                                .Replace("#Props", $"{Prop.PropName}: {Prop.PropType} | undefined;")
+                                + "\n";
+                        }
+
+                        var xxxmodelts = Templates.FrontEnd.xxxmodelts
+                                .Replace("#Props", $"{Models}")
+                                ;
+
+                        FilePath = $@"{TsModelsRoot}\{type.Name}Model.ts";
+
+                        File.WriteAllText(FilePath, xxxmodelts, Encoding.UTF8);
+                    }
+
+                    // api.service.ts
+                    {
+                        ApiServices += Templates.FrontEnd.ApiServices
+                                .Replace("#UsersRead", $"{type.Name}sRead")
+                                .Replace("#UsersDelete", $"{type.Name}sDelete")
+                                .Replace("#UsersCreate", $"{type.Name}sCreate")
+                                .Replace("#UsersUpdate", $"{type.Name}sUpdate")
+                                .Replace("#Users", $"{type.Name}s")
+                                + "\n";
+                    }
+                }
             }
 
             // api.service.ts
@@ -478,158 +584,136 @@ namespace BLL.Services
 
         public static class FrontEnd
         {
+            public static string HeaderColumn = @"
+
+        <ng-container matColumnDef=""#Id"">
+            <th mat-header-cell* matHeaderCellDef class="" text-center"" color="" primary"">#Id</th>
+            <td mat-cell* matCellDef = ""let element"" class=""text-center"" > {{element.#Id}} </td>
+        </ng-container>
+
+";
+
+            public static string FormField = @"
+
+        <mat-form-field class=""full-width"" appearance=""fill"">
+            <mat-label>#Id</mat-label>
+            <input matInput placeholder="""" [(ngModel)]=""Item.#Id"" type=""#Id"" name=""#Id"" required>
+        </mat-form-field>
+
+";
+
             public static string xxxhtml = @"
 
-<div class=""UsersTable"">
-    <!-- ------------------------------- -->
-    <div class=""TableHeader"">
-      <mat-form-field appearance=""standard"">
-        <mat-label>全欄位前端搜尋</mat-label>
-        <input matInput (keyup)=""ApplyFilterFrontEnd($event)"" placeholder=""Ex. 樸續俊"" #filter>
-      </mat-form-field>
-      <button color=""accent"" mat-raised-button mat-icon-button (click)=""OpenDiaglog(true,null)"">
-        <mat-icon>add circle</mat-icon>
-      </button>
-    </div>
-    <!-- ------------------------------- -->
-    <div class=""mat-elevation-z8"">
-      <!-- ------------------------------- -->
-      <table mat-table [dataSource]=""UsersData"">
-        <!-- Position Column -->
-        <ng-container matColumnDef=""User"">
-          <th mat-header-cell *matHeaderCellDef class=""text-center"" color=""primary""> 編號 </th>
-          <td mat-cell *matCellDef=""let element"" class=""text-center""> {{element.Id}} </td>
-        </ng-container>
-  
-        <!-- Name Column -->
-        <ng-container matColumnDef=""Account"">
-          <th mat-header-cell *matHeaderCellDef class=""text-center"" mat-sort-header> 帳號 </th>
-          <td mat-cell *matCellDef=""let element"" class=""text-center""> {{element.Email}} </td>
-        </ng-container>
-  
-        <!-- Weight Column -->
-        <ng-container matColumnDef=""Name"">
-          <th mat-header-cell *matHeaderCellDef class=""text-center"" mat-sort-header> 暱稱 </th>
-          <td mat-cell *matCellDef=""let element"" class=""text-center""> {{element.Name}} </td>
-        </ng-container>
-  
-        <!-- Symbol Column -->
-        <ng-container matColumnDef=""Status"">
-          <th mat-header-cell *matHeaderCellDef class=""text-center"" mat-sort-header> 狀態 </th>
-          <td mat-cell *matCellDef=""let element"" class=""text-center""> {{element.Status}} </td>
-        </ng-container>
-  
-        <!-- <mat-form-field class=""example-full-width"" appearance=""fill""> -->
-        <!-- <mat-label>Email</mat-label>
-        <input type=""email"" matInput [formControl]=""emailFormControl"" [errorStateMatcher]=""matcher""
-               placeholder=""Ex. pat@example.com""> -->
-        <!-- <mat-hint>Errors appear instantly!</mat-hint>
-        <mat-error *ngIf=""emailFormControl.hasError('email') && !emailFormControl.hasError('required')"">
-          Please enter a valid email address
-        </mat-error>
-        <mat-error *ngIf=""emailFormControl.hasError('required')"">
-          Email is <strong>required</strong>
-        </mat-error> -->
-        <!-- </mat-form-field> -->
-  
-        <!-- ------------------------------- -->
-        <ng-container matColumnDef=""button"">
-          <th mat-header-cell *matHeaderCellDef class=""text-center""> 管理 </th>
-          <td mat-cell *matCellDef=""let element"" class=""text-center"">
-            <button mat-raised-button mat-icon-button color=""primary"" (click)=""OpenDiaglog(false,element.Id)"">
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button mat-raised-button mat-icon-button color=""warn"" class=""ml-5"" (click)=""OpenCloseDialog(element.Id)"">
-              <mat-icon>delete</mat-icon>
-            </button>
-          </td>
-        </ng-container>
-  
-        <!-- ------------------------------- -->
-        <tr mat-header-row *matHeaderRowDef=""['User', 'Account', 'Name', 'Status','button']""></tr>
-        <tr mat-row *matRowDef=""let row; columns:['User', 'Account', 'Name', 'Status','button']""></tr>
-  
-        <!-- Row shown when there is no matching data. -->
-        <!-- <tr class=""mat-row"" *matNoDataRow>
-          <td class=""mat-cell"" colspan=""4"">No data matching the filter ""{{input.value}}""</td>
-        </tr> -->
-  
-      </table>
-      <!-- ------------------------------- -->
-      <mat-paginator #paginator [length]=""totalDataCount"" [pageIndex]=""pageIndex"" [pageSize]=""pageSize""
-        [pageSizeOptions]=""[5, 10, 15]"">
-      </mat-paginator>
-  
-    </div>
-  
-    <!-- ------------------------------- -->
-    <!-- Dialog template #2 -->
-    <ng-template #Dialog>
-      <h2 matDialogTitle>新增資料</h2>
-  
-      <mat-dialog-content class=""Dialog"">
-        <form>
-  
-          <mat-form-field class=""full-width"" appearance=""fill"">
-            <mat-label>帳號</mat-label>
-            <input matInput placeholder=""Ex. abc@gmail.com"" [(ngModel)]=""UserData.Email"" type=""email"" name=""email""
-              required>
-          </mat-form-field>
-          <mat-form-field class=""full-width"" appearance=""fill"">
-            <mat-label>暱稱</mat-label>
-            <input matInput placeholder=""社畜1234"" [(ngModel)]=""UserData.Name"" type=""text"" name=""Name"" required>
-          </mat-form-field>
-          <mat-form-field class=""full-width"" appearance=""fill"">
-            <mat-label color=""warn"">密碼(盡量不做更改)</mat-label>
-            <input matInput placeholder=""abc123"" [(ngModel)]=""UserData.Password"" type=""text"" name=""Password"" required>
-          </mat-form-field>
-          <mat-form-field class=""full-width"" appearance=""fill"">
-            <mat-label>狀態(Number)</mat-label>
-            <input matInput [(ngModel)]=""UserData.Status"" type=""number"" name=""Status"" required>
-          </mat-form-field>
-          <mat-form-field class=""full-width"" appearance=""fill"">
-            <mat-label>權限角色(Number)</mat-label>
-            <input matInput [(ngModel)]=""UserData.RoleId"" type=""number"" name=""RoleId"" required>
-          </mat-form-field>
-        </form>
-      </mat-dialog-content>
-  
-      <!-- ------------------------------- -->
-      <mat-dialog-actions align=""end"">
-        <button mat-raised-button mat-icon-button color=""primary"" type=""submit"" (click)=""UserCreate()""
-          *ngIf=""!UserData.Id"">
-          <mat-icon>done</mat-icon>
-        </button>
-        <button mat-raised-button mat-icon-button color=""primary"" type=""submit"" (click)=""UserUpdate()""
-          *ngIf=""UserData.Id"">
-          <mat-icon>done</mat-icon>
-        </button>
-        <button mat-raised-button mat-icon-button matDialogClose color=""warn"">
-          <mat-icon>close</mat-icon>
-        </button>
-      </mat-dialog-actions>
-  
-    </ng-template>
-  
-    <!-- ------------------------------- -->
-    <ng-template #CloseDialog>
-      <h2 matDialogTitle color=""warn"">即將刪除</h2>
-      <mat-dialog-content>
-        確定要刪除 ID: {{UserData.Id}} 的用戶資料嗎?
-      </mat-dialog-content>
-      <mat-dialog-actions align=""end"">
-        <button mat-raised-button mat-icon-button color=""warn"" type=""submit"" (click)=""UserDelete(UserData.Id)"">
-          <mat-icon>done</mat-icon>
-        </button>
-        <button mat-raised-button mat-icon-button matDialogClose color=""primary"">
-          <mat-icon>close</mat-icon>
-        </button>
-      </mat-dialog-actions>
-    </ng-template>
-    <!-- ------------------------------- -->
-  
+<div class=""DataTable"">
+
+  <!-- ------------------------------- -->
+
+  <div class=""TableHeader"">
+    <mat-form-field appearance=""standard"">
+      <mat-label>全欄位前端搜尋</mat-label>
+      <input matInput (keyup)=""ApplyFilterFrontEnd($event)"" placeholder=""Ex. 樸續俊"" #filter>
+    </mat-form-field>
+    <button color=""accent"" mat-raised-button mat-icon-button (click)=""OpenDiaglog(true,null)"">
+      <mat-icon>add circle</mat-icon>
+    </button>
   </div>
-  
+
+  <!-- ------------------------------- -->
+
+  <div class=""mat-elevation-z8"">
+ 
+    <table mat-table [dataSource]=""Items"">
+
+      <!-- HeaderColumn -->
+
+      #HeaderColumn
+
+      <!-- ------------------------------- -->
+
+      <ng-container matColumnDef=""button"">
+        <th mat-header-cell *matHeaderCellDef class=""text-center""> 管理 </th>
+        <td mat-cell *matCellDef=""let element"" class=""text-center"">
+          <button mat-raised-button mat-icon-button color=""primary"" (click)=""OpenDiaglog(false,element.Id)"">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-raised-button mat-icon-button color=""warn"" class=""ml-5"" (click)=""OpenCloseDialog(element.Id)"">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <!-- ------------------------------- -->
+
+      <tr mat-header-row *matHeaderRowDef=""#matHeaderRowDef""></tr>
+      <tr mat-row *matRowDef=""let row; columns:#matHeaderRowDef""></tr>
+
+    </table>
+
+    <!-- ------------------------------- -->
+
+    <mat-paginator #paginator [length]=""totalDataCount"" [pageIndex]=""pageIndex"" [pageSize]=""pageSize""
+      [pageSizeOptions]=""[5, 10, 15]"">
+    </mat-paginator>
+
+  </div>
+
+  <!-- ------------------------------- -->
+
+  <ng-template #Dialog>
+    <h2 matDialogTitle>新增資料</h2>
+
+    <mat-dialog-content class=""Dialog"">
+      <form>
+
+        <!-- FormField -->
+
+        #FormField
+
+      </form>
+    </mat-dialog-content>
+
+    <!-- ------------------------------- -->
+
+    <mat-dialog-actions align=""end"">
+
+      <button mat-raised-button mat-icon-button color=""primary"" type=""submit"" (click)=""#UsersCreate()""
+        *ngIf=""!Item.Id"">
+        <mat-icon>done</mat-icon>
+      </button>
+
+      <button mat-raised-button mat-icon-button color=""primary"" type=""submit"" (click)=""#UsersUpdate()""
+        *ngIf=""Item.Id"">
+        <mat-icon>done</mat-icon>
+      </button>
+
+      <button mat-raised-button mat-icon-button matDialogClose color=""warn"">
+        <mat-icon>close</mat-icon>
+      </button>
+
+    </mat-dialog-actions>
+
+  </ng-template>
+
+  <!-- ------------------------------- -->
+
+  <ng-template #CloseDialog>
+    <h2 matDialogTitle color=""warn"">即將刪除</h2>
+    <mat-dialog-content>
+      確定要刪除 ID: {{Item.Id}} 的用戶資料嗎?
+    </mat-dialog-content>
+    <mat-dialog-actions align=""end"">
+      <button mat-raised-button mat-icon-button color=""warn"" type=""submit"" (click)=""#UsersDelete(Item.Id)"">
+        <mat-icon>done</mat-icon>
+      </button>
+      <button mat-raised-button mat-icon-button matDialogClose color=""primary"">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-dialog-actions>
+  </ng-template>
+
+  <!-- ------------------------------- -->
+
+</div>
 
 ";
 
@@ -637,19 +721,19 @@ namespace BLL.Services
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UsersTableComponent } from './users-table.component';
+import { #UsersTableComponent } from './#users-table.component';
 
-describe('UserTableComponent', () => {
-  let component: UsersTableComponent;
-  let fixture: ComponentFixture<UsersTableComponent>;
+describe('#UserTableComponent', () => {
+  let component: #UsersTableComponent;
+  let fixture: ComponentFixture<#UsersTableComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ UsersTableComponent ]
+      declarations: [ #UsersTableComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(UsersTableComponent);
+    fixture = TestBed.createComponent(#UsersTableComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -671,14 +755,14 @@ import { ApiService } from 'src/app/common/services/api.service';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { BaseComponent } from 'src/app/common/components/base.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { UserArgs } from 'src/app/common/models/UserModel';
+import { #UserArgs } from 'src/app/common/models/#UserModel';
 
 @Component({
-  selector: 'app-users-table',
-  templateUrl: './users-table.component.html',
-  styleUrls: ['./users-table.component.scss']
+  selector: '#app-users-table',
+  templateUrl: './#users-table.component.html',
+  styleUrls: ['./#users-table.component.scss']
 })
-export class UsersTableComponent extends BaseComponent implements OnInit {
+export class #UsersTableComponent extends BaseComponent implements OnInit {
 
   constructor(
     private _HttpClient: HttpClient,
@@ -692,16 +776,16 @@ export class UsersTableComponent extends BaseComponent implements OnInit {
   @ViewChild('filter') filter: ElementRef | any;
 
   ngOnInit(): void {
-    this.UsersData = new MatTableDataSource();
-    this.UsersRead(this.pageIndex, this.pageSize, []);
+    this.Items = new MatTableDataSource();
+    this.#UsersRead(this.pageIndex, this.pageSize, []);
   }
 
   ngAfterViewInit() {
-    this.UsersData.paginator = this.paginator;
+    this.Items.paginator = this.paginator;
     this.paginator.page.subscribe((page: PageEvent) => {
       this.pageIndex = page.pageIndex;
       this.pageSize = page.pageSize;
-      this.UsersRead(page.pageIndex, page.pageSize, []);
+      this.#UsersRead(page.pageIndex, page.pageSize, []);
     }, (err: any) => {
       console.log(err);
     });
@@ -711,7 +795,7 @@ export class UsersTableComponent extends BaseComponent implements OnInit {
   DialogRef: MatDialogRef<any> | any;
   OpenDiaglog(IsNew: boolean, Id: any) {
     if (IsNew) {
-      this.UserData = new UserArgs();
+      this.Item = new #UserArgs();
     } else {
       // 取單筆
       let listInt = [Id];
@@ -720,7 +804,7 @@ export class UsersTableComponent extends BaseComponent implements OnInit {
         ""Key"": ""Id"",
         ""JsonString"": JSON.stringify(listInt)
       };
-      this.UsersRead(0, 5, [Arg]);
+      this.#UsersRead(0, 5, [Arg]);
     }
     this.DialogRef = this.dialog.open(this.Dialog);
   }
@@ -729,28 +813,27 @@ export class UsersTableComponent extends BaseComponent implements OnInit {
   CloseDialogRef: MatDialogRef<any> | any;
   OpenCloseDialog(Id: any) {
     this.CloseDialogRef = this.dialog.open(this.CloseDialog);
-    this.UserData = new UserArgs();
-    this.UserData.Id = Id;
+    this.Item = new #UserArgs();
+    this.Item.Id = Id;
   }
 
-  UsersData: any;
-  FilterUsersData: any;
-  UserData = new UserArgs();
-  UsersRead(PageIndex: any, PageSize: any, Args: any) {
+  Items: any;
+  FilterItems: any;
+  Item = new #UserArgs();
+  #UsersRead(PageIndex: any, PageSize: any, Args: any) {
     let Req = new ApiRequest<any>();
     Req.Args = Args;
     Req.PageIndex = PageIndex;
     Req.PageSize = PageSize;
-    this._ApiService.UsersRead(Req).subscribe((Res) => {
+    this._ApiService.#UsersRead(Req).subscribe((Res) => {
       if (Res.Success) {
         if (Args.length <= 0) {
-          this.UsersData = Res.Data;
-          this.FilterUsersData = Res.Data;
+          this.Items = Res.Data;
+          this.FilterItems = Res.Data;
           this.totalDataCount = Res.TotalDataCount;
         }
         else {
-          this.UserData = Res.Data[0];
-          console.log(this.UserData);
+          this.Item = Res.Data[0];
         }
       }
     }, (err: any) => {
@@ -762,12 +845,12 @@ export class UsersTableComponent extends BaseComponent implements OnInit {
     const filterValue = (event.target as HTMLInputElement).value;
 
     if (filterValue === '') {
-      this.UsersData = this.FilterUsersData;
+      this.Items = this.FilterItems;
     }
     else {
       // 前端搜尋
-      this.UsersData = [];
-      this.FilterUsersData
+      this.Items = [];
+      this.FilterItems
         .forEach(
           (data: any) => {
             let Check = false;
@@ -778,19 +861,19 @@ export class UsersTableComponent extends BaseComponent implements OnInit {
             }
 
             if (Check) {
-              this.UsersData.push(data);
+              this.Items.push(data);
             }
           }
         );
     }
   }
 
-  UserDelete(Id: any) {
+  #UsersDelete(Id: any) {
     let Req = new ApiRequest();
     Req.Args = [Id];
-    this._ApiService.UserDelete(Req).subscribe((Res) => {
+    this._ApiService.#UsersDelete(Req).subscribe((Res) => {
       if (Res.Success) {
-        this.UsersRead(this.pageIndex, this.pageSize, []);
+        this.#UsersRead(this.pageIndex, this.pageSize, []);
         this.CloseDialogRef.close();
       }
     }, (err: any) => {
@@ -798,30 +881,26 @@ export class UsersTableComponent extends BaseComponent implements OnInit {
     });
   }
 
-  UserUpdate() {
-    console.log(this.UserData.Id);
+  #UsersUpdate() {
     let Req = new ApiRequest();
-    Req.Args = [this.UserData];
-    this._ApiService.UserUpdate(Req).subscribe((Res) => {
+    Req.Args = [this.Item];
+    this._ApiService.#UsersUpdate(Req).subscribe((Res) => {
       if (Res.Success) {
-        console.log(Res);
         this.DialogRef.close();
-        this.UsersRead(this.pageIndex, this.pageSize, []);
+        this.#UsersRead(this.pageIndex, this.pageSize, []);
       }
     }, (err: any) => {
       console.log(err);
     });
   }
 
-  UserCreate() {
-    console.log(this.UserData.Id);
+  #UsersCreate() {
     let Req = new ApiRequest();
-    Req.Args = [this.UserData];
-    this._ApiService.UserCreate(Req).subscribe((Res) => {
+    Req.Args = [this.Item];
+    this._ApiService.#UsersCreate(Req).subscribe((Res) => {
       if (Res.Success) {
-        console.log(Res);
         this.DialogRef.close();
-        this.UsersRead(this.pageIndex, this.pageSize, []);
+        this.#UsersRead(this.pageIndex, this.pageSize, []);
       }
     }, (err: any) => {
       console.log(err);
@@ -830,13 +909,34 @@ export class UsersTableComponent extends BaseComponent implements OnInit {
 
 }
 
-
 ";
+
             public static string xxxmodelts = @"
 
         export class #UserArgs {
                 #Props
         }
+";
+
+            public static string ApiServices = @"
+
+  #UsersRead(Req: any) {
+    let Url = `${this._ApiUrl}/#Users/Read`
+    return this._HttpClient.post<ApiResponse>(Url, Req, this._HttpOptions);
+  }
+  #UsersDelete(Req: any) {
+    let Url = `${this._ApiUrl}/#Users/Delete`
+    return this._HttpClient.post<ApiResponse>(Url, Req, this._HttpOptions);
+  }
+  #UsersCreate(Req: any) {
+    let Url = `${this._ApiUrl}/#Users/Create`
+    return this._HttpClient.post<ApiResponse>(Url, Req, this._HttpOptions);
+  }
+  #UsersUpdate(Req: any) {
+    let Url = `${this._ApiUrl}/#Users/Update`
+    return this._HttpClient.post<ApiResponse>(Url, Req, this._HttpOptions);
+  }
+
 ";
         }
     }

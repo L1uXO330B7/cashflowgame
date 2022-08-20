@@ -1,5 +1,7 @@
-<div class="UsersTable">
+<div class="DataTable">
+
   <!-- ------------------------------- -->
+
   <div class="TableHeader">
     <mat-form-field appearance="standard">
       <mat-label>全欄位前端搜尋</mat-label>
@@ -9,18 +11,20 @@
       <mat-icon>add circle</mat-icon>
     </button>
   </div>
+
   <!-- ------------------------------- -->
+
   <div class="mat-elevation-z8">
-    <!-- ------------------------------- -->
-    <table mat-table [dataSource]="UsersData">
-      <!-- Position Column -->
-      <ng-container matColumnDef="User">
+
+    <table mat-table [dataSource]="Items">
+      <!-- HeaderColumn -->
+      <ng-container matColumnDef="Id">
         <th mat-header-cell *matHeaderCellDef class="text-center" color="primary"> 編號 </th>
         <td mat-cell *matCellDef="let element" class="text-center"> {{element.Id}} </td>
       </ng-container>
 
       <!-- Name Column -->
-      <ng-container matColumnDef="Account">
+      <ng-container matColumnDef="Email">
         <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header> 帳號 </th>
         <td mat-cell *matCellDef="let element" class="text-center"> {{element.Email}} </td>
       </ng-container>
@@ -51,6 +55,7 @@
       <!-- </mat-form-field> -->
 
       <!-- ------------------------------- -->
+
       <ng-container matColumnDef="button">
         <th mat-header-cell *matHeaderCellDef class="text-center"> 管理 </th>
         <td mat-cell *matCellDef="let element" class="text-center">
@@ -73,7 +78,9 @@
       </tr> -->
 
     </table>
+
     <!-- ------------------------------- -->
+
     <mat-paginator #paginator [length]="totalDataCount" [pageIndex]="pageIndex" [pageSize]="pageSize"
       [pageSizeOptions]="[5, 10, 15]">
     </mat-paginator>
@@ -81,7 +88,7 @@
   </div>
 
   <!-- ------------------------------- -->
-  <!-- Dialog template #2 -->
+
   <ng-template #Dialog>
     <h2 matDialogTitle>新增資料</h2>
 
@@ -90,53 +97,61 @@
 
         <mat-form-field class="full-width" appearance="fill">
           <mat-label>帳號</mat-label>
-          <input matInput placeholder="Ex. abc@gmail.com" [(ngModel)]="UserData.Email" type="email" name="email"
-            required>
+          <input matInput placeholder="Ex. abc@gmail.com" [(ngModel)]="Item.Email" type="email" name="email" required>
         </mat-form-field>
+
         <mat-form-field class="full-width" appearance="fill">
           <mat-label>暱稱</mat-label>
-          <input matInput placeholder="社畜1234" [(ngModel)]="UserData.Name" type="text" name="Name" required>
+          <input matInput placeholder="社畜1234" [(ngModel)]="Item.Name" type="text" name="Name" required>
         </mat-form-field>
+
         <mat-form-field class="full-width" appearance="fill">
           <mat-label color="warn">密碼(盡量不做更改)</mat-label>
-          <input matInput placeholder="abc123" [(ngModel)]="UserData.Password" type="text" name="Password" required>
+          <input matInput placeholder="abc123" [(ngModel)]="Item.Password" type="text" name="Password" required>
         </mat-form-field>
+
         <mat-form-field class="full-width" appearance="fill">
           <mat-label>狀態(Number)</mat-label>
-          <input matInput [(ngModel)]="UserData.Status" type="number" name="Status" required>
+          <input matInput [(ngModel)]="Item.Status" type="number" name="Status" required>
         </mat-form-field>
+
         <mat-form-field class="full-width" appearance="fill">
           <mat-label>權限角色(Number)</mat-label>
-          <input matInput [(ngModel)]="UserData.RoleId" type="number" name="RoleId" required>
+          <input matInput [(ngModel)]="Item.RoleId" type="number" name="RoleId" required>
         </mat-form-field>
+
       </form>
     </mat-dialog-content>
 
     <!-- ------------------------------- -->
+
     <mat-dialog-actions align="end">
-      <button mat-raised-button mat-icon-button color="primary" type="submit" (click)="UserCreate()"
-        *ngIf="!UserData.Id">
+
+      <button mat-raised-button mat-icon-button color="primary" type="submit" (click)="UsersCreate()" *ngIf="!Item.Id">
         <mat-icon>done</mat-icon>
       </button>
-      <button mat-raised-button mat-icon-button color="primary" type="submit" (click)="UserUpdate()"
-        *ngIf="UserData.Id">
+
+      <button mat-raised-button mat-icon-button color="primary" type="submit" (click)="UsersUpdate()" *ngIf="Item.Id">
         <mat-icon>done</mat-icon>
       </button>
+
       <button mat-raised-button mat-icon-button matDialogClose color="warn">
         <mat-icon>close</mat-icon>
       </button>
+
     </mat-dialog-actions>
 
   </ng-template>
 
   <!-- ------------------------------- -->
+
   <ng-template #CloseDialog>
     <h2 matDialogTitle color="warn">即將刪除</h2>
     <mat-dialog-content>
-      確定要刪除 ID: {{UserData.Id}} 的用戶資料嗎?
+      確定要刪除 ID: {{Item.Id}} 的用戶資料嗎?
     </mat-dialog-content>
     <mat-dialog-actions align="end">
-      <button mat-raised-button mat-icon-button color="warn" type="submit" (click)="UserDelete(UserData.Id)">
+      <button mat-raised-button mat-icon-button color="warn" type="submit" (click)="UsersDelete(Item.Id)">
         <mat-icon>done</mat-icon>
       </button>
       <button mat-raised-button mat-icon-button matDialogClose color="primary">
@@ -144,6 +159,7 @@
       </button>
     </mat-dialog-actions>
   </ng-template>
+
   <!-- ------------------------------- -->
 
 </div>

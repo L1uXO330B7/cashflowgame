@@ -146,7 +146,7 @@ namespace Common.Methods
         /// 轉換資料型態字串
         /// </summary>
         /// <param name="dataType">資料型態</param>
-        /// <param name="returnType">回傳型態 1.SQL型態 2.變數宣告 3.變數預設值 7.Angular型態 8.Angular InputType</param>
+        /// <param name="returnType">回傳型態 1.SQL型態 2.變數宣告 3.變數預設值 7.Angular TypeScript 型別 8.Angular InputType</param>
         /// <returns></returns>
         public static string GetSqlDataTypeString(string dataType, int returnType)
         {
@@ -162,7 +162,7 @@ namespace Common.Methods
                 typeClassString = "SqlDbType.TinyInt"; // SQL 型態
                 typeDetailsString = "byte"; // 變數宣告
                 typeDefaultString = "Default.MyByte"; // 變數預設值
-                typeAngularString = "number"; // Angular 型態
+                typeAngularString = "number"; // Angular TypeScript 型別
                 typeAngularInputString = "number"; // Angular InputType
             }
             else if (dataType.Contains("Int16"))

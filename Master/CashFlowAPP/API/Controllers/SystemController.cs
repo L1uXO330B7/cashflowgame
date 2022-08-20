@@ -46,7 +46,7 @@ namespace API.Controllers
         /// 獲取 MiniProfiler HTML 片段
         /// </summary>
         /// <returns></returns>
-        [TypeFilter(typeof(AuthorizationFilter))]
+        //[TypeFilter(typeof(AuthorizationFilter))]
         [HttpGet]
         public IActionResult GetMiniProfilerScript()
         {
