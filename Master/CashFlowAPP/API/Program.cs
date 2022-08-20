@@ -1,3 +1,4 @@
+using API;
 using API.Filter;
 using API.Hubs;
 using BLL.IServices;
@@ -140,23 +141,13 @@ try
         c.IncludeXmlComments(FilePath);
     });
 
-
-
     // 註冊 Services
 
     builder.Services.AddScoped<IClientSideService, ClientSideService>();
-
-    builder.Services.AddScoped<
-        IUsersService<List<CreateUserArgs>, List<ReadUserArgs>, List<UpdateUserArgs>, List<int?>>,
-        UsersService
-    >();
-
-    builder.Services.AddScoped<
-        IQuestionsService<List<CreateUserArgs>, List<ReadQuestionArgs>, List<UpdateUserArgs>, List<int?>>,
-        QuestionsService
-    >();
-
     builder.Services.AddScoped<IClientHubService, ClientHubService>();
+
+    // 註冊 Mapping CRUD Services
+    new ServicesMapping(builder);
 
     // 註冊 MiniProfiler 如果更改設定需產生 MiniProfiler Script 貼於於 Swagger Index 內
     builder.Services.AddMiniProfiler(options =>

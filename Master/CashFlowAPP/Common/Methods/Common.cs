@@ -26,6 +26,7 @@ namespace Common.Methods
             }
             return validateCode;
         }
+
         /// <summary>
         /// 取得 MimeMessage 信件範例
         /// </summary>
@@ -127,6 +128,149 @@ namespace Common.Methods
                 //存檔資料夾不存在，新增資料夾
                 Directory.CreateDirectory(Root);
             }
+        }
+
+        /// <summary>
+        /// 首字母大寫
+        /// 參考：https://stackoverflow.com/questions/4135317/make-first-letter-of-a-string-upper-case-with-maximum-performance/4135491#4135491
+        /// </summary>
+        public static string FirstCharToLower(this string input)
+        => input switch
+        {
+            null => throw new ArgumentNullException(nameof(input)),
+            "" => throw new ArgumentException($"{nameof(input)} cannot be empty", nameof(input)),
+            _ => string.Concat(input[0].ToString().ToLower(), input.AsSpan(1))
+        };
+
+        /// <summary>
+        /// 轉換資料型態字串
+        /// </summary>
+        /// <param name="dataType">資料型態</param>
+        /// <param name="returnType">回傳型態 1.SQL型態 2.變數宣告 3.變數預設值 7.Angular型態 8.Angular InputType</param>
+        /// <returns></returns>
+        public static string GetSqlDataTypeString(string dataType, int returnType)
+        {
+            string typeClassString = "";
+            string typeDetailsString = "";
+            string typeDefaultString = "";
+            string returnString = "";
+            string typeAngularString = "";
+            string typeAngularInputString = "";
+
+            if (dataType.Contains("Byte"))
+            {
+                typeClassString = "SqlDbType.TinyInt"; // SQL 型態
+                typeDetailsString = "byte"; // 變數宣告
+                typeDefaultString = "Default.MyByte"; // 變數預設值
+                typeAngularString = "number"; // Angular 型態
+                typeAngularInputString = "number"; // Angular InputType
+            }
+            else if (dataType.Contains("Int16"))
+            {
+                typeClassString = "SqlDbType.SmallInt";
+                typeDetailsString = "short";
+                typeDefaultString = "Default.MyShort";
+                typeAngularString = "number";
+                typeAngularInputString = "number";
+            }
+            else if (dataType.Contains("Int32"))
+            {
+                typeClassString = "SqlDbType.Int";
+                typeDetailsString = "int";
+                typeDefaultString = "Default.MyInt";
+                typeAngularString = "number";
+                typeAngularInputString = "number";
+            }
+            else if (dataType.Contains("Int64"))
+            {
+                typeClassString = "SqlDbType.BigInt";
+                typeDetailsString = "long";
+                typeDefaultString = "Default.MyLong";
+                typeAngularString = "number";
+                typeAngularInputString = "number";
+            }
+            else if (dataType.Contains("String"))
+            {
+                typeClassString = "SqlDbType.NVarChar";
+                typeDetailsString = "string";
+                typeDefaultString = "Default.MyString";
+                typeAngularString = "string";
+                typeAngularInputString = "text";
+            }
+            else if (dataType.Contains("Guid"))
+            {
+                typeClassString = "SqlDbType.UniqueIdentifier";
+                typeDetailsString = "Guid";
+                typeDefaultString = "Default.MyGuid";
+                typeAngularString = "string";
+                typeAngularInputString = "text";
+            }
+            else if (dataType.Contains("Boolean"))
+            {
+                typeClassString = "SqlDbType.Bit";
+                typeDetailsString = "bool";
+                typeDefaultString = "Default.MyBoolean";
+                typeAngularString = "boolean";
+                typeAngularInputString = "number";
+            }
+            else if (dataType.Contains("DateTime"))
+            {
+                typeClassString = "SqlDbType.DateTime";
+                typeDetailsString = "DateTime";
+                typeDefaultString = "Default.MyDateTime";
+                typeAngularString = "Date";
+                typeAngularInputString = "Date";
+            }
+            else if (dataType.Contains("Double"))
+            {
+                typeClassString = "SqlDbType.Float";
+                typeDetailsString = "double";
+                typeDefaultString = "Default.MyDouble";
+                typeAngularString = "number";
+                typeAngularInputString = "number";
+            }
+            else if (dataType.Contains("Decimal"))
+            {
+                typeClassString = "SqlDbType.Decimal";
+                typeDetailsString = "decimal";
+                typeDefaultString = "Default.MyDecimal";
+                typeAngularString = "number";
+                typeAngularInputString = "number";
+            }
+            else if (dataType.Contains("Byte[]"))
+            {
+                typeClassString = "SqlDbType.Image";
+                typeDetailsString = "byte[]";
+                typeDefaultString = "Default.MyBytes";
+                typeAngularString = "string";
+                typeAngularInputString = "text";
+            }
+            else
+            {
+                typeClassString = "無法解析";
+                typeDetailsString = "無法解析";
+                typeDefaultString = "無法解析";
+                typeAngularString = "無法解析";
+                typeAngularInputString = "text";
+            }
+
+            if (dataType.Contains("Nullable"))
+            {
+                typeDetailsString += "?";
+            }
+
+            if (returnType == 1)
+                returnString = typeClassString;
+            else if (returnType == 2)
+                returnString = typeDetailsString;
+            else if (returnType == 7)
+                returnString = typeAngularString;
+            else if (returnType == 8)
+                returnString = typeAngularInputString;
+            else
+                returnString = typeDefaultString;
+
+            return returnString;
         }
     }
 }

@@ -9,11 +9,10 @@
       <mat-icon>add circle</mat-icon>
     </button>
   </div>
-
+  <!-- ------------------------------- -->
   <div class="mat-elevation-z8">
-
+    <!-- ------------------------------- -->
     <table mat-table [dataSource]="UsersData">
-
       <!-- Position Column -->
       <ng-container matColumnDef="User">
         <th mat-header-cell *matHeaderCellDef class="text-center" color="primary"> 編號 </th>
@@ -51,6 +50,7 @@
       </mat-error> -->
       <!-- </mat-form-field> -->
 
+      <!-- ------------------------------- -->
       <ng-container matColumnDef="button">
         <th mat-header-cell *matHeaderCellDef class="text-center"> 管理 </th>
         <td mat-cell *matCellDef="let element" class="text-center">
@@ -63,6 +63,7 @@
         </td>
       </ng-container>
 
+      <!-- ------------------------------- -->
       <tr mat-header-row *matHeaderRowDef="['User', 'Account', 'Name', 'Status','button']"></tr>
       <tr mat-row *matRowDef="let row; columns:['User', 'Account', 'Name', 'Status','button']"></tr>
 
@@ -70,19 +71,23 @@
       <!-- <tr class="mat-row" *matNoDataRow>
         <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
       </tr> -->
-    </table>
 
+    </table>
+    <!-- ------------------------------- -->
     <mat-paginator #paginator [length]="totalDataCount" [pageIndex]="pageIndex" [pageSize]="pageSize"
       [pageSizeOptions]="[5, 10, 15]">
     </mat-paginator>
 
   </div>
+
+  <!-- ------------------------------- -->
   <!-- Dialog template #2 -->
   <ng-template #Dialog>
     <h2 matDialogTitle>新增資料</h2>
 
     <mat-dialog-content class="Dialog">
       <form>
+
         <mat-form-field class="full-width" appearance="fill">
           <mat-label>帳號</mat-label>
           <input matInput placeholder="Ex. abc@gmail.com" [(ngModel)]="UserData.Email" type="email" name="email"
@@ -106,6 +111,8 @@
         </mat-form-field>
       </form>
     </mat-dialog-content>
+
+    <!-- ------------------------------- -->
     <mat-dialog-actions align="end">
       <button mat-raised-button mat-icon-button color="primary" type="submit" (click)="UserCreate()"
         *ngIf="!UserData.Id">
@@ -119,8 +126,10 @@
         <mat-icon>close</mat-icon>
       </button>
     </mat-dialog-actions>
+
   </ng-template>
 
+  <!-- ------------------------------- -->
   <ng-template #CloseDialog>
     <h2 matDialogTitle color="warn">即將刪除</h2>
     <mat-dialog-content>
@@ -135,4 +144,6 @@
       </button>
     </mat-dialog-actions>
   </ng-template>
+  <!-- ------------------------------- -->
+
 </div>

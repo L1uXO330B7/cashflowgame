@@ -3,7 +3,7 @@ import { Injectable, OnInit } from '@angular/core';
 @Injectable()
 export class BaseComponent {
 
-  pageIndex = 0;
+  pageIndex = 1;
   pageSize = 5;
   totalDataCount:any = 0;
 

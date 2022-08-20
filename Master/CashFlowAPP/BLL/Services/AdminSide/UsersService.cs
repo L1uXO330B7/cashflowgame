@@ -3,9 +3,7 @@ using Common.Model;
 using DPL.EF;
 using Common.Enum;
 using Common.Model.AdminSide;
-using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
-using System.Linq;
 
 namespace BLL.Services.AdminSide
 {
@@ -69,7 +67,6 @@ namespace BLL.Services.AdminSide
                         .DeserializeObject<List<int>>(Arg.JsonString);
 
                     users = users.Where(x => Ids.Contains(x.Id));
-
                 }
 
                 if (Arg.Key == "Status") // 狀態篩選條件
@@ -84,7 +81,7 @@ namespace BLL.Services.AdminSide
             var Data = users
                     // 後端分頁
                     // 省略幾筆 ( 頁數 * 每頁幾筆 )
-                    .Skip(((int)Req.PageIndex) * (int)Req.PageSize)
+                    .Skip(((int)Req.PageIndex -1) * (int)Req.PageSize)
                     // 取得幾筆
                     .Take((int)Req.PageSize)
                     .ToList();
@@ -113,7 +110,7 @@ namespace BLL.Services.AdminSide
                 {
                     Res.Success = false;
                     Res.Code = (int)ResponseStatusCode.CannotFind;
-                    Res.Message += $@"Id：{Arg.Id} 無此用戶\n";
+                    Res.Message += $@"Id：{Arg.Id} 無此Id\n";
                 }
                 else
                 {
@@ -150,7 +147,7 @@ namespace BLL.Services.AdminSide
                 {
                     Res.Success = false;
                     Res.Code = (int)ResponseStatusCode.CannotFind;
-                    Res.Message = "無此用戶";
+                    Res.Message = "無此Id";
                 }
                 else
                 {

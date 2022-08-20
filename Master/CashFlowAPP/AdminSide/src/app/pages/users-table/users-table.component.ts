@@ -43,7 +43,6 @@ export class UsersTableComponent extends BaseComponent implements OnInit {
   }
 
   @ViewChild('Dialog', { static: true }) Dialog: TemplateRef<any> | any;
-
   DialogRef: MatDialogRef<any> | any;
   OpenDiaglog(IsNew: boolean, Id: any) {
     if (IsNew) {
@@ -101,7 +100,6 @@ export class UsersTableComponent extends BaseComponent implements OnInit {
       this.UsersData = this.FilterUsersData;
     }
     else {
-
       // 前端搜尋
       this.UsersData = [];
       this.FilterUsersData

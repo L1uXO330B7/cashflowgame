@@ -71,7 +71,7 @@ namespace BLL.Services.AdminSide
                 var Data = Questions
                     // 後端分頁
                     // 省略幾筆 ( 頁數 * 每頁幾筆 )
-                    .Skip(((int)Req.PageIndex - 1) * (int)Req.PageSize)
+                    .Skip(((int)Req.PageIndex -1 - 1) * (int)Req.PageSize)
                     // 取得幾筆
                     .Take((int)Req.PageSize)
                     .ToList();

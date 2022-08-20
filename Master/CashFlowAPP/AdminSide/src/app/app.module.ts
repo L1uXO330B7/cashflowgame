@@ -11,14 +11,12 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpInterceptorService } from './common/services/http-interceptor.service';
 import { FormsModule } from '@angular/forms';
 
-
 @NgModule({
   declarations: [
     AppComponent,
     DashboardPageComponent,
     UsersTableComponent,
     LoginPageComponent,
-
   ],
   imports: [
     BrowserModule,
