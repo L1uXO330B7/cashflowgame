@@ -11,9 +11,7 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatDialogModule} from '@angular/material/dialog';
-
-
-
+import {MatSelectModule} from '@angular/material/select';
 
 @NgModule({
   declarations: [],
@@ -29,7 +27,8 @@ import {MatDialogModule} from '@angular/material/dialog';
     MatPaginatorModule,
     MatFormFieldModule,
     MatInputModule,
-    MatDialogModule
+    MatDialogModule,
+    MatSelectModule
   ],
   exports:[
     MatButtonModule,
@@ -42,7 +41,8 @@ import {MatDialogModule} from '@angular/material/dialog';
     MatPaginatorModule,
     MatFormFieldModule,
     MatInputModule,
-    MatDialogModule
+    MatDialogModule,
+    MatSelectModule,
   ]
 })
 export class SharedMaterialModule { }

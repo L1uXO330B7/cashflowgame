@@ -31,9 +31,9 @@ namespace BLL.Services
                        .SelectMany(t => t.GetTypes())
                        .Where(t => t.IsClass && t.Namespace == "DPL.EF")
                        .ToList();
+
             if (false)
             {
-
                 #region 後端
 
                 // 後端目錄
@@ -165,7 +165,6 @@ namespace BLL.Services
                 File.WriteAllText($@"{BackEndRoot}\ProgramAddScoped.txt", ProgramAddScoped, Encoding.UTF8);
 
                 #endregion
-
             }
 
             #region 前端
@@ -600,7 +599,7 @@ namespace BLL.Services
 
         <mat-form-field class=""full-width"" appearance=""fill"">
             <mat-label>#Id</mat-label>
-            <input matInput placeholder="""" [(ngModel)]=""Item.#Id"" type=""#Id"" name=""#Id"" required>
+            <input matInput placeholder="""" [(ngModel)]=""Item.#Id"" type=""text"" name=""#Id"" required>
         </mat-form-field>
 
 ";
