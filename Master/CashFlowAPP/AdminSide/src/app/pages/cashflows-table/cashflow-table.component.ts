@@ -57,14 +57,14 @@ export class CashFlowsTableComponent extends BaseComponent implements OnInit {
         "Key": "Id",
         "JsonString": JSON.stringify(listInt)
       };
-      this.CashFlowsRead(0, 5, [Arg]);
+      this.CashFlowsRead(1, 5, [Arg]);
     }
     this.DialogRef = this.dialog.open(this.Dialog);
   }
 
   @ViewChild('CloseDialog', { static: true }) CloseDialog: TemplateRef<any> | any;
   CloseDialogRef: MatDialogRef<any> | any;
-  OpenCloseDialog(Id: any) {
+  OpenDeleteDialog(Id: any) {
     this.CloseDialogRef = this.dialog.open(this.CloseDialog);
     this.Item = new CashFlowArgs();
     this.Item.Id = Id;

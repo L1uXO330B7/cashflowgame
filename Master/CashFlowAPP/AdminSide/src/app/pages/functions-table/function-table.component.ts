@@ -57,14 +57,14 @@ export class FunctionsTableComponent extends BaseComponent implements OnInit {
         "Key": "Id",
         "JsonString": JSON.stringify(listInt)
       };
-      this.FunctionsRead(0, 5, [Arg]);
+      this.FunctionsRead(1, 5, [Arg]);
     }
     this.DialogRef = this.dialog.open(this.Dialog);
   }
 
   @ViewChild('CloseDialog', { static: true }) CloseDialog: TemplateRef<any> | any;
   CloseDialogRef: MatDialogRef<any> | any;
-  OpenCloseDialog(Id: any) {
+  OpenDeleteDialog(Id: any) {
     this.CloseDialogRef = this.dialog.open(this.CloseDialog);
     this.Item = new FunctionArgs();
     this.Item.Id = Id;

@@ -638,7 +638,7 @@ namespace BLL.Services
           <button mat-raised-button mat-icon-button color=""primary"" (click)=""OpenDiaglog(false,element.Id)"">
             <mat-icon>edit</mat-icon>
           </button>
-          <button mat-raised-button mat-icon-button color=""warn"" class=""ml-5"" (click)=""OpenCloseDialog(element.Id)"">
+          <button mat-raised-button mat-icon-button color=""warn"" class=""ml-5"" (click)=""OpenDeleteDialog(element.Id)"">
             <mat-icon>delete</mat-icon>
           </button>
         </td>
@@ -806,14 +806,14 @@ export class #UsersTableComponent extends BaseComponent implements OnInit {
         ""Key"": ""Id"",
         ""JsonString"": JSON.stringify(listInt)
       };
-      this.#UsersRead(0, 5, [Arg]);
+      this.#UsersRead(1, 5, [Arg]);
     }
     this.DialogRef = this.dialog.open(this.Dialog);
   }
 
   @ViewChild('CloseDialog', { static: true }) CloseDialog: TemplateRef<any> | any;
   CloseDialogRef: MatDialogRef<any> | any;
-  OpenCloseDialog(Id: any) {
+  OpenDeleteDialog(Id: any) {
     this.CloseDialogRef = this.dialog.open(this.CloseDialog);
     this.Item = new #UserArgs();
     this.Item.Id = Id;

@@ -57,14 +57,14 @@ export class AssetCategorysTableComponent extends BaseComponent implements OnIni
         "Key": "Id",
         "JsonString": JSON.stringify(listInt)
       };
-      this.AssetCategorysRead(0, 5, [Arg]);
+      this.AssetCategorysRead(1, 5, [Arg]);
     }
     this.DialogRef = this.dialog.open(this.Dialog);
   }
 
   @ViewChild('CloseDialog', { static: true }) CloseDialog: TemplateRef<any> | any;
   CloseDialogRef: MatDialogRef<any> | any;
-  OpenCloseDialog(Id: any) {
+  OpenDeleteDialog(Id: any) {
     this.CloseDialogRef = this.dialog.open(this.CloseDialog);
     this.Item = new AssetCategoryArgs();
     this.Item.Id = Id;

@@ -57,14 +57,14 @@ export class EffectTablesTableComponent extends BaseComponent implements OnInit 
         "Key": "Id",
         "JsonString": JSON.stringify(listInt)
       };
-      this.EffectTablesRead(0, 5, [Arg]);
+      this.EffectTablesRead(1, 5, [Arg]);
     }
     this.DialogRef = this.dialog.open(this.Dialog);
   }
 
   @ViewChild('CloseDialog', { static: true }) CloseDialog: TemplateRef<any> | any;
   CloseDialogRef: MatDialogRef<any> | any;
-  OpenCloseDialog(Id: any) {
+  OpenDeleteDialog(Id: any) {
     this.CloseDialogRef = this.dialog.open(this.CloseDialog);
     this.Item = new EffectTableArgs();
     this.Item.Id = Id;

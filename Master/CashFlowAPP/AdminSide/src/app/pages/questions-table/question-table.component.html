@@ -1,6 +1,4 @@
-﻿
-
-<div class="DataTable">
+﻿<div class="DataTable">
 
   <!-- ------------------------------- -->
 
@@ -17,52 +15,35 @@
   <!-- ------------------------------- -->
 
   <div class="mat-elevation-z8">
- 
+
     <table mat-table [dataSource]="Items">
 
       <!-- HeaderColumn -->
 
-      
+      <ng-container matColumnDef="Id">
+        <th mat-header-cell *matHeaderCellDef class=" text-center" color=" primary">Id</th>
+        <td mat-cell *matCellDef="let element" class="text-center"> {{element.Id}} </td>
+      </ng-container>
 
-        <ng-container matColumnDef="Id">
-            <th mat-header-cell *matHeaderCellDef class=" text-center" color=" primary">Id</th>
-            <td mat-cell *matCellDef="let element" class="text-center" > {{element.Id}} </td>
-        </ng-container>
+      <ng-container matColumnDef="Type">
+        <th mat-header-cell *matHeaderCellDef class=" text-center" color=" primary">Type</th>
+        <td mat-cell *matCellDef="let element" class="text-center"> {{element.Type|QustioneType}} </td>
+      </ng-container>
 
+      <ng-container matColumnDef="Name">
+        <th mat-header-cell *matHeaderCellDef class=" text-center" color=" primary">Name</th>
+        <td mat-cell *matCellDef="let element" class="text-center"> {{element.Name}} </td>
+      </ng-container>
 
+      <ng-container matColumnDef="Answer">
+        <th mat-header-cell *matHeaderCellDef class=" text-center" color=" primary">Answer</th>
+        <td mat-cell *matCellDef="let element" class="text-center"> {{element.Answer}} </td>
+      </ng-container>
 
-
-        <ng-container matColumnDef="Type">
-            <th mat-header-cell *matHeaderCellDef class=" text-center" color=" primary">Type</th>
-            <td mat-cell *matCellDef="let element" class="text-center" > {{element.Type}} </td>
-        </ng-container>
-
-
-
-
-        <ng-container matColumnDef="Name">
-            <th mat-header-cell *matHeaderCellDef class=" text-center" color=" primary">Name</th>
-            <td mat-cell *matCellDef="let element" class="text-center" > {{element.Name}} </td>
-        </ng-container>
-
-
-
-
-        <ng-container matColumnDef="Answer">
-            <th mat-header-cell *matHeaderCellDef class=" text-center" color=" primary">Answer</th>
-            <td mat-cell *matCellDef="let element" class="text-center" > {{element.Answer}} </td>
-        </ng-container>
-
-
-
-
-        <ng-container matColumnDef="Status">
-            <th mat-header-cell *matHeaderCellDef class=" text-center" color=" primary">Status</th>
-            <td mat-cell *matCellDef="let element" class="text-center" > {{element.Status}} </td>
-        </ng-container>
-
-
-
+      <ng-container matColumnDef="Status">
+        <th mat-header-cell *matHeaderCellDef class=" text-center" color=" primary">Status</th>
+        <td mat-cell *matCellDef="let element" class="text-center"> {{element.Status|Status}} </td>
+      </ng-container>
 
       <!-- ------------------------------- -->
 
@@ -72,7 +53,7 @@
           <button mat-raised-button mat-icon-button color="primary" (click)="OpenDiaglog(false,element.Id)">
             <mat-icon>edit</mat-icon>
           </button>
-          <button mat-raised-button mat-icon-button color="warn" class="ml-5" (click)="OpenCloseDialog(element.Id)">
+          <button mat-raised-button mat-icon-button color="warn" class="ml-5" (click)="OpenDeleteDialog(element.Id)">
             <mat-icon>delete</mat-icon>
           </button>
         </td>
@@ -103,43 +84,43 @@
 
         <!-- FormField -->
 
-        
+
 
         <mat-form-field class="full-width" appearance="fill">
-            <mat-label>Id</mat-label>
-            <input matInput placeholder="" [(ngModel)]="Item.Id" type="text" name="Id" required>
+          <mat-label>Id</mat-label>
+          <input matInput placeholder="" [(ngModel)]="Item.Id" type="text" name="Id" required>
         </mat-form-field>
 
 
 
 
         <mat-form-field class="full-width" appearance="fill">
-            <mat-label>Type</mat-label>
-            <input matInput placeholder="" [(ngModel)]="Item.Type" type="text" name="Type" required>
+          <mat-label>Type</mat-label>
+          <input matInput placeholder="" [(ngModel)]="Item.Type" type="text" name="Type" required>
         </mat-form-field>
 
 
 
 
         <mat-form-field class="full-width" appearance="fill">
-            <mat-label>Name</mat-label>
-            <input matInput placeholder="" [(ngModel)]="Item.Name" type="text" name="Name" required>
+          <mat-label>Name</mat-label>
+          <input matInput placeholder="" [(ngModel)]="Item.Name" type="text" name="Name" required>
         </mat-form-field>
 
 
 
 
         <mat-form-field class="full-width" appearance="fill">
-            <mat-label>Answer</mat-label>
-            <input matInput placeholder="" [(ngModel)]="Item.Answer" type="text" name="Answer" required>
+          <mat-label>Answer</mat-label>
+          <input matInput placeholder="" [(ngModel)]="Item.Answer" type="text" name="Answer" required>
         </mat-form-field>
 
 
 
 
         <mat-form-field class="full-width" appearance="fill">
-            <mat-label>Status</mat-label>
-            <input matInput placeholder="" [(ngModel)]="Item.Status" type="text" name="Status" required>
+          <mat-label>Status</mat-label>
+          <input matInput placeholder="" [(ngModel)]="Item.Status" type="text" name="Status" required>
         </mat-form-field>
 
 
@@ -190,4 +171,3 @@
   <!-- ------------------------------- -->
 
 </div>
-

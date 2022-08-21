@@ -1,4 +1,6 @@
-﻿<div class="DataTable">
+﻿
+
+<div class="DataTable">
 
   <!-- ------------------------------- -->
 
@@ -22,42 +24,42 @@
 
 
 
-      <ng-container matColumnDef="Id">
-        <th mat-header-cell *matHeaderCellDef class=" text-center" color=" primary">Id</th>
-        <td mat-cell *matCellDef="let element" class="text-center"> {{element.Id}} </td>
-      </ng-container>
+        <ng-container matColumnDef="Id">
+            <th mat-header-cell *matHeaderCellDef class=" text-center" color=" primary">Id</th>
+            <td mat-cell *matCellDef="let element" class="text-center" > {{element.Id}} </td>
+        </ng-container>
 
 
 
 
-      <ng-container matColumnDef="TableId">
-        <th mat-header-cell *matHeaderCellDef class=" text-center" color=" primary">TableId</th>
-        <td mat-cell *matCellDef="let element" class="text-center"> {{element.TableId}} </td>
-      </ng-container>
+        <ng-container matColumnDef="TableId">
+            <th mat-header-cell *matHeaderCellDef class=" text-center" color=" primary">影響資料表內資料流水號</th>
+            <td mat-cell *matCellDef="let element" class="text-center" > {{element.TableId}} </td>
+        </ng-container>
 
 
 
 
-      <ng-container matColumnDef="Description">
-        <th mat-header-cell *matHeaderCellDef class=" text-center" color=" primary">Description</th>
-        <td mat-cell *matCellDef="let element" class="text-center"> {{element.Description}} </td>
-      </ng-container>
+        <ng-container matColumnDef="Description">
+            <th mat-header-cell *matHeaderCellDef class=" text-center" color=" primary">影響描述</th>
+            <td mat-cell *matCellDef="let element" class="text-center" > {{element.Description}} </td>
+        </ng-container>
 
 
 
 
-      <ng-container matColumnDef="QuestionId">
-        <th mat-header-cell *matHeaderCellDef class=" text-center" color=" primary">QuestionId</th>
-        <td mat-cell *matCellDef="let element" class="text-center"> {{element.QuestionId}} </td>
-      </ng-container>
+        <ng-container matColumnDef="QuestionId">
+            <th mat-header-cell *matHeaderCellDef class=" text-center" color=" primary">問題設定檔流水號</th>
+            <td mat-cell *matCellDef="let element" class="text-center" > {{element.QuestionId}} </td>
+        </ng-container>
 
 
 
 
-      <ng-container matColumnDef="EffectTableId">
-        <th mat-header-cell *matHeaderCellDef class=" text-center" color=" primary">EffectTableId</th>
-        <td mat-cell *matCellDef="let element" class="text-center"> {{element.EffectTableId}} </td>
-      </ng-container>
+        <ng-container matColumnDef="EffectTableId">
+            <th mat-header-cell *matHeaderCellDef class=" text-center" color=" primary">影響資料表流水號</th>
+            <td mat-cell *matCellDef="let element" class="text-center" > {{element.EffectTableId}} </td>
+        </ng-container>
 
 
 
@@ -70,7 +72,7 @@
           <button mat-raised-button mat-icon-button color="primary" (click)="OpenDiaglog(false,element.Id)">
             <mat-icon>edit</mat-icon>
           </button>
-          <button mat-raised-button mat-icon-button color="warn" class="ml-5" (click)="OpenCloseDialog(element.Id)">
+          <button mat-raised-button mat-icon-button color="warn" class="ml-5" (click)="OpenDeleteDialog(element.Id)">
             <mat-icon>delete</mat-icon>
           </button>
         </td>
@@ -78,9 +80,8 @@
 
       <!-- ------------------------------- -->
 
-      <tr mat-header-row *matHeaderRowDef="['Id','TableId','Description','QuestionId','EffectTableId','button']"></tr>
-      <tr mat-row *matRowDef="let row; columns:['Id','TableId','Description','QuestionId','EffectTableId','button']">
-      </tr>
+      <tr mat-header-row *matHeaderRowDef="['Id','TableId','EffectTableId','Description','QuestionId','button']"></tr>
+      <tr mat-row *matRowDef="let row; columns:['Id','TableId','EffectTableId','Description','QuestionId','button']"></tr>
 
     </table>
 
@@ -125,7 +126,7 @@
         </mat-form-field>
 
         <mat-form-field class="full-width" appearance="fill">
-          <mat-label>問題流水號</mat-label>
+          <mat-label>問題設定檔流水號</mat-label>
           <input matInput placeholder="" [(ngModel)]="Item.QuestionId" type="text" name="QuestionId" required>
         </mat-form-field>
 
@@ -174,3 +175,4 @@
   <!-- ------------------------------- -->
 
 </div>
+

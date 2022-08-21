@@ -57,14 +57,14 @@ export class LogsTableComponent extends BaseComponent implements OnInit {
         "Key": "Id",
         "JsonString": JSON.stringify(listInt)
       };
-      this.LogsRead(0, 5, [Arg]);
+      this.LogsRead(1, 5, [Arg]);
     }
     this.DialogRef = this.dialog.open(this.Dialog);
   }
 
   @ViewChild('CloseDialog', { static: true }) CloseDialog: TemplateRef<any> | any;
   CloseDialogRef: MatDialogRef<any> | any;
-  OpenCloseDialog(Id: any) {
+  OpenDeleteDialog(Id: any) {
     this.CloseDialogRef = this.dialog.open(this.CloseDialog);
     this.Item = new LogArgs();
     this.Item.Id = Id;

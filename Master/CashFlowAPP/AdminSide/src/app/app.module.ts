@@ -25,6 +25,7 @@ import { QustionEffectsTableComponent } from './pages/qustioneffects-table/qusti
 import { RoleFunctionsTableComponent } from './pages/rolefunctions-table/rolefunction-table.component';
 import { RolesTableComponent } from './pages/roles-table/role-table.component';
 import { UserBoardsTableComponent } from './pages/userboards-table/userboard-table.component';
+import { QustioneTypePipe, StatusPipe } from './common/pipes/base.pipe';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,8 @@ import { UserBoardsTableComponent } from './pages/userboards-table/userboard-tab
     RoleFunctionsTableComponent,
     RolesTableComponent,
     UserBoardsTableComponent,
+    QustioneTypePipe,
+    StatusPipe,
   ],
   imports: [
     BrowserModule,
