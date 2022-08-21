@@ -55,7 +55,7 @@ export class UsersTableComponent extends BaseComponent implements OnInit {
         "Key": "Id",
         "JsonString": JSON.stringify(listInt)
       };
-      this.UsersRead(0, 5, [Arg]);
+      this.UsersRead(1, 5, [Arg]);
     }
     this.DialogRef = this.dialog.open(this.Dialog);
   }

@@ -13,7 +13,7 @@ namespace API
                 UsersService
             >();
             builder.Services.AddScoped<
-                IQuestionsService<List<CreateUserArgs>, List<ReadQuestionArgs>, List<UpdateUserArgs>, List<int?>>,
+                IQuestionsService<List<CreateQuestionArgs>, List<ReadQuestionArgs>, List<UpdateQuestionArgs>, List<int?>>,
                 QuestionsService
             >();
             builder.Services.AddScoped<
