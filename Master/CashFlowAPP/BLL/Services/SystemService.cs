@@ -590,7 +590,7 @@ namespace BLL.Services
             public static string HeaderColumn = @"
 
         <ng-container matColumnDef=""#Id"">
-            <th mat-header-cell* matHeaderCellDef class="" text-center"" color="" primary"">#Id</th>
+            <th mat-header-cell *matHeaderCellDef class="" text-center"" color="" primary"">#Id</th>
             <td mat-cell *matCellDef=""let element"" class=""text-center"" > {{element.#Id}} </td>
         </ng-container>
 
