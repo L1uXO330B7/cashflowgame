@@ -160,7 +160,7 @@ https://www.tpisoftware.com/tpu/articleDetails/1084
 
 ## .Net Core 6 要使用 FromSqlInterpolated 執行 SQL 指令需安裝 Microsoft.EntityFrameworkCore.Relational
 
-https://stackoverflow.com/questions/51017703/error-cs1061-dbsett-does-not-contain-a-definition-for-fromsql-and-no-exte
+https://stackoverflow.com/questions/51017703/error-cs1061-dbsett-does-not-contain-a-defin   ition-for-fromsql-and-no-exte
 
 ## 引入 Dapper 做動態查詢
 
@@ -173,3 +173,26 @@ https://blog.darkthread.net/blog/dapper-with-ef-core/
 1. 受限於條件，開發上無法使用相同的 DB，因此測試資料不一樣。
 
 2. 解決上述狀況，可使用 Visual Studio 上方工具列之工具中的 SQL Server，可以比對資料，也可以比對資料結構 
+
+
+## IIS 部屬 NetCore & Angular
+
+1. 先至控制台中的程式集增加 Windows IIS 服務功能
+
+2. 正式機得先安裝：ASP.NET Core Runtime & Hosting Bundle
+
+3. 新增 IIS 站台
+
+4. 新增 IIS_IUSRS 權限
+
+5. 將 Angular 與 NetCore build 出來的 package 放置 IIS 路徑之中
+
+6. 一個站台同時有前台和後台跟 API
+
+### 此時各種問題都會跑出來
+
+1. 需安裝 URL Rewrite，才能在 IIS 上成功使用 SPA，安裝好 URL Rewrite 模組後，需要將相對應的 web.config 嵌入至 Package 中，並寫好規則，在本專案中，ClientSide 使用 / 來當根路徑，也就是當 URL 是 /index.html 時，就可以由 ClientSide 的 Angular Router 來接管，而 AdminSide 則需要是 /AdminSide/index.html 才能對應到 AdminSide 的 Angular Router
+
+2. 正式機路徑對應的問題 Ex. API 路徑、SQL 位置等等，需要透過 Angular 的 env.prod 中來進行設定，NetCore 則是在 appsetting 來調整
+
+3. 
