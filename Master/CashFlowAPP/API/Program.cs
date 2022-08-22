@@ -34,9 +34,8 @@ try
     // 註冊 DbContext
 
     var RootPath = System.IO.Directory.GetCurrentDirectory();
-
     string Conn;
-    if (RootPath.ToUpper().Contains("DESK"))
+    if (RootPath.ToUpper().Contains("DESK") || RootPath.ToUpper().Contains("WWW"))
     {
         Conn = "OnlineCashFlow";
     }
