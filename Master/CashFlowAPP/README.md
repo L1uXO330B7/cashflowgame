@@ -195,4 +195,4 @@ https://blog.darkthread.net/blog/dapper-with-ef-core/
 
 2. 正式機路徑對應的問題 Ex. API 路徑、SQL 位置等等，需要透過 Angular 的 env.prod 中來進行設定，NetCore 則是在 appsetting 來調整
 
-3. 
+3. 會遇到各種問題，也只能上網查
