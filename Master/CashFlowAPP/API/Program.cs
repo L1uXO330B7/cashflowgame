@@ -174,11 +174,14 @@ try
     }
 
     app.UseSwagger();
+
+    var SwaggerSettingRoot = builder.Configuration.GetSection("SwaggerSettingRoot").Value;
+
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint(
             // 需配合 SwaggerDoc 的 name。 "/swagger/{SwaggerDoc name}/swagger.json"
-            url: "/swagger/v1/swagger.json",
+            url: SwaggerSettingRoot,
             // 於 Swagger UI 右上角選擇不同版本的 SwaggerDocument 顯示名稱使用。
             name: "API v1.0.0"
         );
