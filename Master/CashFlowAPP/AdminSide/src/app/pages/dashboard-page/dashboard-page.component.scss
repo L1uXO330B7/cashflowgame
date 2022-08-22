@@ -10,13 +10,14 @@
       padding-top: 0px;
       text-align: center;
       a{
+        border-bottom: 1px solid rgba(180,129,187,0.2);
       }
       h3{
         margin: 0;
         padding: 20px 0px;
         font-size: 24px;
         font-weight: 700;
-        background-color: rgba(180,129,187,0.5);
+        background-color: rgba(180,129,187,0.3);
       }
     }
   }
@@ -28,6 +29,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  box-shadow: 1px 3px 5px rgba(0,0,0,0.5);
   .BtnBox {
     display: flex;
     align-items: center;
