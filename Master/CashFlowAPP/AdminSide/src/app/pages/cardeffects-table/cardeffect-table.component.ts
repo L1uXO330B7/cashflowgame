@@ -36,7 +36,7 @@ export class CardEffectsTableComponent extends BaseComponent implements OnInit {
   ngAfterViewInit() {
     this.Items.paginator = this.paginator;
     this.paginator.page.subscribe((page: PageEvent) => {
-      this.pageIndex = page.pageIndex + 1;
+      this.pageIndex = page.pageIndex;
       this.pageSize = page.pageSize;
       this.CardEffectsRead(page.pageIndex, page.pageSize, []);
     }, (err: any) => {
@@ -76,7 +76,7 @@ export class CardEffectsTableComponent extends BaseComponent implements OnInit {
   CardEffectsRead(PageIndex: any, PageSize: any, Args: any) {
     let Req = new ApiRequest<any>();
     Req.Args = Args;
-    Req.PageIndex = PageIndex;
+    Req.PageIndex = PageIndex > 0 ? PageIndex : 1;
     Req.PageSize = PageSize;
     this._ApiService.CardEffectsRead(Req).subscribe((Res) => {
       if (Res.Success) {
