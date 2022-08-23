@@ -5,13 +5,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace DPL.EF
 {
-    public partial class CashFlowContext : DbContext
+    public partial class CashFlowDbContext : DbContext
     {
-        public CashFlowContext()
+        public CashFlowDbContext()
         {
         }
 
-        public CashFlowContext(DbContextOptions<CashFlowContext> options)
+        public CashFlowDbContext(DbContextOptions<CashFlowDbContext> options)
             : base(options)
         {
         }

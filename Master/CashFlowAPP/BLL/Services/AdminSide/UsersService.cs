@@ -68,7 +68,7 @@ namespace BLL.Services.AdminSide
                     Status = x.Status,
                     Password = x.Password,
                     RoleId = x.RoleId,
-                    RoleName = Roles.First(y => y.Id == x.RoleId).Name,
+                    RoleName = x.Role.Name,
                 })
                 .AsQueryable();
 
