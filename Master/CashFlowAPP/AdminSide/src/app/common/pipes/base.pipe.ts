@@ -47,3 +47,27 @@ export class StatusPipe implements PipeTransform {
   }
 
 }
+
+@Pipe({
+  name: 'LogAction'
+})
+export class LogActionPipe implements PipeTransform {
+
+  transform(value: unknown, ...args: unknown[]): unknown {
+    switch (value) {
+      case 1:
+        value = '新增';
+        break;
+      case 2:
+        value = '修改';
+        break;
+      case 3:
+        value = '刪除';
+        break;
+      default:
+    }
+
+    return value;
+  }
+
+}
