@@ -123,10 +123,7 @@
 
 
 
-        <mat-form-field class="full-width" appearance="fill">
-          <mat-label>Id</mat-label>
-          <input matInput placeholder="" [(ngModel)]="Item.Id" type="text" name="Id" required>
-        </mat-form-field>
+
 
 
 
@@ -207,7 +204,7 @@
   <ng-template #CloseDialog>
     <h2 matDialogTitle color="warn">即將刪除</h2>
     <mat-dialog-content>
-      確定要刪除 ID: {{Item.Id}} 的用戶資料嗎?
+      確定要刪除 ID: {{Item.Id}} 的資料嗎?
     </mat-dialog-content>
     <mat-dialog-actions align="end">
       <button mat-raised-button mat-icon-button color="warn" type="submit" (click)="LogsDelete(Item.Id)">
