@@ -4,4 +4,4 @@ dotnet tool install --global dotnet-ef
 
 // dbContext 需繼承 Override dbContext 才可 Log CRUD，更新後需補上繼承與注入參數
 
-dotnet ef dbcontext scaffold "Server=60.251.54.95;Database=dbHNAMC;Trusted_Connection=False;user id=sa;password=Shinda!QAZ2wsx;" Microsoft.EntityFrameworkCore.SqlServer --output-dir EF/dbHNAMC -f -v
+dotnet ef dbcontext scaffold "Server=150.117.83.67;Database=CashFlow;Trusted_Connection=False;user id=carl;password=1165;" Microsoft.EntityFrameworkCore.SqlServer --output-dir EF -f -v

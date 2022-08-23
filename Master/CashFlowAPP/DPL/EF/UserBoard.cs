@@ -29,5 +29,7 @@ namespace DPL.EF
         /// 使用者流水號 ( 外鍵 )
         /// </summary>
         public int UserId { get; set; }
+
+        public virtual User User { get; set; }
     }
 }
