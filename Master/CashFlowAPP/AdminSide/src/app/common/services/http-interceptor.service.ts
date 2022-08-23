@@ -1,4 +1,4 @@
-import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest,} from '@angular/common/http';
+import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, map, Observable, throwError } from 'rxjs';
@@ -9,23 +9,21 @@ import { catchError, map, Observable, throwError } from 'rxjs';
 })
 export class HttpInterceptorService implements HttpInterceptor {
 
-  NewRequest:any;
+  NewRequest: any;
 
   constructor(
-    private route:Router
+    private route: Router
   ) {
 
   }
-  ShowToast(Msg:string,CssClass:string,Header:string) {
+  ShowToast(Msg: string, CssClass: string, Header: string) {
 
   }
   intercept(
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-
     let Token = localStorage.getItem('Token');
-
     if (Token != 'null') {
       this.NewRequest = req.clone({
         setHeaders: {
@@ -39,35 +37,27 @@ export class HttpInterceptorService implements HttpInterceptor {
     }
 
     return next.handle(this.NewRequest)
-    .pipe(
-      map((event: any) => {
-
-        // https://www.tpisoftware.com/tpu/articleDetails/1084
-
-        console.log('HttpInterceptorService event', event.body);
-
-console.log('NewRequest',this.NewRequest);
-
-        if(event.body!==undefined||null){
-          if(event.body.Success){
-            if(this.NewRequest.url.indexOf('Read') == -1)
-            alert(event.body.Message+'\n成功通知 From 錢董')
+      .pipe(
+        map((event: any) => {
+          // https://www.tpisoftware.com/tpu/articleDetails/1084
+          if (event.body !== undefined || null) {
+            if (event.body.Success) {
+              if (this.NewRequest.url.indexOf('Read') == -1) {
+                alert(event.body.Message + '\n成功通知 From 錢董')
+              }
+            }
+            else {
+              alert(event.body.Message + '\n失敗通知 From 錢董')
+            }
           }
-          else{
-            alert(event.body.Message+'\n失敗通知 From 錢董')
-          }
-        }
-        return event;
-      }),
-      catchError((error: HttpErrorResponse) => {
-        this.ShowToast('伺服器維修中，請稍後再試','bg-warning  text-dark','失敗通知 From 錢董')
-        console.log('HttpInterceptorService error', error);
-        console.log('req', req);
-        // https://stackoverflow.com/questions/68655492/throwerrorerror-is-now-deprecated-but-there-is-no-new-errorhttperrorresponse
-        return throwError(() => error);
-
-      }),
-    );
+          return event;
+        }),
+        catchError((error: HttpErrorResponse) => {
+          this.ShowToast('伺服器維修中，請稍後再試', 'bg-warning  text-dark', '失敗通知 From 錢董')
+          // https://stackoverflow.com/questions/68655492/throwerrorerror-is-now-deprecated-but-there-is-no-new-errorhttperrorresponse
+          return throwError(() => error);
+        }),
+      );
   }
 }
 
