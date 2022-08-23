@@ -36,7 +36,7 @@ export class UsersTableComponent extends BaseComponent implements OnInit {
     this.paginator.page.subscribe((page: PageEvent) => {
       this.pageIndex = page.pageIndex + 1;
       this.pageSize = page.pageSize;
-      this.UsersRead(page.pageIndex, page.pageSize, []);
+      this.UsersRead(this.pageIndex,this.pageSize, []);
     }, (err: any) => {
       console.log(err);
     });
