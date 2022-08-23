@@ -36,7 +36,7 @@ export class CardEffectsTableComponent extends BaseComponent implements OnInit {
   ngAfterViewInit() {
     this.Items.paginator = this.paginator;
     this.paginator.page.subscribe((page: PageEvent) => {
-      this.pageIndex = page.pageIndex;
+      this.pageIndex = page.pageIndex + 1;
       this.pageSize = page.pageSize;
       this.CardEffectsRead(page.pageIndex, page.pageSize, []);
     }, (err: any) => {

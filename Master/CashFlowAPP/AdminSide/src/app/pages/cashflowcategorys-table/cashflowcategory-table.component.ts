@@ -36,7 +36,7 @@ export class CashFlowCategorysTableComponent extends BaseComponent implements On
   ngAfterViewInit() {
     this.Items.paginator = this.paginator;
     this.paginator.page.subscribe((page: PageEvent) => {
-      this.pageIndex = page.pageIndex;
+      this.pageIndex = page.pageIndex + 1;
       this.pageSize = page.pageSize;
       this.CashFlowCategorysRead(page.pageIndex, page.pageSize, []);
     }, (err: any) => {
