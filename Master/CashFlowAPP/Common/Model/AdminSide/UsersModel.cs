@@ -36,4 +36,9 @@ namespace Common.Model.AdminSide
         public string Key { get; set; } = "Id";
         public string JsonString { get; set; } = "[1,2,3]";
     }
+
+    public class UsersResponse : User
+    {
+        public string RoleName { get; set; }
+    }
 }

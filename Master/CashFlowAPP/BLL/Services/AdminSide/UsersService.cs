@@ -56,8 +56,21 @@ namespace BLL.Services.AdminSide
 
         public async Task<ApiResponse> Read(ApiRequest<List<ReadUserArgs>> Req)
         {
+            var Roles = _CashFlowDbContext.Roles.AsQueryable();
             var Res = new ApiResponse();
-            var users = _CashFlowDbContext.Users.AsQueryable();
+            var users = _CashFlowDbContext
+                .Users
+                .Select(x => new UsersResponse
+                {
+                    Id = x.Id,
+                    Email = x.Email,
+                    Name = x.Name,
+                    Status = x.Status,
+                    Password = x.Password,
+                    RoleId = x.RoleId,
+                    RoleName = Roles.First(y => y.Id == x.RoleId).Name,
+                })
+                .AsQueryable();
 
             foreach (var Arg in Req.Args)
             {
@@ -78,13 +91,15 @@ namespace BLL.Services.AdminSide
                 }
             }
 
-            var Data = users
+            var Users = users
                     // 後端分頁
                     // 省略幾筆 ( 頁數 * 每頁幾筆 )
-                    .Skip(((int)Req.PageIndex -1) * (int)Req.PageSize)
+                    .Skip(((int)Req.PageIndex - 1) * (int)Req.PageSize)
                     // 取得幾筆
                     .Take((int)Req.PageSize)
                     .ToList();
+
+            var Data = new { Users, Roles = Roles.ToList() };
 
             Res.Data = Data;
             Res.Success = true;

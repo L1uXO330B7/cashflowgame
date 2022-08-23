@@ -68,6 +68,7 @@ export class UsersTableComponent extends BaseComponent implements OnInit {
     this.Item.Id = Id;
   }
 
+  Roles: any;
   Items: any;
   FilterItems: any;
   Item = new UserArgs();
@@ -78,13 +79,14 @@ export class UsersTableComponent extends BaseComponent implements OnInit {
     Req.PageSize = PageSize;
     this._ApiService.UsersRead(Req).subscribe((Res) => {
       if (Res.Success) {
+        this.Roles = Res.Data.Roles;
         if (Args.length <= 0) {
-          this.Items = Res.Data;
-          this.FilterItems = Res.Data;
+          this.Items = Res.Data.Users;
+          this.FilterItems = Res.Data.Users;
           this.totalDataCount = Res.TotalDataCount;
         }
         else {
-          this.Item = Res.Data[0];
+          this.Item = Res.Data.Users[0];
         }
       }
     }, (err: any) => {
