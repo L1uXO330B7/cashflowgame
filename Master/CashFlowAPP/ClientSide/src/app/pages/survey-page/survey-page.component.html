@@ -1,4 +1,8 @@
 <app-navbar></app-navbar>
 <div class="container-fluid MainWrap">
-  <div class="QuestionsLetter"></div>
+  <div class="QuestionsLetter">
+    <div *ngFor="let item of QuestionList">
+      {{item}}
+    </div>
+  </div>
 </div>

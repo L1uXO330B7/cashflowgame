@@ -18,6 +18,8 @@ export class SurveyPageComponent implements OnInit {
     this.GetQuestions();
   }
 
+
+  QuestionList=[];
   GetQuestions(){
     let Req = new ApiRequest<any>();
    [Req.Args,Req.PageIndex,Req.PageSize]=
@@ -26,7 +28,10 @@ export class SurveyPageComponent implements OnInit {
     this._ApiService.GetQuestions(Req).subscribe((Res) => {
       if (Res.Success) {
         console.log(Res);
-        
+        Res.Data.forEach((value:any) => {
+          this.QuestionList = Res.Data;
+          console.log(JSON.parse(value.Answer));
+        })
       }
     });
   }
