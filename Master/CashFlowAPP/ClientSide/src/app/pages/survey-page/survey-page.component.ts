@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { GlobalToastService } from 'src/app/components/toast/global-toast.service';
 import { ApiRequest } from 'src/app/models/ApiRequest';
+import { Question } from 'src/app/models/Question';
 import { ApiService } from 'src/app/service/api.service';
 
 @Component({
@@ -19,7 +20,8 @@ export class SurveyPageComponent implements OnInit {
   }
 
 
-  QuestionList=[];
+
+  QuestionList:Question|any;
   GetQuestions(){
     let Req = new ApiRequest<any>();
    [Req.Args,Req.PageIndex,Req.PageSize]=
