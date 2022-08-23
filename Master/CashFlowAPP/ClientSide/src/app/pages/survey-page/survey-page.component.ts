@@ -1,4 +1,9 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { GlobalToastService } from 'src/app/components/toast/global-toast.service';
+import { ApiRequest } from 'src/app/models/ApiRequest';
+import { ApiService } from 'src/app/service/api.service';
 
 @Component({
   selector: 'app-survey-page',
@@ -7,9 +12,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SurveyPageComponent implements OnInit {
 
-  constructor() { }
+  constructor(public _HttpClient: HttpClient, private _Router: Router, public _ApiService: ApiService,public _ToastService : GlobalToastService) { }
 
   ngOnInit(): void {
+    this.GetQuestions();
   }
 
+  GetQuestions(){
+    let Req = new ApiRequest<any>();
+   [Req.Args,Req.PageIndex,Req.PageSize]=
+   [[],1,15];
+
+    this._ApiService.GetQuestions(Req).subscribe((Res) => {
+      if (Res.Success) {
+        console.log(Res);
+        
+      }
+    });
+  }
 }
