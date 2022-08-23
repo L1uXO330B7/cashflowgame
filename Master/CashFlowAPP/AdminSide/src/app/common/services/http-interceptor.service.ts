@@ -3,27 +3,31 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, map, Observable, throwError } from 'rxjs';
 
+
 @Injectable({
   providedIn: 'root'
 })
 export class HttpInterceptorService implements HttpInterceptor {
 
-  constructor(private route:Router
+  NewRequest:any;
+
+  constructor(
+    private route:Router
   ) {
 
   }
+  ShowToast(Msg:string,CssClass:string,Header:string) {
 
+  }
   intercept(
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
 
-
-    let NewRequest;
     let Token = localStorage.getItem('Token');
 
     if (Token != 'null') {
-      NewRequest = req.clone({
+      this.NewRequest = req.clone({
         setHeaders: {
           Authorization: 'Bearer ' + Token,
           AccessControlAllowOrigin: '*',
@@ -31,24 +35,37 @@ export class HttpInterceptorService implements HttpInterceptor {
         }
       });
     } else {
-      NewRequest = req;
+      this.NewRequest = req;
     }
 
-    return next.handle(NewRequest)
+    return next.handle(this.NewRequest)
     .pipe(
       map((event: any) => {
+
         // https://www.tpisoftware.com/tpu/articleDetails/1084
-        // console.log('HttpInterceptorService event', event.body);
+
+        console.log('HttpInterceptorService event', event.body);
+
+console.log('NewRequest',this.NewRequest);
+
         if(event.body!==undefined||null){
           if(event.body.Success){
+            if(this.NewRequest.url.indexOf('Read') == -1)
+            alert(event.body.Message+'\n成功通知 From 錢董')
+          }
+          else{
+            alert(event.body.Message+'\n失敗通知 From 錢董')
+          }
         }
         return event;
-      }}),
+      }),
       catchError((error: HttpErrorResponse) => {
-        // console.log('HttpInterceptorService error', error);
-        // console.log('req', req);
+        this.ShowToast('伺服器維修中，請稍後再試','bg-warning  text-dark','失敗通知 From 錢董')
+        console.log('HttpInterceptorService error', error);
+        console.log('req', req);
         // https://stackoverflow.com/questions/68655492/throwerrorerror-is-now-deprecated-but-there-is-no-new-errorhttperrorresponse
         return throwError(() => error);
+
       }),
     );
   }
