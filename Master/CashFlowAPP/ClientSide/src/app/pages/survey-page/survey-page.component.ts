@@ -32,21 +32,15 @@ export class SurveyPageComponent implements OnInit {
     this._ApiService.GetQuestions(Req).subscribe((Res) => {
       if (Res.Success) {
         console.log(Res);
-        Res.Data.forEach((value:any) => {
-          this.QuestionList = Res.Data;
-          this.ConvertJson();
+        this.QuestionList = Res.Data;
+        this.QuestionList.forEach((Question:any) => {
+          Question.Answer = Question.Answer.split(",");
         })
       }
-      console.log(this.QuestionList);
+      console.log(this.QuestionList,"QuestionList");
     });
   }
 
-ConvertJson(){
-  this.QuestionList.forEach((item:any) => {
-    item.Answer = JSON.parse(item.Answer);
-  })
-  console.log(this.QuestionList,"convert")
-}
 
 // modal
 @ViewChild('content', { static: true }) modalDOM: any;
