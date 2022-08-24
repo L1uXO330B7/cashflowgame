@@ -15,7 +15,12 @@ import { GlobalToastService } from 'src/app/components/toast/global-toast.servic
 })
 export class LoginComponent implements OnInit {
 
-  constructor(public _HttpClient: HttpClient, private _Router: Router, public _ApiService: ApiService,public _ToastService : GlobalToastService,private route:Router) {
+  constructor(
+    public _HttpClient: HttpClient,
+    private _Router: Router,
+    public _ApiService: ApiService,
+    public _ToastService : GlobalToastService,
+    ) {
   }
 
   ngOnInit(): void {
@@ -42,6 +47,7 @@ export class LoginComponent implements OnInit {
       }
     }
   }
+
   InfoMove() {
     if (this.windowWidth <= 968) {
       if (this.change) {
@@ -57,6 +63,7 @@ export class LoginComponent implements OnInit {
       }
     }
   }
+
   @ViewChild('bar', { static: true }) barDOM: any;
   @ViewChild('card', { static: true }) cardDOM: any;
   changeLogin() {

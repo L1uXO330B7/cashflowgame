@@ -18,10 +18,12 @@ import { QustionEffectsTableComponent } from './pages/qustioneffects-table/qusti
 import { RoleFunctionsTableComponent } from './pages/rolefunctions-table/rolefunction-table.component';
 import { RolesTableComponent } from './pages/roles-table/role-table.component';
 import { UserBoardsTableComponent } from './pages/userboards-table/userboard-table.component';
+import { AuthGuard } from './common/services/auth.guard';
 
 const routes: Routes = [
   { path: 'dashboard',
     component: DashboardPageComponent,
+    canActivate: [AuthGuard],
     children: [
       {path:'users',component:UsersTableComponent},
       {path:'answer-questions',component:AnswerQuestionsTableComponent},
