@@ -49,6 +49,8 @@ export class AssetCategorysTableComponent extends BaseComponent implements OnIni
   OpenDiaglog(IsNew: boolean, Id: any) {
     if (IsNew) {
       this.Item = new AssetCategoryArgs();
+      this.Item.Status = 1;
+      this.Item.ParentId = 0;
     } else {
       // 取單筆
       let listInt = [Id];

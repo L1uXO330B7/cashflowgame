@@ -49,6 +49,9 @@ export class CashFlowCategorysTableComponent extends BaseComponent implements On
   OpenDiaglog(IsNew: boolean, Id: any) {
     if (IsNew) {
       this.Item = new CashFlowCategoryArgs();
+      this.Item.Status = 1;
+      this.Item.ParentId = 0;
+      this.Item.Time = 0;
     } else {
       // 取單筆
       let listInt = [Id];

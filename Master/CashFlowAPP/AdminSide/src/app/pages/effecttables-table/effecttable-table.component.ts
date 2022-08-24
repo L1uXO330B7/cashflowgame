@@ -49,6 +49,7 @@ export class EffectTablesTableComponent extends BaseComponent implements OnInit 
   OpenDiaglog(IsNew: boolean, Id: any) {
     if (IsNew) {
       this.Item = new EffectTableArgs();
+      this.Item.Status = 1;
     } else {
       // 取單筆
       let listInt = [Id];
