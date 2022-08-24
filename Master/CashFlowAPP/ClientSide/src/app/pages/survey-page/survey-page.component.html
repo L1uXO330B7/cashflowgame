@@ -1,6 +1,8 @@
 <app-navbar></app-navbar>
 <div class="container-fluid MainWrap">
+
   <div class="QuestionsLetter">
+    <button class="btn btn-lg btn-outline-primary mb-3" (click)="open(content)">問卷說明</button>
     <ol>
     <li *ngFor="let item of QuestionList">
         <h5>{{item.Name}}</h5>
@@ -28,9 +30,3 @@
     <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">確定</button>
   </div>
 </ng-template>
-
-<button class="btn btn-lg btn-outline-primary" (click)="open(content)">Launch demo modal</button>
-
-<hr>
-
-<pre>{{ closeResult }}</pre>
