@@ -7,7 +7,7 @@
         /**題目名稱 ,Ex.生幾個小孩 */
         Name: string|any;
         /**選項答案 :[&quot;1個,2個&quot;] */
-        Answer: string|any;
+        Answer: string[]|any;
         /**狀態 0. 停用 1. 啟用 2. 刪除 */
         Status: number|any;
     }

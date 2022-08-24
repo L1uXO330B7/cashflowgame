@@ -10,7 +10,7 @@ export class HomePageComponent implements OnInit {
   constructor() {}
 
   UserName:string="";
-
+  
   StartGame(){
     localStorage.setItem("StrangerName",this.UserName);
   }
