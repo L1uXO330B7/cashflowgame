@@ -36,7 +36,7 @@ export class UsersTableComponent extends BaseComponent implements OnInit {
     this.paginator.page.subscribe((page: PageEvent) => {
       this.pageIndex = page.pageIndex;
       this.pageSize = page.pageSize;
-      this.UsersRead(page.pageIndex, page.pageSize, []);
+      this.UsersRead(this.pageIndex,this.pageSize, []);
     }, (err: any) => {
       console.log(err);
     });
@@ -68,23 +68,25 @@ export class UsersTableComponent extends BaseComponent implements OnInit {
     this.Item.Id = Id;
   }
 
+  Roles: any;
   Items: any;
   FilterItems: any;
   Item = new UserArgs();
   UsersRead(PageIndex: any, PageSize: any, Args: any) {
     let Req = new ApiRequest<any>();
     Req.Args = Args;
-    Req.PageIndex = PageIndex;
+    Req.PageIndex = PageIndex > 0 ? PageIndex : 1;
     Req.PageSize = PageSize;
     this._ApiService.UsersRead(Req).subscribe((Res) => {
       if (Res.Success) {
+        this.Roles = Res.Data.Roles;
         if (Args.length <= 0) {
-          this.Items = Res.Data;
-          this.FilterItems = Res.Data;
+          this.Items = Res.Data.Users;
+          this.FilterItems = Res.Data.Users;
           this.totalDataCount = Res.TotalDataCount;
         }
         else {
-          this.Item = Res.Data[0];
+          this.Item = Res.Data.Users[0];
         }
       }
     }, (err: any) => {

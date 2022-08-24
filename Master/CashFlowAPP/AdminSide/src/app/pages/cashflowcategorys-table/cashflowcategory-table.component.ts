@@ -76,7 +76,7 @@ export class CashFlowCategorysTableComponent extends BaseComponent implements On
   CashFlowCategorysRead(PageIndex: any, PageSize: any, Args: any) {
     let Req = new ApiRequest<any>();
     Req.Args = Args;
-    Req.PageIndex = PageIndex;
+    Req.PageIndex = PageIndex > 0 ? PageIndex : 1;
     Req.PageSize = PageSize;
     this._ApiService.CashFlowCategorysRead(Req).subscribe((Res) => {
       if (Res.Success) {

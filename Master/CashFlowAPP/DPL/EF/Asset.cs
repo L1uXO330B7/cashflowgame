@@ -12,7 +12,7 @@ namespace DPL.EF
         /// <summary>
         /// 資產名稱
         /// </summary>
-        public string Name { get; set; } = null!;
+        public string Name { get; set; }
         /// <summary>
         /// 資產價值 ( 台幣 )
         /// </summary>
@@ -25,5 +25,11 @@ namespace DPL.EF
         /// 資產類別流水號 ( 外鍵 )
         /// </summary>
         public int AssetCategoryId { get; set; }
+        /// <summary>
+        /// 描述
+        /// </summary>
+        public string Description { get; set; }
+
+        public virtual AssetCategory AssetCategory { get; set; }
     }
 }

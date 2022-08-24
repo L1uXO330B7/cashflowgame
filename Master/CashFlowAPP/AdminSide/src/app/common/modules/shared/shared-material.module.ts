@@ -12,6 +12,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatSelectModule} from '@angular/material/select';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 @NgModule({
   declarations: [],
@@ -28,7 +29,8 @@ import {MatSelectModule} from '@angular/material/select';
     MatFormFieldModule,
     MatInputModule,
     MatDialogModule,
-    MatSelectModule
+    MatSelectModule,
+    MatExpansionModule,
   ],
   exports:[
     MatButtonModule,
@@ -43,6 +45,7 @@ import {MatSelectModule} from '@angular/material/select';
     MatInputModule,
     MatDialogModule,
     MatSelectModule,
+    MatExpansionModule,
   ]
 })
 export class SharedMaterialModule { }

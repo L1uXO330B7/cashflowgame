@@ -76,7 +76,7 @@ export class CardsTableComponent extends BaseComponent implements OnInit {
   CardsRead(PageIndex: any, PageSize: any, Args: any) {
     let Req = new ApiRequest<any>();
     Req.Args = Args;
-    Req.PageIndex = PageIndex;
+    Req.PageIndex = PageIndex > 0 ? PageIndex : 1;
     Req.PageSize = PageSize;
     this._ApiService.CardsRead(Req).subscribe((Res) => {
       if (Res.Success) {

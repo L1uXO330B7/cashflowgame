@@ -654,7 +654,7 @@ namespace BLL.Services
     <!-- ------------------------------- -->
 
     <mat-paginator #paginator [length]=""totalDataCount"" [pageIndex]=""pageIndex"" [pageSize]=""pageSize""
-      [pageSizeOptions]=""[5, 10, 15]"">
+      [pageSizeOptions]=""[15, 25, totalDataCount]"">
     </mat-paginator>
 
   </div>
@@ -701,7 +701,7 @@ namespace BLL.Services
   <ng-template #CloseDialog>
     <h2 matDialogTitle color=""warn"">即將刪除</h2>
     <mat-dialog-content>
-      確定要刪除 ID: {{Item.Id}} 的用戶資料嗎?
+      確定要刪除 ID: {{Item.Id}} 的資料嗎?
     </mat-dialog-content>
     <mat-dialog-actions align=""end"">
       <button mat-raised-button mat-icon-button color=""warn"" type=""submit"" (click)=""#UsersDelete(Item.Id)"">
@@ -825,7 +825,7 @@ export class #UsersTableComponent extends BaseComponent implements OnInit {
   #UsersRead(PageIndex: any, PageSize: any, Args: any) {
     let Req = new ApiRequest<any>();
     Req.Args = Args;
-    Req.PageIndex = PageIndex;
+    Req.PageIndex = PageIndex > 0 ? PageIndex : 1;
     Req.PageSize = PageSize;
     this._ApiService.#UsersRead(Req).subscribe((Res) => {
       if (Res.Success) {

@@ -1,6 +1,4 @@
-﻿
-
-<div class="DataTable">
+﻿<div class="DataTable">
 
   <!-- ------------------------------- -->
 
@@ -17,65 +15,66 @@
   <!-- ------------------------------- -->
 
   <div class="mat-elevation-z8">
- 
+
     <table mat-table [dataSource]="Items">
 
       <!-- HeaderColumn -->
 
-      
-
-        <ng-container matColumnDef="Id">
-            <th mat-header-cell *matHeaderCellDef class=" text-center" color=" primary">Id</th>
-            <td mat-cell *matCellDef="let element" class="text-center" > {{element.Id}} </td>
-        </ng-container>
 
 
-
-
-        <ng-container matColumnDef="UserId">
-            <th mat-header-cell *matHeaderCellDef class=" text-center" color=" primary">UserId</th>
-            <td mat-cell *matCellDef="let element" class="text-center" > {{element.UserId}} </td>
-        </ng-container>
+      <ng-container matColumnDef="Id">
+        <th mat-header-cell *matHeaderCellDef class=" text-center" color=" primary">Id</th>
+        <td mat-cell *matCellDef="let element" class="text-center"> {{element.Id}} </td>
+      </ng-container>
 
 
 
 
-        <ng-container matColumnDef="UserName">
-            <th mat-header-cell *matHeaderCellDef class=" text-center" color=" primary">UserName</th>
-            <td mat-cell *matCellDef="let element" class="text-center" > {{element.UserName}} </td>
-        </ng-container>
+      <ng-container matColumnDef="UserId">
+        <th mat-header-cell *matHeaderCellDef class=" text-center" color=" primary">UserId</th>
+        <td mat-cell *matCellDef="let element" class="text-center"> {{element.UserId}} </td>
+      </ng-container>
 
 
 
 
-        <ng-container matColumnDef="TableId">
-            <th mat-header-cell *matHeaderCellDef class=" text-center" color=" primary">TableId</th>
-            <td mat-cell *matCellDef="let element" class="text-center" > {{element.TableId}} </td>
-        </ng-container>
+      <ng-container matColumnDef="UserName">
+        <th mat-header-cell *matHeaderCellDef class=" text-center" color=" primary">UserName</th>
+        <td mat-cell *matCellDef="let element" class="text-center"> {{element.UserName}} </td>
+      </ng-container>
 
 
 
 
-        <ng-container matColumnDef="TableName">
-            <th mat-header-cell *matHeaderCellDef class=" text-center" color=" primary">TableName</th>
-            <td mat-cell *matCellDef="let element" class="text-center" > {{element.TableName}} </td>
-        </ng-container>
+      <ng-container matColumnDef="TableId">
+        <th mat-header-cell *matHeaderCellDef class=" text-center" color=" primary">資料表內流水號</th>
+        <td mat-cell *matCellDef="let element" class="text-center"> {{element.TableId}} </td>
+      </ng-container>
 
 
 
 
-        <ng-container matColumnDef="Action">
-            <th mat-header-cell *matHeaderCellDef class=" text-center" color=" primary">Action</th>
-            <td mat-cell *matCellDef="let element" class="text-center" > {{element.Action}} </td>
-        </ng-container>
+      <ng-container matColumnDef="TableName">
+        <th mat-header-cell *matHeaderCellDef class=" text-center" color=" primary">資料表名稱</th>
+        <td mat-cell *matCellDef="let element" class="text-center"> {{element.TableName}} </td>
+      </ng-container>
 
 
 
 
-        <ng-container matColumnDef="ActionDate">
-            <th mat-header-cell *matHeaderCellDef class=" text-center" color=" primary">ActionDate</th>
-            <td mat-cell *matCellDef="let element" class="text-center" > {{element.ActionDate}} </td>
-        </ng-container>
+      <ng-container matColumnDef="Action">
+        <th mat-header-cell *matHeaderCellDef class=" text-center" color=" primary">動作</th>
+        <td mat-cell *matCellDef="let element" class="text-center"> {{element.Action|LogAction}} </td>
+      </ng-container>
+
+
+
+
+      <ng-container matColumnDef="ActionDate">
+        <th mat-header-cell *matHeaderCellDef class=" text-center" color=" primary">執行動作時間</th>
+        <td mat-cell *matCellDef="let element" class="text-center"> {{element.ActionDate|date:'yyyy/MM/dd HH:mm:ss'}}
+        </td>
+      </ng-container>
 
 
 
@@ -96,15 +95,18 @@
 
       <!-- ------------------------------- -->
 
-      <tr mat-header-row *matHeaderRowDef="['Id','UserId','UserName','TableId','TableName','Action','ActionDate','button']"></tr>
-      <tr mat-row *matRowDef="let row; columns:['Id','UserId','UserName','TableId','TableName','Action','ActionDate','button']"></tr>
+      <tr mat-header-row
+        *matHeaderRowDef="['Id','UserId','UserName','TableId','TableName','Action','ActionDate','button']"></tr>
+      <tr mat-row
+        *matRowDef="let row; columns:['Id','UserId','UserName','TableId','TableName','Action','ActionDate','button']">
+      </tr>
 
     </table>
 
     <!-- ------------------------------- -->
 
     <mat-paginator #paginator [length]="totalDataCount" [pageIndex]="pageIndex" [pageSize]="pageSize"
-      [pageSizeOptions]="[5, 10, 15]">
+      [pageSizeOptions]="[15, 25, totalDataCount]">
     </mat-paginator>
 
   </div>
@@ -119,59 +121,56 @@
 
         <!-- FormField -->
 
-        
+
+
+
+
+
+
 
         <mat-form-field class="full-width" appearance="fill">
-            <mat-label>Id</mat-label>
-            <input matInput placeholder="" [(ngModel)]="Item.Id" type="text" name="Id" required>
+          <mat-label>UserId</mat-label>
+          <input matInput placeholder="" [(ngModel)]="Item.UserId" type="text" name="UserId" required>
         </mat-form-field>
 
 
 
 
         <mat-form-field class="full-width" appearance="fill">
-            <mat-label>UserId</mat-label>
-            <input matInput placeholder="" [(ngModel)]="Item.UserId" type="text" name="UserId" required>
+          <mat-label>UserName</mat-label>
+          <input matInput placeholder="" [(ngModel)]="Item.UserName" type="text" name="UserName" required>
         </mat-form-field>
 
 
 
 
         <mat-form-field class="full-width" appearance="fill">
-            <mat-label>UserName</mat-label>
-            <input matInput placeholder="" [(ngModel)]="Item.UserName" type="text" name="UserName" required>
+          <mat-label>TableId</mat-label>
+          <input matInput placeholder="" [(ngModel)]="Item.TableId" type="text" name="TableId" required>
         </mat-form-field>
 
 
 
 
         <mat-form-field class="full-width" appearance="fill">
-            <mat-label>TableId</mat-label>
-            <input matInput placeholder="" [(ngModel)]="Item.TableId" type="text" name="TableId" required>
+          <mat-label>TableName</mat-label>
+          <input matInput placeholder="" [(ngModel)]="Item.TableName" type="text" name="TableName" required>
         </mat-form-field>
 
 
 
 
         <mat-form-field class="full-width" appearance="fill">
-            <mat-label>TableName</mat-label>
-            <input matInput placeholder="" [(ngModel)]="Item.TableName" type="text" name="TableName" required>
+          <mat-label>Action</mat-label>
+          <input matInput placeholder="" [(ngModel)]="Item.Action" type="text" name="Action" required>
         </mat-form-field>
 
 
 
 
         <mat-form-field class="full-width" appearance="fill">
-            <mat-label>Action</mat-label>
-            <input matInput placeholder="" [(ngModel)]="Item.Action" type="text" name="Action" required>
-        </mat-form-field>
-
-
-
-
-        <mat-form-field class="full-width" appearance="fill">
-            <mat-label>ActionDate</mat-label>
-            <input matInput placeholder="" [(ngModel)]="Item.ActionDate" type="text" name="ActionDate" required>
+          <mat-label>ActionDate</mat-label>
+          <input matInput placeholder="" [(ngModel)]="Item.ActionDate" type="text" name="ActionDate" required>
         </mat-form-field>
 
 
@@ -184,13 +183,11 @@
 
     <mat-dialog-actions align="end">
 
-      <button mat-raised-button mat-icon-button color="primary" type="submit" (click)="LogsCreate()"
-        *ngIf="!Item.Id">
+      <button mat-raised-button mat-icon-button color="primary" type="submit" (click)="LogsCreate()" *ngIf="!Item.Id">
         <mat-icon>done</mat-icon>
       </button>
 
-      <button mat-raised-button mat-icon-button color="primary" type="submit" (click)="LogsUpdate()"
-        *ngIf="Item.Id">
+      <button mat-raised-button mat-icon-button color="primary" type="submit" (click)="LogsUpdate()" *ngIf="Item.Id">
         <mat-icon>done</mat-icon>
       </button>
 
@@ -207,7 +204,7 @@
   <ng-template #CloseDialog>
     <h2 matDialogTitle color="warn">即將刪除</h2>
     <mat-dialog-content>
-      確定要刪除 ID: {{Item.Id}} 的用戶資料嗎?
+      確定要刪除 ID: {{Item.Id}} 的資料嗎?
     </mat-dialog-content>
     <mat-dialog-actions align="end">
       <button mat-raised-button mat-icon-button color="warn" type="submit" (click)="LogsDelete(Item.Id)">
@@ -222,4 +219,3 @@
   <!-- ------------------------------- -->
 
 </div>
-

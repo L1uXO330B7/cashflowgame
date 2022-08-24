@@ -12,7 +12,7 @@ namespace DPL.EF
         /// <summary>
         /// 現金流名稱
         /// </summary>
-        public string Name { get; set; } = null!;
+        public string Name { get; set; }
         /// <summary>
         /// 現金流價值
         /// </summary>
@@ -25,5 +25,11 @@ namespace DPL.EF
         /// 狀態 0. 停用 1. 啟用 2. 刪除
         /// </summary>
         public byte Status { get; set; }
+        /// <summary>
+        /// 描述
+        /// </summary>
+        public string Description { get; set; }
+
+        public virtual CashFlowCategory CashFlowCategory { get; set; }
     }
 }

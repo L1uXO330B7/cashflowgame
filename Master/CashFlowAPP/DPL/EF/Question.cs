@@ -5,6 +5,12 @@ namespace DPL.EF
 {
     public partial class Question
     {
+        public Question()
+        {
+            AnswerQuestions = new HashSet<AnswerQuestion>();
+            QustionEffects = new HashSet<QustionEffect>();
+        }
+
         /// <summary>
         /// 問卷流水號
         /// </summary>
@@ -16,14 +22,17 @@ namespace DPL.EF
         /// <summary>
         /// 題目名稱 ,Ex.生幾個小孩
         /// </summary>
-        public string Name { get; set; } = null!;
+        public string Name { get; set; }
         /// <summary>
         /// 選項答案 :[&quot;1個,2個&quot;]
         /// </summary>
-        public string Answer { get; set; } = null!;
+        public string Answer { get; set; }
         /// <summary>
         /// 狀態 0. 停用 1. 啟用 2. 刪除
         /// </summary>
         public byte Status { get; set; }
+
+        public virtual ICollection<AnswerQuestion> AnswerQuestions { get; set; }
+        public virtual ICollection<QustionEffect> QustionEffects { get; set; }
     }
 }

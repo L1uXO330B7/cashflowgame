@@ -17,5 +17,8 @@ namespace DPL.EF
         /// 功能流水號 ( 外鍵 )
         /// </summary>
         public int FunctionId { get; set; }
+
+        public virtual Function Function { get; set; }
+        public virtual Role Role { get; set; }
     }
 }

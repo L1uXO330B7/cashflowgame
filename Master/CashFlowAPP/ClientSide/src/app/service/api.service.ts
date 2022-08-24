@@ -25,4 +25,8 @@ export class ApiService {
     let Url = `${this._ApiUrl}/ClientSide/UserSignUp`;
     return this._HttpClient.post<ApiResponse>(Url, Req, this._HttpOptions);
   }
+  GetQuestions(Req:any){
+    let Url = `${this._ApiUrl}/Questions/Read`;
+    return this._HttpClient.post<ApiResponse>(Url, Req, this._HttpOptions);
+  }
 }

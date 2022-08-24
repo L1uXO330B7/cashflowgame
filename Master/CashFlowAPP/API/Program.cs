@@ -35,7 +35,7 @@ try
 
     var RootPath = System.IO.Directory.GetCurrentDirectory();
     string Conn;
-    if (RootPath.ToUpper().Contains("DESK") || RootPath.ToUpper().Contains("WWW"))
+    if (RootPath.ToUpper().Contains("DESK") || RootPath.ToUpper().Contains("WWW")|| RootPath.ToUpper().Contains("CODE"))
     {
         Conn = "OnlineCashFlow";
     }
