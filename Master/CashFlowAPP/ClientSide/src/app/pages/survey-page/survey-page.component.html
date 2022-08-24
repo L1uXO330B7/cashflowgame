@@ -1,8 +1,32 @@
 <app-navbar></app-navbar>
 <div class="container-fluid MainWrap">
+
   <div class="QuestionsLetter">
-    <div *ngFor="let item of QuestionList">
-      {{item.Answer}}
-    </div>
+    <button class="btn btn-lg btn-outline-primary mb-3" (click)="open(content)">問卷說明</button>
+    <ol>
+    <li *ngFor="let item of QuestionList">
+        <h5>{{item.Name}}</h5>
+        <div *ngFor="let answer of QuestionList.Answer">
+          {{answer}}
+        </div>
+      </li>
+    </ol>
   </div>
 </div>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h3 class="modal-title" id="modal-basic-title">歡迎進入本問卷</h3>
+    <!-- <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button> -->
+  </div>
+  <div class="modal-body">
+    <h5>作答須知:</h5>
+    <ul>
+      <li>答案與遊戲並無直接關係</li>
+      <li>問卷答案僅供遊戲使用 !</li>
+    </ul>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">確定</button>
+  </div>
+</ng-template>

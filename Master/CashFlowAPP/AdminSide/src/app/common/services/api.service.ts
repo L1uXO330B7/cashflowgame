@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { ApiResponse } from '../models/ApiResponse';
 
@@ -8,12 +9,31 @@ import { ApiResponse } from '../models/ApiResponse';
 })
 export class ApiService {
 
-  constructor(public _HttpClient: HttpClient) { }
+  constructor(
+    public _HttpClient: HttpClient
+  ) {
+
+  }
+
   _HttpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
   };
 
   _ApiUrl = `${environment.ApiRoot}`;
+
+  UserLogin(Req: any): Observable<ApiResponse> {
+    let Url = `${this._ApiUrl}/ClientSide/UserLogin`;
+    return this._HttpClient.post<ApiResponse>(Url, Req, this._HttpOptions);
+  }
+
+
+
+
+
+
+
+
+
 
   UsersRead(Req: any) {
     let Url = `${this._ApiUrl}/Users/Read`

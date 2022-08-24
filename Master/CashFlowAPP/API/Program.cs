@@ -47,6 +47,7 @@ try
     builder.Services.AddDbContext<CashFlowDbContext>(options =>
            options.UseSqlServer(builder.Configuration.GetConnectionString(Conn)));
 
+    
     // 加入 SignalR
     builder.Services.AddSignalR();
 

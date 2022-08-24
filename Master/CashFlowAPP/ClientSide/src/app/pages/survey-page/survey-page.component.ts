@@ -1,10 +1,11 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { GlobalToastService } from 'src/app/components/toast/global-toast.service';
 import { ApiRequest } from 'src/app/models/ApiRequest';
 import { Question } from 'src/app/models/Question';
 import { ApiService } from 'src/app/service/api.service';
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-survey-page',
@@ -13,10 +14,11 @@ import { ApiService } from 'src/app/service/api.service';
 })
 export class SurveyPageComponent implements OnInit {
 
-  constructor(public _HttpClient: HttpClient, private _Router: Router, public _ApiService: ApiService,public _ToastService : GlobalToastService) { }
+  constructor(public _HttpClient: HttpClient, private _Router: Router, public _ApiService: ApiService,public _ToastService : GlobalToastService,private modalService: NgbModal) { }
 
   ngOnInit(): void {
     this.GetQuestions();
+    this.open(this.modalDOM);
   }
 
 
@@ -32,9 +34,39 @@ export class SurveyPageComponent implements OnInit {
         console.log(Res);
         Res.Data.forEach((value:any) => {
           this.QuestionList = Res.Data;
-          console.log(JSON.parse(value.Answer));
+          this.ConvertJson();
         })
       }
+      console.log(this.QuestionList);
     });
   }
+
+ConvertJson(){
+  this.QuestionList.forEach((item:any) => {
+    item.Answer = JSON.parse(item.Answer);
+  })
+  console.log(this.QuestionList,"convert")
 }
+
+// modal
+@ViewChild('content', { static: true }) modalDOM: any;
+  closeResult = '';
+  open(content:any) {
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
+  }
+}
+
