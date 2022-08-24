@@ -71,3 +71,24 @@ export class LogActionPipe implements PipeTransform {
   }
 
 }
+
+@Pipe({
+  name: 'CashFlowCategoryType'
+})
+export class CashFlowCategoryType implements PipeTransform {
+
+  transform(value: unknown, ...args: unknown[]): unknown {
+    switch (value) {
+      case 1:
+        value = '主動';
+        break;
+      case 2:
+        value = '被動';
+        break;
+      default:
+    }
+
+    return value;
+  }
+
+}
