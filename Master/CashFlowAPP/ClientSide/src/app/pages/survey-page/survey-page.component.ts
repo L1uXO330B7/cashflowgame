@@ -35,13 +35,15 @@ export class SurveyPageComponent implements OnInit {
         this.QuestionList = Res.Data;
         this.QuestionList.forEach((Question:any) => {
           Question.Answer = Question.Answer.split(",");
+          console.log(Question.Answer,"answer");
         })
       }
       console.log(this.QuestionList,"QuestionList");
+
     });
   }
 
-
+testvalue:any="";
 // modal
 @ViewChild('content', { static: true }) modalDOM: any;
   closeResult = '';
