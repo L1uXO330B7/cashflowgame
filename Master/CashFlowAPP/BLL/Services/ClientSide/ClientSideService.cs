@@ -122,7 +122,7 @@ namespace BLL.Services.ClientSide
                     // 將 User 資料，以 UserInfo 塞進 token，方便取用
                     var JwtCode = Jose.JWT.Encode(UserInfo, Encoding.UTF8.GetBytes("錢董"), Jose.JwsAlgorithm.HS256);
 
-                    Res.Data = JwtCode;
+                    Res.Data = new { JwtCode, UserId = user.Id }; // 匿名物件
                     Res.Success = true;
                     Res.Code = (int)ResponseStatusCode.Success;
                     Res.Message = "成功登入";

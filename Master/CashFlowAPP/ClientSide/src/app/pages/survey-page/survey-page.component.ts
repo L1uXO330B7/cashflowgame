@@ -23,7 +23,7 @@ export class SurveyPageComponent implements OnInit {
   }
 
 
-
+// 取出問卷
   QuestionList:Question|any;
   GetQuestions(){
     let Req = new ApiRequest<any>();
@@ -32,19 +32,68 @@ export class SurveyPageComponent implements OnInit {
 
     this._ApiService.GetQuestions(Req).subscribe((Res) => {
       if (Res.Success) {
-        console.log(Res);
         this.QuestionList = Res.Data;
-        this.QuestionList.forEach((Question:any) => {
-          Question.Answer = Question.Answer.split(",");
-          console.log(Question.Answer,"answer");
+        this.QuestionList.forEach((question:any) => {
+          question.Answer = question.Answer.split(",");
+          // 新增答案置放欄位
+          question.UserAnswer=[];
         })
       }
-      console.log(this.QuestionList,"QuestionList");
-
     });
   }
 
-testvalue:string[]=[];
+// 多選塞值
+CheckboxChange(evt:Event|any){
+  console.log(evt.target.checked,"tar");
+  console.log(evt.target.value,"tar");
+  console.log(evt.target.name,"tar");
+  if(evt.target.checked){
+    this.QuestionList.forEach((question:any) => {
+      //塞到題目之中
+      if(question.Name==evt.target.name){
+        console.log("push");
+        question.UserAnswer.push(evt.target.value);
+      }
+    })
+  }
+  else{
+    this.QuestionList.forEach((question:any) => {
+      //篩掉題目之中
+      if(question.Name==evt.target.name){
+        console.log("push");
+        question.UserAnswer.splice(question.UserAnswer.indexOf(evt.target.value), 1);
+      }
+    })
+  }
+}
+
+
+BeautifyData(){
+  let UserAnswerArgs:any = [];
+  let UserId = localStorage.getItem("UserId");
+  console.log(this.QuestionList,"list");
+  this.QuestionList.forEach((question:any) => {
+    let UserAnswerArg = new AnswerQuestion();
+    UserAnswerArg.UserId = UserId;
+    UserAnswerArg.Answer = question.UserAnswer.join(',');
+    UserAnswerArg.QusetionId = question.Id;
+    UserAnswerArgs.push(UserAnswerArg);
+  });
+  console.log(UserAnswerArgs,"list");
+  this.SaveUserAnswerArgs(UserAnswerArgs);
+}
+SaveUserAnswerArgs(UserAnswerArgs:any){
+
+  let Req = new ApiRequest<any>();
+  Req.Args = UserAnswerArgs;
+  this._ApiService.SaveUserAnswerArgs(Req).subscribe((Res) => {
+    if (Res.Success) {
+      console.log(Res);
+    }
+  });
+}
+
+
 // modal
 @ViewChild('content', { static: true }) modalDOM: any;
   closeResult = '';
@@ -55,11 +104,8 @@ testvalue:string[]=[];
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
   }
-  test(){
-    console.log(this.testvalue);
-  }
 
-  UserAnswer = new AnswerQuestion();
+
 
 
   private getDismissReason(reason: any): string {

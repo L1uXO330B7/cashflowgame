@@ -88,7 +88,10 @@ export class LoginComponent implements OnInit {
     this._ApiService.UserLogin(Req).subscribe((Res) => {
       console.log(Res);
       if (Res.Success) {
-        localStorage.setItem('Token', Res.Data);
+
+        localStorage.setItem('Token', Res.Data.JwtCode);
+        localStorage.setItem('UserId', Res.Data.UserId);
+        this._Router.navigate(['/', 'survey']);
       }
     });
   }
@@ -117,14 +120,14 @@ export class LoginComponent implements OnInit {
         }
       });
   }
-  test() {
-    let ApiUrl = `http://localhost:46108/api/System/GetMiniProfilerScript`;
+  // test() {
+  //   let ApiUrl = `http://localhost:46108/api/System/GetMiniProfilerScript`;
 
-    // https://stackoverflow.com/questions/62046090/angular-unexpected-token-c-in-json-at-position-0-at-json-parse-when-expecting-a
-    this._HttpClient.get(ApiUrl, { responseType: 'text' })
-      .subscribe((Res) => {
-      });
-  }
+  //   // https://stackoverflow.com/questions/62046090/angular-unexpected-token-c-in-json-at-position-0-at-json-parse-when-expecting-a
+  //   this._HttpClient.get(ApiUrl, { responseType: 'text' })
+  //     .subscribe((Res) => {
+  //     });
+  // }
 
 
   ngOnDestroy(): void {

@@ -6,15 +6,21 @@
     <ol>
       <li *ngFor="let item of QuestionList" class="mt-2">
         <h5>{{item.Name}}</h5>
-        <div class="input-group">    <div *ngFor="let answer of item.Answer">
-          <input class="form-check-input" type="radio" [id]="answer" name="item" *ngIf="item.Type==1" [value]="answer" (change)="test()" [(ngModel)]="testvalue">
-          <input class="form-check-input" type="checkbox" [id]="answer" name="item" *ngIf="item.Type==2" [value]="answer" [(ngModel)]="testvalue" (change)="test()">
-          <label class="form-check-label mx-2" [for]="answer">{{answer}}</label>
-        </div></div>
+        <div class="input-group">
+          <div *ngFor="let answer of item.Answer">
+            <input class="form-check-input" type="radio" [id]="answer" [name]="item.Name" *ngIf="item.Type==1" [value]="answer"
+               [(ngModel)]="item.UserAnswer[0]">
+            <input class="form-check-input" type="checkbox" [id]="answer" [name]="item.Name" *ngIf="item.Type==2"
+              [value]="answer"
+              (change)="CheckboxChange($event)">
+            <label class="form-check-label mx-2" [for]="answer">{{answer}}</label>
+          </div>
+        </div>
 
 
       </li>
     </ol>
+    <button class="btn btn-lg btn-outline-primary mb-3" (click)="BeautifyData()">提交</button>
   </div>
 </div>
 

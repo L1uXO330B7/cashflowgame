@@ -29,4 +29,8 @@ export class ApiService {
     let Url = `${this._ApiUrl}/Questions/Read`;
     return this._HttpClient.post<ApiResponse>(Url, Req, this._HttpOptions);
   }
+  SaveUserAnswerArgs(Req:any){
+    let Url = `${this._ApiUrl}/AnswerQuestions/Create`;
+    return this._HttpClient.post<ApiResponse>(Url, Req, this._HttpOptions);
+  }
 }

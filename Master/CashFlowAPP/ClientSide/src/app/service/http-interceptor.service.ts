@@ -51,7 +51,6 @@ export class HttpInterceptorService implements HttpInterceptor {
         if(event.body!==undefined||null){
           if(event.body.Success){
             if(event.body.Message=="成功登入"){
-              this.route.navigate(['/', 'game']);
               this.ShowToast(event.body.Message,'bg-success text-light','成功通知 From 錢董')
             }
             this.ShowToast(event.body.Message,'bg-success text-light','成功通知 From 錢董')

@@ -14,13 +14,23 @@ export class AuthGuard implements CanActivate {
 
   canEnter():boolean{
     let UserName = localStorage.getItem("StrangerName");
+    let UserId = localStorage.getItem("UserId");
     if(UserName==""){
+      if(UserId!=""&&UserId!=null){
+        return true;
+      }
       return false;
     }
     if(UserName==null){
+      if(UserId!=""&&UserId!=null){
+        return true;
+      }
       return false;
     }
     if(UserName==undefined){
+      if(UserId!=""&&UserId!=null){
+        return true;
+      }
       return false;
     }
     else{
