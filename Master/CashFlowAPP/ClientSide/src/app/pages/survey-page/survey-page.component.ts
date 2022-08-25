@@ -1,3 +1,4 @@
+import { AnswerQuestion } from './../../models/AnswerQuestion';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
@@ -43,7 +44,7 @@ export class SurveyPageComponent implements OnInit {
     });
   }
 
-testvalue:any="";
+testvalue:string[]=[];
 // modal
 @ViewChild('content', { static: true }) modalDOM: any;
   closeResult = '';
@@ -57,6 +58,10 @@ testvalue:any="";
   test(){
     console.log(this.testvalue);
   }
+
+  UserAnswer = new AnswerQuestion();
+
+
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
       return 'by pressing ESC';
