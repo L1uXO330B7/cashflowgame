@@ -49,6 +49,7 @@ export class CashFlowsTableComponent extends BaseComponent implements OnInit {
   OpenDiaglog(IsNew: boolean, Id: any) {
     if (IsNew) {
       this.Item = new CashFlowArgs();
+      this.Item.Status = 1;
     } else {
       // 取單筆
       let listInt = [Id];

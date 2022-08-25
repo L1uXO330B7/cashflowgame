@@ -196,3 +196,10 @@ https://blog.darkthread.net/blog/dapper-with-ef-core/
 2. 正式機路徑對應的問題 Ex. API 路徑、SQL 位置等等，需要透過 Angular 的 env.prod 中來進行設定，NetCore 則是在 appsetting 來調整
 
 3. 會遇到各種問題，也只能上網查
+
+
+## JSON String 問題
+
+1. 後台存 JSON String 進後端，回來前端 Parse，狀況百出 => [解決方法](https://stackoverflow.com/questions/14432165/error-uncaught-syntaxerror-unexpected-token-with-json-parse)
+
+2. 改用逗號來分割字串，前台存 TEST,TEST2,TEST3 格式回後端之後，回前端使用 split(",") 方式處理成陣列

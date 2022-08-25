@@ -49,6 +49,7 @@ export class AssetsTableComponent extends BaseComponent implements OnInit {
   OpenDiaglog(IsNew: boolean, Id: any) {
     if (IsNew) {
       this.Item = new AssetArgs();
+      this.Item.Status = 1;
     } else {
       // 取單筆
       let listInt = [Id];

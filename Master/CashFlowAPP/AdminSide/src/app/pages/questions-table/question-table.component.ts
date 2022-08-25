@@ -49,6 +49,7 @@ export class QuestionsTableComponent extends BaseComponent implements OnInit {
   OpenDiaglog(IsNew: boolean, Id: any) {
     if (IsNew) {
       this.Item = new QuestionArgs();
+      this.Item.Status = 1;
     } else {
       // 取單筆
       let listInt = [Id];
@@ -86,6 +87,26 @@ export class QuestionsTableComponent extends BaseComponent implements OnInit {
           this.totalDataCount = Res.TotalDataCount;
         }
         else {
+          // Preserve newlines, etc. - use valid JSON
+          // let answer = Res.Data[0].Answer;
+          //  answer = answer.replace(/\\n/g, "\\n")
+          //   .replace(/\\'/g, "\\'")
+          //   .replace(/\\"/g, '\\"')
+          //   .replace(/\\&/g, "\\&")
+          //   .replace(/\\r/g, "\\r")
+          //   .replace(/\\t/g, "\\t")
+          //   .replace(/\\b/g, "\\b")
+          //   .replace(/\\f/g, "\\f");
+          // // Remove non-printable and other non-valid JSON characters
+          // answer = answer.replace(/[\u0000-\u0019]+/g, "");
+          // console.log(Res.Data[0], "data");
+          // answer = JSON.parse(Res.Data[0].Answer)
+          // // console.log(JSON.parse(answer), "answer");
+          // console.log(answer,"answer");
+          let ans = Res.Data[0].Answer;
+          console.log(ans,"ans");
+          let arr = ans.split(",");
+          console.log(arr,"arr");
           this.Item = Res.Data[0];
         }
       }
@@ -149,6 +170,8 @@ export class QuestionsTableComponent extends BaseComponent implements OnInit {
 
   QuestionsCreate() {
     let Req = new ApiRequest();
+    console.log(this.Item.Answer, "initial");
+    console.log(this.Item.Answer, "answer");
     Req.Args = [this.Item];
     this._ApiService.QuestionsCreate(Req).subscribe((Res) => {
       if (Res.Success) {
