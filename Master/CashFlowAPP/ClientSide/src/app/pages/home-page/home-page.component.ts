@@ -1,4 +1,5 @@
 import { Component, DoCheck, OnInit } from '@angular/core';
+import { GlobalToastService } from 'src/app/components/toast/global-toast.service';
 
 @Component({
   selector: 'app-home-page',
@@ -7,11 +8,20 @@ import { Component, DoCheck, OnInit } from '@angular/core';
 })
 export class HomePageComponent implements OnInit {
 
-  constructor() {}
+  constructor(public _ToastService : GlobalToastService) {}
 
   UserName:string="";
-  
+  ShowToast(Msg:string,CssClass:string,Header:string) {
+    this._ToastService.show(Msg,{
+      className: CssClass,
+      delay: 10000,
+      HeaderTxt:Header,
+    });
+  }
   StartGame(){
+    if (this.UserName==""){
+      this.ShowToast("暱稱不得為空","bg-warning text-dark","提醒通知 From 錢董")
+    }
     localStorage.setItem("StrangerName",this.UserName);
   }
 

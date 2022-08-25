@@ -54,7 +54,9 @@ testvalue:any="";
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
   }
-
+  test(){
+    console.log(this.testvalue);
+  }
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
       return 'by pressing ESC';
