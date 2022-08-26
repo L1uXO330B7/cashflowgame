@@ -46,19 +46,12 @@ export class SurveyPageComponent implements OnInit {
                   if (item.Answer.indexOf(value) != -1) {
                     question.SaveAnswer = [];
                     if (question.Type !== 2) {
-                      console.log(question.SaveAnswer, "before");
-                      console.log(item.Answer == value, "??????");
                       question.SaveAnswer[0] = value;
                       question.UserAnswer[0] = value;
-                      console.log(question.SaveAnswer, "after");
                     }
                     else {
-                      console.log(array, "arr")
                       question.SaveAnswer = item.Answer.split(",");
                     }
-                  }
-                  else {
-
                   }
                 }
               })
@@ -66,7 +59,6 @@ export class SurveyPageComponent implements OnInit {
           }
         })
       }
-      console.log(this.QuestionList, "list");
     });
   }
 
@@ -88,14 +80,11 @@ export class SurveyPageComponent implements OnInit {
 
   // 多選塞值
   CheckboxChange(evt: Event | any) {
-    console.log(evt.target.checked, "tar");
-    console.log(evt.target.value, "tar");
-    console.log(evt.target.name, "tar");
+
     if (evt.target.checked) {
       this.QuestionList.forEach((question: any) => {
         //塞到題目之中
         if (question.Name == evt.target.name) {
-          console.log("push");
           question.UserAnswer.push(evt.target.value);
         }
       })
@@ -104,7 +93,6 @@ export class SurveyPageComponent implements OnInit {
       this.QuestionList.forEach((question: any) => {
         //篩掉題目之中
         if (question.Name == evt.target.name) {
-          console.log("push");
           question.UserAnswer.splice(question.UserAnswer.indexOf(evt.target.value), 1);
         }
       })
@@ -133,7 +121,6 @@ export class SurveyPageComponent implements OnInit {
     Req.Args = UserAnswerArgs;
     this._ApiService.SaveUserAnswerArgs(Req).subscribe((Res) => {
       if (Res.Success) {
-        console.log(Res);
       }
     });
   }
@@ -156,13 +143,8 @@ export class SurveyPageComponent implements OnInit {
       Req.PageSize = 15;
       this._ApiService.GetUserAnswer(Req).subscribe((Res) => {
         if (Res.Success) {
-          console.log(Res, "Read");
           this.UserAnswerData = Array.from(Res.Data);
-          console.log(this.UserAnswerData);
           this.GetQuestions();
-        }
-        else {
-          console.log(Res, "Read");
         }
       });
     }
