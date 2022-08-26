@@ -24,8 +24,11 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    setTimeout(() => {
+      this.IsLoading=false;
+    }, 2000);
   }
-
+  IsLoading:boolean=true;
   change = false;
   windowWidth = window.innerWidth;
   distance = 0;

@@ -2,10 +2,16 @@
   <div class="container">
     <span class="navbar-brand mb-0 h1">錢董幫你懂錢 <i class="fa-solid fa-hand-holding-dollar"></i></span>
     <ul class="navbar-nav">
-      <li>
+      <li *ngIf="!IsLogin">
         <a [routerLink]="['/login']" class="nav-link">
-          <p class="m-0 text-shadow">註冊 | 登入</p>
+          <p class="m-0 text-shadow">註冊 <i class="fa-solid fa-person"></i> 登入</p>
         </a></li>
+        <li *ngIf="IsLogin">
+          <a class="nav-link">
+            <p class="m-0 text-shadow"><i class="fa-solid fa-circle-user pe-2"></i>用戶資料
+            </p>
+          </a>
+        </li>
     </ul>
   </div>
 </nav>

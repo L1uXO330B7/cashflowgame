@@ -10,6 +10,14 @@ export class NavbarComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    this.LoginToUserInfo();
   }
-
+  IsLogin:boolean=false;
+  LoginToUserInfo(){
+    let UserId = localStorage.getItem('UserId');
+    console.log(UserId);
+    if (UserId!=""&&UserId!=null){
+      this.IsLogin=true;
+    }
+  }
 }

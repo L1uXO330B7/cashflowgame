@@ -14,6 +14,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { GamePageComponent } from './pages/game-page/game-page.component';
 import { ChatroomComponent } from './components/chatroom/chatroom.component';
 import { SurveyPageComponent } from './pages/survey-page/survey-page.component';
+import { LoadingComponent } from './components/loading/loading.component';
 
 
 
@@ -27,7 +28,8 @@ import { SurveyPageComponent } from './pages/survey-page/survey-page.component';
     NavbarComponent,
     GamePageComponent,
     ChatroomComponent,
-    SurveyPageComponent
+    SurveyPageComponent,
+    LoadingComponent
   ],
   imports: [
     BrowserModule,
@@ -43,6 +45,9 @@ import { SurveyPageComponent } from './pages/survey-page/survey-page.component';
       multi: true
     },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  exports: [
+    LoadingComponent
+  ]
 })
 export class AppModule { }
