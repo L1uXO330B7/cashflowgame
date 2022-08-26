@@ -1,5 +1,6 @@
 ﻿using BLL.IServices;
 using Common.Model;
+using Common.Model.AdminSide;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using static Common.Model.ClientSideModel;
@@ -64,7 +65,16 @@ namespace API.Controllers.ClientSide
         {
             return await _ClientSideService.UserLogin(Req);
         }
-
+        /// <summary>
+        /// 使用者答案全刪全建
+        /// </summary>
+        /// <param name="Req"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<ApiResponse> UserAnswersUpdate([FromBody] ApiRequest<List<CreateAnswerQuestionArgs>> Req)
+        {
+            return await _ClientSideService.UserAnswersUpdate(Req);
+        }
         #endregion
     }
 }

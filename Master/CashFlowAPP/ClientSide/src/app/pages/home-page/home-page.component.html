@@ -6,7 +6,7 @@
     <div class="EnterCard">
       <h1 class="text-light text-shadow">錢 董</h1>
       <p class="text-light">一款能幫助財商提升的遊戲</p>
-      <div> <input type="text" placeholder="輸入名字" class="mt-5 form-control" [(ngModel)]="UserName"/>
+      <div> <input type="text" placeholder="輸入名字" class="mt-5 form-control" [(ngModel)]="UserName" *ngIf="!IsLogin"/>
       </div>
       <a class="btn btn-primary mt-5" [routerLink]="['/survey']" (click)="StartGame()">開始遊戲</a>
     </div>

@@ -1,5 +1,9 @@
+import { ReadArgs } from './../../models/ReadAnswerQuestionArgs';
+import { ApiRequest } from './../../models/ApiRequest';
+import { SharedService } from './../../service/shared.service';
 import { Component, DoCheck, OnInit } from '@angular/core';
 import { GlobalToastService } from 'src/app/components/toast/global-toast.service';
+import { ApiService } from 'src/app/service/api.service';
 
 @Component({
   selector: 'app-home-page',
@@ -8,7 +12,7 @@ import { GlobalToastService } from 'src/app/components/toast/global-toast.servic
 })
 export class HomePageComponent implements OnInit {
 
-  constructor(public _ToastService : GlobalToastService) {}
+  constructor(public _ToastService : GlobalToastService,private _Shared:SharedService,private _ApiService: ApiService) {}
 
   UserName:string="";
   ShowToast(Msg:string,CssClass:string,Header:string) {
@@ -25,32 +29,48 @@ export class HomePageComponent implements OnInit {
     localStorage.setItem("StrangerName",this.UserName);
   }
 
+  UserId = localStorage.getItem("UserId");
+  ReadUserArg(){
+    if(this.UserId!=null&&this.UserId!=""){
+      this.IsLogin = true;
+      let Req = new ApiRequest();
+      let Arg = new ReadArgs();
+      Arg.Key = "Id"
+      this._ApiService.UserLogin(Req).subscribe((Res) => {
+        console.log(Res);
+        if (Res.Success) {
+        }
+      });
+    }
+  }
 
+  IsLogin=false;
   ngOnInit(): void {
+    this.ReadUserArg();
     // setTimeout(() => this.TypeWriter(), 1000);
   }
-  ngAfterViewInit(): void{}
-  // SloganText:string[]=[];
-  // Index=0;
-  // AnimatedText:string="";
-  // TypeWriter() {
-  //   this.SloganText="錢董讓你懂錢".split('');
-  //   console.log("type",this.SloganText.length);
-  //   const speed = 200;
-  //   if (this.Index < this.SloganText.length) {
-  //     this.AnimatedText += this.SloganText[this.Index];
-  //     this.Index++;
-  //     console.log("index",this.Index);
-  //     setTimeout(()=>this.TypeWriter(), speed);
-  //   }
-  //   else{
-  //     setTimeout(() => {
-  //       //注意這裡必須使用arrow function才能讓this被正確指向
-  //       this.Index = 0;
-  //       this.AnimatedText = "";
-  //       this.TypeWriter();
-  //     }, 5000);
-  //   }
-  // }
-}
+//   ngAfterViewInit(): void{}
+//   // SloganText:string[]=[];
+//   // Index=0;
+//   // AnimatedText:string="";
+//   // TypeWriter() {
+//   //   this.SloganText="錢董讓你懂錢".split('');
+//   //   console.log("type",this.SloganText.length);
+//   //   const speed = 200;
+//   //   if (this.Index < this.SloganText.length) {
+//   //     this.AnimatedText += this.SloganText[this.Index];
+//   //     this.Index++;
+//   //     console.log("index",this.Index);
+//   //     setTimeout(()=>this.TypeWriter(), speed);
+//   //   }
+//   //   else{
+//   //     setTimeout(() => {
+//   //       //注意這裡必須使用arrow function才能讓this被正確指向
+//   //       this.Index = 0;
+//   //       this.AnimatedText = "";
+//   //       this.TypeWriter();
+//   //     }, 5000);
+//   //   }
+//   // }
+ }
 

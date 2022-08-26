@@ -70,6 +70,13 @@ namespace BLL.Services.AdminSide
 
                     answerQuestions = answerQuestions.Where(x => Ids.Contains(x.Id));
                 }
+                if (Arg.Key == "UserId") // Id 篩選條件
+                {
+                    var Ids = JsonConvert
+                            .DeserializeObject<List<int>>(Arg.JsonString);
+
+                    answerQuestions = answerQuestions.Where(x => Ids.Contains(x.UserId));
+                }
             }
 
             var Data = answerQuestions

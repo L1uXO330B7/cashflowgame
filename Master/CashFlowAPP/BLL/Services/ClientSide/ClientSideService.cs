@@ -2,6 +2,7 @@
 using Common.Enum;
 using Common.Methods;
 using Common.Model;
+using Common.Model.AdminSide;
 using DPL.EF;
 using System.Text;
 using static Common.Model.ClientSideModel;
@@ -142,5 +143,48 @@ namespace BLL.Services.ClientSide
             var Res = new ApiResponse();
             return Res;
         }
+
+        /// <summary>
+        /// 全刪全建
+        /// </summary>
+        /// <param name="Req"></param>
+        /// <returns></returns>
+        public async Task<ApiResponse> UserAnswersUpdate(ApiRequest<List<CreateAnswerQuestionArgs>> Req)
+        {
+            var answerQuestions = new List<AnswerQuestion>();
+
+            var SussList = new List<int>();
+            var UserId = Req.Args[0].UserId;
+            var UserAnswerList = _CashFlowDbContext.AnswerQuestions.Where(x => x.UserId == UserId).ToList();
+            _CashFlowDbContext.AnswerQuestions.RemoveRange(UserAnswerList);
+            _CashFlowDbContext.SaveChanges();
+
+            foreach (var Arg in Req.Args)
+            {   
+                var answerQuestion = new AnswerQuestion();
+                answerQuestion.Id = Arg.Id;
+                answerQuestion.Answer = Arg.Answer;
+                answerQuestion.QusetionId = Arg.QusetionId;
+                answerQuestion.UserId = Arg.UserId;
+
+                answerQuestions.Add(answerQuestion);
+            }
+
+            _CashFlowDbContext.AddRange(answerQuestions);
+            _CashFlowDbContext.SaveChanges();
+            // 不做銷毀 Dispose 動作，交給 DI 容器處理
+
+            // 此處 SaveChanges 後 SQL Server 會 Tracking 回傳新增後的 Id
+            SussList = answerQuestions.Select(x => x.Id).ToList();
+
+            var Res = new ApiResponse();
+            Res.Data = $@"已新增以下筆數(Id)：[{string.Join(',', SussList)}]";
+            Res.Success = true;
+            Res.Code = (int)ResponseStatusCode.Success;
+            Res.Message = "成功新增";
+
+            return Res;
+        }
+
     }
 }
