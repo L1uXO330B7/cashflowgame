@@ -1,0 +1,33 @@
+
+.MainView{
+  overflow:hidden;
+  max-height: 100vh;
+}
+.col{
+  height: 100vh;
+}
+.UserBoard{
+  height: 50vh;
+  background:#fff;
+}
+.ChatRoomToggle{
+  height: 5vh;
+  text-align: center;
+  background-color: gray;
+  outline: none;
+  border: none;
+  border-radius: 0px 15px 0px 0px;
+  transition: all 3s ;
+  vertical-align: middle;
+  &.active{
+    margin-top: 45vh;
+  }
+}
+.ChatRoom{
+
+  height: 45vh;
+  background-color: red;
+  transition: all 3s;
+  position: relative;
+}
+// @keyframes HideChatRoom

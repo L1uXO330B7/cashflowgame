@@ -23,22 +23,34 @@ export class HomePageComponent implements OnInit {
     });
   }
   StartGame(){
-    if (this.UserName==""){
+    if (this.UserName==""&&this.UserId==null){
       this.ShowToast("暱稱不得為空","bg-warning text-dark","提醒通知 From 錢董")
     }
     localStorage.setItem("StrangerName",this.UserName);
   }
 
   UserId = localStorage.getItem("UserId");
+  UserData:any;
+  UserDataName:string|any;
   ReadUserArg(){
     if(this.UserId!=null&&this.UserId!=""){
       this.IsLogin = true;
-      let Req = new ApiRequest();
-      let Arg = new ReadArgs();
-      Arg.Key = "Id"
-      this._ApiService.UserLogin(Req).subscribe((Res) => {
+      let Req = new ApiRequest<any>();
+      let listInt = [this.UserId];
+      let Arg =
+      {
+        "Key": "Id",
+        "JsonString": JSON.stringify(listInt)
+      };
+      Req.Args = [Arg];
+      Req.PageIndex = 1;
+      Req.PageSize = 15;
+      this._ApiService.GetUserData(Req).subscribe((Res) => {
         console.log(Res);
         if (Res.Success) {
+        this.UserData = Res.Data.Users[0];
+        this.UserDataName = this.UserData.Name;
+        console.log(this.UserData);
         }
       });
     }

@@ -16,14 +16,22 @@ import { ReadArgs } from 'src/app/models/ReadAnswerQuestionArgs';
 })
 export class SurveyPageComponent implements OnInit {
 
-  constructor(public _HttpClient: HttpClient, private _Router: Router, public _ApiService: ApiService, public _ToastService: GlobalToastService, private modalService: NgbModal) { }
+  constructor(public _HttpClient: HttpClient, private _Router: Router, public _ApiService: ApiService, public _ToastService: GlobalToastService, private modalService: NgbModal,) { }
 
   ngOnInit(): void {
     this.GetUserAnswer();
     this.open(this.modalDOM);
   }
 
+  IsLoading=false;
 
+  ShowToast(Msg:string,CssClass:string,Header:string) {
+    this._ToastService.show(Msg,{
+      className: CssClass,
+      delay: 10000,
+      HeaderTxt:Header,
+    });
+  }
   // 取出問卷
   QuestionList: Question | any;
   GetQuestions() {
@@ -58,6 +66,7 @@ export class SurveyPageComponent implements OnInit {
             })
           }
         })
+        this.IsLoading=false;
       }
     });
   }
@@ -102,17 +111,26 @@ export class SurveyPageComponent implements OnInit {
   // 將答案整理成回傳格式
   BeautifyData() {
     let UserAnswerArgs: any = [];
+    let required = true;
     let UserId = localStorage.getItem("UserId");
     console.log(this.QuestionList, "list");
     this.QuestionList.forEach((question: any) => {
       let UserAnswerArg = new AnswerQuestion();
       UserAnswerArg.UserId = UserId;
       UserAnswerArg.Answer = question.UserAnswer.join(',');
+      console.log(question.UserAnswer.length,"lenghth");
+      if(question.UserAnswer.length<=0){
+        required = false;
+      }
       UserAnswerArg.QusetionId = question.Id;
       UserAnswerArgs.push(UserAnswerArg);
     });
-    console.log(UserAnswerArgs, "list");
-    this.SaveUserAnswerArgs(UserAnswerArgs);
+    if(required){
+      this.SaveUserAnswerArgs(UserAnswerArgs);
+    }
+    else{
+      this.ShowToast("所有欄位都為必填","bg-danger text-light","錢董提醒您")
+    }
   }
   // call create api
   SaveUserAnswerArgs(UserAnswerArgs: any) {
@@ -121,6 +139,7 @@ export class SurveyPageComponent implements OnInit {
     Req.Args = UserAnswerArgs;
     this._ApiService.SaveUserAnswerArgs(Req).subscribe((Res) => {
       if (Res.Success) {
+        this._Router.navigate(['/', 'game']);
       }
     });
   }
@@ -129,6 +148,7 @@ export class SurveyPageComponent implements OnInit {
   UserId = localStorage.getItem("UserId");
 
   GetUserAnswer() {
+    this.IsLoading=true;
     if (this.UserId != "" && this.UserId != null) {
       let Req = new ApiRequest<any>();
       let listInt = [this.UserId];

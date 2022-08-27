@@ -38,7 +38,7 @@ export class ApiService {
     return this._HttpClient.post<ApiResponse>(Url, Req, this._HttpOptions);
   }
   GetUserData(Req:any){
-    let Url = `${this._ApiUrl}/AnswerQuestions/Read`;
+    let Url = `${this._ApiUrl}/Users/Read`;
     return this._HttpClient.post<ApiResponse>(Url, Req, this._HttpOptions);
   }
 }

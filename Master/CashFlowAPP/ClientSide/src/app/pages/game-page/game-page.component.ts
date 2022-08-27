@@ -14,4 +14,9 @@ export class GamePageComponent implements OnInit {
 
   ngOnInit(): void {
   }
+
+  OpenChatRoom:boolean=true;
+  ToggleChatRoom(){
+    this.OpenChatRoom=!this.OpenChatRoom;
+  }
 }

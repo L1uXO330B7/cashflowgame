@@ -1,5 +1,17 @@
+<div class="container-fluid MainView">
 
-<div class="container-fluid">
-<app-chatroom>
-</app-chatroom>
+  <div class="row">
+    <div class="col bg-dark p-0">
+      <div class="UserBoard col-6"></div>
+      <button class="ChatRoomToggle  col-10" (click)="ToggleChatRoom()" [class.active]="!OpenChatRoom">
+       聊天室  <i class="fa-solid fa-circle-chevron-down" *ngIf="OpenChatRoom"></i>
+       <i class="fa-solid fa-circle-chevron-up" *ngIf="!OpenChatRoom"></i></button>
+      <div class="ChatRoom col-10">
+        <app-chatroom></app-chatroom>
+      </div>
+    </div>
+    <div class="col bg-primary p-0"></div>
+    <div class="col bg-danger p-0"></div>
+
+  </div>
 </div>
