@@ -52,7 +52,7 @@ export class ChatroomComponent implements OnInit {
   connect() {
     this.connection.start().then(()=> {
       console.log("Hub 連線完成");
-      this.ShowToast("成功進入",'bg-success text-light','成功通知 From 錢董')
+      // this.ShowToast("成功進入",'bg-success text-light','成功通知 From 錢董')
     }).catch((err: any)=>{
       this.ShowToast(err.toString(),'bg-danger text-light','失敗通知 From 錢董')
     });

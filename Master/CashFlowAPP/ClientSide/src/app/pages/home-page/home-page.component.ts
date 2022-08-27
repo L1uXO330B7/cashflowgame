@@ -12,7 +12,7 @@ import { ApiService } from 'src/app/service/api.service';
 })
 export class HomePageComponent implements OnInit {
 
-  constructor(public _ToastService : GlobalToastService,private _Shared:SharedService,private _ApiService: ApiService) {}
+  constructor(public _ToastService : GlobalToastService,private _SharedService:SharedService,private _ApiService: ApiService) {}
 
   UserName:string="";
   ShowToast(Msg:string,CssClass:string,Header:string) {
@@ -50,6 +50,7 @@ export class HomePageComponent implements OnInit {
         if (Res.Success) {
         this.UserData = Res.Data.Users[0];
         this.UserDataName = this.UserData.Name;
+        this._SharedService.SetShareData(this.UserData);
         console.log(this.UserData);
         }
       });

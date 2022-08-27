@@ -59,6 +59,7 @@ export class SurveyPageComponent implements OnInit {
                     }
                     else {
                       question.SaveAnswer = item.Answer.split(",");
+                      question.UserAnswer = question.SaveAnswer;
                     }
                   }
                 }
@@ -119,6 +120,7 @@ export class SurveyPageComponent implements OnInit {
       UserAnswerArg.UserId = UserId;
       UserAnswerArg.Answer = question.UserAnswer.join(',');
       console.log(question.UserAnswer.length,"lenghth");
+      console.log(question.UserAnswer,"useranswer");
       if(question.UserAnswer.length<=0){
         required = false;
       }

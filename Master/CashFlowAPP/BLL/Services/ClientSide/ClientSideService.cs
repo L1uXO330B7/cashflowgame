@@ -181,7 +181,7 @@ namespace BLL.Services.ClientSide
             Res.Data = $@"已新增以下筆數(Id)：[{string.Join(',', SussList)}]";
             Res.Success = true;
             Res.Code = (int)ResponseStatusCode.Success;
-            Res.Message = "成功新增";
+            Res.Message = "收到你的報告了，社畜";
 
             return Res;
         }
