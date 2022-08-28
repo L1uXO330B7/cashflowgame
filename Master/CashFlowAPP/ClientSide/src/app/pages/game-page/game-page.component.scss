@@ -1,70 +1,69 @@
-
-.MainView{
-  overflow:hidden;
+.MainView {
+  overflow: hidden;
   max-height: 100vh;
 }
-.col{
+.col {
   height: 100vh;
 }
-.UserBoard{
+.UserBoard {
   height: 50vh;
-  background:#fff;
+  background: #fff;
 }
-.ChatRoomToggle{
+.ChatRoomToggle {
   height: 5vh;
   text-align: center;
   background-color: gray;
   outline: none;
   border: none;
   border-radius: 0px 15px 0px 0px;
-  transition: all 3s ;
+  transition: all 3s;
   vertical-align: middle;
-  &.active{
+  &.active {
     margin-top: 45vh;
   }
 }
-.ChatRoom{
-
+.ChatRoom {
   height: 45vh;
   background-color: red;
   transition: all 2s;
   position: relative;
 }
 
-.UserGameInfo{
+.UserGameInfo {
   transition: all 2s;
   height: 100vh;
   background-color: pink;
 }
-.InfoToggle{
+.InfoToggle {
   transition: all 2s;
   outline: none;
-  h5{
+  h5 {
     margin: 0 auto;
     writing-mode: vertical-lr;
   }
-  &.active{
-    margin-left:50%;
+  &.active {
+    margin-left: 50%;
   }
 }
-.FinancialState{
+.FinancialState {
   margin: 0;
   list-style-type: none;
   padding: 0;
-  li{
+  li {
     padding: 2px 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    h4{
+    h4 {
       margin: 0;
     }
   }
 }
-.IcomeExpense{
-  background-color:rgba(255,255,255,0.5);
+.IcomeExpense {
+  background-color: rgba(255, 255, 255, 0.5);
 }
-.IncomeList,.ExpenseList{
+.IncomeList,
+.ExpenseList {
   height: 10vh;
   margin: 0;
   list-style-type: none;
@@ -72,13 +71,25 @@
   overflow-y: scroll;
   border-top: 1px solid;
   border-bottom: 1px solid;
-  li{
+  li {
     padding: 2px 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    p{
+    p {
       margin: 0;
     }
+  }
+}
+.CardToggle {
+  margin-top:1vh;
+  transition: all 3s;
+  height: 6vh;
+  width: 100%;
+  outline: none;
+  border: none;
+  border-radius: 15px 15px 0 0;
+  &.active {
+    margin-top: 79.5vh;
   }
 }

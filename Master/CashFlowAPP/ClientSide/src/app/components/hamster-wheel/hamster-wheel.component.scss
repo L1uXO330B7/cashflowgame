@@ -5,10 +5,11 @@
 
 .loader {
 	&_wrapper {
-    margin-top: 15px;
+    margin-top: 1vh;
 		display: flex;
 		align-items: center;
 		justify-content: center;
+    height: 14vh;
 	}
 	&_img {
 		width: 130px;
