@@ -15,6 +15,8 @@ import { GamePageComponent } from './pages/game-page/game-page.component';
 import { ChatroomComponent } from './components/chatroom/chatroom.component';
 import { SurveyPageComponent } from './pages/survey-page/survey-page.component';
 import { LoadingComponent } from './components/loading/loading.component';
+import { HamsterWheelComponent } from './components/hamster-wheel/hamster-wheel.component';
+import { CardComponent } from './components/card/card.component';
 
 
 
@@ -29,7 +31,9 @@ import { LoadingComponent } from './components/loading/loading.component';
     GamePageComponent,
     ChatroomComponent,
     SurveyPageComponent,
-    LoadingComponent
+    LoadingComponent,
+    HamsterWheelComponent,
+    CardComponent
   ],
   imports: [
     BrowserModule,
