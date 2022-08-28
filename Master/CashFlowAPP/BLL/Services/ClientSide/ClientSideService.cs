@@ -185,6 +185,16 @@ namespace BLL.Services.ClientSide
 
             return Res;
         }
+        public async Task<ApiResponse>ReadFiInfo(ApiRequest<int?> Req)
+        {
+            var Res = new ApiResponse();
+            if (Req.Args == null)
+            {
+                
+            }
+
+            return Res;
+        }
 
     }
 }
