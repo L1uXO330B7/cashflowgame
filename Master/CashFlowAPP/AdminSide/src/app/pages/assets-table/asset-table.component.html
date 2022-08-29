@@ -143,7 +143,11 @@
           </mat-select>
         </mat-form-field>
 
-
+        <mat-form-field class="full-width" appearance="fill">
+          <mat-label>Description</mat-label>
+          <textarea rows="10" cols="50" matInput placeholder="" [(ngModel)]="Item.Description" type="text" name="Description" required>
+          </textarea>
+        </mat-form-field>
 
 
       </form>
