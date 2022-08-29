@@ -38,6 +38,7 @@ namespace BLL.Services.AdminSide
                 asset.Value = Arg.Value;
                 asset.Status = Arg.Status;
                 asset.AssetCategoryId = Arg.AssetCategoryId;
+                asset.Description = Arg.Description;
 
                 assets.Add(asset);
             }
@@ -125,7 +126,7 @@ namespace BLL.Services.AdminSide
                     asset.Value = Arg.Value;
                     asset.Status = Arg.Status;
                     asset.AssetCategoryId = Arg.AssetCategoryId;
-
+                    asset.Description = Arg.Description;
 
                     _CashFlowDbContext.SaveChanges();
                     SussList.Add(asset.Id);

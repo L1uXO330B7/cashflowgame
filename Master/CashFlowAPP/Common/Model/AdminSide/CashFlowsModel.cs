@@ -17,6 +17,7 @@ namespace Common.Model.AdminSide
         public decimal Value { get; set; }
         public int CashFlowCategoryId { get; set; }
         public byte Status { get; set; }
+        public string Description { get; set; }
 
     }
 
@@ -27,7 +28,7 @@ namespace Common.Model.AdminSide
         public decimal Value { get; set; }
         public int CashFlowCategoryId { get; set; }
         public byte Status { get; set; }
-
+        public string Description { get; set; }
     }
 
     /// <summary>

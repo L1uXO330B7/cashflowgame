@@ -37,6 +37,7 @@ namespace BLL.Services.AdminSide
                 cashFlow.Value = Arg.Value;
                 cashFlow.CashFlowCategoryId = Arg.CashFlowCategoryId;
                 cashFlow.Status = Arg.Status;
+                cashFlow.Description = Arg.Description;
                 cashFlows.Add(cashFlow);
             }
 
@@ -123,7 +124,7 @@ namespace BLL.Services.AdminSide
                     cashFlow.Value = Arg.Value;
                     cashFlow.CashFlowCategoryId = Arg.CashFlowCategoryId;
                     cashFlow.Status = Arg.Status;
-
+                    cashFlow.Description = Arg.Description; 
 
                     _CashFlowDbContext.SaveChanges();
                     SussList.Add(cashFlow.Id);
