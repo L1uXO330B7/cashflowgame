@@ -280,7 +280,7 @@ namespace Common.Methods
         /// 參考：https://ksjolin.pixnet.net/blog/post/150115680
         /// </summary>
         /// <param name="Weights"></param>
-        public static dynamic RandomController<T>(List<RandomItem<T>> Items)
+        public static T RandomController<T>(List<RandomItem<T>> Items)
         {
             var _Random = new Random(Guid.NewGuid().GetHashCode());
             var Dicts = new List<RandomItem<T>>();
@@ -296,7 +296,7 @@ namespace Common.Methods
                 .OrderByDescending(x => x.Weight)
                 .FirstOrDefault();
 
-            return Result;
+            return Result.Item;
         }
     }
 }

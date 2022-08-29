@@ -76,41 +76,54 @@ namespace API.Controllers
         [HttpGet]
         public dynamic test()
         {
-            var testt = new List<RandomItem<string>>();
+            var tester = new List<RandomItem<string>>();
             var tes = new RandomItem<string>();
             tes.Item = "test7";
             tes.Weight = 7;
-            testt.Add(tes);
+            tester.Add(tes);
 
             tes = new RandomItem<string>();
             tes.Item = "test3";
             tes.Weight = 3;
-            testt.Add(tes);
+            tester.Add(tes);
 
             tes = new RandomItem<string>();
             tes.Item = "test2";
             tes.Weight = 2;
-            testt.Add(tes);
+            tester.Add(tes);
 
             tes = new RandomItem<string>();
             tes.Item = "test11";
             tes.Weight = 11;
-            testt.Add(tes);
+            tester.Add(tes);
 
             tes = new RandomItem<string>();
             tes.Item = "test1";
             tes.Weight = 1;
-            testt.Add(tes);
+            tester.Add(tes);
 
             tes = new RandomItem<string>();
             tes.Item = "test0";
             tes.Weight = 0;
-            testt.Add(tes);
+            tester.Add(tes);
 
             // test 10000 次抽取結果 Group 後回傳
-            Method.RandomController<string>(testt);
+            var Test = new List<string>();
+            for (var i = 0; i <= 10000; i++)
+            {
+                Test.Add(Method.RandomController<string>(tester));
+            }
 
-            return "";
+            var testerrs = tester.Select(x => x.Item).Distinct().ToList();
+            var result = new List<Dictionary<string, int>>();
+            foreach (var testerr in testerrs)
+            {
+                var Item = new Dictionary<string, int>();
+                Item.Add(testerr, Test.Where(x => x == testerr).Count());
+                result.Add(Item);
+            }
+
+            return result;
         }
     }
 }
