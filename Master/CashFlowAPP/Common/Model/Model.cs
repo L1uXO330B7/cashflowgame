@@ -113,5 +113,9 @@ namespace Common.Model
         /// </summary>
         public string Content { get; set; }
     }
-
+    public class RandomItem<T>
+    {
+        public T Item { get; set; }
+        public int Weight { get; set; } = 0;
+    }
 }

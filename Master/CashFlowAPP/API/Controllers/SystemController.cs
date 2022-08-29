@@ -69,5 +69,48 @@ namespace API.Controllers
         {
             new SystemService(_CashFlowDbContext).CreateTemplateByTableName();
         }
+
+        /// <summary>
+        /// test
+        /// </summary>
+        [HttpGet]
+        public dynamic test()
+        {
+            var testt = new List<RandomItem<string>>();
+            var tes = new RandomItem<string>();
+            tes.Item = "test7";
+            tes.Weight = 7;
+            testt.Add(tes);
+
+            tes = new RandomItem<string>();
+            tes.Item = "test3";
+            tes.Weight = 3;
+            testt.Add(tes);
+
+            tes = new RandomItem<string>();
+            tes.Item = "test2";
+            tes.Weight = 2;
+            testt.Add(tes);
+
+            tes = new RandomItem<string>();
+            tes.Item = "test11";
+            tes.Weight = 11;
+            testt.Add(tes);
+
+            tes = new RandomItem<string>();
+            tes.Item = "test1";
+            tes.Weight = 1;
+            testt.Add(tes);
+
+            tes = new RandomItem<string>();
+            tes.Item = "test0";
+            tes.Weight = 0;
+            testt.Add(tes);
+
+            // test 10000 次抽取結果 Group 後回傳
+            Method.RandomController<string>(testt);
+
+            return "";
+        }
     }
 }

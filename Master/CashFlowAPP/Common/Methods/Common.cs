@@ -1,4 +1,5 @@
-﻿using MimeKit;
+﻿using Common.Model;
+using MimeKit;
 using Serilog;
 using Serilog.Events;
 using System;
@@ -271,6 +272,31 @@ namespace Common.Methods
                 returnString = typeDefaultString;
 
             return returnString;
+        }
+
+        /// <summary>
+        /// 控制随机抽中几率。
+        /// 參考：https://www.cnblogs.com/over140/archive/2009/02/13/1387779.html
+        /// 參考：https://ksjolin.pixnet.net/blog/post/150115680
+        /// </summary>
+        /// <param name="Weights"></param>
+        public static dynamic RandomController<T>(List<RandomItem<T>> Items)
+        {
+            var _Random = new Random(Guid.NewGuid().GetHashCode());
+            var Dicts = new List<RandomItem<T>>();
+            for (int i = Items.Count - 1; i >= 0; i--)
+            {
+                var Dict = new RandomItem<T>();
+                Dict.Weight = _Random.Next(100) * Items[i].Weight;
+                Dict.Item = Items[i].Item;
+                Dicts.Add(Dict);
+            }
+
+            var Result = Dicts
+                .OrderByDescending(x => x.Weight)
+                .FirstOrDefault();
+
+            return Result;
         }
     }
 }
