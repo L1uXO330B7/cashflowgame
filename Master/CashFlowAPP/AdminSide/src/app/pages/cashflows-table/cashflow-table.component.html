@@ -128,6 +128,10 @@
         <mat-form-field class="full-width" appearance="fill">
             <mat-label>CashFlowCategoryId</mat-label>
             <input matInput placeholder="" [(ngModel)]="Item.CashFlowCategoryId" type="text" name="CashFlowCategoryId" required>
+            <mat-select [(value)]="Item.CashFlowCategoryId">
+              <mat-option *ngFor="let CashFlowCategory of CashFlowCategorys" [value]="CashFlowCategory.Id">{{CashFlowCategory.Name}}
+              </mat-option>
+            </mat-select>
         </mat-form-field>
 
 
