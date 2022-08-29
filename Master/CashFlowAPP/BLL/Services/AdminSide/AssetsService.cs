@@ -39,7 +39,6 @@ namespace BLL.Services.AdminSide
                 asset.Status = Arg.Status;
                 asset.AssetCategoryId = Arg.AssetCategoryId;
 
-
                 assets.Add(asset);
             }
 
@@ -83,7 +82,7 @@ namespace BLL.Services.AdminSide
                 }
             }
 
-            var Data = assets
+            var Assets = assets
             // 後端分頁
             // 省略幾筆 ( 頁數 * 每頁幾筆 )
             .Skip(((int)Req.PageIndex - 1) * (int)Req.PageSize)
@@ -91,7 +90,9 @@ namespace BLL.Services.AdminSide
             .Take((int)Req.PageSize)
             .ToList();
 
-            Res.Data = Data;
+            var AssetCategorys = _CashFlowDbContext.AssetCategories.ToList();
+
+            Res.Data = new { Assets, AssetCategorys };
             Res.Success = true;
             Res.Code = (int)ResponseStatusCode.Success;
             Res.Message = "成功讀取";

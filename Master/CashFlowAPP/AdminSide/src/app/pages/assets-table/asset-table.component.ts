@@ -74,20 +74,25 @@ export class AssetsTableComponent extends BaseComponent implements OnInit {
   Items: any;
   FilterItems: any;
   Item = new AssetArgs();
+  AssetCategorys : any;
   AssetsRead(PageIndex: any, PageSize: any, Args: any) {
     let Req = new ApiRequest<any>();
     Req.Args = Args;
     Req.PageIndex = PageIndex > 0 ? PageIndex : 1;
     Req.PageSize = PageSize;
     this._ApiService.AssetsRead(Req).subscribe((Res) => {
+
       if (Res.Success) {
+
+        this.AssetCategorys = Res.Data.AssetCategorys;
+
         if (Args.length <= 0) {
-          this.Items = Res.Data;
-          this.FilterItems = Res.Data;
+          this.Items = Res.Data.Assets;
+          this.FilterItems = Res.Data.Assets;
           this.totalDataCount = Res.TotalDataCount;
         }
         else {
-          this.Item = Res.Data[0];
+          this.Item = Res.Data.Assets[0];
         }
       }
     }, (err: any) => {

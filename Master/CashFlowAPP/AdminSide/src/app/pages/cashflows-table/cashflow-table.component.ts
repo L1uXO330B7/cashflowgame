@@ -74,6 +74,7 @@ export class CashFlowsTableComponent extends BaseComponent implements OnInit {
   Items: any;
   FilterItems: any;
   Item = new CashFlowArgs();
+  CashFlowCategorys: any;
   CashFlowsRead(PageIndex: any, PageSize: any, Args: any) {
     let Req = new ApiRequest<any>();
     Req.Args = Args;
@@ -81,13 +82,16 @@ export class CashFlowsTableComponent extends BaseComponent implements OnInit {
     Req.PageSize = PageSize;
     this._ApiService.CashFlowsRead(Req).subscribe((Res) => {
       if (Res.Success) {
+
+        this.CashFlowCategorys = Res.Data.CashFlowCategorys;
+
         if (Args.length <= 0) {
-          this.Items = Res.Data;
-          this.FilterItems = Res.Data;
+          this.Items = Res.Data.CashFlows;
+          this.FilterItems = Res.Data.CashFlows;
           this.totalDataCount = Res.TotalDataCount;
         }
         else {
-          this.Item = Res.Data[0];
+          this.Item = Res.Data.CashFlows[0];
         }
       }
     }, (err: any) => {
