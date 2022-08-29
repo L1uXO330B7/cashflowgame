@@ -115,7 +115,7 @@ namespace Common.Model
     }
     public class RandomItem<T>
     {
-        public T Item { get; set; }
+        public T SampleObj { get; set; }
         public int Weight { get; set; } = 0;
     }
 }

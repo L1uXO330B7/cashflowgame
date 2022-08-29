@@ -71,55 +71,58 @@ namespace API.Controllers
         }
 
         /// <summary>
-        /// test
+        /// RandomItemSample 控制機率隨機取樣
         /// </summary>
         [HttpGet]
-        public dynamic test()
+        public dynamic RandomItemSample()
         {
-            var tester = new List<RandomItem<string>>();
-            var tes = new RandomItem<string>();
-            tes.Item = "test7";
-            tes.Weight = 7;
-            tester.Add(tes);
+            var RandomItemList = new List<RandomItem<string>>(); // 樣本容器，抽取樣本賦予權重，可塞泛型
+            var RandomObj = new RandomItem<string>(); // 樣本物件
+            RandomObj.SampleObj = "test7"; // 樣本名稱，依型別塞值
+            RandomObj.Weight = 7; // 樣本權重
+            RandomItemList.Add(RandomObj); // 塞進容器 
 
-            tes = new RandomItem<string>();
-            tes.Item = "test3";
-            tes.Weight = 3;
-            tester.Add(tes);
+            RandomObj = new RandomItem<string>();
+            RandomObj.SampleObj = "test3";
+            RandomObj.Weight = 3;
+            RandomItemList.Add(RandomObj);
 
-            tes = new RandomItem<string>();
-            tes.Item = "test2";
-            tes.Weight = 2;
-            tester.Add(tes);
+            RandomObj = new RandomItem<string>();
+            RandomObj.SampleObj = "test2";
+            RandomObj.Weight = 2;
+            RandomItemList.Add(RandomObj);
 
-            tes = new RandomItem<string>();
-            tes.Item = "test11";
-            tes.Weight = 11;
-            tester.Add(tes);
+            RandomObj = new RandomItem<string>();
+            RandomObj.SampleObj = "test11";
+            RandomObj.Weight = 11;
+            RandomItemList.Add(RandomObj);
 
-            tes = new RandomItem<string>();
-            tes.Item = "test1";
-            tes.Weight = 1;
-            tester.Add(tes);
+            RandomObj = new RandomItem<string>();
+            RandomObj.SampleObj = "test1";
+            RandomObj.Weight = 1;
+            RandomItemList.Add(RandomObj);
 
-            tes = new RandomItem<string>();
-            tes.Item = "test0";
-            tes.Weight = 0;
-            tester.Add(tes);
+            RandomObj = new RandomItem<string>();
+            RandomObj.SampleObj = "test0";
+            RandomObj.Weight = 0;
+            RandomItemList.Add(RandomObj);
 
             // test 10000 次抽取結果 Group 後回傳
-            var Test = new List<string>();
-            for (var i = 0; i <= 10000; i++)
+            var Test = new List<string>(); // 測試
+            for (var i = 0; i <= 1; i++) // 測試一萬次
             {
-                Test.Add(Method.RandomController<string>(tester));
+                Test.Add(Method.RandomWithWeight<string>(RandomItemList)); // 權重隨機方法
             }
 
-            var testerrs = tester.Select(x => x.Item).Distinct().ToList();
+            var SampleObjList = RandomItemList.Select(x => x.SampleObj).Distinct().ToList();
+            //  Distinct 抓不重複的樣本物件
             var result = new List<Dictionary<string, int>>();
-            foreach (var testerr in testerrs)
+            // https://ithelp.ithome.com.tw/articles/10194934
+            // 可帶類型的 <Tkey,Tvalue> 容器
+            foreach (var Sample in SampleObjList)
             {
                 var Item = new Dictionary<string, int>();
-                Item.Add(testerr, Test.Where(x => x == testerr).Count());
+                Item.Add(Sample, Test.Where(x => x == Sample).Count());
                 result.Add(Item);
             }
 
