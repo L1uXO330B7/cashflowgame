@@ -89,11 +89,14 @@ namespace BLL.Services.AdminSide
             .Skip(((int)Req.PageIndex - 1) * (int)Req.PageSize)
             // 取得幾筆，
             .Take((int)Req.PageSize)
+            .Select(x => new {x.Id,x.Name,x.Value,x.Description,x.Status})
+            // 因為外鍵會導致JSON無限階層，只好選沒外鍵的資料行
             .ToList();
 
-            var AssetCategorys = _CashFlowDbContext.AssetCategories.ToList();
-
-            Res.Data = new { Assets, AssetCategorys };
+            var AssetCategorys = _CashFlowDbContext.AssetCategories.Select(x => new {x.Id,x.Name}).ToList();
+            // 因為外鍵會導致JSON無限階層，只好選沒外鍵的資料行
+            var Data = new { Assets, AssetCategorys };
+            Res.Data = Data;
             Res.Success = true;
             Res.Code = (int)ResponseStatusCode.Success;
             Res.Message = "成功讀取";
