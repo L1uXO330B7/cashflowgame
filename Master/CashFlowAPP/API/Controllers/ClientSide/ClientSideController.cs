@@ -75,6 +75,18 @@ namespace API.Controllers.ClientSide
         {
             return await _ClientSideService.UserAnswersUpdate(Req);
         }
+        /// <summary>
+        /// 讀取用戶財報
+        /// </summary>
+        /// <param name="Req"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<ApiResponse> ReadFiInfo([FromBody]ApiRequest<int?> Req)
+        {
+            return await _ClientSideService.ReadFiInfo(Req);
+
+        }
+
         #endregion
     }
 }
