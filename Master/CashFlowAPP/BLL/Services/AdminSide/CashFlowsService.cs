@@ -88,7 +88,7 @@ namespace BLL.Services.AdminSide
             // 取得幾筆，
             .Take((int)Req.PageSize)
             // 因為外鍵會導致JSON無限階層，只好選沒外鍵的資料行
-            .Select(x => new {x.Id,x.Name,x.Value,x.Description,x.Status})
+            .Select(x => new {x.Id,x.Name,x.Value,x.Description,x.Status,x.CashFlowCategoryId})
             .ToList();
 
             var CashFlowCategorys = _CashFlowDbContext.CashFlowCategories.Select(x => new {x.Id,x.Name}).ToList();

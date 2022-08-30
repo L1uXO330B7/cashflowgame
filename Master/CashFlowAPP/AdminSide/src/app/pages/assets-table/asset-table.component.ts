@@ -83,6 +83,7 @@ export class AssetsTableComponent extends BaseComponent implements OnInit {
     this._ApiService.AssetsRead(Req).subscribe((Res) => {
 
       if (Res.Success) {
+        console.log(Res);
 
         this.AssetCategorys = Res.Data.AssetCategorys;
 

@@ -89,7 +89,7 @@ namespace BLL.Services.AdminSide
             .Skip(((int)Req.PageIndex - 1) * (int)Req.PageSize)
             // 取得幾筆，
             .Take((int)Req.PageSize)
-            .Select(x => new {x.Id,x.Name,x.Value,x.Description,x.Status})
+            .Select(x => new {x.Id,x.Name,x.Value,x.Description,x.Status,x.AssetCategoryId})
             // 因為外鍵會導致JSON無限階層，只好選沒外鍵的資料行
             .ToList();
 
