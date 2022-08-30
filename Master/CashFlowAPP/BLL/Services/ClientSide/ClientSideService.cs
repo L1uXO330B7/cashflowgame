@@ -223,24 +223,78 @@ namespace BLL.Services.ClientSide
                    new { c.Id, c.Name, c.Value, c.Description, CashFlowCategoryName = cc.Name, c.CashFlowCategoryId, cc.ParentId })
                  .ToList();
 
-           
+
             var Res = new ApiResponse();
-            var Result = new List<dynamic>();
+            var CashFlowResult = new List<dynamic>();
+            var AssetResult = new List<dynamic>();
+
             if (Req.Args == null)
             {
                 // 先抽職業
-               var Jobs = 
-                     CashFlowAndCategory
-                    .Where(c => c.CashFlowCategoryName == "工作薪水")
-                    .Select(x=>new RandomItem<int> {SampleObj=x.Id,Weight=1/x.Value})
-                    .ToList();
+                var Jobs =
+                      CashFlowAndCategory
+                     .Where(c => c.CashFlowCategoryName == "工作薪水")
+                     .Select(x => new RandomItem<int>
+                     {
+                         SampleObj = x.Id,
+                         Weight = x.Value == 0 ? 1 / 300000 : (1 / x.Value)
+                     })
+                     // value = 0 ，執行左邊也就是老闆
+                     .ToList();
                 var Job = Method.RandomWithWeight(Jobs);
                 var YourJob = CashFlowAndCategory.FirstOrDefault(c => c.Id == Job);
-                Result.Add(YourJob);
+                CashFlowResult.Add(YourJob);
 
+
+                // 生活花費
+                var _Random = new Random(Guid.NewGuid().GetHashCode()); // 讓隨機機率離散
+                var DailyExpenese =
+                    CashFlowAndCategory
+                    .Select(c => new { c.Id, c.Name, Value = c.Value * _Random.Next(1, 5), c.Description, c.CashFlowCategoryName, c.CashFlowCategoryId, c.ParentId })
+                    .FirstOrDefault(c => c.CashFlowCategoryName == "生活花費");
+
+                CashFlowResult.Add(DailyExpenese);
+
+
+                // 抽資產隨便取
+                var DrawCounts = _Random.Next(1, 2);
+                var AssetDices =
+                     AssetAndCategory
+                    .Where(c => 
+                    c.AssetCategoryName != "公司行號"&& // 初始化抽到老闆才能有公司
+                    c.ParentId!=28 &&                   // 初始化抽到老闆才能有公司行號的子類別
+                    c.AssetCategoryName != "房貸")      // 有房子才有房貸 先排除
+                    .Select(x => new RandomItem<int> { SampleObj = x.Id, Weight = 1 / x.Value })
+                    .ToList();
+                //  !!! 可能是要先抽再根據抽到類別做處理，再回到前台
+
+
+
+                // 存放不重複
+                //var NotRepeat = new List<int>();
+
+                //while(NotRepeat.Count<DrawCounts)
+                //{
+                //    var AssetFromDice = Method.RandomWithWeight(AssetDices);
+                //    if (!NotRepeat.Contains(AssetFromDice))
+                //    {
+                //        var YourAssets = AssetAndCategory.FirstOrDefault(a => a.Id == AssetFromDice);
+                //        AssetResult.Add(YourAssets);
+                //        NotRepeat.Add(AssetFromDice);
+                //    }
+                //}
+
+                // 可重複
+                for (var i = 0; i < DrawCounts; i++)
+                {
+                    var AssetFromDice = Method.RandomWithWeight(AssetDices);
+                    var YourAssets = AssetAndCategory.FirstOrDefault(a => a.Id == AssetFromDice);
+                    AssetResult.Add(YourAssets);
+                }
 
             }
-            Res.Data = Result;
+
+            Res.Data = new { CashFlowResult, AssetResult };
             return Res;
         }
 

@@ -283,16 +283,16 @@ namespace Common.Methods
         public static T RandomWithWeight<T>(List<RandomItem<T>> Items)
         {
             var _Random = new Random(Guid.NewGuid().GetHashCode()); // 讓隨機機率離散
-            var Dicts = new List<RandomItem<T>>();
+            var Dices = new List<RandomItem<T>>();
             for (int i = Items.Count - 1; i >= 0; i--)
             {
-                var Dict = new RandomItem<T>();
-                Dict.Weight = _Random.Next(100) * Items[i].Weight;
-                Dict.SampleObj = Items[i].SampleObj;
-                Dicts.Add(Dict);
+                var Dice = new RandomItem<T>();
+                Dice.Weight = _Random.Next(100) * Items[i].Weight;
+                Dice.SampleObj = Items[i].SampleObj;
+                Dices.Add(Dice);
             }
             // .Next(100)=>0~100 抽一個數字 * 樣本權重，得到新權重，再從中抽出最大值，為該次抽出樣本
-            var Result = Dicts
+            var Result = Dices
                 .OrderByDescending(x => x.Weight)
                 .FirstOrDefault();
 
