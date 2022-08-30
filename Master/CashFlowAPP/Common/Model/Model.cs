@@ -116,6 +116,6 @@ namespace Common.Model
     public class RandomItem<T>
     {
         public T SampleObj { get; set; }
-        public int Weight { get; set; } = 0;
+        public decimal Weight { get; set; } = 0;
     }
 }

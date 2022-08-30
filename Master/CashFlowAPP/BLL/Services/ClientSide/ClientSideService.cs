@@ -6,6 +6,8 @@ using Common.Model.AdminSide;
 using DPL.EF;
 using System.Text;
 using static Common.Model.ClientSideModel;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace BLL.Services.ClientSide
 {
@@ -160,7 +162,7 @@ namespace BLL.Services.ClientSide
             _CashFlowDbContext.SaveChanges();
 
             foreach (var Arg in Req.Args)
-            {   
+            {
                 var answerQuestion = new AnswerQuestion();
                 answerQuestion.Id = Arg.Id;
                 answerQuestion.Answer = Arg.Answer;
@@ -185,14 +187,60 @@ namespace BLL.Services.ClientSide
 
             return Res;
         }
-        public async Task<ApiResponse>ReadFiInfo(ApiRequest<int?> Req)
+        public async Task<ApiResponse> ReadFiInfo(ApiRequest<int?> Req)
         {
+            var Assets = _CashFlowDbContext.Assets
+                .Where(x => x.Status == (int)StatusCode.Enable)
+                .AsNoTracking()
+                .ToList();
+            var AssetCategories = _CashFlowDbContext.AssetCategories
+                .Where(x => x.Status == (int)StatusCode.Enable)
+                .AsNoTracking()
+                .ToList();
+            var AssetAndCategory =
+                 Assets.Join(
+                  AssetCategories,
+                   a => a.AssetCategoryId,
+                   ac => ac.Id,
+                   (a, ac) =>
+                   new { a.Id, a.Name, a.Value, a.Description, AssetCategoryName = ac.Name, a.AssetCategoryId, ac.ParentId })
+                 .ToList();
+
+            var CashFlows = _CashFlowDbContext.CashFlows
+                .Where(x => x.Status == (int)StatusCode.Enable)
+                .AsNoTracking()
+                .ToList();
+            var CashFlowCategories = _CashFlowDbContext.CashFlowCategories
+              .Where(x => x.Status == (int)StatusCode.Enable)
+              .AsNoTracking()
+              .ToList();
+            var CashFlowAndCategory =
+                 CashFlows.Join(
+                  CashFlowCategories,
+                   c => c.CashFlowCategoryId,
+                   cc => cc.Id,
+                   (c, cc) =>
+                   new { c.Id, c.Name, c.Value, c.Description, CashFlowCategoryName = cc.Name, c.CashFlowCategoryId, cc.ParentId })
+                 .ToList();
+
+           
             var Res = new ApiResponse();
+            var Result = new List<dynamic>();
             if (Req.Args == null)
             {
-                
-            }
+                // 先抽職業
+               var Jobs = 
+                     CashFlowAndCategory
+                    .Where(c => c.CashFlowCategoryName == "工作薪水")
+                    .Select(x=>new RandomItem<int> {SampleObj=x.Id,Weight=1/x.Value})
+                    .ToList();
+                var Job = Method.RandomWithWeight(Jobs);
+                var YourJob = CashFlowAndCategory.FirstOrDefault(c => c.Id == Job);
+                Result.Add(YourJob);
 
+
+            }
+            Res.Data = Result;
             return Res;
         }
 
