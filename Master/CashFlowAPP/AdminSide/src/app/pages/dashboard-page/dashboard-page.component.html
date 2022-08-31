@@ -12,12 +12,17 @@
     </div>
     <div class="UserBox">
       <mat-icon>face</mat-icon><span>Admin</span>
+      <button mat-icon-button (click)="AdminLogout()">
+        <mat-icon>logout</mat-icon>
+      </button>
     </div>
   </mat-toolbar>
   <mat-sidenav-container class="SideNavContainer">
     <mat-sidenav #sideNav mode="side" class="SideNav" opened>
-
-      <h3>後台管理</h3>
+      <div class="AlertBox">
+        <h3>後台管理</h3>
+        <p>(使用完畢請記得登出)</p>
+      </div>
       <mat-expansion-panel>
         <mat-expansion-panel-header>
           用戶
@@ -53,7 +58,9 @@
           管理
         </mat-expansion-panel-header>
         <!-- 內容 -->
-        <mat-action-row><p>2022-0823</p></mat-action-row>
+        <mat-action-row>
+          <p>2022-0823</p>
+        </mat-action-row>
         <mat-nav-list class="list">
           <a [routerLink]="['/', 'dashboard', 'functions']" mat-list-item>功能管理</a>
           <a [routerLink]="['/', 'dashboard', 'role-functions']" mat-list-item>權限功能管理</a>
@@ -66,7 +73,10 @@
 
     <mat-sidenav-content class="content">
 
-      <router-outlet></router-outlet>
+      <router-outlet>
+ <canvas #buyers id="buyers" width="600" height="400"></canvas>
+
+      </router-outlet>
     </mat-sidenav-content>
   </mat-sidenav-container>
 </div>
