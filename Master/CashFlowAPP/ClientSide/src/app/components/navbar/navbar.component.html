@@ -8,7 +8,13 @@
         </a></li>
         <li *ngIf="IsLogin">
           <a class="nav-link">
-            <p class="m-0 text-shadow"><i class="fa-solid fa-circle-user pe-2"></i>用戶資料
+            <p class="m-0 text-shadow"><i class="fa-solid fa-circle-user pe-2"></i>
+            </p>
+          </a>
+        </li>
+        <li *ngIf="IsLogin">
+          <a class="nav-link" (click)="UserLogOut()">
+            <p class="m-0 text-shadow"><i class="fa-solid fa-arrow-right-from-bracket"></i>
             </p>
           </a>
         </li>

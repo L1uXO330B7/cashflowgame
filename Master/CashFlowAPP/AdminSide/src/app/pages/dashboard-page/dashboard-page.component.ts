@@ -13,8 +13,8 @@ export class DashboardPageComponent implements AfterViewInit  {
 
   constructor(private _Router:Router) { }
   ngAfterViewInit(){
-     this.context=this.buyers.nativeElement.getContext('2d');
-    new Chart(this.context,this.buyerData);
+    //  this.context=this.buyers.nativeElement.getContext('2d');
+    // new Chart(this.context,this.buyerData);
   }
   ngOnInit(): void {
 
