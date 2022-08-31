@@ -17,11 +17,15 @@ namespace DPL.EF
         /// <summary>
         /// 卡片名稱
         /// </summary>
-        public string Name { get; set; }
+        public string Name { get; set; } = null!;
         /// <summary>
         /// 狀態 0. 停用 1. 啟用 2. 刪除
         /// </summary>
         public byte Status { get; set; }
+        /// <summary>
+        /// 權重
+        /// </summary>
+        public decimal? Weight { get; set; }
 
         public virtual ICollection<CardEffect> CardEffects { get; set; }
     }

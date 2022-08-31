@@ -282,6 +282,7 @@ namespace Common.Methods
        
         public static T RandomWithWeight<T>(List<RandomItem<T>> Items)
         {
+            // TODO: 用一個 LIST 裝抽過的，收集抽到的 ITEM，降低他的權重，減少重複抽到的機會
             var _Random = new Random(Guid.NewGuid().GetHashCode()); // 讓隨機機率離散
             var Dices = new List<RandomItem<T>>();
             for (int i = Items.Count - 1; i >= 0; i--)

@@ -16,7 +16,7 @@ namespace DPL.EF
         /// <summary>
         /// 影響效果
         /// </summary>
-        public string Description { get; set; }
+        public string Description { get; set; } = null!;
         /// <summary>
         /// 卡片流水號 ( 外鍵 )
         /// </summary>
@@ -26,7 +26,7 @@ namespace DPL.EF
         /// </summary>
         public int EffectTableId { get; set; }
 
-        public virtual Card Card { get; set; }
-        public virtual EffectTable EffectTable { get; set; }
+        public virtual Card Card { get; set; } = null!;
+        public virtual EffectTable EffectTable { get; set; } = null!;
     }
 }

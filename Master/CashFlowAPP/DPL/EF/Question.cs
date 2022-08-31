@@ -22,11 +22,11 @@ namespace DPL.EF
         /// <summary>
         /// 題目名稱 ,Ex.生幾個小孩
         /// </summary>
-        public string Name { get; set; }
+        public string Name { get; set; } = null!;
         /// <summary>
         /// 選項答案 :[&quot;1個,2個&quot;]
         /// </summary>
-        public string Answer { get; set; }
+        public string Answer { get; set; } = null!;
         /// <summary>
         /// 狀態 0. 停用 1. 啟用 2. 刪除
         /// </summary>

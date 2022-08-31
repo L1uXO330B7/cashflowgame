@@ -18,7 +18,7 @@ namespace DPL.EF
         /// <summary>
         /// 受影響資料表名稱
         /// </summary>
-        public string Name { get; set; }
+        public string Name { get; set; } = null!;
         /// <summary>
         /// 狀態 0. 停用 1. 啟用 2. 刪除
         /// </summary>
