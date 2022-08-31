@@ -237,7 +237,7 @@ namespace BLL.Services.ClientSide
                      .Select(x => new RandomItem<int>
                      {
                          SampleObj = x.Id,
-                         Weight = x.Value == 0 ? 1 / 300000 : (1 / x.Value)
+                         Weight = x.Value == 0 ? 1 / 300000 : (1 / x.Value) // 降低老闆的機率 value = 0 
                      })
                      // value = 0 ，執行左邊也就是老闆
                      .ToList();
@@ -245,53 +245,87 @@ namespace BLL.Services.ClientSide
                 var YourJob = CashFlowAndCategory.FirstOrDefault(c => c.Id == Job);
                 CashFlowResult.Add(YourJob);
 
-
                 // 生活花費
                 var _Random = new Random(Guid.NewGuid().GetHashCode()); // 讓隨機機率離散
                 var DailyExpenese =
                     CashFlowAndCategory
-                    .Select(c => new { c.Id, c.Name, Value = c.Value * _Random.Next(1, 5), c.Description, c.CashFlowCategoryName, c.CashFlowCategoryId, c.ParentId })
+                    .Select(c => new
+                    {
+                        c.Id,
+                        c.Name,
+                        Value = c.Value * _Random.Next(1, 5),
+                        c.Description,
+                        c.CashFlowCategoryName,
+                        c.CashFlowCategoryId,
+                        c.ParentId
+                    })
                     .FirstOrDefault(c => c.CashFlowCategoryName == "生活花費");
 
                 CashFlowResult.Add(DailyExpenese);
 
-
                 // 抽資產隨便取
-                var DrawCounts = _Random.Next(1, 2);
+                var Max = 2; // 基數少時只抽兩筆
+                if (AssetAndCategory.Count() > 10)
+                {
+                    Max = 5;
+                }
+                var DrawCounts = _Random.Next(1, Max);
                 var AssetDices =
                      AssetAndCategory
-                    .Where(c => 
-                    c.AssetCategoryName != "公司行號"&& // 初始化抽到老闆才能有公司
-                    c.ParentId!=28 &&                   // 初始化抽到老闆才能有公司行號的子類別
-                    c.AssetCategoryName != "房貸")      // 有房子才有房貸 先排除
-                    .Select(x => new RandomItem<int> { SampleObj = x.Id, Weight = 1 / x.Value })
+                    .Where(c =>
+                           c.Id == AssetAndCategory.Count() &&
+                           c.AssetCategoryName != "公司行號" && // 初始化抽到老闆才能有公司
+                           c.ParentId != 28 && // 初始化抽到老闆才能有公司行號的子類別
+                           c.Name != "房貸" // 有房子才有房貸，先排除
+                    )
+                    .Select(x => new RandomItem<int>
+                    {
+                        SampleObj = x.Id,
+                        Weight = x.Value == 0 ? 0 : (1 / x.Value) // value = 0 為浮動利率
+                    })
                     .ToList();
-                //  !!! 可能是要先抽再根據抽到類別做處理，再回到前台
 
-
-
-                // 存放不重複
-                //var NotRepeat = new List<int>();
-
-                //while(NotRepeat.Count<DrawCounts)
-                //{
-                //    var AssetFromDice = Method.RandomWithWeight(AssetDices);
-                //    if (!NotRepeat.Contains(AssetFromDice))
-                //    {
-                //        var YourAssets = AssetAndCategory.FirstOrDefault(a => a.Id == AssetFromDice);
-                //        AssetResult.Add(YourAssets);
-                //        NotRepeat.Add(AssetFromDice);
-                //    }
-                //}
-
-                // 可重複
+                // 先抽再根據抽到類別做特殊邏輯處理
+                // 可重複抽取
                 for (var i = 0; i < DrawCounts; i++)
                 {
                     var AssetFromDice = Method.RandomWithWeight(AssetDices);
                     var YourAssets = AssetAndCategory.FirstOrDefault(a => a.Id == AssetFromDice);
                     AssetResult.Add(YourAssets);
+
+                    // 有房子才有房貸
+                    if (YourAssets.AssetCategoryId == 17) // 房地產
+                    {
+                        var MortgageRatio = _Random.Next(1, 8) / 100; // 新成屋最高八成
+                        var MortgageRatioAsset = AssetAndCategory
+                            .Select(a => new
+                            {
+                                a.Id,
+                                a.Name,
+                                Value = a.Value * MortgageRatio * -1,
+                                a.Description,
+                                a.AssetCategoryName,
+                                a.AssetCategoryId,
+                                a.ParentId
+                            })
+                            .FirstOrDefault(x => x.Name == "房貸");
+                        AssetResult.Add(MortgageRatioAsset);
+                    }
                 }
 
+                // 不重複抽取
+                //var NotRepeat = new List<int>();
+                //while(NotRepeat.Count<DrawCounts)
+                //{
+                //    var AssetFromDice = Method.RandomWithWeight(AssetDices);
+                //    if (!NotRepeat.Contains(AssetFromDice))
+                //    {
+                //        var YourAssets = AssetAndCategory
+                //        .FirstOrDefault(a => a.Id == AssetFromDice);
+                //        AssetResult.Add(YourAssets);
+                //        NotRepeat.Add(AssetFromDice);
+                //    }
+                //}
             }
 
             Res.Data = new { CashFlowResult, AssetResult };

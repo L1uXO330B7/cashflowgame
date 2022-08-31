@@ -84,7 +84,6 @@ namespace API.Controllers.ClientSide
         public async Task<ApiResponse> ReadFiInfo([FromBody]ApiRequest<int?> Req)
         {
             return await _ClientSideService.ReadFiInfo(Req);
-
         }
 
         #endregion
