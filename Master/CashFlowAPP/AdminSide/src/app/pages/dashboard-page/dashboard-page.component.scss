@@ -4,26 +4,31 @@
 }
 .SideNavContainer {
   height: 95vh;
-  .SideNav{
+  .SideNav {
     width: 250px;
-    h3{
+    .AlertBox {
       padding-top: 0px;
       text-align: center;
-      margin: 0;
-      padding: 20px 0px;
-      font-size: 24px;
-      font-weight: 700;
-      background-color: rgba(180,129,187,0.3);
+      padding: 10px 0px;
+      background-color: rgba(180, 129, 187, 0.3);
+      h3 {
+        font-size: 24px;
+        font-weight: 700;
+        margin: 0;
+      }
+      p{
+        margin:0;
+      }
     }
-    .list{
+    .list {
       padding-top: 0px;
       text-align: center;
-      a{
-        border-bottom: 1px solid rgba(180,129,187,0.2);
+      a {
+        border-bottom: 1px solid rgba(180, 129, 187, 0.2);
       }
     }
   }
-  .content{
+  .content {
   }
 }
 
@@ -31,7 +36,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 1px 3px 5px rgba(0,0,0,0.5);
+  box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.5);
   .BtnBox {
     display: flex;
     align-items: center;
@@ -42,13 +47,13 @@
     h1 {
       font-weight: 900;
       font-size: 30px;
-      text-shadow: 1px 3px 5px rgba(0,0,0,0.6);
+      text-shadow: 1px 3px 5px rgba(0, 0, 0, 0.6);
     }
   }
-  .UserBox{
+  .UserBox {
     display: flex;
     align-items: center;
-    span{
+    span {
       margin-left: 5px;
     }
   }

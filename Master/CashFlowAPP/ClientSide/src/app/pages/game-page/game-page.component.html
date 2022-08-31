@@ -1,7 +1,7 @@
 <div class="container-fluid MainView">
 
   <div class="row">
-    <div class="col bg-dark p-0">
+    <div class="col p-0">
       <div class="UserBoard col-6"></div>
       <button class="ChatRoomToggle  col-10" (click)="ToggleChatRoom()" [class.active]="!OpenChatRoom"><i
           class="fa-solid fa-comment-dollar"></i>
@@ -11,7 +11,7 @@
         <app-chatroom></app-chatroom>
       </div>
     </div>
-    <div class="col bg-primary p-0">
+    <div class="col p-0">
       <app-hamster-wheel></app-hamster-wheel>
       <div>
         <button class="CardToggle" [class.active]="!OpenCard" (click)="ToggleCard()"><i class="fa-solid fa-circle-exclamation"></i> 您的抉擇 <i class="fa-solid fa-angle-down" *ngIf="OpenCard"></i>
@@ -19,7 +19,7 @@
         <app-card></app-card>
       </div>
     </div>
-    <div class="col bg-danger p-0">
+    <div class="col p-0">
       <div class="d-flex">
         <div class="col-5 p-0"></div>
         <button class="col-1 p-0 InfoToggle" (click)="ToggleInfo()" [class.active]="!OpenInfo"><i

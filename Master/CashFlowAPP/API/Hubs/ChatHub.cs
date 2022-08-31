@@ -75,7 +75,7 @@ namespace API.Hubs
             await Clients.Client(Context.ConnectionId).SendAsync("UpdSelfID", Context.ConnectionId, UserList.Where(x => x.Id == _UserObject.Id).FirstOrDefault());
 
             // 更新聊天內容
-            await Clients.All.SendAsync("UpdContent", "新連線 ID: " + _UserObject.Name);
+            await Clients.All.SendAsync("UpdContent", "新連線玩家: " + _UserObject.Name);
 
             await base.OnConnectedAsync();
         }
@@ -101,7 +101,7 @@ namespace API.Hubs
             await Clients.All.SendAsync("UpdList", jsonString, UserList.Select(x => x.Name).ToList());
 
             // 更新聊天內容
-            await Clients.All.SendAsync("UpdContent", "已離線 ID: " + _UserObject.Name);
+            await Clients.All.SendAsync("UpdContent", "已離線玩家: " + _UserObject.Name);
 
             await base.OnDisconnectedAsync(ex);
         }

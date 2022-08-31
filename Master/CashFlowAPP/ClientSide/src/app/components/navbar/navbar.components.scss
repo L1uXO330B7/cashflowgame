@@ -6,7 +6,13 @@
 }
 .navbar-nav{
   display: flex;
+  flex-direction: row;
   .nav-link{
     display: flex;
+    margin-left: 10px;
+    cursor: pointer;
+    i{
+      font-size: 24px;
+    }
   }
 }

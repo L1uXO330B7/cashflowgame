@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { SharedService } from 'src/app/service/shared.service';
 
@@ -8,7 +9,7 @@ import { SharedService } from 'src/app/service/shared.service';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor(public _SharedService:SharedService) { }
+  constructor(public _SharedService:SharedService,public _Router:Router){ }
 
   ngOnInit(): void {
     this.LoginToUserInfo();
@@ -26,5 +27,10 @@ export class NavbarComponent implements OnInit {
 
       this.IsLogin=true;
     }
+  }
+  UserLogOut(){
+    localStorage.removeItem("UserId");
+    localStorage.removeItem("Token");
+    this._Router.navigate(['/', 'login']);
   }
 }
