@@ -27,7 +27,7 @@ namespace API.Filter
             {
                 var log = new Log();
                 log.UserId = 0;
-                log.UserName = "Request";
+                log.UserName = $"Url：{_ActionExecutingContext.HttpContext.Request.Path}";
                 log.TableId = 0;
                 log.TableName = $"IP：{Ip}";
                 log.Action = 0;
