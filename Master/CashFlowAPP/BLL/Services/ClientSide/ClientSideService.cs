@@ -280,24 +280,36 @@ namespace BLL.Services.ClientSide
                 {
                     var AssetFromDice = Method.RandomWithWeight(AssetDices);
                     var YourAssets = AssetAndCategory.FirstOrDefault(a => a.Id == AssetFromDice);
-                    AssetResult.Add(YourAssets);
+               
 
                     // 有房子才有房貸
                     if (YourAssets.ParentId == 17) // 房地產
                     {
-                        var MortgageRatio = _Random.Next(1, 8) / 100; // 新成屋最高八成
+                        float ratio = _Random.Next(1, 8);
+                        float MortgageRatio = ratio/10; // 新成屋最高八成
                         var MortgageRatioAsset = AssetAndCategory.FirstOrDefault(x => x.Name == "房貸");
-                        MortgageRatioAsset.Value = MortgageRatioAsset.Value * MortgageRatio * -1;
+                        MortgageRatioAsset.Value =((decimal)YourAssets.Value) * ((decimal)MortgageRatio) * -1;
                         AssetResult.Add(MortgageRatioAsset);
                     }
 
                     // 車貸是隨機value
                     if (YourAssets.Id == 10) // 車貸車價8成
                     {
-                        var CarValue = YourJob.Value * 10; // 車子價格大約是薪水*10
+                        var CarValue = Math.Round((YourJob.Value * -10*8/10),0); // 車子價格大約是薪水*10
+                        YourAssets.Value = CarValue;
+                       
                     }
-                    // todo: 定存
+                    // 金融商品
+                    if(YourAssets.ParentId==46)
+                    {
+                        
+                    }
                     // 創業貸款
+
+
+
+                    AssetResult.Add(YourAssets);
+
                 }
 
                 // 不重複抽取

@@ -18,7 +18,7 @@ namespace Common.Model.AdminSide
         public int CashFlowCategoryId { get; set; }
         public byte Status { get; set; }
         public string Description { get; set; }
-
+        public decimal Weight { get; set; }
     }
 
     public class UpdateCashFlowArgs
@@ -29,6 +29,7 @@ namespace Common.Model.AdminSide
         public int CashFlowCategoryId { get; set; }
         public byte Status { get; set; }
         public string Description { get; set; }
+        public decimal Weight { get; set; }
     }
 
     /// <summary>

@@ -5,4 +5,5 @@
   CashFlowCategoryId: number | undefined;
   Status: number | undefined;
   Description: string | undefined;
+  Weight: number | undefined;
 }

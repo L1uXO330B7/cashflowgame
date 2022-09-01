@@ -5,4 +5,5 @@
   Status: number | undefined;
   AssetCategoryId: number | undefined;
   Description: string | undefined;
+  Weight:number|undefined;
 }

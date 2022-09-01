@@ -39,7 +39,7 @@ namespace BLL.Services.AdminSide
                 asset.Status = Arg.Status;
                 asset.AssetCategoryId = Arg.AssetCategoryId;
                 asset.Description = Arg.Description;
-
+                asset.Weight = Arg.Weight;
                 assets.Add(asset);
             }
 
@@ -89,7 +89,7 @@ namespace BLL.Services.AdminSide
             .Skip(((int)Req.PageIndex - 1) * (int)Req.PageSize)
             // 取得幾筆，
             .Take((int)Req.PageSize)
-            .Select(x => new {x.Id,x.Name,x.Value,x.Description,x.Status,x.AssetCategoryId})
+            .Select(x => new {x.Id,x.Name,x.Value,x.Description,x.Status,x.Weight,x.AssetCategoryId})
             // 因為外鍵會導致JSON無限階層，只好選沒外鍵的資料行
             .ToList();
 
@@ -130,6 +130,7 @@ namespace BLL.Services.AdminSide
                     asset.Status = Arg.Status;
                     asset.AssetCategoryId = Arg.AssetCategoryId;
                     asset.Description = Arg.Description;
+                    asset.Weight = Arg.Weight;
 
                     _CashFlowDbContext.SaveChanges();
                     SussList.Add(asset.Id);

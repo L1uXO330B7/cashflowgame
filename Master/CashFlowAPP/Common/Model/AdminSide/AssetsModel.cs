@@ -18,6 +18,7 @@ namespace Common.Model.AdminSide
         public byte Status { get; set; }
         public int AssetCategoryId { get; set; }
         public string Description { get; set; }
+        public decimal Weight { get; set; }
     }
 
     public class UpdateAssetArgs
@@ -28,6 +29,7 @@ namespace Common.Model.AdminSide
         public byte Status { get; set; }
         public int AssetCategoryId { get; set; }
         public string Description { get; set; }
+        public decimal? Weight { get; set; }
     }
 
     /// <summary>
