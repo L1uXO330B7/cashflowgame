@@ -44,9 +44,9 @@ try
         Conn = "LocalMDF";
     }
 
+    
     builder.Services.AddDbContext<CashFlowDbContext>(options =>
            options.UseSqlServer(builder.Configuration.GetConnectionString(Conn)));
-
     
     // 加入 SignalR
     builder.Services.AddSignalR();
@@ -64,11 +64,15 @@ try
         });
     });
 
+    var DbOptionsBuilder = new DbContextOptionsBuilder<CashFlowDbContext>();
+    DbOptionsBuilder.UseSqlServer(builder.Configuration.GetConnectionString(Conn));
+    var Db = new CashFlowDbContext(DbOptionsBuilder.Options);
+
     // 註冊 AOP Filters
     builder.Services.AddMvc(config =>
     {
         config.Filters.Add(new ExceptionFilter());
-        config.Filters.Add(new MiniProfilerActionFilter());
+        config.Filters.Add(new MiniProfilerActionFilter(Db));
         config.Filters.Add(new ModelStateErrorActionFilter());
     });
 

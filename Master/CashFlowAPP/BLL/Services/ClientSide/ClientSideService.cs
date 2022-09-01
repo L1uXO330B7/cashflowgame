@@ -283,19 +283,21 @@ namespace BLL.Services.ClientSide
                     AssetResult.Add(YourAssets);
 
                     // 有房子才有房貸
-                    if (YourAssets.AssetCategoryId == 17) // 房地產
+                    if (YourAssets.ParentId == 17) // 房地產
                     {
                         var MortgageRatio = _Random.Next(1, 8) / 100; // 新成屋最高八成
                         var MortgageRatioAsset = AssetAndCategory.FirstOrDefault(x => x.Name == "房貸");
                         MortgageRatioAsset.Value = MortgageRatioAsset.Value * MortgageRatio * -1;
                         AssetResult.Add(MortgageRatioAsset);
                     }
+
                     // 車貸是隨機value
                     if (YourAssets.Id == 10) // 車貸車價8成
                     {
                         var CarValue = YourJob.Value * 10; // 車子價格大約是薪水*10
                     }
                     // todo: 定存
+                    // 創業貸款
                 }
 
                 // 不重複抽取
