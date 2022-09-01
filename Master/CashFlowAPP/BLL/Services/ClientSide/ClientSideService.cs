@@ -220,7 +220,7 @@ namespace BLL.Services.ClientSide
                    c => c.CashFlowCategoryId,
                    cc => cc.Id,
                    (c, cc) =>
-                   new CashFlowAndCategory { Id = c.Id, Name = c.Name, Value = c.Value, Weight = (decimal)c.Weight, Description = c.Description, CashFlowCategoryName = cc.Name, CashFlowCategoryId = c.CashFlowCategoryId, ParentId = cc.ParentId })
+                   new CashFlowAndCategoryModel { Id = c.Id, Name = c.Name, Value = c.Value, Weight = (decimal)c.Weight, Description = c.Description, CashFlowCategoryName = cc.Name, CashFlowCategoryId = c.CashFlowCategoryId, ParentId = cc.ParentId })
                  .ToList();
 
 
@@ -279,32 +279,60 @@ namespace BLL.Services.ClientSide
                 for (var i = 0; i < DrawCounts; i++)
                 {
                     var AssetFromDice = Method.RandomWithWeight(AssetDices);
-                    var YourAssets = AssetAndCategory.FirstOrDefault(a => a.Id == AssetFromDice);
-               
+                    var YourAssets = AssetAndCategory
+                        .Where(a => a.Id == AssetFromDice)
+                        .Select(a => new AssetAndCategoryModel { Id = a.Id, Name = a.Name, Value = a.Value, Weight = (decimal)a.Weight, Description = a.Description, AssetCategoryName = a.Name, AssetCategoryId = a.AssetCategoryId, ParentId = a.ParentId })
+                        .FirstOrDefault();
+
+                    // TODO: 兩支函式，存一包，NEW 一包
+
+
 
                     // 有房子才有房貸
                     if (YourAssets.ParentId == 17) // 房地產
                     {
                         float ratio = _Random.Next(1, 8);
-                        float MortgageRatio = ratio/10; // 新成屋最高八成
+                        float MortgageRatio = ratio / 10; // 新成屋最高八成
                         var MortgageRatioAsset = AssetAndCategory.FirstOrDefault(x => x.Name == "房貸");
-                        MortgageRatioAsset.Value =((decimal)YourAssets.Value) * ((decimal)MortgageRatio) * -1;
+                        MortgageRatioAsset.Value = ((decimal)YourAssets.Value) * ((decimal)MortgageRatio) * -1;
                         AssetResult.Add(MortgageRatioAsset);
+
+                        // 房貸利息
+                        float Ratio = 0.15F;
+                        
+                       var MortgageMonthRate = CashFlowAndCategory
+                            .Where(x => x.Name == "房貸利息")
+                            .Select(x => new CashFlowAndCategoryModel{ Id = x.Id, Name = x.Name, Value = x.Value, Weight = (decimal)x.Weight, Description = x.Description, CashFlowCategoryName = x.Name, CashFlowCategoryId = x.CashFlowCategoryId, ParentId = x.ParentId })
+                            .FirstOrDefault();
+                        MortgageMonthRate.Value = (MortgageRatioAsset.Value + (MortgageRatioAsset.Value * (decimal)Ratio)) / 360;
+                        CashFlowResult.Add(MortgageMonthRate);
                     }
 
                     // 車貸是隨機value
                     if (YourAssets.Id == 10) // 車貸車價8成
                     {
-                        var CarValue = Math.Round((YourJob.Value * -10*8/10),0); // 車子價格大約是薪水*10
+                        var CarValue = Math.Round((YourJob.Value * -10 * 8 / 10), 0); // 車子價格大約是薪水*10
                         YourAssets.Value = CarValue;
-                       
+                        //todo 車貸利息
                     }
-                    // 金融商品
-                    if(YourAssets.ParentId==46)
+                    // 定存
+                    if (YourAssets.AssetCategoryId == 47)
                     {
-                        
+                        // 金融商品筆數
+                        var InvestCount = AssetAndCategory.Where(x => x.ParentId == 46).ToList().Count;
+                        // 定存價值=薪水*隨機數字*
+                        YourAssets.Value = (YourJob.Value - DailyExpenese.Value) * (_Random.Next(1, InvestCount));
+
+                        var SavingInterest = CashFlowAndCategory
+                            .Where(c => c.Name == "定存利息")
+                            .Select(x => new CashFlowAndCategoryModel { Id = x.Id, Name = x.Name, Value = x.Value, Weight = (decimal)x.Weight, Description = x.Description, CashFlowCategoryName = x.Name, CashFlowCategoryId = x.CashFlowCategoryId, ParentId = x.ParentId })
+                            .FirstOrDefault();
+                        SavingInterest.Value = Math.Round(YourAssets.Value / 1200, 0);
+                        CashFlowResult.Add(SavingInterest);
+
                     }
-                    // 創業貸款
+                    // todo:創業貸款
+                    // todo:學貸
 
 
 
