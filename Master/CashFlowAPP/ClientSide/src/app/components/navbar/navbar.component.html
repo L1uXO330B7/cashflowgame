@@ -7,7 +7,7 @@
           <p class="m-0 text-shadow">註冊 <i class="fa-solid fa-person"></i> 登入</p>
         </a></li>
         <li *ngIf="IsLogin">
-          <a class="nav-link">
+          <a class="nav-link" (click)="open(UserModal)">
             <p class="m-0 text-shadow"><i class="fa-solid fa-circle-user pe-2"></i>
             </p>
           </a>
@@ -21,3 +21,24 @@
     </ul>
   </div>
 </nav>
+<ng-template #UserModal let-modal>
+  <div class="modal-header">
+    <h3 class="modal-title" id="modal-basic-title">用戶資料</h3>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <div class="input-group align-items-center">
+      <label>帳號 : </label>
+      <input type="text" [(ngModel)]="UserData.Email" class="form-control ms-1" disabled>
+    </div>
+    <div class="input-group align-items-center mt-2">
+      <label>暱稱 : </label>
+      <input type="text" [(ngModel)]="UserData.Name" class="form-control ms-1" [disabled]="ResetInfo">
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button *ngIf="!ResetInfo" class="btn btn-primary">確認更新</button>
+    <button type="button" class="btn btn-outline-info" (click)="ResetUserInfo()">重設資料</button>
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">取消</button>
+  </div>
+</ng-template>

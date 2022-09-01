@@ -72,7 +72,7 @@ namespace BLL.Services.ClientSide
 
             var user = new User();
             user.Email = Req.Args.Email;
-            user.Name = $@"社畜{Method.CreateValidateCode(4)}";
+            user.Name = Req.Args.Name;
             user.Password = Req.Args.Password;//HashToDo
             user.RoleId = 1; //Todo
             user.Status = (byte)StatusCode.Enable;
