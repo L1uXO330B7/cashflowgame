@@ -7,7 +7,7 @@ using DPL.EF;
 using System.Text;
 using static Common.Model.ClientSideModel;
 using Microsoft.EntityFrameworkCore;
-
+using static Common.Model.GameEvent;
 
 namespace BLL.Services.ClientSide
 {
@@ -203,7 +203,7 @@ namespace BLL.Services.ClientSide
                    a => a.AssetCategoryId,
                    ac => ac.Id,
                    (a, ac) =>
-                   new { a.Id, a.Name, a.Value, a.Description, AssetCategoryName = ac.Name, a.AssetCategoryId, ac.ParentId })
+                   new AssetAndCategoryModel { Id=a.Id, Name=a.Name, Value=a.Value,Weight=(decimal)a.Weight, Description=a.Description, AssetCategoryName = ac.Name, AssetCategoryId=a.AssetCategoryId, ParentId=ac.ParentId })
                  .ToList();
 
             var CashFlows = _CashFlowDbContext.CashFlows
@@ -220,7 +220,7 @@ namespace BLL.Services.ClientSide
                    c => c.CashFlowCategoryId,
                    cc => cc.Id,
                    (c, cc) =>
-                   new { c.Id, c.Name, c.Value, c.Description, CashFlowCategoryName = cc.Name, c.CashFlowCategoryId, cc.ParentId })
+                   new CashFlowAndCategory { Id= c.Id, Name=c.Name, Value=c.Value, Weight=(decimal)c.Weight, Description=c.Description, CashFlowCategoryName = cc.Name, CashFlowCategoryId=c.CashFlowCategoryId, ParentId=cc.ParentId })
                  .ToList();
 
 
@@ -237,7 +237,8 @@ namespace BLL.Services.ClientSide
                      .Select(x => new RandomItem<int>
                      {
                          SampleObj = x.Id,
-                         Weight = x.Value == 0 ? 1 / 300000 : (1 / x.Value) // 降低老闆的機率 value = 0 
+                         Weight = (decimal) x.Weight
+                         // x.Value == 0 ? 1 / 300000 : (1 / x.Value) // 降低老闆的機率 value = 0 
                      })
                      // value = 0 ，執行左邊也就是老闆
                      .ToList();
@@ -273,7 +274,6 @@ namespace BLL.Services.ClientSide
                 var AssetDices =
                      AssetAndCategory
                     .Where(c =>
-                           c.Id == AssetAndCategory.Count() &&
                            c.AssetCategoryName != "公司行號" && // 初始化抽到老闆才能有公司
                            c.ParentId != 28 && // 初始化抽到老闆才能有公司行號的子類別
                            c.Name != "房貸" // 有房子才有房貸，先排除
@@ -281,7 +281,7 @@ namespace BLL.Services.ClientSide
                     .Select(x => new RandomItem<int>
                     {
                         SampleObj = x.Id,
-                        Weight = x.Value == 0 ? 0 : (1 / x.Value) // value = 0 為浮動利率
+                        Weight = (decimal)x.Weight
                     })
                     .ToList();
 
@@ -311,6 +311,13 @@ namespace BLL.Services.ClientSide
                             .FirstOrDefault(x => x.Name == "房貸");
                         AssetResult.Add(MortgageRatioAsset);
                     }
+                    // 車貸是隨機value
+                    if(YourAssets.Id== 10) // 車貸車價8成
+                    {
+                        var CarValue = YourJob.Value * 10; // 車子價格大約是薪水*10
+                        
+                    }
+                    // todo: 定存
                 }
 
                 // 不重複抽取

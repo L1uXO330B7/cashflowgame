@@ -1,6 +1,6 @@
 ## CashFlowJs
 
-**CashFlowJs** is an adaptation of the CashFlow 101 board game with additional gameplay options and rule customization that allows for many unique ways to play. 
+**CashFlowJs** is an adaptation of the CashFlow 101 board game with additional gameplay options and rule customization that allows for many unique ways to play.
 
 
 * Practice real world investing.  實踐現實生活中的投資
@@ -28,7 +28,7 @@
 * Doodads with Paychecks - More doodads. Players who land on the paycheck space will also get a doodad card
 * ?
 * Mortgage Payments - Adds realistic mortgage payments
-* 抵押付款 - 
+* 抵押付款 -
 * Job choice - Option to choose jobs
 * 職業選擇
 * Speed Start - Players start with their total income in their savings

@@ -12,7 +12,7 @@ namespace DPL.EF
         /// <summary>
         /// 答案:[&quot;1個&quot;]
         /// </summary>
-        public string Answer { get; set; }
+        public string Answer { get; set; } = null!;
         /// <summary>
         /// 問卷流水號 ( 外鍵 )
         /// </summary>
@@ -22,7 +22,7 @@ namespace DPL.EF
         /// </summary>
         public int UserId { get; set; }
 
-        public virtual Question Qusetion { get; set; }
-        public virtual User User { get; set; }
+        public virtual Question Qusetion { get; set; } = null!;
+        public virtual User User { get; set; } = null!;
     }
 }

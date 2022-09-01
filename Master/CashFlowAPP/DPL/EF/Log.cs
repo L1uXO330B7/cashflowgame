@@ -16,7 +16,7 @@ namespace DPL.EF
         /// <summary>
         /// 使用者名稱
         /// </summary>
-        public string UserName { get; set; }
+        public string UserName { get; set; } = null!;
         /// <summary>
         /// 資料表內流水號
         /// </summary>
@@ -24,7 +24,7 @@ namespace DPL.EF
         /// <summary>
         /// 資料表名稱
         /// </summary>
-        public string TableName { get; set; }
+        public string TableName { get; set; } = null!;
         /// <summary>
         /// 動作 1 新增 2 修改 3 刪除
         /// </summary>

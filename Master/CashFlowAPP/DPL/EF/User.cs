@@ -18,15 +18,15 @@ namespace DPL.EF
         /// <summary>
         /// 信箱
         /// </summary>
-        public string Email { get; set; }
+        public string Email { get; set; } = null!;
         /// <summary>
         /// 密碼 hash
         /// </summary>
-        public string Password { get; set; }
+        public string Password { get; set; } = null!;
         /// <summary>
         /// 姓名
         /// </summary>
-        public string Name { get; set; }
+        public string Name { get; set; } = null!;
         /// <summary>
         /// 狀態 0. 停用 1. 啟用 2. 刪除
         /// </summary>
@@ -36,7 +36,7 @@ namespace DPL.EF
         /// </summary>
         public int RoleId { get; set; }
 
-        public virtual Role Role { get; set; }
+        public virtual Role Role { get; set; } = null!;
         public virtual ICollection<AnswerQuestion> AnswerQuestions { get; set; }
         public virtual ICollection<UserBoard> UserBoards { get; set; }
     }
