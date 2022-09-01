@@ -203,7 +203,7 @@ namespace BLL.Services.ClientSide
                    a => a.AssetCategoryId,
                    ac => ac.Id,
                    (a, ac) =>
-                   new AssetAndCategoryModel { Id=a.Id, Name=a.Name, Value=a.Value,Weight=(decimal)a.Weight, Description=a.Description, AssetCategoryName = ac.Name, AssetCategoryId=a.AssetCategoryId, ParentId=ac.ParentId })
+                   new AssetAndCategoryModel { Id = a.Id, Name = a.Name, Value = a.Value, Weight = (decimal)a.Weight, Description = a.Description, AssetCategoryName = ac.Name, AssetCategoryId = a.AssetCategoryId, ParentId = ac.ParentId })
                  .ToList();
 
             var CashFlows = _CashFlowDbContext.CashFlows
@@ -220,7 +220,7 @@ namespace BLL.Services.ClientSide
                    c => c.CashFlowCategoryId,
                    cc => cc.Id,
                    (c, cc) =>
-                   new CashFlowAndCategory { Id= c.Id, Name=c.Name, Value=c.Value, Weight=(decimal)c.Weight, Description=c.Description, CashFlowCategoryName = cc.Name, CashFlowCategoryId=c.CashFlowCategoryId, ParentId=cc.ParentId })
+                   new CashFlowAndCategory { Id = c.Id, Name = c.Name, Value = c.Value, Weight = (decimal)c.Weight, Description = c.Description, CashFlowCategoryName = cc.Name, CashFlowCategoryId = c.CashFlowCategoryId, ParentId = cc.ParentId })
                  .ToList();
 
 
@@ -237,7 +237,7 @@ namespace BLL.Services.ClientSide
                      .Select(x => new RandomItem<int>
                      {
                          SampleObj = x.Id,
-                         Weight = (decimal) x.Weight
+                         Weight = (decimal)x.Weight
                          // x.Value == 0 ? 1 / 300000 : (1 / x.Value) // 降低老闆的機率 value = 0 
                      })
                      // value = 0 ，執行左邊也就是老闆
@@ -248,20 +248,9 @@ namespace BLL.Services.ClientSide
 
                 // 生活花費
                 var _Random = new Random(Guid.NewGuid().GetHashCode()); // 讓隨機機率離散
-                var DailyExpenese =
-                    CashFlowAndCategory
-                    .Select(c => new
-                    {
-                        c.Id,
-                        c.Name,
-                        Value = c.Value * _Random.Next(1, 5),
-                        c.Description,
-                        c.CashFlowCategoryName,
-                        c.CashFlowCategoryId,
-                        c.ParentId
-                    })
+                var DailyExpenese = CashFlowAndCategory
                     .FirstOrDefault(c => c.CashFlowCategoryName == "生活花費");
-
+                DailyExpenese.Value = DailyExpenese.Value * _Random.Next(1, 5);
                 CashFlowResult.Add(DailyExpenese);
 
                 // 抽資產隨便取
@@ -297,25 +286,14 @@ namespace BLL.Services.ClientSide
                     if (YourAssets.AssetCategoryId == 17) // 房地產
                     {
                         var MortgageRatio = _Random.Next(1, 8) / 100; // 新成屋最高八成
-                        var MortgageRatioAsset = AssetAndCategory
-                            .Select(a => new
-                            {
-                                a.Id,
-                                a.Name,
-                                Value = a.Value * MortgageRatio * -1,
-                                a.Description,
-                                a.AssetCategoryName,
-                                a.AssetCategoryId,
-                                a.ParentId
-                            })
-                            .FirstOrDefault(x => x.Name == "房貸");
+                        var MortgageRatioAsset = AssetAndCategory.FirstOrDefault(x => x.Name == "房貸");
+                        MortgageRatioAsset.Value = MortgageRatioAsset.Value * MortgageRatio * -1;
                         AssetResult.Add(MortgageRatioAsset);
                     }
                     // 車貸是隨機value
-                    if(YourAssets.Id== 10) // 車貸車價8成
+                    if (YourAssets.Id == 10) // 車貸車價8成
                     {
                         var CarValue = YourJob.Value * 10; // 車子價格大約是薪水*10
-                        
                     }
                     // todo: 定存
                 }
