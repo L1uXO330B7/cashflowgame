@@ -32,6 +32,7 @@ namespace Common.Model
             [Display(Name = "密碼")]
             [Required(ErrorMessage = "密碼為必填")]
             public string Password { get; set; }
+            public string Name { get; set; }
             [Display(Name = "驗證碼")]
             [Required(ErrorMessage = "驗證碼為必填")]
             public string ValidateCode { get; set; }

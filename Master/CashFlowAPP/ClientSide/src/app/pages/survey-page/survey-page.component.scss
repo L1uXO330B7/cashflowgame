@@ -1,5 +1,10 @@
 .MainWrap{
-  background-color: green;
+  background:url(https://images.unsplash.com/photo-1455612693675-112974d4880b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80);
+  background-repeat: no-repeat;
+
+  background-attachment: fixed;
+  background-position: center center; /* 圖像置中 */
+  background-size: cover;
   padding-top: 100px;
 }
 .QuestionsLetter{
@@ -8,6 +13,7 @@
   background-color: white;
   border-radius: 3px;
   padding: 45px;
-  overflow-y: scroll;
-  height: 1200px;
+  display: flex;
+  flex-direction: column;
+  
 }

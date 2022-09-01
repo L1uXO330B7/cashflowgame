@@ -44,14 +44,19 @@
       >
         登入
       </button>
-      <button
-      *ngIf="change"
+      <div *ngIf="change" class="d-flex justify-content-between mt-3">
+        <div class="d-flex align-items-center NameBox">
+          <label class="label">Name</label>
+          <input type="text" class="form-control ms-1" placeholder="輸入你的暱稱"  [(ngModel)]="_ClientUserLogin.Name"/>
+        </div>
+        <button
       type="submit"
-        class="btn btn-primary mt-2 mt-md-5 align-self-end"
+        class="btn btn-primary mt-2 mt-md-2 align-self-end"
         (click)="UserSignUp()"
       >
         註冊
-      </button>
+      </button></div>
+
     </div>
     <div class="info" [style.transform]="Info">
       <h4 class="text-light"  *ngIf="!change">還沒註冊帳號嗎?</h4>
