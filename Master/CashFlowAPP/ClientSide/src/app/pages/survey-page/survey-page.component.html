@@ -1,0 +1,43 @@
+<app-loading *ngIf="IsLoading"></app-loading>
+<app-navbar></app-navbar>
+<div class="container-fluid MainWrap">
+
+  <div class="QuestionsLetter">
+    <button class="btn btn-lg btn-outline-primary mb-3" (click)="open(content)">問卷說明</button>
+    <ol>
+      <li *ngFor="let item of QuestionList" class="mt-2">
+        <h5>{{item.Name}}</h5>
+        <div class="input-group">
+          <div *ngFor="let answer of item.Answer;let i = index">
+            <input class="form-check-input" type="radio" [id]="answer+item.Id" [name]="item.Name" *ngIf="item.Type==1" [value]="answer"
+               [(ngModel)]="item.UserAnswer[0]">
+            <input class="form-check-input" type="checkbox" [id]="answer+item.Id" [name]="item.Name" *ngIf="item.Type==2"
+              [value]="answer"
+              (change)="CheckboxChange($event)" [checked]="CheckBoxForAnswer(answer,item.SaveAnswer)">
+            <label class="form-check-label mx-2" [for]="answer+item.Id">{{answer}}</label>
+          </div>
+        </div>
+
+
+      </li>
+    </ol>
+    <button class="btn btn-lg btn-outline-primary mb-3" (click)="BeautifyData()">提交</button>
+  </div>
+</div>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h3 class="modal-title" id="modal-basic-title">歡迎進入本問卷</h3>
+    <!-- <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button> -->
+  </div>
+  <div class="modal-body">
+    <h5>作答須知:</h5>
+    <ul>
+      <li>答案與遊戲並無直接關係</li>
+      <li>問卷答案僅供遊戲使用 !</li>
+    </ul>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">確定</button>
+  </div>
+</ng-template>

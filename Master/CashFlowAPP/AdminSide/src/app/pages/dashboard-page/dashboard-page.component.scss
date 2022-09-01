@@ -1,0 +1,60 @@
+.MainCotainer {
+  max-height: 100vh;
+  overflow: hidden;
+}
+.SideNavContainer {
+  height: 95vh;
+  .SideNav {
+    width: 250px;
+    .AlertBox {
+      padding-top: 0px;
+      text-align: center;
+      padding: 10px 0px;
+      background-color: rgba(180, 129, 187, 0.3);
+      h3 {
+        font-size: 24px;
+        font-weight: 700;
+        margin: 0;
+      }
+      p{
+        margin:0;
+      }
+    }
+    .list {
+      padding-top: 0px;
+      text-align: center;
+      a {
+        border-bottom: 1px solid rgba(180, 129, 187, 0.2);
+      }
+    }
+  }
+  .content {
+  }
+}
+
+.Header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.5);
+  .BtnBox {
+    display: flex;
+    align-items: center;
+  }
+  .BrandBox {
+    display: flex;
+    text-align: center;
+    h1 {
+      font-weight: 900;
+      font-size: 30px;
+      text-shadow: 1px 3px 5px rgba(0, 0, 0, 0.6);
+    }
+  }
+  .UserBox {
+    display: flex;
+    align-items: center;
+    span {
+      margin-left: 5px;
+    }
+  }
+}

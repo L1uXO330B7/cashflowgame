@@ -1,0 +1,7 @@
+﻿//第一次需先安裝SDK
+
+dotnet tool install --global dotnet-ef
+
+// dbContext 需繼承 Override dbContext 才可 Log CRUD，更新後需補上繼承與注入參數
+
+dotnet ef dbcontext scaffold "Server=150.117.83.67;Database=CashFlow;Trusted_Connection=False;user id=carl;password=1165;" Microsoft.EntityFrameworkCore.SqlServer --output-dir EF -f -v

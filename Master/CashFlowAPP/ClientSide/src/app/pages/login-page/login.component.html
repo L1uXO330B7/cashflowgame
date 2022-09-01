@@ -1,0 +1,78 @@
+<app-loading *ngIf="IsLoading"></app-loading>
+<div class="BrandBox"><a [routerLink]="['/home']"><h1>錢 董</h1></a></div>
+<div class="container-fluid bg">
+  <div class="container bar" #bar>
+    <div class="loginCard p-5" [style.transform]="Card" #card>
+      <label for="account" class="h3">Account</label>
+      <input
+        required
+        type="email"
+        class="form-control mt-2"
+        id="account"
+        placeholder="請輸入電子信箱"
+        [(ngModel)]="_ClientUserLogin.Email"
+      />
+
+      <label for="password" class="h3 mt-3">Password</label>
+      <input
+        required
+        type="password"
+        class="form-control mt-2"
+        id="password"
+        placeholder="請輸入密碼"
+        [(ngModel)]="_ClientUserLogin.Password"
+      />
+      <input
+       *ngIf="change"
+        type="password"
+        class="form-control mt-2"
+        id="account"
+        placeholder="請確認密碼"
+        [(ngModel)]="_ClientUserLogin.CheckPassword"
+      />
+      <div class="mt-3 input-group" *ngIf="change"><button type="button" class="btn btn-primary" (click)="GetVerificationCode()">取得驗證碼</button>
+      <input  style="width:100px;" class="d-inline form-control p-1" placeholder="輸入驗證碼"
+      [(ngModel)]="_ClientUserLogin.ValidateCode"
+      />
+    </div>
+    <p class="mb-0 mt-2 VerificationCode" *ngIf="VerificationCode.ValidateCode&&change">{{VerificationCode.ValidateCode}}</p>
+      <button
+        type="submit"
+        class="btn btn-primary mt-2 mt-md-5 align-self-end"
+        *ngIf="!change"
+        (click)="UserLogin()"
+      >
+        登入
+      </button>
+      <button
+      *ngIf="change"
+      type="submit"
+        class="btn btn-primary mt-2 mt-md-5 align-self-end"
+        (click)="UserSignUp()"
+      >
+        註冊
+      </button>
+    </div>
+    <div class="info" [style.transform]="Info">
+      <h4 class="text-light"  *ngIf="!change">還沒註冊帳號嗎?</h4>
+      <h4 class="text-light"  *ngIf="change">已經有帳號了嗎?</h4>
+      <button
+        (click)="changeLogin()"
+        type="button"
+        class="btn btn-outline-primary mt-4"
+        *ngIf="!change"
+      >
+        註冊
+      </button>
+      <button
+        (click)="changeLogin()"
+        type="button"
+        class="btn btn-outline-primary mt-4 loginBTN"
+        *ngIf="change"
+      >
+        登入
+      </button>
+
+    </div>
+  </div>
+</div>

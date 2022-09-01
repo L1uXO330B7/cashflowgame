@@ -1,0 +1,49 @@
+.ToastBox{
+  top: 10px;
+  left: 10px;
+  position: fixed;
+  z-index: 1000;
+  ngb-toast{
+   opacity: 0;
+    margin: 10px;
+    position: relative;
+    strong{
+      font-weight: 900;
+    }
+    button{
+      border: transparent;
+      position: absolute;
+      right: 5px;
+      top: 0;
+      bottom: 0;
+      transition: all 1s;
+      &:hover{
+        border: none;
+        transform: scale(1.2);
+        transition: all 1s;
+      }
+      i{
+        font-size: 25px;
+      }
+    }
+  }
+}
+.ToastAnimate{
+  animation: ToastFade 1s linear 0s 1 normal forwards;
+}
+.ToastTxt{
+  white-space: pre-line;
+}
+.text-shadow{
+  text-shadow: 1px 3px 5px rgba(0,0,0,0.5);
+}
+@keyframes ToastFade {
+  0%{
+    opacity: 0;
+    margin-left: -400px;
+  }
+  100%{
+    opacity: 1;
+    margin-left: 10px;
+  }
+}

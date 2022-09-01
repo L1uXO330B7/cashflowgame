@@ -1,0 +1,18 @@
+.navbar{
+  z-index: 1;
+  box-shadow: 1px 1px 15px rgba(0,0,0,0.5);
+  position: fixed;
+  top: 0;
+}
+.navbar-nav{
+  display: flex;
+  flex-direction: row;
+  .nav-link{
+    display: flex;
+    margin-left: 10px;
+    cursor: pointer;
+    i{
+      font-size: 24px;
+    }
+  }
+}

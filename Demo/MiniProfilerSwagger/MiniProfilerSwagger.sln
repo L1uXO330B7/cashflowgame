@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32526.322
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniProfilerSwagger", "MiniProfilerSwagger.csproj", "{07554C01-0F2B-465F-91E0-B73CA0B401DA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{07554C01-0F2B-465F-91E0-B73CA0B401DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07554C01-0F2B-465F-91E0-B73CA0B401DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07554C01-0F2B-465F-91E0-B73CA0B401DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07554C01-0F2B-465F-91E0-B73CA0B401DA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DA76121E-AB18-4A2C-9DCF-1B111A5D0105}
+	EndGlobalSection
+EndGlobal
