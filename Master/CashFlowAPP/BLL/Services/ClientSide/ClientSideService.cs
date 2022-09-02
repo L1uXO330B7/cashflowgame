@@ -188,6 +188,7 @@ namespace BLL.Services.ClientSide
 
             return Res;
         }
+
         public async Task<ApiResponse> ReadFiInfo(ApiRequest<int?> Req)
         {
             var Assets = _CashFlowDbContext.Assets
@@ -259,12 +260,13 @@ namespace BLL.Services.ClientSide
                 {
                     Max = 5;
                 }
+                var CompanysCategoryId = AssetAndCategory.Where(x => x.ParentId != 28).Select(x => x.Id).ToList();
                 var DrawCounts = _Random.Next(1, Max);
                 var AssetDices =
                      AssetAndCategory
                      .Where(c =>
                             c.AssetCategoryName != "公司行號" && // 初始化抽到老闆才能有公司
-                            c.ParentId != 28 && // 初始化抽到老闆才能有公司行號的子類別
+                            !CompanysCategoryId.Contains(c.AssetCategoryId) &&
                             c.Name != "房貸" // 有房子才有房貸，先排除
                      )
                      .Select(x => new RandomItem<int>
@@ -284,45 +286,105 @@ namespace BLL.Services.ClientSide
                     // 有房子才有房貸
                     if (YourAssets.ParentId == 17) // 房地產
                     {
+                        // https://www.796t.com/content/1549376313.html
+                        // 資產與利息需要對應才會有 Guid
+                        var GuidCode = System.Guid.NewGuid().ToString("N");
+
                         float ratio = _Random.Next(1, 8);
                         float MortgageRatio = ratio / 10; // 新成屋最高八成
                         var MortgageRatioAsset = GetAssetNewModel(AssetAndCategory.FirstOrDefault(x => x.Name == "房貸"));
                         MortgageRatioAsset.Value = ((decimal)YourAssets.Value) * ((decimal)MortgageRatio) * -1;
+                        MortgageRatioAsset.GuidCode = GuidCode;
                         AssetResult.Add(MortgageRatioAsset);
 
                         // 房貸利息
                         float Ratio = 0.15F;
-
                         var MortgageMonthRate = GetCashFlowNewModel(CashFlowAndCategory.FirstOrDefault(x => x.Name == "房貸利息"));
-                        MortgageMonthRate.Value = (MortgageRatioAsset.Value + (MortgageRatioAsset.Value * (decimal)Ratio)) / 360;
+                        MortgageMonthRate.Value = Math.Round((MortgageRatioAsset.Value + (MortgageRatioAsset.Value * (decimal)Ratio)) / 360);
+                        MortgageMonthRate.GuidCode = GuidCode;
                         CashFlowResult.Add(MortgageMonthRate);
                     }
 
                     // 車貸是隨機value
                     if (YourAssets.Id == 10) // 車貸車價8成
                     {
-                        var CarValue = Math.Round((YourJob.Value * -10 * 8 / 10), 0); // 車子價格大約是薪水*10
-                        YourAssets.Value = CarValue;
-                        //todo 車貸利息
+                        var GuidCode = System.Guid.NewGuid().ToString("N");
+                        var CarValue = Math.Round((YourJob.Value * 8), 0); // 車子價格大約是薪水*10
+                        var Ratio = _Random.Next((int)(YourJob.Value * 2), (int)CarValue);
+                        YourAssets.Value = (decimal)Ratio * -1;
+                        YourAssets.GuidCode = GuidCode;
+
+                        // 車貸利息 => (貸款總金額 + 貸款總利息) / 貸款總期數 = 每月月付金
+                        var CarInterest = GetCashFlowNewModel(CashFlowAndCategory.FirstOrDefault(c => c.Name == "車貸利息"));
+                        CarInterest.Value = Math.Round((((decimal)Ratio * 28 / 1000 / 12) + ((decimal)Ratio / 60)), 0) * -1; // 2.8% 除與五年
+                        CarInterest.GuidCode = GuidCode;
+                        CashFlowResult.Add(CarInterest);
                     }
 
                     // 定存
                     if (YourAssets.AssetCategoryId == 47)
                     {
+                        var GuidCode = System.Guid.NewGuid().ToString("N");
                         // 金融商品筆數
                         var InvestCount = AssetAndCategory.Where(x => x.ParentId == 46).ToList().Count;
                         // 定存價值=薪水*隨機數字*
                         var Disc = _Random.Next(1, InvestCount);
                         YourAssets.Value = (YourJob.Value - DailyExpenese.Value) * Disc;
+                        YourAssets.GuidCode = GuidCode;
 
                         var SavingInterest = GetCashFlowNewModel(CashFlowAndCategory.FirstOrDefault(c => c.Name == "定存利息"));
                         SavingInterest.Value = Math.Round(YourAssets.Value / 1200, 0);
+                        SavingInterest.GuidCode = GuidCode;
                         CashFlowResult.Add(SavingInterest);
                     }
 
-                    // todo:創業貸款
+                    // 基金
+                    if (YourAssets.AssetCategoryId == 48)
+                    {
+                        var GuidCode = System.Guid.NewGuid().ToString("N");
+                        // 金融商品筆數
+                        var InvestCount = AssetAndCategory.Where(x => x.ParentId == 46).ToList().Count;
+                        // 定存價值=薪水*隨機數字*
+                        var Dice = _Random.Next(1, InvestCount);
+                        YourAssets.Value = (YourJob.Value - DailyExpenese.Value) * Dice;
+                        YourAssets.GuidCode = GuidCode;
+                    }
 
-                    // todo:學貸
+                    // 學貸
+                    if (YourAssets.AssetCategoryId == 24)
+                    {
+                        var GuidCode = System.Guid.NewGuid().ToString("N");
+                        YourAssets.Value = _Random.Next(160000, 400000);
+                        YourAssets.GuidCode = GuidCode;
+                    }
+
+                    // 如果是老闆
+                    if (YourJob.Name == "老闆")
+                    {
+                        var GuidCode = System.Guid.NewGuid().ToString("N");
+
+                        var Companies = AssetAndCategory
+                            .Where(c =>
+                                   c.AssetCategoryName == "公司行號" || CompanysCategoryId.Contains(c.AssetCategoryId)
+                            )
+                            .Select(x => new RandomItem<int>
+                            {
+                                SampleObj = x.Id,
+                                Weight = (decimal)x.Weight
+                            })
+                            .ToList();
+
+                        var CompanyId = Method.RandomWithWeight(Companies);
+                        var Company = GetAssetNewModel(AssetAndCategory.FirstOrDefault(x => x.Id == CompanyId));
+                        Company.GuidCode = GuidCode;
+                        AssetResult.Add(Company);
+
+                        var CompanyCashFlow = GetCashFlowNewModel(CashFlowAndCategory.FirstOrDefault(c => c.Name == "公司紅利收入"));
+                        var Dice = _Random.Next(1, 10);
+                        CompanyCashFlow.Value = ((Company.Value / 3) / Dice) / 12; // 資產的 3 年除與 1-10 在除 12 月
+                        CompanyCashFlow.GuidCode = GuidCode;
+                        CashFlowResult.Add(CompanyCashFlow);
+                    }
 
                     AssetResult.Add(YourAssets);
                 }

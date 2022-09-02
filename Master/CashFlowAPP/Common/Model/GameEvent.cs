@@ -16,6 +16,7 @@ namespace Common.Model
         public string AssetCategoryName { get; set; }
         public int AssetCategoryId { get; set; }
         public int ParentId { get; set; }
+        public string GuidCode { get; set; }
     }
     public class CashFlowAndCategoryModel
     {
@@ -27,5 +28,6 @@ namespace Common.Model
         public string CashFlowCategoryName { get; set; }
         public int CashFlowCategoryId { get; set; }
         public int ParentId { get; set; }
+        public string GuidCode { get; set; }
     }
 }
