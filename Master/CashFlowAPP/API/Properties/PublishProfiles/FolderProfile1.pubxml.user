@@ -5,6 +5,6 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 <Project>
   <PropertyGroup>
     <_PublishTargetUrl>C:\wwwroot\API</_PublishTargetUrl>
-    <History>True|2022-09-01T10:05:37.8189970Z;True|2022-09-01T18:01:29.0783510+08:00;</History>
+    <History>True|2022-09-01T13:53:35.7291818Z;True|2022-09-01T21:53:06.6662711+08:00;True|2022-09-01T18:05:37.8189970+08:00;True|2022-09-01T18:01:29.0783510+08:00;</History>
   </PropertyGroup>
 </Project>
