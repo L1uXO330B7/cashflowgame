@@ -262,41 +262,38 @@ namespace BLL.Services.ClientSide
                 var DrawCounts = _Random.Next(1, Max);
                 var AssetDices =
                      AssetAndCategory
-                    .Where(c =>
-                           c.AssetCategoryName != "公司行號" && // 初始化抽到老闆才能有公司
-                           c.ParentId != 28 && // 初始化抽到老闆才能有公司行號的子類別
-                           c.Name != "房貸" // 有房子才有房貸，先排除
-                    )
-                    .Select(x => new RandomItem<int>
-                    {
+                     .Where(c =>
+                            c.AssetCategoryName != "公司行號" && // 初始化抽到老闆才能有公司
+                            c.ParentId != 28 && // 初始化抽到老闆才能有公司行號的子類別
+                            c.Name != "房貸" // 有房子才有房貸，先排除
+                     )
+                     .Select(x => new RandomItem<int>
+                     {
                         SampleObj = x.Id,
                         Weight = (decimal)x.Weight
-                    })
-                    .ToList();
+                     })
+                     .ToList();
 
                 // 先抽再根據抽到類別做特殊邏輯處理
                 // 可重複抽取
                 for (var i = 0; i < DrawCounts; i++)
                 {
                     var AssetFromDice = Method.RandomWithWeight(AssetDices);
-                    var YourAssets = AssetAndCategory.FirstOrDefault(a => a.Id == AssetFromDice);
-                    YourAssets = GetAssetNewModel(YourAssets);
+                    var YourAssets = GetAssetNewModel(AssetAndCategory.FirstOrDefault(a => a.Id == AssetFromDice));
 
                     // 有房子才有房貸
                     if (YourAssets.ParentId == 17) // 房地產
                     {
                         float ratio = _Random.Next(1, 8);
                         float MortgageRatio = ratio / 10; // 新成屋最高八成
-                        var MortgageRatioAsset = AssetAndCategory.FirstOrDefault(x => x.Name == "房貸");
-                        MortgageRatioAsset = GetAssetNewModel(MortgageRatioAsset);
+                        var MortgageRatioAsset = GetAssetNewModel(AssetAndCategory.FirstOrDefault(x => x.Name == "房貸"));
                         MortgageRatioAsset.Value = ((decimal)YourAssets.Value) * ((decimal)MortgageRatio) * -1;
                         AssetResult.Add(MortgageRatioAsset);
 
                         // 房貸利息
                         float Ratio = 0.15F;
 
-                        var MortgageMonthRate = CashFlowAndCategory.FirstOrDefault(x => x.Name == "房貸利息");
-                        MortgageMonthRate = GetCashFlowNewModel(MortgageMonthRate);
+                        var MortgageMonthRate = GetCashFlowNewModel(CashFlowAndCategory.FirstOrDefault(x => x.Name == "房貸利息"));
                         MortgageMonthRate.Value = (MortgageRatioAsset.Value + (MortgageRatioAsset.Value * (decimal)Ratio)) / 360;
                         CashFlowResult.Add(MortgageMonthRate);
                     }
@@ -316,8 +313,7 @@ namespace BLL.Services.ClientSide
                         // 定存價值=薪水*隨機數字*
                         YourAssets.Value = (YourJob.Value - DailyExpenese.Value) * (_Random.Next(1, InvestCount));
 
-                        var SavingInterest = CashFlowAndCategory.FirstOrDefault(c => c.Name == "定存利息");
-                        SavingInterest = GetCashFlowNewModel(SavingInterest);
+                        var SavingInterest = GetCashFlowNewModel(CashFlowAndCategory.FirstOrDefault(c => c.Name == "定存利息"));
                         SavingInterest.Value = Math.Round(YourAssets.Value / 1200, 0);
                         CashFlowResult.Add(SavingInterest);
 
