@@ -5,9 +5,7 @@ using Common.Model;
 using Common.Model.AdminSide;
 using DPL.EF;
 using System.Text;
-using static Common.Model.ClientSideModel;
 using Microsoft.EntityFrameworkCore;
-using static Common.Model.GameEvent;
 
 namespace BLL.Services.ClientSide
 {
@@ -29,7 +27,10 @@ namespace BLL.Services.ClientSide
             // 獲取驗證碼
             var ValidateCode = Method.CreateValidateCode(4);
             // JWT 加密
-            var JwtCode = Jose.JWT.Encode(ValidateCode, Encoding.UTF8.GetBytes("錢董"), Jose.JwsAlgorithm.HS256);
+            var JwtCode = Jose.JWT.Encode(
+                    ValidateCode, Encoding.UTF8.GetBytes("錢董"),
+                    Jose.JwsAlgorithm.HS256
+                );
             var Res = new ApiResponse();
             Res.Success = true;
             Res.Code = (int)ResponseStatusCode.Success;
@@ -238,16 +239,15 @@ namespace BLL.Services.ClientSide
                      {
                          SampleObj = x.Id,
                          Weight = (decimal)x.Weight
-                         // x.Value == 0 ? 1 / 300000 : (1 / x.Value) // 降低老闆的機率 value = 0 
                      })
-                     // value = 0 ，執行左邊也就是老闆
                      .ToList();
                 var Job = Method.RandomWithWeight(Jobs);
                 var YourJob = CashFlowAndCategory.FirstOrDefault(c => c.Id == Job);
                 CashFlowResult.Add(YourJob);
 
                 // 生活花費
-                var _Random = new Random(Guid.NewGuid().GetHashCode()); // 讓隨機機率離散
+                // var _Random = new Random(Guid.NewGuid().GetHashCode()); // 讓隨機機率離散
+                var _Random = StaticRandom();
                 var DailyExpenese = CashFlowAndCategory
                     .FirstOrDefault(c => c.CashFlowCategoryName == "生活花費");
                 DailyExpenese.Value = DailyExpenese.Value * _Random.Next(1, 5);
@@ -269,8 +269,8 @@ namespace BLL.Services.ClientSide
                      )
                      .Select(x => new RandomItem<int>
                      {
-                        SampleObj = x.Id,
-                        Weight = (decimal)x.Weight
+                         SampleObj = x.Id,
+                         Weight = (decimal)x.Weight
                      })
                      .ToList();
 
@@ -305,20 +305,23 @@ namespace BLL.Services.ClientSide
                         YourAssets.Value = CarValue;
                         //todo 車貸利息
                     }
+
                     // 定存
                     if (YourAssets.AssetCategoryId == 47)
                     {
                         // 金融商品筆數
                         var InvestCount = AssetAndCategory.Where(x => x.ParentId == 46).ToList().Count;
                         // 定存價值=薪水*隨機數字*
-                        YourAssets.Value = (YourJob.Value - DailyExpenese.Value) * (_Random.Next(1, InvestCount));
+                        var Disc = _Random.Next(1, InvestCount);
+                        YourAssets.Value = (YourJob.Value - DailyExpenese.Value) * Disc;
 
                         var SavingInterest = GetCashFlowNewModel(CashFlowAndCategory.FirstOrDefault(c => c.Name == "定存利息"));
                         SavingInterest.Value = Math.Round(YourAssets.Value / 1200, 0);
                         CashFlowResult.Add(SavingInterest);
-
                     }
+
                     // todo:創業貸款
+
                     // todo:學貸
 
                     AssetResult.Add(YourAssets);
@@ -341,6 +344,15 @@ namespace BLL.Services.ClientSide
 
             Res.Data = new { CashFlowResult, AssetResult };
             return Res;
+        }
+
+        /// <summary>
+        /// https://stackoverflow.com/questions/1654887/random-next-returns-always-the-same-values
+        /// </summary>
+        /// <returns></returns>
+        private static Random StaticRandom()
+        {
+            return new Random(Guid.NewGuid().GetHashCode());
         }
 
         private CashFlowAndCategoryModel GetCashFlowNewModel(CashFlowAndCategoryModel Data)

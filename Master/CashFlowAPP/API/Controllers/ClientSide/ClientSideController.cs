@@ -3,7 +3,6 @@ using Common.Model;
 using Common.Model.AdminSide;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
-using static Common.Model.ClientSideModel;
 
 namespace API.Controllers.ClientSide
 {

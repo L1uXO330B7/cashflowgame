@@ -1,12 +1,8 @@
-﻿using API.Filter;
-using BLL.IServices;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using BLL.IServices;
+using Common.Model;
 using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
-using System.Linq;
 using System.Text;
-using static Common.Model.ClientSideModel;
 
 namespace API.Hubs
 {
@@ -15,7 +11,6 @@ namespace API.Hubs
     /// </summary>
     public class ChatHub : Hub
     {
-
         private IClientHubService _ClientHubService;
         /// <summary>
         /// 建構子
