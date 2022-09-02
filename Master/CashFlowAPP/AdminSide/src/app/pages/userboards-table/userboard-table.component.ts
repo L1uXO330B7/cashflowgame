@@ -110,6 +110,7 @@ export class UserBoardsTableComponent extends BaseComponent implements OnInit {
             for (const key in data) {
               if (data[key].toString().match(filterValue)) {
                 Check = true;
+                console.log(filterValue);
               }
             }
 
