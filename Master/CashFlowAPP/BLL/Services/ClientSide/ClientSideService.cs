@@ -232,6 +232,8 @@ namespace BLL.Services.ClientSide
 
             if (Req.Args == null)
             {
+                var _Random = StaticRandom();
+
                 // 先抽職業
                 var Jobs =
                       CashFlowAndCategory
@@ -246,9 +248,38 @@ namespace BLL.Services.ClientSide
                 var YourJob = CashFlowAndCategory.FirstOrDefault(c => c.Id == Job);
                 CashFlowResult.Add(YourJob);
 
+                // 如果是老闆
+                var CompanysCategoryId = AssetCategories.Where(x => x.ParentId == 28).Select(x => x.Id).ToList();
+                if (YourJob.Name == "老闆")
+                {
+                    var GuidCode = System.Guid.NewGuid().ToString("N");
+
+                    var Companies = AssetAndCategory
+                        .Where(c =>
+                               c.AssetCategoryName == "公司行號" || CompanysCategoryId.Contains(c.AssetCategoryId)
+                        )
+                        .Select(x => new RandomItem<int>
+                        {
+                            SampleObj = x.Id,
+                            Weight = (decimal)x.Weight
+                        })
+                        .ToList();
+
+                    var CompanyId = Method.RandomWithWeight(Companies);
+                    var Company = GetAssetNewModel(AssetAndCategory.FirstOrDefault(x => x.Id == CompanyId));
+                    Company.GuidCode = GuidCode;
+                    AssetResult.Add(Company);
+
+                    var CompanyCashFlow = GetCashFlowNewModel(CashFlowAndCategory.FirstOrDefault(c => c.Name == "公司紅利收入"));
+                    var Dice = _Random.Next(1, 10);
+                    CompanyCashFlow.Value = Math.Round(((Company.Value / 3) / Dice) / 12, 0); // 資產的 3 年除與 1-10 在除 12 月
+                    CompanyCashFlow.GuidCode = GuidCode;
+                    CashFlowResult.Add(CompanyCashFlow);
+                }
+
                 // 生活花費
                 // var _Random = new Random(Guid.NewGuid().GetHashCode()); // 讓隨機機率離散
-                var _Random = StaticRandom();
+                
                 var DailyExpenese = CashFlowAndCategory
                     .FirstOrDefault(c => c.CashFlowCategoryName == "生活花費");
                 DailyExpenese.Value = DailyExpenese.Value * _Random.Next(1, 5);
@@ -260,7 +291,7 @@ namespace BLL.Services.ClientSide
                 {
                     Max = 5;
                 }
-                var CompanysCategoryId = AssetAndCategory.Where(x => x.ParentId != 28).Select(x => x.Id).ToList();
+                
                 var DrawCounts = _Random.Next(1, Max);
                 var AssetDices =
                      AssetAndCategory
@@ -356,34 +387,6 @@ namespace BLL.Services.ClientSide
                         var GuidCode = System.Guid.NewGuid().ToString("N");
                         YourAssets.Value = _Random.Next(160000, 400000);
                         YourAssets.GuidCode = GuidCode;
-                    }
-
-                    // 如果是老闆
-                    if (YourJob.Name == "老闆")
-                    {
-                        var GuidCode = System.Guid.NewGuid().ToString("N");
-
-                        var Companies = AssetAndCategory
-                            .Where(c =>
-                                   c.AssetCategoryName == "公司行號" || CompanysCategoryId.Contains(c.AssetCategoryId)
-                            )
-                            .Select(x => new RandomItem<int>
-                            {
-                                SampleObj = x.Id,
-                                Weight = (decimal)x.Weight
-                            })
-                            .ToList();
-
-                        var CompanyId = Method.RandomWithWeight(Companies);
-                        var Company = GetAssetNewModel(AssetAndCategory.FirstOrDefault(x => x.Id == CompanyId));
-                        Company.GuidCode = GuidCode;
-                        AssetResult.Add(Company);
-
-                        var CompanyCashFlow = GetCashFlowNewModel(CashFlowAndCategory.FirstOrDefault(c => c.Name == "公司紅利收入"));
-                        var Dice = _Random.Next(1, 10);
-                        CompanyCashFlow.Value = ((Company.Value / 3) / Dice) / 12; // 資產的 3 年除與 1-10 在除 12 月
-                        CompanyCashFlow.GuidCode = GuidCode;
-                        CashFlowResult.Add(CompanyCashFlow);
                     }
 
                     AssetResult.Add(YourAssets);
