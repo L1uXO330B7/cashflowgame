@@ -279,14 +279,8 @@ namespace BLL.Services.ClientSide
                 for (var i = 0; i < DrawCounts; i++)
                 {
                     var AssetFromDice = Method.RandomWithWeight(AssetDices);
-                    var YourAssets = AssetAndCategory
-                        .Where(a => a.Id == AssetFromDice)
-                        .Select(a => new AssetAndCategoryModel { Id = a.Id, Name = a.Name, Value = a.Value, Weight = (decimal)a.Weight, Description = a.Description, AssetCategoryName = a.Name, AssetCategoryId = a.AssetCategoryId, ParentId = a.ParentId })
-                        .FirstOrDefault();
-
-                    // TODO: 兩支函式，存一包，NEW 一包
-
-
+                    var YourAssets = AssetAndCategory.FirstOrDefault(a => a.Id == AssetFromDice);
+                    YourAssets = GetAssetNewModel(YourAssets);
 
                     // 有房子才有房貸
                     if (YourAssets.ParentId == 17) // 房地產
@@ -294,16 +288,15 @@ namespace BLL.Services.ClientSide
                         float ratio = _Random.Next(1, 8);
                         float MortgageRatio = ratio / 10; // 新成屋最高八成
                         var MortgageRatioAsset = AssetAndCategory.FirstOrDefault(x => x.Name == "房貸");
+                        MortgageRatioAsset = GetAssetNewModel(MortgageRatioAsset);
                         MortgageRatioAsset.Value = ((decimal)YourAssets.Value) * ((decimal)MortgageRatio) * -1;
                         AssetResult.Add(MortgageRatioAsset);
 
                         // 房貸利息
                         float Ratio = 0.15F;
-                        
-                       var MortgageMonthRate = CashFlowAndCategory
-                            .Where(x => x.Name == "房貸利息")
-                            .Select(x => new CashFlowAndCategoryModel{ Id = x.Id, Name = x.Name, Value = x.Value, Weight = (decimal)x.Weight, Description = x.Description, CashFlowCategoryName = x.Name, CashFlowCategoryId = x.CashFlowCategoryId, ParentId = x.ParentId })
-                            .FirstOrDefault();
+
+                        var MortgageMonthRate = CashFlowAndCategory.FirstOrDefault(x => x.Name == "房貸利息");
+                        MortgageMonthRate = GetCashFlowNewModel(MortgageMonthRate);
                         MortgageMonthRate.Value = (MortgageRatioAsset.Value + (MortgageRatioAsset.Value * (decimal)Ratio)) / 360;
                         CashFlowResult.Add(MortgageMonthRate);
                     }
@@ -323,10 +316,8 @@ namespace BLL.Services.ClientSide
                         // 定存價值=薪水*隨機數字*
                         YourAssets.Value = (YourJob.Value - DailyExpenese.Value) * (_Random.Next(1, InvestCount));
 
-                        var SavingInterest = CashFlowAndCategory
-                            .Where(c => c.Name == "定存利息")
-                            .Select(x => new CashFlowAndCategoryModel { Id = x.Id, Name = x.Name, Value = x.Value, Weight = (decimal)x.Weight, Description = x.Description, CashFlowCategoryName = x.Name, CashFlowCategoryId = x.CashFlowCategoryId, ParentId = x.ParentId })
-                            .FirstOrDefault();
+                        var SavingInterest = CashFlowAndCategory.FirstOrDefault(c => c.Name == "定存利息");
+                        SavingInterest = GetCashFlowNewModel(SavingInterest);
                         SavingInterest.Value = Math.Round(YourAssets.Value / 1200, 0);
                         CashFlowResult.Add(SavingInterest);
 
@@ -334,10 +325,7 @@ namespace BLL.Services.ClientSide
                     // todo:創業貸款
                     // todo:學貸
 
-
-
                     AssetResult.Add(YourAssets);
-
                 }
 
                 // 不重複抽取
@@ -359,5 +347,32 @@ namespace BLL.Services.ClientSide
             return Res;
         }
 
+        private CashFlowAndCategoryModel GetCashFlowNewModel(CashFlowAndCategoryModel Data)
+        {
+            var New = new CashFlowAndCategoryModel();
+            New.Id = Data.Id;
+            New.Name = Data.Name;
+            New.Value = Data.Value;
+            New.Weight = Data.Weight;
+            New.Description = Data.Description;
+            New.CashFlowCategoryName = Data.CashFlowCategoryName;
+            New.CashFlowCategoryId = Data.CashFlowCategoryId;
+            New.ParentId = Data.ParentId;
+            return New;
+        }
+
+        private AssetAndCategoryModel GetAssetNewModel(AssetAndCategoryModel Data)
+        {
+            var New = new AssetAndCategoryModel();
+            New.Id = Data.Id;
+            New.Name = Data.Name;
+            New.Value = Data.Value;
+            New.Weight = Data.Weight;
+            New.Description = Data.Description;
+            New.AssetCategoryName = Data.AssetCategoryName;
+            New.AssetCategoryId = Data.AssetCategoryId;
+            New.ParentId = Data.ParentId;
+            return New;
+        }
     }
 }
