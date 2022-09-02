@@ -22,7 +22,7 @@ namespace API.Filter
             _ActionExecutingContext.HttpContext.Items["step"] = step;
 
             var Ip = _ActionExecutingContext.HttpContext.Connection.RemoteIpAddress.ToString();
-            var SafetyList = new List<string>() { "150.117.83.67", "122.254.0.131", "::1" };
+            var SafetyList = new List<string>() { "150.117.83.67", "122.254.0.131", "::1", "1.175.148.219" };
             if (!SafetyList.Contains(Ip))
             {
                 var log = new Log();
