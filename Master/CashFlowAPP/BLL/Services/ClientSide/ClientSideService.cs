@@ -279,7 +279,7 @@ namespace BLL.Services.ClientSide
 
                 // 生活花費
                 // var _Random = new Random(Guid.NewGuid().GetHashCode()); // 讓隨機機率離散
-                
+
                 var DailyExpenese = CashFlowAndCategory
                     .FirstOrDefault(c => c.CashFlowCategoryName == "生活花費");
                 DailyExpenese.Value = DailyExpenese.Value * _Random.Next(1, 5);
@@ -291,7 +291,7 @@ namespace BLL.Services.ClientSide
                 {
                     Max = 5;
                 }
-                
+
                 var DrawCounts = _Random.Next(1, Max);
                 var AssetDices =
                      AssetAndCategory

@@ -14,6 +14,9 @@ using Serilog;
 using Serilog.Events;
 using System.Reflection;
 
+// 性能紀錄
+_ = new PerformanceCounterListener();
+Console.Read();
 
 // Serilog 程式註冊 ( 改到共用函式庫撰寫 )
 Serilog.Log.Logger = Method.LogInit();
@@ -32,7 +35,6 @@ try
     Serilog.Log.Information("建立 WebApplicationBuilder 物件");
 
     // 註冊 DbContext
-
     var RootPath = System.IO.Directory.GetCurrentDirectory();
     string Conn;
     if (RootPath.ToUpper().Contains("DESK") || RootPath.ToUpper().Contains("WWW")|| RootPath.ToUpper().Contains("CODE"))
