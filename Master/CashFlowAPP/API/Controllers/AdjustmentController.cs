@@ -2,6 +2,7 @@
 using Common.Model;
 using DPL.EF;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace API.Controllers
 {
@@ -13,6 +14,9 @@ namespace API.Controllers
     public class AdjustmentController : Controller
     {
         private IClientSideService _ClientSideService;
+
+
+
         public AdjustmentController(IClientSideService ClientSideService)
         {
             _ClientSideService = ClientSideService;
@@ -21,7 +25,9 @@ namespace API.Controllers
         [HttpPost]
         public async Task<ApiResponse> ReadFiInfo([FromBody] ApiRequest<int?> Req)
         {
+
             Req.Args = null;
+
             return await _ClientSideService.ReadFiInfo(Req);
         }
     }

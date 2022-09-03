@@ -2,6 +2,7 @@
 using Common.Model;
 using Common.Model.AdminSide;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using System.Net;
 
 namespace API.Controllers.ClientSide
@@ -10,12 +11,16 @@ namespace API.Controllers.ClientSide
     public class ClientSideController : Controller
     {
         private IClientSideService _ClientSideService;
+
+        // 注入快取記憶體套件
+        private readonly IMemoryCache _MemoryCache;
         public static SmtpConfig _SmtpConfig = new SmtpConfig();
 
         public ClientSideController(
 
           IClientSideService ClientSideService,
-          IConfiguration Configuration
+          IConfiguration Configuration,
+          IMemoryCache memoryCache
         )
         {
             _ClientSideService = ClientSideService;
@@ -26,6 +31,8 @@ namespace API.Controllers.ClientSide
             //_SmtpConfig.Account = Configuration["SMTP:Account"];
             //_SmtpConfig.Password = Configuration["SMTP:Password"];
             //_SmtpConfig.SenderEmail = Configuration["SMTP:SenderEmail"];
+            _MemoryCache = memoryCache;
+
         }
 
         /// <summary>
@@ -80,11 +87,32 @@ namespace API.Controllers.ClientSide
         /// <param name="Req"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<ApiResponse> ReadFiInfo([FromBody]ApiRequest<int?> Req)
+        public async Task<ApiResponse> ReadFiInfo([FromBody] ApiRequest<int?> Req)
         {
-            return await _ClientSideService.ReadFiInfo(Req);
-        }
+            var Res = new ApiResponse();
+            
+            if (Req.Args != null)
+            {
+                
+                var UserFiInfo = _MemoryCache.GetOrCreate(Req.Args, async (not) => {
+                    Res = await _ClientSideService.ReadFiInfo(Req);
+                    _MemoryCache.Set(
+                    Req.Args, Res.Data,
+                        new MemoryCacheEntryOptions()
+                       .SetPriority(CacheItemPriority.NeverRemove));
+                    return Res.Data;
+                });
+                // Todo: Cache count
 
+                Res.Data = UserFiInfo;
+            }
+            else
+            {
+                Res = await _ClientSideService.ReadFiInfo(Req);
+            }
+            return Res;
+        }
+        // Todo remove cache
         #endregion
     }
 }

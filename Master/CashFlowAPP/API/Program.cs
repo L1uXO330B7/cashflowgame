@@ -15,8 +15,8 @@ using Serilog.Events;
 using System.Reflection;
 
 // 性能紀錄
-_ = new PerformanceCounterListener();
-Console.Read();
+//_ = new PerformanceCounterListener();
+//Console.Read();
 
 // Serilog 程式註冊 ( 改到共用函式庫撰寫 )
 Serilog.Log.Logger = Method.LogInit();
@@ -45,11 +45,16 @@ try
     {
         Conn = "LocalMDF";
     }
-
-    
     builder.Services.AddDbContext<CashFlowDbContext>(options =>
            options.UseSqlServer(builder.Configuration.GetConnectionString(Conn)));
-    
+
+
+    // 加入 MemoryCache
+ 
+    builder.Services.AddMemoryCache();
+
+
+
     // 加入 SignalR
     builder.Services.AddSignalR();
 

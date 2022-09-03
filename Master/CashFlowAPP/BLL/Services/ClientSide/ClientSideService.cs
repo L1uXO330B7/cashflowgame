@@ -11,7 +11,10 @@ namespace BLL.Services.ClientSide
 {
     public class ClientSideService : IClientSideService
     {
+        // db
         private readonly CashFlowDbContext _CashFlowDbContext;
+
+
 
         public ClientSideService(CashFlowDbContext cashFlowDbContext)
         {
@@ -191,6 +194,8 @@ namespace BLL.Services.ClientSide
 
         public async Task<ApiResponse> ReadFiInfo(ApiRequest<int?> Req)
         {
+
+            
             var Assets = _CashFlowDbContext.Assets
                 .Where(x => x.Status == (int)StatusCode.Enable)
                 .AsNoTracking()
@@ -230,7 +235,7 @@ namespace BLL.Services.ClientSide
             var CashFlowResult = new List<dynamic>();
             var AssetResult = new List<dynamic>();
 
-            if (Req.Args == null)
+            // if (Req.Args == null) TODO: UserId問卷會影響初始值
             {
                 var _Random = StaticRandom();
 
