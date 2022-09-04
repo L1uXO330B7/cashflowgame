@@ -36,7 +36,6 @@ export class HomePageComponent implements OnInit {
 
     this._SharedService.SharedData.subscribe((Res)=>{
       this.UserData = Res;
-      console.log(this.UserData,"a");
     })
     if (this.UserId!=""&&this.UserId!=null){
 
