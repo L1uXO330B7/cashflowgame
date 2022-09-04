@@ -413,6 +413,8 @@ namespace BLL.Services.ClientSide
             }
 
             Res.Data = new { CashFlowResult, AssetResult };
+            Res.Success = true;
+            Res.Code = (int)ResponseStatusCode.Success;
             return Res;
         }
 

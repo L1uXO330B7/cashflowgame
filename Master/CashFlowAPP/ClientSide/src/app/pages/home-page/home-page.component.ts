@@ -31,35 +31,22 @@ export class HomePageComponent implements OnInit {
 
   UserId = localStorage.getItem("UserId");
   UserData:any;
-  UserDataName:string|any;
-  ReadUserArg(){
-    if(this.UserId!=null&&this.UserId!=""){
-      this.IsLogin = true;
-      let Req = new ApiRequest<any>();
-      let listInt = [this.UserId];
-      let Arg =
-      {
-        "Key": "Id",
-        "JsonString": JSON.stringify(listInt)
-      };
-      Req.Args = [Arg];
-      Req.PageIndex = 1;
-      Req.PageSize = 15;
-      this._ApiService.GetUserData(Req).subscribe((Res) => {
-        console.log(Res);
-        if (Res.Success) {
-        this.UserData = Res.Data.Users[0];
-        this.UserDataName = this.UserData.Name;
-        this._SharedService.SetShareData(this.UserData);
-        console.log(this.UserData);
-        }
-      });
+
+  LoginToUserInfo(){
+
+    this._SharedService.SharedData.subscribe((Res)=>{
+      this.UserData = Res;
+      console.log(this.UserData,"a");
+    })
+    if (this.UserId!=""&&this.UserId!=null){
+
+      this.IsLogin=true;
     }
   }
 
   IsLogin=false;
   ngOnInit(): void {
-    this.ReadUserArg();
+    this.LoginToUserInfo();
     // setTimeout(() => this.TypeWriter(), 1000);
   }
 //   ngAfterViewInit(): void{}

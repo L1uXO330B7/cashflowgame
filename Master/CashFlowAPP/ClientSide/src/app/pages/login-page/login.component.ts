@@ -94,6 +94,7 @@ export class LoginComponent implements OnInit {
 
         localStorage.setItem('Token', Res.Data.JwtCode);
         localStorage.setItem('UserId', Res.Data.UserId);
+        localStorage.removeItem('StrangerName');
         this._Router.navigate(['/', 'survey']);
       }
     });

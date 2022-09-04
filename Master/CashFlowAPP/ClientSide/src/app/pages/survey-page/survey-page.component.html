@@ -3,7 +3,7 @@
 <div class="container-fluid MainWrap">
 
   <div class="QuestionsLetter">
-    <button class="btn btn-lg btn-outline-primary mb-3" (click)="open(content)">問卷說明</button>
+    <button class="btn btn-lg btn-info mb-3" (click)="open(content)">問卷說明</button>
     <ol>
       <li *ngFor="let item of QuestionList" class="mt-2">
         <h5>{{item.Name}}</h5>
@@ -21,7 +21,7 @@
 
       </li>
     </ol>
-    <button class="btn btn-lg btn-outline-primary mb-3" (click)="BeautifyData()">提交</button>
+    <button class="btn btn-lg btn-secondary mb-3" (click)="BeautifyData()">提交</button>
   </div>
 </div>
 

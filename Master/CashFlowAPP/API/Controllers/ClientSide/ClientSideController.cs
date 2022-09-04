@@ -1,4 +1,5 @@
 ﻿using BLL.IServices;
+using Common.Enum;
 using Common.Model;
 using Common.Model.AdminSide;
 using Microsoft.AspNetCore.Mvc;
@@ -103,7 +104,8 @@ namespace API.Controllers.ClientSide
                     return Res.Data;
                 });
                 // Todo: Cache count
-
+                Res.Success = true;
+                Res.Code = (int)ResponseStatusCode.Success;
                 Res.Data = UserFiInfo;
             }
             else

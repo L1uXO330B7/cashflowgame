@@ -1,7 +1,9 @@
+import { ApiService } from 'src/app/service/api.service';
 import { Router } from '@angular/router';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { SharedService } from 'src/app/service/shared.service';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ApiRequest } from 'src/app/models/ApiRequest';
 
 @Component({
   selector: 'app-navbar',
@@ -10,25 +12,42 @@ import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor(public _SharedService:SharedService,public _Router:Router,private modalService: NgbModal,){ }
+  constructor(public _SharedService:SharedService,public _Router:Router,private modalService: NgbModal,private _ApiService:ApiService){ }
 
   ngOnInit(): void {
-    this.LoginToUserInfo();
+    this.ReadUserArg();
   }
   IsLogin:boolean=false;
-  UserData:any;
-  LoginToUserInfo(){
-    let UserId = localStorage.getItem('UserId');
-    console.log(UserId);
-    this._SharedService.SharedData.subscribe((Res)=>{
-      this.UserData = Res;
-      console.log(this.UserData,"a");
-    })
-    if (UserId!=""&&UserId!=null){
 
-      this.IsLogin=true;
+
+  UserId = localStorage.getItem("UserId");
+  UserData:any;
+  UserDataName:string|any;
+  ReadUserArg(){
+    if(this.UserId!=null&&this.UserId!=""){
+      this.IsLogin = true;
+      let Req = new ApiRequest<any>();
+      let listInt = [this.UserId];
+      let Arg =
+      {
+        "Key": "Id",
+        "JsonString": JSON.stringify(listInt)
+      };
+      Req.Args = [Arg];
+      Req.PageIndex = 1;
+      Req.PageSize = 15;
+      this._ApiService.GetUserData(Req).subscribe((Res) => {
+        console.log(Res);
+        if (Res.Success) {
+        this.UserData = Res.Data.Users[0];
+        this.UserDataName = this.UserData.Name;
+        this._SharedService.SetShareData(this.UserData);
+        console.log(this.UserData);
+        }
+      });
     }
   }
+
   UserLogOut(){
     localStorage.removeItem("UserId");
     localStorage.removeItem("Token");

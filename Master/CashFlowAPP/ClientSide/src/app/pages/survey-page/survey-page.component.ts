@@ -114,13 +114,11 @@ export class SurveyPageComponent implements OnInit {
     let UserAnswerArgs: any = [];
     let required = true;
     let UserId = localStorage.getItem("UserId");
-    console.log(this.QuestionList, "list");
     this.QuestionList.forEach((question: any) => {
       let UserAnswerArg = new AnswerQuestion();
       UserAnswerArg.UserId = UserId;
       UserAnswerArg.Answer = question.UserAnswer.join(',');
-      console.log(question.UserAnswer.length,"lenghth");
-      console.log(question.UserAnswer,"useranswer");
+
       if(question.UserAnswer.length<=0){
         required = false;
       }

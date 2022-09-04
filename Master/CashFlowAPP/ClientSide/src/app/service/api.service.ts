@@ -41,4 +41,8 @@ export class ApiService {
     let Url = `${this._ApiUrl}/Users/Read`;
     return this._HttpClient.post<ApiResponse>(Url, Req, this._HttpOptions);
   }
+  GetFiInfo(Req:any){
+    let Url = `${this._ApiUrl}/ClientSide/ReadFiInfo`;
+    return this._HttpClient.post<ApiResponse>(Url, Req, this._HttpOptions);
+  }
 }
