@@ -47,55 +47,28 @@
           <div class="IcomeExpense mt-2">
             <h5 class="text-center py-2 m-0">收入項目</h5>
             <ul class="IncomeList">
-              <li *ngFor="let item of UserFiInfo.Assets">
+              <li *ngFor="let item of UserFiInfo.CashFlowIncome">
                 <p>{{item.Name}} :</p><span>{{item.Value}}</span>
               </li>
             </ul>
             <h5 class="text-center my-2">支出項目</h5>
             <ul class="ExpenseList">
-              <li>
-                <p>國小老師薪水 :</p><span>NT$ 777</span>
-              </li>
-              <li>
-                <p>國小老師薪水 :</p><span>NT$ 777</span>
-              </li>
-              <li>
-                <p>國小老師薪水 :</p><span>NT$ 777</span>
-              </li>
-              <li>
-                <p>國小老師薪水 :</p><span>NT$ 777</span>
+              <li *ngFor="let item of UserFiInfo.CashFlowExpense">
+                <p>{{item.Name}} :</p><span>{{item.Value}}</span>
               </li>
             </ul>
           </div>
           <div class="IcomeExpense mt-2">
             <h5 class="text-center py-2 m-0">資產項目</h5>
             <ul class="IncomeList">
-              <li>
-                <p>國小老師薪水 :</p><span>NT$ 777</span>
-              </li>
-              <li>
-                <p>國小老師薪水 :</p><span>NT$ 777</span>
-              </li>
-              <li>
-                <p>國小老師薪水 :</p><span>NT$ 777</span>
-              </li>
-              <li>
-                <p>國小老師薪水 :</p><span>NT$ 777</span>
+              <li *ngFor="let item of UserFiInfo.Asset">
+                <p>{{item.Name}} :</p><span>{{item.Value}}</span>
               </li>
             </ul>
             <h5 class="text-center my-2">負債項目</h5>
             <ul class="ExpenseList">
-              <li>
-                <p>國小老師薪水 :</p><span>NT$ 777</span>
-              </li>
-              <li>
-                <p>國小老師薪水 :</p><span>NT$ 777</span>
-              </li>
-              <li>
-                <p>國小老師薪水 :</p><span>NT$ 777</span>
-              </li>
-              <li>
-                <p>國小老師薪水 :</p><span>NT$ 777</span>
+              <li *ngFor="let item of UserFiInfo.Liabilities">
+                <p>{{item.Name}} :</p><span>{{item.Value}}</span>
               </li>
             </ul>
           </div>

@@ -18,9 +18,8 @@ export class GamePageComponent implements OnInit {
     public _HttpClient: HttpClient,
     private _Router: Router,
     public _ApiService: ApiService,
-    public _ToastService : GlobalToastService,
-    private _SharedService:SharedService)
-    {
+    public _ToastService: GlobalToastService,
+    private _SharedService: SharedService) {
 
   }
 
@@ -41,36 +40,33 @@ export class GamePageComponent implements OnInit {
 
   OpenCard: boolean = true;
   ToggleCard() {
-    console.log("clickCard",this.OpenCard)
+    console.log("clickCard", this.OpenCard)
     this.OpenCard = !this.OpenCard;
   }
-  IsLogin:boolean=false;
-  UserData:any;
-  UserName:any;
+  IsLogin: boolean = false;
+  UserData: any;
+  UserName: any;
   UserId = localStorage.getItem('UserId');
-  LoginToUserInfo(){
-    this._SharedService.SharedData.subscribe((Res)=>{
+  LoginToUserInfo() {
+    this._SharedService.SharedData.subscribe((Res) => {
       this.UserData = Res;;
-      console.log(this.UserData,"a");
+      console.log(this.UserData, "a");
     })
-    if (this.UserId!=""&&this.UserId!=null){
+    if (this.UserId != "" && this.UserId != null) {
 
-      this.IsLogin=true;
+      this.IsLogin = true;
     }
   }
-  UserFiInfo:any={
-    Assets:{},
-    CashFlows:{}
-  }
+  UserFiInfo: any = {}
 
-  GetFiInfo(){
+  GetFiInfo() {
     let Req = new ApiRequest<any>();
     Req.Args = this.UserId;
     this._ApiService.GetFiInfo(Req).subscribe((Res) => {
-      if(Res.Success){
-        [this.UserFiInfo.Assets,this.UserFiInfo.CashFlows]=
-        [Res.Data.Result.AssetResult,Res.Data.Result.CashFlowResult];
-        console.log(this.UserFiInfo);
+      if (Res.Success) {
+        this.UserFiInfo = Res.Data.Result;
+
+        console.log(this.UserFiInfo, "Res");
       }
     });
   }

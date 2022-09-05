@@ -17,6 +17,7 @@ import { SurveyPageComponent } from './pages/survey-page/survey-page.component';
 import { LoadingComponent } from './components/loading/loading.component';
 import { HamsterWheelComponent } from './components/hamster-wheel/hamster-wheel.component';
 import { CardComponent } from './components/card/card.component';
+import { SamplePageComponent } from './pages/sample-page/sample-page.component';
 
 
 
@@ -33,7 +34,8 @@ import { CardComponent } from './components/card/card.component';
     SurveyPageComponent,
     LoadingComponent,
     HamsterWheelComponent,
-    CardComponent
+    CardComponent,
+    SamplePageComponent
   ],
   imports: [
     BrowserModule,

@@ -9,13 +9,13 @@ namespace API.Hubs
     /// <summary>
     /// 實作 WebSocket through SignalR ( 這裡應該只實作 Hub Like Controller 業務邏輯請交給 Service )
     /// </summary>
-    public class ChatHub : Hub
+    public class Hubs : Hub
     {
         private IClientHubService _ClientHubService;
         /// <summary>
         /// 建構子
         /// </summary>
-        public ChatHub(IClientHubService ClientHubService)
+        public Hubs(IClientHubService ClientHubService)
         {
             _ClientHubService = ClientHubService;
         }

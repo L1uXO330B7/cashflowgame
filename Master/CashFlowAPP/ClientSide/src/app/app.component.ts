@@ -35,12 +35,10 @@ export class AppComponent implements OnInit{
       Req.PageIndex = 1;
       Req.PageSize = 15;
       this._ApiService.GetUserData(Req).subscribe((Res) => {
-        console.log(Res);
         if (Res.Success) {
         this.UserData = Res.Data.Users[0];
         this.UserDataName = this.UserData.Name;
         this._SharedService.SetShareData(this.UserData);
-        console.log(this.UserData);
         }
       });
     }

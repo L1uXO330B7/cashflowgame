@@ -411,8 +411,19 @@ namespace BLL.Services.ClientSide
                 //    }
                 //}
             }
+            var CashFlowIncome = new List<dynamic>();
+            var CashFlowExpense = new List<dynamic>();
+            var Asset = new List<dynamic>();
+            var Liabilities = new List<dynamic>();
 
-            Res.Data = new { CashFlowResult, AssetResult };
+            CashFlowIncome = CashFlowResult.Where(c => c.Value >= 0).ToList();
+            CashFlowExpense= CashFlowResult.Where(c => c.Value < 0).ToList();
+            Asset =AssetResult.Where(c => c.Value >= 0).ToList();
+            Liabilities = AssetResult.Where(c => c.Value < 0).ToList();
+
+
+            
+            Res.Data = new { CashFlowIncome, CashFlowExpense, Asset, Liabilities };
             Res.Success = true;
             Res.Code = (int)ResponseStatusCode.Success;
             return Res;

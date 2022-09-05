@@ -4,6 +4,7 @@ import { AuthGuard } from './auth.guard';
 import { GamePageComponent } from './pages/game-page/game-page.component';
 import { HomePageComponent } from './pages/home-page/home-page.component';
 import { LoginComponent } from './pages/login-page/login.component';
+import { SamplePageComponent } from './pages/sample-page/sample-page.component';
 import { SurveyPageComponent } from './pages/survey-page/survey-page.component';
 
 const routes: Routes = [{
@@ -27,6 +28,10 @@ const routes: Routes = [{
   path: "survey",
   component: SurveyPageComponent,
   canActivate:[AuthGuard],
+},
+{
+  path: "sample",
+  component: SamplePageComponent,
 },
 {
   path: "**",

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { GlobalToastService } from '../toast/global-toast.service';
 import * as signalR from "@microsoft/signalr";
 import { FromClientChat } from 'src/app/models/FromClientChat';
+import { environment } from 'src/environments/environment';
+import { HttpClient } from '@angular/common/http';
 
 
 @Component({
@@ -11,11 +13,10 @@ import { FromClientChat } from 'src/app/models/FromClientChat';
 })
 export class ChatroomComponent implements OnInit {
 
-  constructor(public _ToastService : GlobalToastService) { }
+  constructor(public _ToastService : GlobalToastService,private http:HttpClient) { }
 
   ngOnInit(): void {
-
-    this.DistinguishUser()
+    this.DistinguishUser();
   }
   ShowToast(Msg:string,CssClass:string,Header:string) {
     this._ToastService.show(Msg,{
@@ -26,19 +27,19 @@ export class ChatroomComponent implements OnInit {
   }
   UserToken: any="";
   connection:any;
+  Param = "";
   DistinguishUser(){
-    let Param = "";
     this.UserToken = localStorage.getItem("Token");
-    Param = `token=${this.UserToken}`
+    this.Param = `token=${this.UserToken}`
     console.log("this.UserToken",this.UserToken);
     if(this.UserToken==null||undefined||""){
       this.UserToken = localStorage.getItem("StrangerName");
       console.log("this.UserToken",this.UserToken);
-      Param = `stranger=${this.UserToken}`
+      this.Param = `stranger=${this.UserToken}`
     }
 
     this.connection= new signalR.HubConnectionBuilder()
-    .withUrl(`http://localhost:46108/chatHub?${Param}`)
+    .withUrl(`${environment.HubRoot}?${this.Param}`)
     .withAutomaticReconnect()
     .build();
     this.connect();
@@ -46,6 +47,7 @@ export class ChatroomComponent implements OnInit {
     this.UpdSelfID();
     this.UpdContent();
   }
+
 
 
   //與Server建立連線

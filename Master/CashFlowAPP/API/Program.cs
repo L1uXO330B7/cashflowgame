@@ -229,8 +229,8 @@ try
     app.UseCors("CorsPolicy");
     app.MapControllers();
 
-    // 配對 ChaHub
-    app.MapHub<ChatHub>("/chatHub");
+    // 配對 Hubs
+    app.MapHub<Hubs>("/Hubs");
 
     // 啟動 ASP.NET Core 應用程式
     Serilog.Log.Information("啟動 ASP.NET Core 應用程式");
