@@ -58,9 +58,9 @@ export class GamePageComponent implements OnInit {
       this.IsLogin=true;
     }
   }
-  UserFiInfo={
-    Assets:[],
-    CashFlows:[]
+  UserFiInfo:any={
+    Assets:{},
+    CashFlows:{}
   }
 
   GetFiInfo(){
