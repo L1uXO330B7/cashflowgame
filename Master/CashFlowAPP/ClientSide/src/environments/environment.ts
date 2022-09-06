@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   ApiRoot:"http://localhost:46108/api",
-  HubRoot:"http://localhost:46108/Hubs"
+  HubRoot:"http://localhost:46108/hubs"
 };
 
 /*

@@ -1,17 +1,13 @@
-using API;
 using API.Filter;
 using API.Hubs;
+using API.Module;
 using BLL.IServices;
-using BLL.Services.AdminSide;
 using BLL.Services.ClientSide;
 using Common.Methods;
-using Common.Model.AdminSide;
 using DPL.EF;
-using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Serilog;
-using Serilog.Events;
 using System.Reflection;
 
 // 性能紀錄
@@ -230,7 +226,7 @@ try
     app.MapControllers();
 
     // 配對 Hubs
-    app.MapHub<Hubs>("/Hubs");
+    app.MapHub<Hubs>("/hubs");
 
     // 啟動 ASP.NET Core 應用程式
     Serilog.Log.Information("啟動 ASP.NET Core 應用程式");

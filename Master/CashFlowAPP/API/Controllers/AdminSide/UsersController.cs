@@ -2,6 +2,7 @@
 using Common.Model;
 using BLL.IServices;
 using Common.Model.AdminSide;
+using API.Module;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace API.Controllers.AdminSide

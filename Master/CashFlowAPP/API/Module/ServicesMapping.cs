@@ -2,7 +2,7 @@
 using BLL.Services.AdminSide;
 using Common.Model.AdminSide;
 
-namespace API
+namespace API.Module
 {
     public class ServicesMapping
     {

@@ -30,7 +30,11 @@ namespace API.Hubs
         /// </summary>
         public static List<UserInfo> UserList = new List<UserInfo>();
 
+        /// <summary>
+        /// 使用者物件 Id 信箱 姓名 ...
+        /// </summary>
         public static UserInfo _UserObject = new UserInfo();
+
         /// <summary>
         /// 連線事件
         /// </summary>
@@ -50,7 +54,6 @@ namespace API.Hubs
                        Token, Encoding.UTF8.GetBytes("錢董"),
                        Jose.JwsAlgorithm.HS256);
             }
-
 
             if (ConnIDList.Where(p => p == Context.ConnectionId).FirstOrDefault() == null)
             {

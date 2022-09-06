@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.Tracing;
 
-namespace API
+namespace API.Module
 {
     /// <summary>
     /// https://www.cnblogs.com/artech/p/performance-counter-in-net-core.html

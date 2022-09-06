@@ -1,14 +1,15 @@
 ﻿
 
-        using Microsoft.AspNetCore.Mvc;
-        using Common.Model;
-        using BLL.IServices;
-        using Common.Model.AdminSide;
+using Microsoft.AspNetCore.Mvc;
+using Common.Model;
+using BLL.IServices;
+using Common.Model.AdminSide;
+using API.Module;
 
-        namespace API.Controllers.AdminSide
-        {
-           
-            [Route("api/[controller]/[action]")]
+namespace API.Controllers.AdminSide
+{
+
+    [Route("api/[controller]/[action]")]
             [ApiController]
             public class RolesController : Controller,ICrudController<List<CreateRoleArgs>, List<ReadRoleArgs>, List<UpdateRoleArgs>, List<int?>>
             {
