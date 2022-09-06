@@ -19,7 +19,7 @@ namespace API.Hubs
         {
             _ClientHubService = ClientHubService;
         }
- 
+
         /// <summary>
         /// 連線ID清單
         /// </summary>
@@ -44,8 +44,8 @@ namespace API.Hubs
             var Token = Context.GetHttpContext().Request.Query["token"];
             if (Token.Count == 0)
             {
-             var Stranger = Context.GetHttpContext().Request.Query["stranger"];
-                _UserObject.Name = (string)Stranger+"$$$";
+                var Stranger = Context.GetHttpContext().Request.Query["stranger"];
+                _UserObject.Name = (string)Stranger + "$$$";
             }
             else
             {
@@ -128,11 +128,22 @@ namespace API.Hubs
             }
         }
 
-        public async Task GetUserToken(FromClientChat package)
+        /// <summary>
+        /// 抽卡
+        /// </summary>
+        /// <returns></returns>
+        public async Task ThreaCar()
+        { 
+            // 寫一隻 Service 執行抽卡
+        }
+
+        /// <summary>
+        /// 抽卡結果回傳
+        /// </summary>
+        /// <returns></returns>
+        public async Task CarResult()
         {
-            var JwtObject = Jose.JWT.Decode<UserInfo>(
-                       package.Token, Encoding.UTF8.GetBytes("錢董"),
-                       Jose.JwsAlgorithm.HS256);
+            // 寫一隻 Service 執行抽卡結果判斷與影響
         }
     }
 }
