@@ -13,9 +13,6 @@ namespace BLL.Services.ClientSide
     {
         // db
         private readonly CashFlowDbContext _CashFlowDbContext;
-
-
-
         public ClientSideService(CashFlowDbContext cashFlowDbContext)
         {
             _CashFlowDbContext = cashFlowDbContext;
@@ -468,8 +465,6 @@ namespace BLL.Services.ClientSide
 
         public async Task<ApiResponse> SupportCardDev()
         {
-            // 隨機抽
-
             var Assets = _CashFlowDbContext.Assets
                 .Where(x => x.Status == (int)StatusCode.Enable)
                 .AsNoTracking()
@@ -504,9 +499,6 @@ namespace BLL.Services.ClientSide
                    new CashFlowAndCategoryModel { Id = c.Id, Name = c.Name, Value = c.Value, Weight = (decimal)c.Weight, Description = c.Description, CashFlowCategoryName = cc.Name, CashFlowCategoryId = c.CashFlowCategoryId, ParentId = cc.ParentId })
                  .ToList();
 
-            var _Random = StaticRandom();
-
-
             var AssetDices =
                     AssetAndCategory
                     .Select(x => new RandomItem<int>
@@ -515,7 +507,6 @@ namespace BLL.Services.ClientSide
                         Weight = 1
                     })
                     .ToList();
-
 
             var CashFlowDices =
                     CashFlowAndCategory
@@ -526,25 +517,28 @@ namespace BLL.Services.ClientSide
                     })
                     .ToList();
 
+            var _Random = StaticRandom();
+            var CardList = new List<CategoryMix>();
 
-
-            var CardList = new List<dynamic>();
-            for (int i = 0; i < 15; i++)
+            // 資產、現金流 0-2 的組合
+            for (int i = 0; i < 5; i++)
             {
                 var CashFlow = new List<int>();
                 var Asset = new List<int>();
 
-                int Count = _Random.Next(0,2);
-                int Count1 = _Random.Next(0,2);
-                var CashFlowList = new List<dynamic>();
-                var AssetFlowList = new List<dynamic>();
+                int Count = _Random.Next(0, 2);
+                int Count1 = _Random.Next(0, 2);
+                var CashFlowList = new List<CashFlowAndCategoryModel>();
+                var AssetFlowList = new List<AssetAndCategoryModel>();
+
                 for (int j = 0; j < Count; j++)
                 {
                     var CashFlowDice = Method.RandomWithWeight(CashFlowDices);
                     CashFlow.Add(CashFlowDice);
-                    var CardCashFlow = AssetAndCategory.FirstOrDefault(c => c.Id == CashFlowDice);
+                    var CardCashFlow = CashFlowAndCategory.FirstOrDefault(c => c.Id == CashFlowDice);
                     CashFlowList.Add(CardCashFlow);
                 }
+
                 for (int j = 0; j < Count1; j++)
                 {
                     var AssetFromDice = Method.RandomWithWeight(AssetDices);
@@ -552,13 +546,91 @@ namespace BLL.Services.ClientSide
                     var CardAsset = AssetAndCategory.FirstOrDefault(c => c.Id == AssetFromDice);
                     AssetFlowList.Add(CardAsset);
                 }
-                CardList.Add(new { CashFlowList, AssetFlowList });
+
+                CardList.Add(new CategoryMix { CashFlows = CashFlowList, Assets = AssetFlowList });
             }
+
             var Res = new ApiResponse();
-
             Res.Data = CardList;
+            Res.Success = true;
 
-            return  Res;
+            // 直接新增到卡片表內 ( 會在拆分影響全部類別或影響子類 )
+            foreach (var Item in CardList)
+            {
+                string AssetsName, CashFlowsName;
+
+                var _Card = new Card();
+                _Card.Name = "";
+                _Card.Status = (int)StatusCode.Disable;
+                _Card.Weight = 1;
+                _CashFlowDbContext.Cards.Add(_Card);
+                _CashFlowDbContext.SaveChanges();
+
+                // EffectTables Id  Name                Status
+                //              1   CashFlow            1
+                //              2   Asset               1
+                //              3   CashFlowCategories  1
+                //              4   AssetCategories     1
+
+                var CardName = "";
+
+                foreach (var Asset in Item.Assets)
+                {
+                    var _CardEffect = new CardEffect();
+
+                    int Count = _Random.Next(1, 2); // 成功了但這都只會抽到 1 = =
+                    if (Count == 1) // 類別
+                    {
+                        CardName += $"[資產類別：{Asset.AssetCategoryName}]";
+                        _CardEffect.TableId = Asset.AssetCategoryId;
+                        _CardEffect.Description = Asset.AssetCategoryName;
+                        _CardEffect.CardId = _Card.Id;
+                        _CardEffect.EffectTableId = 4;
+                    }
+                    else
+                    {
+                        CardName += $"[資產：{Asset.Name}]";
+                        _CardEffect.TableId = Asset.Id;
+                        _CardEffect.Description = Asset.Name;
+                        _CardEffect.CardId = _Card.Id;
+                        _CardEffect.EffectTableId = 2;
+                    }
+
+                    _CashFlowDbContext.CardEffects.Add(_CardEffect);
+                    _CashFlowDbContext.SaveChanges();
+                }
+
+                foreach (var CashFlow in Item.CashFlows)
+                {
+                    var _CardEffect = new CardEffect();
+
+                    int Count = _Random.Next(1, 2); // 成功了但這都只會抽到 1 = =
+                    if (Count == 1) // 類別
+                    {
+                        CardName += $"[現金流類別：{CashFlow.CashFlowCategoryName}]";
+                        _CardEffect.TableId = CashFlow.CashFlowCategoryId; // 影響類別內流水號 ( 外鍵 )
+                        _CardEffect.Description = CashFlow.CashFlowCategoryName; // 影響效果
+                        _CardEffect.CardId = _Card.Id; // 卡片流水號 ( 外鍵 )
+                        _CardEffect.EffectTableId = 3; // 影響資料表流水號 ( 外鍵 )
+                    }
+                    else
+                    {
+                        CardName += $"[現金流：{CashFlow.Name}]";
+                        _CardEffect.TableId = CashFlow.Id;
+                        _CardEffect.Description = CashFlow.Name;
+                        _CardEffect.CardId = _Card.Id;
+                        _CardEffect.EffectTableId = 1;
+                    }
+
+                    _CashFlowDbContext.CardEffects.Add(_CardEffect);
+                    _CashFlowDbContext.SaveChanges();
+                }
+
+                _Card.Name = CardName;
+                _CashFlowDbContext.SaveChanges();
+            }
+
+            return Res;
         }
     }
 }

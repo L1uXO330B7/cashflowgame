@@ -26,7 +26,10 @@ export class ApiService {
     return this._HttpClient.post<ApiResponse>(Url, Req, this._HttpOptions);
   }
 
-
+  AddCards(): Observable<ApiResponse> {
+    let Url = `${this._ApiUrl}/Adjustment/SupportCardDev`;
+    return this._HttpClient.post<ApiResponse>(Url, this._HttpOptions);
+  }
 
 
 

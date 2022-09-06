@@ -161,5 +161,15 @@ export class CardsTableComponent extends BaseComponent implements OnInit {
     });
   }
 
+  AddCards()
+  {
+    this._ApiService.AddCards().subscribe((Res) => {
+      if (Res.Success) {
+        this.CardsRead(this.pageIndex, this.pageSize, []);
+      }
+    }, (err: any) => {
+      console.log(err);
+    });
+  }
 }
 

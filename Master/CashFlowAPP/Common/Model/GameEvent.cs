@@ -6,6 +6,12 @@ using System.Threading.Tasks;
 
 namespace Common.Model
 {
+    public class CategoryMix
+    { 
+        public List<AssetAndCategoryModel> Assets { get; set; }
+        public List<CashFlowAndCategoryModel> CashFlows { get; set; }
+    }
+
     public class AssetAndCategoryModel
     {
         public int Id { get; set; }

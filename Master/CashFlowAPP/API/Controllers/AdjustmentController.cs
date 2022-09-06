@@ -15,8 +15,6 @@ namespace API.Controllers
     {
         private IClientSideService _ClientSideService;
 
-
-
         public AdjustmentController(IClientSideService ClientSideService)
         {
             _ClientSideService = ClientSideService;
@@ -27,16 +25,16 @@ namespace API.Controllers
         {
 
             Req.Args = null;
-
             return await _ClientSideService.ReadFiInfo(Req);
         }
 
+        /// <summary>
+        /// 卡片開發輔助
+        /// </summary>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ApiResponse> SupportCardDev()
         {
-
-      
-
             return await _ClientSideService.SupportCardDev();
         }
     }
