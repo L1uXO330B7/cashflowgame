@@ -19,18 +19,18 @@
 // Animations
 // ---------------------------------
 .progressGroup {
-	animation: 90s linear 1s infinite ProgressOpacity;
+	animation: 60s linear 1s infinite ProgressOpacity;
 	opacity: 0.25;
 }
 .progress {
 	animation: 1.5s ease-in-out infinite alternate Pulse;
 }
 .progress1 {
-	animation: 90s linear 1s infinite Progress1;
+	animation: 60s linear 1s infinite Progress1;
 	stroke-dasharray: 0 1000;
 }
 .progress2 {
-	animation: 90s linear 1s infinite Progress2;
+	animation: 60s linear 1s infinite Progress2;
 	stroke-dasharray: 0 0 1 1000;
 	display: none;
 }
@@ -52,7 +52,7 @@
 
 // ---------------
 #wheel {
-	animation: 1.5s linear infinite Spin;
+	animation: 5s linear infinite Spin;
 	transform: rotate(0deg);
 	transform-origin: 50px 50px;
 }

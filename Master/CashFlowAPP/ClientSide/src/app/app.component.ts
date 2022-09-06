@@ -36,6 +36,7 @@ export class AppComponent implements OnInit{
       Req.PageSize = 15;
       this._ApiService.GetUserData(Req).subscribe((Res) => {
         if (Res.Success) {
+        console.log(Res,"shared");
         this.UserData = Res.Data.Users[0];
         this.UserDataName = this.UserData.Name;
         this._SharedService.SetShareData(this.UserData);

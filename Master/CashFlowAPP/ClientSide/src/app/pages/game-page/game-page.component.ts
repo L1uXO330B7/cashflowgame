@@ -26,6 +26,7 @@ export class GamePageComponent implements OnInit {
   ngOnInit(): void {
     this.GetFiInfo();
     this.LoginToUserInfo();
+    setInterval(()=>this.GameTimeRound(), 60000);
   }
 
   OpenChatRoom: boolean = false;
@@ -69,5 +70,14 @@ export class GamePageComponent implements OnInit {
         console.log(this.UserFiInfo, "Res");
       }
     });
+  }
+
+
+  Time = new Date();
+  JoinRound =(this.Time.getHours()*60)+this.Time.getMinutes();
+  CurrentRound=(this.Time.getHours()*60)+this.Time.getMinutes();
+  GameTimeRound(){
+    this.Time=new Date();
+    this.CurrentRound = (this.Time.getHours()*60)+this.Time.getMinutes();
   }
 }
