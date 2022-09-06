@@ -62,5 +62,10 @@ export class SignalrHubService {
     // To be subscribed to by multiple components
     return subject;
   }
-  // todo invoke()
+  //invoke()
+  Invoke(Method:string,Arg:any){
+    this.Connection.invoke(Method,Arg).catch(function (err: any) {
+      alert('傳送錯誤: ' + err.toString());
+    });
+  }
 }
