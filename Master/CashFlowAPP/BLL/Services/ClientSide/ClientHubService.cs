@@ -7,14 +7,13 @@ namespace BLL.Services.ClientSide
     {
 
 
-        public string? GetUserToken(string? Key)
+
+        public void DrawCard()
         {
-            return Context.GetHttpContext().Request.Query[Key];
+
         }
 
-        Task IClientHubService.GetUserToken(string? Key)
-        {
-            throw new NotImplementedException();
-        }
+
+  
     }
 }

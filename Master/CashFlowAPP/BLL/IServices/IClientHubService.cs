@@ -2,6 +2,7 @@
 {
     public interface IClientHubService
     {
-        Task GetUserToken(string? Key);
+        void DrawCard();
+
     }
 }

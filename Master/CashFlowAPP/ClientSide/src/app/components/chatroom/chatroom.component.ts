@@ -1,3 +1,4 @@
+import { SignalrHubService } from './../../service/signalr-hub.service';
 import { Component, OnInit } from '@angular/core';
 import { GlobalToastService } from '../toast/global-toast.service';
 import * as signalR from "@microsoft/signalr";
@@ -13,7 +14,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class ChatroomComponent implements OnInit {
 
-  constructor(public _ToastService : GlobalToastService,private http:HttpClient) { }
+  constructor(public _ToastService : GlobalToastService,private http:HttpClient,public _Signalr:SignalrHubService) { }
 
   ngOnInit(): void {
     this.DistinguishUser();
@@ -37,77 +38,49 @@ export class ChatroomComponent implements OnInit {
       console.log("this.UserToken",this.UserToken);
       this.Param = `stranger=${this.UserToken}`
     }
+    this._Signalr.Connect(`${this.Param}`);
 
-    this.connection= new signalR.HubConnectionBuilder()
-    .withUrl(`${environment.HubRoot}?${this.Param}`)
-    .withAutomaticReconnect()
-    .build();
-    this.connect();
-    this.update();
+    this.Update();
     this.UpdSelfID();
     this.UpdContent();
   }
 
 
-
-  //與Server建立連線
-  connect() {
-    this.connection.start().then(()=> {
-      console.log("Hub 連線完成");
-      // this.ShowToast("成功進入",'bg-success text-light','成功通知 From 錢董')
-    }).catch((err: any)=>{
-      this.ShowToast(err.toString(),'bg-danger text-light','失敗通知 From 錢董')
-    });
-  }
-
   // 更新連線 ID 列表事件
-  IDList: string = "";
-  update() {
-    this.connection.on("UpdList", (jsonList: any,UserList:any) => {
-
-      var list = JSON.parse(jsonList);
-      console.log("UserList",UserList);
-      console.log("UserList",jsonList)
-      // $("#IDList li").remove();
-      this.IDList = "";
-      list.forEach((value: any, index: number, array: any) => {
-        this.IDList += `<li class='list-group-item'>${UserList[index]}</li>`;
-      })
+  IDList: string[] = [];
+  NameList: string[]=[];
+  Update() {
+    this._Signalr.OnObservable("UpdList").subscribe((Res:any)=>{
+      let List = JSON.parse(Res[0])
+      this.IDList = List;
+      this.NameList = Res[1];
     });
   }
   SelfID = "";
+  SelfObj:any;
   // 更新用戶個人連線 ID 事件
   UpdSelfID() {
-    this.connection.on("UpdSelfID", (ConnectId: any,SelfObj:any) => {
-      // $('#SelfID').html(id);
-      console.log('SelfName',SelfObj);
-      this.SelfID = SelfObj.name;
+    this._Signalr.OnObservable("UpdSelfID").subscribe((Res:any)=>{
+      this.SelfID = Res[0];
+      this.SelfObj = Res[1];
     });
   }
 
   Content = "";
   // 更新聊天內容事件
   UpdContent() {
-    console.log("UpdContent1");
-    this.connection.on("UpdContent", (msg: any) => {
-      this.Content += `
-      <li class="list-group-item">${msg}</li>
-      `
-      console.log("UpdContent2", this.Content);
-      // $("#Content").append($("<li></li>").attr("class", "list-group-item").text(msg));
+    this._Signalr.OnObservable("UpdContent").subscribe((Res:any)=>{
+      this.Content+=`<li  class="list-group-item">${Res[0]}</li>`;
     });
   }
 
   FromClientChat = new FromClientChat()
   SendMsg() {
-    console.log("SendMsg", this.FromClientChat.message);
     let selfID:any = document.querySelector('#SelfID')?.innerHTML;
     this.FromClientChat.selfID = selfID;
     let UserToken: any = localStorage.getItem("Token");
     this.FromClientChat.Token = UserToken;
     // invoke 去 call 後端 function 靠 名字
-    this.connection.invoke("SendMessage", this.FromClientChat).catch(function (err: any) {
-      alert('傳送錯誤: ' + err.toString());
-    });
+    this._Signalr.Invoke("SendMessage", this.FromClientChat);
   }
 }

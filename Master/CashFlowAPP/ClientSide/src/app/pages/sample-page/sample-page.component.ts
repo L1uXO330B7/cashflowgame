@@ -26,7 +26,8 @@ export class SamplePageComponent implements OnInit {
     }
     this._Signalr.Connect(`${this.Param}`);
     this._Signalr.OnObservable("UpdList").subscribe((res:any)=>{
-      console.log(res,"1");
+      let list = JSON.parse(res[0]);
+      console.log(res,"id");
     });
     this._Signalr.OnObservable("UpdContent").subscribe((res:any)=>{
       console.log(res,"2");

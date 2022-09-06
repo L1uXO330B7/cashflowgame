@@ -132,8 +132,9 @@ namespace API.Hubs
         /// 抽卡
         /// </summary>
         /// <returns></returns>
-        public async Task ThreaCar()
+        public async Task DrawCard()
         { 
+
             // 寫一隻 Service 執行抽卡
         }
 
@@ -141,7 +142,7 @@ namespace API.Hubs
         /// 抽卡結果回傳
         /// </summary>
         /// <returns></returns>
-        public async Task CarResult()
+        public async Task CardResult()
         {
             // 寫一隻 Service 執行抽卡結果判斷與影響
         }

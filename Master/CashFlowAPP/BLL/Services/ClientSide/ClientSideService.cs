@@ -195,7 +195,7 @@ namespace BLL.Services.ClientSide
         public async Task<ApiResponse> ReadFiInfo(ApiRequest<int?> Req)
         {
 
-            
+
             var Assets = _CashFlowDbContext.Assets
                 .Where(x => x.Status == (int)StatusCode.Enable)
                 .AsNoTracking()
@@ -417,12 +417,12 @@ namespace BLL.Services.ClientSide
             var Liabilities = new List<dynamic>();
 
             CashFlowIncome = CashFlowResult.Where(c => c.Value >= 0).ToList();
-            CashFlowExpense= CashFlowResult.Where(c => c.Value < 0).ToList();
-            Asset =AssetResult.Where(c => c.Value >= 0).ToList();
+            CashFlowExpense = CashFlowResult.Where(c => c.Value < 0).ToList();
+            Asset = AssetResult.Where(c => c.Value >= 0).ToList();
             Liabilities = AssetResult.Where(c => c.Value < 0).ToList();
 
 
-            
+
             Res.Data = new { CashFlowIncome, CashFlowExpense, Asset, Liabilities };
             Res.Success = true;
             Res.Code = (int)ResponseStatusCode.Success;
@@ -464,6 +464,101 @@ namespace BLL.Services.ClientSide
             New.AssetCategoryId = Data.AssetCategoryId;
             New.ParentId = Data.ParentId;
             return New;
+        }
+
+        public async Task<ApiResponse> SupportCardDev()
+        {
+            // 隨機抽
+
+            var Assets = _CashFlowDbContext.Assets
+                .Where(x => x.Status == (int)StatusCode.Enable)
+                .AsNoTracking()
+                .ToList();
+            var AssetCategories = _CashFlowDbContext.AssetCategories
+                .Where(x => x.Status == (int)StatusCode.Enable)
+                .AsNoTracking()
+                .ToList();
+            var AssetAndCategory =
+                 Assets.Join(
+                  AssetCategories,
+                   a => a.AssetCategoryId,
+                   ac => ac.Id,
+                   (a, ac) =>
+                   new AssetAndCategoryModel { Id = a.Id, Name = a.Name, Value = a.Value, Weight = (decimal)a.Weight, Description = a.Description, AssetCategoryName = ac.Name, AssetCategoryId = a.AssetCategoryId, ParentId = ac.ParentId })
+                 .ToList();
+
+            var CashFlows = _CashFlowDbContext.CashFlows
+                .Where(x => x.Status == (int)StatusCode.Enable)
+                .AsNoTracking()
+                .ToList();
+            var CashFlowCategories = _CashFlowDbContext.CashFlowCategories
+              .Where(x => x.Status == (int)StatusCode.Enable)
+              .AsNoTracking()
+              .ToList();
+            var CashFlowAndCategory =
+                 CashFlows.Join(
+                  CashFlowCategories,
+                   c => c.CashFlowCategoryId,
+                   cc => cc.Id,
+                   (c, cc) =>
+                   new CashFlowAndCategoryModel { Id = c.Id, Name = c.Name, Value = c.Value, Weight = (decimal)c.Weight, Description = c.Description, CashFlowCategoryName = cc.Name, CashFlowCategoryId = c.CashFlowCategoryId, ParentId = cc.ParentId })
+                 .ToList();
+
+            var _Random = StaticRandom();
+
+
+            var AssetDices =
+                    AssetAndCategory
+                    .Select(x => new RandomItem<int>
+                    {
+                        SampleObj = x.Id,
+                        Weight = 1
+                    })
+                    .ToList();
+
+
+            var CashFlowDices =
+                    CashFlowAndCategory
+                    .Select(x => new RandomItem<int>
+                    {
+                        SampleObj = x.Id,
+                        Weight = 1
+                    })
+                    .ToList();
+
+
+
+            var CardList = new List<dynamic>();
+            for (int i = 0; i < 15; i++)
+            {
+                var CashFlow = new List<int>();
+                var Asset = new List<int>();
+
+                int Count = _Random.Next(0,2);
+                int Count1 = _Random.Next(0,2);
+                var CashFlowList = new List<dynamic>();
+                var AssetFlowList = new List<dynamic>();
+                for (int j = 0; j < Count; j++)
+                {
+                    var CashFlowDice = Method.RandomWithWeight(CashFlowDices);
+                    CashFlow.Add(CashFlowDice);
+                    var CardCashFlow = AssetAndCategory.FirstOrDefault(c => c.Id == CashFlowDice);
+                    CashFlowList.Add(CardCashFlow);
+                }
+                for (int j = 0; j < Count1; j++)
+                {
+                    var AssetFromDice = Method.RandomWithWeight(AssetDices);
+                    Asset.Add(AssetFromDice);
+                    var CardAsset = AssetAndCategory.FirstOrDefault(c => c.Id == AssetFromDice);
+                    AssetFlowList.Add(CardAsset);
+                }
+                CardList.Add(new { CashFlowList, AssetFlowList });
+            }
+            var Res = new ApiResponse();
+
+            Res.Data = CardList;
+
+            return  Res;
         }
     }
 }

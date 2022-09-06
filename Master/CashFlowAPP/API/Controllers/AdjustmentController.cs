@@ -30,5 +30,14 @@ namespace API.Controllers
 
             return await _ClientSideService.ReadFiInfo(Req);
         }
+
+        [HttpPost]
+        public async Task<ApiResponse> SupportCardDev()
+        {
+
+      
+
+            return await _ClientSideService.SupportCardDev();
+        }
     }
 }
