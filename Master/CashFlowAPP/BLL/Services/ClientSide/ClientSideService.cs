@@ -578,7 +578,7 @@ namespace BLL.Services.ClientSide
                 {
                     var _CardEffect = new CardEffect();
 
-                    int Count = _Random.Next(1, 2); // 成功了但這都只會抽到 1 = =
+                    int Count = _Random.Next(1, 3); // 成功了但這都只會抽到 1 = =
                     if (Count == 1) // 類別
                     {
                         CardName += $"[資產類別：{Asset.AssetCategoryName}]";
