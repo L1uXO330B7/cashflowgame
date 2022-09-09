@@ -65,9 +65,9 @@ export class GamePageComponent implements OnInit {
     Req.Args = this.UserId;
     this._ApiService.GetFiInfo(Req).subscribe((Res) => {
       if (Res.Success) {
-        this.UserFiInfo = Res.Data.Result;
+        this.UserFiInfo = Res.Data;
 
-        console.log(this.UserFiInfo, "Res");
+        console.log(Res.Data, "Res");
       }
     });
   }

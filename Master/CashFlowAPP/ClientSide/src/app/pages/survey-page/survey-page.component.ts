@@ -8,6 +8,7 @@ import { ApiRequest } from 'src/app/models/ApiRequest';
 import { ApiService } from 'src/app/service/api.service';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { ReadArgs } from 'src/app/models/ReadAnswerQuestionArgs';
+import { ConsoleLogger } from '@microsoft/signalr/dist/esm/Utils';
 
 @Component({
   selector: 'app-survey-page',
@@ -137,6 +138,12 @@ export class SurveyPageComponent implements OnInit {
 
     let Req = new ApiRequest<any>();
     Req.Args = UserAnswerArgs;
+    if(this.UserId==null){
+      Req.Args.forEach((arg:any) => {
+        arg.UserId = -1;
+      });
+    }
+    console.log( Req.Args);
     this._ApiService.SaveUserAnswerArgs(Req).subscribe((Res) => {
       if (Res.Success) {
         this._Router.navigate(['/', 'game']);
@@ -150,6 +157,7 @@ export class SurveyPageComponent implements OnInit {
   GetUserAnswer() {
     this.IsLoading=true;
     if (this.UserId != "" && this.UserId != null) {
+      console.log(this.UserId);
       let Req = new ApiRequest<any>();
       let listInt = [this.UserId];
       let Arg =

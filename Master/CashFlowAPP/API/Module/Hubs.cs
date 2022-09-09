@@ -3,7 +3,7 @@ using Common.Model;
 using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
 using System.Text;
-
+using System.Timers;
 namespace API.Hubs
 {
     /// <summary>
@@ -12,14 +12,21 @@ namespace API.Hubs
     public class Hubs : Hub
     {
         private IClientHubService _ClientHubService;
+        private readonly IHubContext<Hubs>_hubContext;
+
         /// <summary>
         /// 建構子
         /// </summary>
-        public Hubs(IClientHubService ClientHubService)
+        public Hubs(IClientHubService ClientHubService,IHubContext<Hubs> hubContext)
         {
             _ClientHubService = ClientHubService;
+            _hubContext = hubContext;
+
         }
 
+        System.Timers.Timer timer;
+
+       
         /// <summary>
         /// 連線ID清單
         /// </summary>
@@ -58,6 +65,7 @@ namespace API.Hubs
             if (ConnIDList.Where(p => p == Context.ConnectionId).FirstOrDefault() == null)
             {
                 ConnIDList.Add(Context.ConnectionId);
+
             }
 
             if (_UserObject != null)
@@ -75,6 +83,7 @@ namespace API.Hubs
             // 更新聊天內容
             await Clients.All.SendAsync("UpdContent", "新連線玩家: " + _UserObject.Name);
 
+       
             await base.OnConnectedAsync();
         }
 
@@ -100,9 +109,16 @@ namespace API.Hubs
 
             // 更新聊天內容
             await Clients.All.SendAsync("UpdContent", "已離線玩家: " + _UserObject.Name);
+            await Clients.All.SendAsync("Okay", "draw");
 
             await base.OnDisconnectedAsync(ex);
         }
+
+
+
+
+
+
 
         /// <summary>
         /// 傳遞訊息
@@ -127,13 +143,32 @@ namespace API.Hubs
                 await Clients.Client(Context.ConnectionId).SendAsync("UpdContent", "你向 " + package.sendToID + " 私訊說: " + package.message);
             }
         }
+        public async Task SetTimer(int okay)
+        {
+            // Create a timer with a two second interval.
+            timer = new System.Timers.Timer(5000);
+            // Hook up the Elapsed event for the timer. 
+            timer.Elapsed += OnTimedEvent;
+            timer.Enabled = true;
+        }
+        public async void OnTimedEvent(Object source, ElapsedEventArgs e)
+        {
+            timer.Stop();
+            try{
+           await _hubContext.Clients.All.SendAsync("Okay", "draw");
 
+            }
+            catch (Exception ex) {
+                throw;
+            }
+            timer.Start();
+        }
         /// <summary>
         /// 抽卡
         /// </summary>
         /// <returns></returns>
         public async Task DrawCard()
-        { 
+        {
 
             // 寫一隻 Service 執行抽卡
         }

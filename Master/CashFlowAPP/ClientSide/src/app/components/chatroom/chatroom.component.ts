@@ -73,7 +73,16 @@ export class ChatroomComponent implements OnInit {
       this.Content+=`<li  class="list-group-item">${Res[0]}</li>`;
     });
   }
+draw(){
+  console.log(55);
+  setTimeout(() => {
+    this._Signalr.Invoke("SetTimer", 5);
+  this._Signalr.OnObservable("Okay").subscribe((Res:any)=>{
+    console.log(Res,"timer");
+  });
+  }, 20000);
 
+}
   FromClientChat = new FromClientChat()
   SendMsg() {
     let selfID:any = document.querySelector('#SelfID')?.innerHTML;

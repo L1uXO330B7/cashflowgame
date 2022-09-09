@@ -158,6 +158,14 @@ https://www.tpisoftware.com/tpu/articleDetails/1084
 
 4. 後來發現第一種解決方式不太方便，且無法在連線建立時，就接受到使用者 Token，[第二種解決方式是使用連線 URL 傳參數的方式來將資料帶到後端](https://stackoverflow.com/questions/69519736/how-can-i-pass-retreive-querystring-values-in-net-core-version-of-signalr)，且第二種方式的安全性與第一種雷同，Post 是塞在標頭裡，兩種方式只要進到 Network 觀察，Token 都是無法被藏起來的
 
+#### SignalR Hub 中使用 Timer 所出現的問題
+
+1. 前端需在建立連線之後，才能去 Invoke SetTimer()，來讓計時器開始啟動，不然會出現無法在未建立連線錯誤，[解決方式](https://stackoverflow.com/questions/53412852/signalr-core-call-function-when-connection-is-established)
+
+2. 後端 SetTimer() 被 Invoke 到之後，觸發計時器中的事件，事件中的 SendAsync 是無法啟用的，會有 "Cannot access a disposed object" 的錯誤，原因為[Hub LifeTime 的問題](https://stackoverflow.com/questions/55795669/cannot-access-a-disposed-object-crash-in-signalr)
+
+
+
 ## .Net Core 6 要使用 FromSqlInterpolated 執行 SQL 指令需安裝 Microsoft.EntityFrameworkCore.Relational
 
 https://stackoverflow.com/questions/51017703/error-cs1061-dbsett-does-not-contain-a-defin   ition-for-fromsql-and-no-exte

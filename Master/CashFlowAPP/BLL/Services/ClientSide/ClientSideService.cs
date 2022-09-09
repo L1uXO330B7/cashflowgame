@@ -173,8 +173,12 @@ namespace BLL.Services.ClientSide
                 answerQuestions.Add(answerQuestion);
             }
 
-            _CashFlowDbContext.AddRange(answerQuestions);
-            _CashFlowDbContext.SaveChanges();
+            _CashFlowDbContext.AddRange(answerQuestions);   
+            if (Req.Args[0].UserId != -1)
+            {
+              _CashFlowDbContext.SaveChanges();
+            }
+           
             // 不做銷毀 Dispose 動作，交給 DI 容器處理
 
             // 此處 SaveChanges 後 SQL Server 會 Tracking 回傳新增後的 Id
@@ -384,7 +388,7 @@ namespace BLL.Services.ClientSide
                     }
 
                     // 學貸
-                    if (YourAssets.AssetCategoryId == 24)
+                    if (YourAssets.Id == 17)
                     {
                         var GuidCode = System.Guid.NewGuid().ToString("N");
                         YourAssets.Value = _Random.Next(160000, 400000);

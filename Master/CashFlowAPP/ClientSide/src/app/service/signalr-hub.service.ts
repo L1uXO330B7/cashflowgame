@@ -11,6 +11,7 @@ export class SignalrHubService {
 
   constructor() {
    }
+  IsConnected:boolean=false;
   Connection: HubConnection | any;
   ConnectionID: string | undefined;
   ConnectionUser:string | undefined;
@@ -27,7 +28,17 @@ export class SignalrHubService {
         this.ConnectionID = ConnectId;
         this.ConnectionUser = SelfObj.name;
       });
-     this.Connection.start();
+     this.Connection.start().then((res:any) => {
+      this.IsConnected=true;
+      this.Invoke("SetTimer", 5);
+      this.OnObservable("Okay").subscribe((Res:any)=>{
+        console.log(Res,"timer");
+      });
+    })
+    .catch(function (err:any) {
+      //failed to connect
+      return console.error(err.toString());
+    });;
     }
   }
 
@@ -64,8 +75,10 @@ export class SignalrHubService {
   }
   //invoke()
   Invoke(Method:string,Arg:any){
-    this.Connection.invoke(Method,Arg).catch(function (err: any) {
+    if(this.IsConnected){
+          this.Connection.invoke(Method,Arg).catch(function (err: any) {
       alert('傳送錯誤: ' + err.toString());
     });
+    }
   }
 }
