@@ -12,14 +12,17 @@
       </div>
     </div>
     <div class="col p-0">
+
       <div class="d-flex Hamster">
         現在是第 {{CurrentRound}} 圈
-        <app-hamster-wheel></app-hamster-wheel>
+        <app-hamster-wheel *ngIf="!Flag"></app-hamster-wheel>
+        <h2 *ngIf="Flag">遊戲尚未開始</h2>
         你在第 {{JoinRound}} 圈加入
       </div>
 
       <div>
-        <button class="CardToggle" [class.active]="!OpenCard" (click)="ToggleCard()"><i class="fa-solid fa-circle-exclamation"></i> 您的抉擇 <i class="fa-solid fa-angle-down" *ngIf="OpenCard"></i>
+        <button class="CardToggle" [class.active]="!OpenCard" (click)="ToggleCard()"><i
+            class="fa-solid fa-circle-exclamation"></i> 你的機會 <i class="fa-solid fa-angle-down" *ngIf="OpenCard"></i>
           <i class="fa-solid fa-angle-up" *ngIf="!OpenCard"></i></button>
         <app-card></app-card>
       </div>

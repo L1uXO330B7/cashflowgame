@@ -30,10 +30,6 @@ export class SignalrHubService {
       });
      this.Connection.start().then((res:any) => {
       this.IsConnected=true;
-      this.Invoke("SetTimer", 5);
-      this.OnObservable("Okay").subscribe((Res:any)=>{
-        console.log(Res,"timer");
-      });
     })
     .catch(function (err:any) {
       //failed to connect
@@ -75,7 +71,7 @@ export class SignalrHubService {
   }
   //invoke()
   Invoke(Method:string,Arg:any){
-    if(this.IsConnected){
+    while(this.IsConnected==true){
           this.Connection.invoke(Method,Arg).catch(function (err: any) {
       alert('傳送錯誤: ' + err.toString());
     });

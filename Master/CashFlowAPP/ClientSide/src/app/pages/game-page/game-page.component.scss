@@ -20,7 +20,7 @@
   outline: none;
   border: none;
   border-radius: 0px 15px 0px 0px;
-  transition: all 3s;
+  transition: all 1.5s;
   vertical-align: middle;
   &.active {
     margin-top: 45vh;
@@ -39,7 +39,7 @@
   background-color: pink;
 }
 .InfoToggle {
-  transition: all 2s;
+  transition: all 1.5s;
   outline: none;
   h5 {
     margin: 0 auto;
@@ -87,7 +87,7 @@
 }
 .CardToggle {
   margin-top:1vh;
-  transition: all 3s;
+  transition: all 1.5s;
   height: 6vh;
   width: 100%;
   outline: none;

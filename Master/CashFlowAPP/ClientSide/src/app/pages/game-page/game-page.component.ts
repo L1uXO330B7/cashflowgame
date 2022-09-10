@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { GlobalToastService } from 'src/app/components/toast/global-toast.service';
 import { ApiRequest } from 'src/app/models/ApiRequest';
 import { ApiService } from 'src/app/service/api.service';
+import { SignalrHubService } from 'src/app/service/signalr-hub.service';
 
 
 @Component({
@@ -19,14 +20,49 @@ export class GamePageComponent implements OnInit {
     private _Router: Router,
     public _ApiService: ApiService,
     public _ToastService: GlobalToastService,
-    private _SharedService: SharedService) {
+    private _SharedService: SharedService,
+    public _Signalr: SignalrHubService
+  ) {
 
   }
 
   ngOnInit(): void {
     this.GetFiInfo();
     this.LoginToUserInfo();
-    setInterval(()=>this.GameTimeRound(), 60000);
+    this.InitServer();
+    this.RoundStart();
+  }
+
+  Flag = true;
+  RoundStart() {
+    let Round = setInterval(() => {
+      this.Time = new Date();
+      let Second = this.Time.getSeconds();
+      console.log(Second, "秒數");
+      if (Second % 60 == 0) {
+        this.Flag = false;
+        setInterval(() => { this.GameTimeRound(); }, 60000);
+        console.log(this.Flag, "開始");
+        clearInterval(Round);
+      }
+    }, 1000)
+
+  }
+
+  UserToken: any;
+  Param: any;
+  InitServer() {
+    this.UserToken = localStorage.getItem("Token");
+    this.Param = `token=${this.UserToken}`
+    console.log("this.UserToken", this.UserToken);
+    if (this.UserToken == null || undefined || "") {
+      this.UserToken = localStorage.getItem("StrangerName");
+      console.log("this.UserToken", this.UserToken);
+      this.Param = `stranger=${this.UserToken}`
+    }
+    this._Signalr.Connect(`${this.Param}`);
+
+
   }
 
   OpenChatRoom: boolean = false;
@@ -74,10 +110,14 @@ export class GamePageComponent implements OnInit {
 
 
   Time = new Date();
-  JoinRound =(this.Time.getHours()*60)+this.Time.getMinutes();
-  CurrentRound=(this.Time.getHours()*60)+this.Time.getMinutes();
-  GameTimeRound(){
-    this.Time=new Date();
-    this.CurrentRound = (this.Time.getHours()*60)+this.Time.getMinutes();
+  JoinRound = (this.Time.getHours() * 60) + this.Time.getMinutes();
+  CurrentRound = (this.Time.getHours() * 60) + this.Time.getMinutes();
+  GameTimeRound() {
+    this.Time = new Date();
+    this.CurrentRound = (this.Time.getHours() * 60) + this.Time.getMinutes();
+    this.ToggleCard();
+    setTimeout(() => {
+      this.ToggleCard();
+    }, 1800);
   }
 }

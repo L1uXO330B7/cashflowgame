@@ -1,6 +1,9 @@
 ﻿using BLL.IServices;
+using Common.Methods;
 using Common.Model;
+using DPL.EF;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Text;
 using System.Timers;
@@ -12,35 +15,38 @@ namespace API.Hubs
     public class Hubs : Hub
     {
         private IClientHubService _ClientHubService;
-        private readonly IHubContext<Hubs>_hubContext;
+        private readonly IHubContext<Hubs> _hubContext;
+        private readonly CashFlowDbContext _CashFlowDbContext;
+        private System.Timers.Timer timer;
+        public static Boolean TimerTrigger = false;
+        public static List<string> ConnIDList = new List<string>(); // 連線ID清單
+        public static List<UserInfo> UserList = new List<UserInfo>(); // 連線User清單
+        public static UserInfo _UserObject = new UserInfo(); // 使用者物件 Id 信箱 姓名 ...
+        public static List<RandomItem<int>> CardList = new List<RandomItem<int>>();
+        public static List<Card> Cards = new List<Card>();
 
         /// <summary>
         /// 建構子
         /// </summary>
-        public Hubs(IClientHubService ClientHubService,IHubContext<Hubs> hubContext)
+        public Hubs(IClientHubService ClientHubService, IHubContext<Hubs> hubContext, CashFlowDbContext cashFlowDbContext)
         {
             _ClientHubService = ClientHubService;
+            _CashFlowDbContext = cashFlowDbContext;
             _hubContext = hubContext;
 
+            Cards = _CashFlowDbContext.Cards.AsNoTracking().ToList();
+            CardList = Cards.Select(x => new RandomItem<int>
+            {
+                SampleObj = x.Id,
+                Weight = (decimal)x.Weight
+            }).ToList();
+
+            if (!TimerTrigger)
+            {
+                TimerInit();
+                TimerTrigger = true;
+            }
         }
-
-        System.Timers.Timer timer;
-
-       
-        /// <summary>
-        /// 連線ID清單
-        /// </summary>
-        public static List<string> ConnIDList = new List<string>();
-
-        /// <summary>
-        /// 連線User清單
-        /// </summary>
-        public static List<UserInfo> UserList = new List<UserInfo>();
-
-        /// <summary>
-        /// 使用者物件 Id 信箱 姓名 ...
-        /// </summary>
-        public static UserInfo _UserObject = new UserInfo();
 
         /// <summary>
         /// 連線事件
@@ -83,7 +89,6 @@ namespace API.Hubs
             // 更新聊天內容
             await Clients.All.SendAsync("UpdContent", "新連線玩家: " + _UserObject.Name);
 
-       
             await base.OnConnectedAsync();
         }
 
@@ -109,23 +114,15 @@ namespace API.Hubs
 
             // 更新聊天內容
             await Clients.All.SendAsync("UpdContent", "已離線玩家: " + _UserObject.Name);
-            await Clients.All.SendAsync("Okay", "draw");
 
             await base.OnDisconnectedAsync(ex);
         }
 
-
-
-
-
-
+        #region Invoke
 
         /// <summary>
         /// 傳遞訊息
         /// </summary>
-        /// <param name="user"></param>
-        /// <param name="message"></param>
-        /// <param name="id"></param>
         /// <returns></returns>
         public async Task SendMessage(FromClientChat package)
         {
@@ -143,33 +140,69 @@ namespace API.Hubs
                 await Clients.Client(Context.ConnectionId).SendAsync("UpdContent", "你向 " + package.sendToID + " 私訊說: " + package.message);
             }
         }
-        public async Task SetTimer(int okay)
+
+        /// <summary>
+        /// 計時器初始化
+        /// </summary>
+        public void TimerInit()
         {
+            var flag = true;
+            var Count = 0;
             // Create a timer with a two second interval.
-            timer = new System.Timers.Timer(5000);
+            while (flag)
+            {
+
+                var time1 = DateTime.Now.Second;
+
+                if (DateTime.Now.Second % 60 == 0)
+                {
+                    var time = DateTime.Now.Second;
+                    timer = new System.Timers.Timer(60000);
+                    Count++;
+                    flag = false;
+                }
+            }
+            var test = Count;
+
             // Hook up the Elapsed event for the timer. 
             timer.Elapsed += OnTimedEvent;
             timer.Enabled = true;
         }
+
+        /// <summary>
+        /// 計時器觸發抽卡
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="e"></param>
         public async void OnTimedEvent(Object source, ElapsedEventArgs e)
         {
-            timer.Stop();
-            try{
-           await _hubContext.Clients.All.SendAsync("Okay", "draw");
+            try
+            {
+                timer.Stop();
 
+                foreach (var ID in ConnIDList)
+                {
+                    var CardByRandom = Method.RandomWithWeight(CardList);
+
+                    var YourCard = Cards.FirstOrDefault(x => x.Id == CardByRandom);
+
+                    await _hubContext.Clients.Client(ID).SendAsync("Okay", YourCard);
+                }
+
+                timer.Start();
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 throw;
             }
-            timer.Start();
         }
+
         /// <summary>
         /// 抽卡
         /// </summary>
         /// <returns></returns>
-        public async Task DrawCard()
+        public void DrawCard()
         {
-
             // 寫一隻 Service 執行抽卡
         }
 
@@ -181,5 +214,7 @@ namespace API.Hubs
         {
             // 寫一隻 Service 執行抽卡結果判斷與影響
         }
+
+        #endregion
     }
 }
