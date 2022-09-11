@@ -48,18 +48,17 @@ export class HomePageComponent implements OnInit {
     this.LoginToUserInfo();
     // setTimeout(() => this.TypeWriter(), 1000);
   }
+
   //   ngAfterViewInit(): void{}
   //   // SloganText:string[]=[];
   //   // Index=0;
   //   // AnimatedText:string="";
   //   // TypeWriter() {
   //   //   this.SloganText="錢董讓你懂錢".split('');
-  //   //   console.log("type",this.SloganText.length);
   //   //   const speed = 200;
   //   //   if (this.Index < this.SloganText.length) {
   //   //     this.AnimatedText += this.SloganText[this.Index];
   //   //     this.Index++;
-  //   //     console.log("index",this.Index);
   //   //     setTimeout(()=>this.TypeWriter(), speed);
   //   //   }
   //   //   else{

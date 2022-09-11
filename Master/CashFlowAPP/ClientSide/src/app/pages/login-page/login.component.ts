@@ -89,9 +89,7 @@ export class LoginComponent implements OnInit {
     let Req = new ApiRequest<ClientUserLogin>();
     Req.Args = this._ClientUserLogin;
     this._ApiService.UserLogin(Req).subscribe((Res) => {
-      console.log(Res);
       if (Res.Success) {
-
         localStorage.setItem('Token', Res.Data.JwtCode);
         localStorage.setItem('UserId', Res.Data.UserId);
         localStorage.removeItem('StrangerName');
@@ -119,7 +117,6 @@ export class LoginComponent implements OnInit {
     // this._HttpClient.post<ApiResponse>(ApiUrl, Req, this._HttpOptions)  改為使用 Service
     this._ApiService.UserSignUp(Req).subscribe((Res) => {
         if(Res.Success){
-          console.log("signUp");
           this.changeLogin();
         }
       });

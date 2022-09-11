@@ -54,12 +54,9 @@ export class GamePageComponent implements OnInit {
     this.Param = `token=${this.UserToken}`
     if (this.UserToken == null || undefined || "") {
       this.UserToken = localStorage.getItem("StrangerName");
-      console.log("this.UserToken", this.UserToken);
       this.Param = `stranger=${this.UserToken}`
     }
     this._Signalr.Connect(`${this.Param}`);
-
-
   }
 
   OpenChatRoom: boolean = false;
@@ -100,8 +97,6 @@ export class GamePageComponent implements OnInit {
     this._ApiService.GetFiInfo(Req).subscribe((Res) => {
       if (Res.Success) {
         this.UserFiInfo = Res.Data.Result;
-
-        console.log(this.UserFiInfo, "Res");
       }
     });
   }

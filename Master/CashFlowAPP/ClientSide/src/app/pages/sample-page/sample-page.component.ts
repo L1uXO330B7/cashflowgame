@@ -18,19 +18,15 @@ export class SamplePageComponent implements OnInit {
   Param:any="";
   test(){
     this.Param = `token=${this.UserToken}`
-    console.log("this.UserToken",this.UserToken);
     if(this.UserToken==null||undefined||""){
       this.UserToken = localStorage.getItem("StrangerName");
-      console.log("this.UserToken",this.UserToken);
       this.Param = `stranger=${this.UserToken}`
     }
     this._Signalr.Connect(`${this.Param}`);
     this._Signalr.OnObservable("UpdList").subscribe((res:any)=>{
       let list = JSON.parse(res[0]);
-      console.log(res,"id");
     });
     this._Signalr.OnObservable("UpdContent").subscribe((res:any)=>{
-      console.log(res,"2");
     });
  }
 

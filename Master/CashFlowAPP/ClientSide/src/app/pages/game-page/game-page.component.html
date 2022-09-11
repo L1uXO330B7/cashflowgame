@@ -16,7 +16,7 @@
       <div class="d-flex Hamster">
         現在是第 {{CurrentRound}} 圈
         <app-hamster-wheel *ngIf="!Flag"></app-hamster-wheel>
-        <h2 *ngIf="Flag">遊戲尚未開始</h2>
+        <h4 *ngIf="Flag">請等待下一圈的到來</h4>
         你在第 {{JoinRound}} 圈加入
       </div>
 

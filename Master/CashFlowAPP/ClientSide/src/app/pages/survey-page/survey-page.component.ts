@@ -143,7 +143,7 @@ export class SurveyPageComponent implements OnInit {
         arg.UserId = -1;
       });
     }
-    console.log( Req.Args);
+
     this._ApiService.SaveUserAnswerArgs(Req).subscribe((Res) => {
       if (Res.Success) {
         this._Router.navigate(['/', 'game']);
@@ -157,7 +157,6 @@ export class SurveyPageComponent implements OnInit {
   GetUserAnswer() {
     this.IsLoading=true;
     if (this.UserId != "" && this.UserId != null) {
-      console.log(this.UserId);
       let Req = new ApiRequest<any>();
       let listInt = [this.UserId];
       let Arg =

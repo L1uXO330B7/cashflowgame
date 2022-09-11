@@ -10,7 +10,6 @@ export class GlobalToastService {
   toasts: any[] = [];
 
   show(textOrTpl: string | TemplateRef<any>, options: any = {}) {
-    console.log('click')
     this.toasts.push({ textOrTpl, ...options });
   }
   remove(toast:any) {

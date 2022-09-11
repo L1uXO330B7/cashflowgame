@@ -14,7 +14,6 @@ export class SharedService {
   SharedData = this._BehaviorSubject.asObservable();
 
   SetShareData<T>(Data: T[]) {
-    console.log('Data', Data);
     this._BehaviorSubject.next(Data);
     console.log('SharedData', this.SharedData);
   }

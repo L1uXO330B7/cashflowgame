@@ -11,14 +11,19 @@ import { GlobalToastService } from './global-toast.service';
 })
 export class ToastComponent implements OnInit {
 
-  constructor(public _ToastService : GlobalToastService) { }
+  constructor(
+    public _ToastService: GlobalToastService
+  ) { }
+
   ngOnInit(): void {
   }
+
   show = true;
   autohide = false;
   animation = true;
-  isTemplate(toast:any) {
-    console.log(toast.textOrTpl instanceof TemplateRef);
-    return toast.textOrTpl instanceof TemplateRef;}
+
+  isTemplate(toast: any) {
+    return toast.textOrTpl instanceof TemplateRef;
+  }
 
 }

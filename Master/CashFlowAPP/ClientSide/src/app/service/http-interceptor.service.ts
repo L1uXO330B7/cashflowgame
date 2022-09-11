@@ -48,7 +48,6 @@ export class HttpInterceptorService implements HttpInterceptor {
 
           // https://www.tpisoftware.com/tpu/articleDetails/1084
 
-          console.log('HttpInterceptorService event', event.body);
           if (event.body !== undefined || null) {
             if (event.body.Success) {
               if (this.NewRequest.url.indexOf('Read') == -1) {
@@ -67,7 +66,6 @@ export class HttpInterceptorService implements HttpInterceptor {
           console.log('req', req);
           // https://stackoverflow.com/questions/68655492/throwerrorerror-is-now-deprecated-but-there-is-no-new-errorhttperrorresponse
           return throwError(() => error);
-
         }),
       );
   }
