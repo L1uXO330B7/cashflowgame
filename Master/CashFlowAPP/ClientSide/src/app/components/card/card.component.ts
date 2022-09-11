@@ -16,7 +16,7 @@ export class CardComponent implements OnInit {
 
   OnCard() {
     this._Signalr.OnObservable("Okay").subscribe((Res: any) => {
-      console.log(Res, "drwa");
+
     });
   }
 }

@@ -38,11 +38,9 @@ export class GamePageComponent implements OnInit {
     let Round = setInterval(() => {
       this.Time = new Date();
       let Second = this.Time.getSeconds();
-      console.log(Second, "秒數");
       if (Second % 60 == 0) {
         this.Flag = false;
         setInterval(() => { this.GameTimeRound(); }, 60000);
-        console.log(this.Flag, "開始");
         clearInterval(Round);
       }
     }, 1000)
@@ -54,7 +52,6 @@ export class GamePageComponent implements OnInit {
   InitServer() {
     this.UserToken = localStorage.getItem("Token");
     this.Param = `token=${this.UserToken}`
-    console.log("this.UserToken", this.UserToken);
     if (this.UserToken == null || undefined || "") {
       this.UserToken = localStorage.getItem("StrangerName");
       console.log("this.UserToken", this.UserToken);
@@ -77,7 +74,6 @@ export class GamePageComponent implements OnInit {
 
   OpenCard: boolean = true;
   ToggleCard() {
-    console.log("clickCard", this.OpenCard)
     this.OpenCard = !this.OpenCard;
   }
   IsLogin: boolean = false;
@@ -85,13 +81,15 @@ export class GamePageComponent implements OnInit {
   UserName: any;
   UserId = localStorage.getItem('UserId');
   LoginToUserInfo() {
-    this._SharedService.SharedData.subscribe((Res) => {
-      this.UserData = Res;;
-      console.log(this.UserData, "a");
-    })
-    if (this.UserId != "" && this.UserId != null) {
 
+    if (this.UserId != "" && this.UserId != null) {
+      this._SharedService.SharedData.subscribe((Res) => {
+      this.UserData = Res;
+    })
       this.IsLogin = true;
+    }
+    else{
+      this.UserData.Name = localStorage.getItem("StrangerName");
     }
   }
   UserFiInfo: any = {}
@@ -101,9 +99,9 @@ export class GamePageComponent implements OnInit {
     Req.Args = this.UserId;
     this._ApiService.GetFiInfo(Req).subscribe((Res) => {
       if (Res.Success) {
-        this.UserFiInfo = Res.Data;
+        this.UserFiInfo = Res.Data.Result;
 
-        console.log(Res.Data, "Res");
+        console.log(this.UserFiInfo, "Res");
       }
     });
   }

@@ -71,10 +71,8 @@ export class SignalrHubService {
   }
   //invoke()
   Invoke(Method:string,Arg:any){
-    while(this.IsConnected==true){
           this.Connection.invoke(Method,Arg).catch(function (err: any) {
       alert('傳送錯誤: ' + err.toString());
     });
-    }
   }
 }

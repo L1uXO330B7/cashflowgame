@@ -43,5 +43,9 @@ export class AppComponent implements OnInit{
         }
       });
     }
+    else{
+      let  StrangerName:any = localStorage.getItem("StrangerName");
+      this._SharedService.SetShareData(StrangerName);
+    }
   }
 }

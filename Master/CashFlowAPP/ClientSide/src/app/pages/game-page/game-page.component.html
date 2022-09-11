@@ -37,7 +37,8 @@
         </button>
         <div class="col-6 p-0 UserGameInfo">
           <h5 class="text-center mt-3">您好!</h5>
-          <h2 class="UserName text-center mt-3">{{UserData.Name}}</h2>
+          <h2 class="UserName text-center mt-3" *ngIf="UserData.Name!=undefined">{{UserData.Name}}</h2>
+          <h2 class="UserName text-center mt-3" *ngIf="UserData.Name==undefined">{{UserData}}</h2>
           <ul class="FinancialState">
             <li>
               <h4>現金 :</h4><span>NT$ 777</span>
