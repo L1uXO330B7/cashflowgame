@@ -39,14 +39,14 @@ namespace Common.Model
     }
     public class FiInfo
     {
-        public int UserId { get; set; }
-        public decimal CurrentMoney { get; set; }
+        public int? UserId { get; set; }
+        public decimal? CurrentMoney { get; set; }
         public List<CashFlowAndCategoryModel> CashFlowIncome { get; set; }
         public List<CashFlowAndCategoryModel> CashFlowExpense { get; set; }
         public List<AssetAndCategoryModel> Asset { get; set; }
         public List<AssetAndCategoryModel> Liabilities { get; set; }
-        public int NowCardId { get; set; }
-        public decimal NowCardValue { get; set; }
+        public int? NowCardId { get; set; }
+        public decimal? NowCardValue { get; set; }
     }
 
     public class CardInfo

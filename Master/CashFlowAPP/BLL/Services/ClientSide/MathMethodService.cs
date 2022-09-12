@@ -7,14 +7,13 @@ using System.Threading.Tasks;
 
 namespace BLL.Services.ClientSide
 {
-    public class MathMethodService
+    public class MathMethodService : ServiceBase
     {
-        private readonly CashFlowDbContext _CashFlowDbContext;
+        private CashFlowDbContext Db;
         public MathMethodService(
-            CashFlowDbContext cashFlowDbContext
         )
         {
-            _CashFlowDbContext = cashFlowDbContext;
+            Db = base.GetDbContext();
         }
 
         private static Random StaticRandom()
@@ -26,7 +25,7 @@ namespace BLL.Services.ClientSide
         {
             var _Random = StaticRandom();
             // 金融商品筆數
-            var InvestCount = _CashFlowDbContext.AssetCategories.Where(x => x.ParentId == 46).ToList().Count;
+            var InvestCount = Db.AssetCategories.Where(x => x.ParentId == 46).ToList().Count;
             // 定存價值 = 薪水*隨機數字*
             var Dice = _Random.Next(1, InvestCount);
             var ResultValue = (YourJobValue - DailyExpeneseValue) * Dice;

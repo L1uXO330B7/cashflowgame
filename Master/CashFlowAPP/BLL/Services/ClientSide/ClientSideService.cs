@@ -385,7 +385,7 @@ namespace BLL.Services.ClientSide
                         //// 定存價值=薪水*隨機數字*
                         //var Dice = _Random.Next(1, InvestCount);
                         //YourAssets.Value = (YourJob.Value - DailyExpenese.Value) * Dice;
-                        YourAssets.Value = new MathMethodService(_CashFlowDbContext)
+                        YourAssets.Value = new MathMethodService()
                             .FoundationCount(YourJob.Value, DailyExpenese.Value);
                         YourAssets.GuidCode = GuidCode;
                     }
@@ -427,7 +427,17 @@ namespace BLL.Services.ClientSide
             Asset = AssetResult.Where(c => c.Value >= 0).ToList();
             Liabilities = AssetResult.Where(c => c.Value < 0).ToList();
 
-            Res.Data = new { CurrentMoney, CashFlowIncome, CashFlowExpense, Asset, Liabilities };
+            Res.Data = new FiInfo
+            {
+                UserId = Req.Args,
+                CurrentMoney = null,
+                CashFlowIncome = CashFlowIncome,
+                CashFlowExpense = CashFlowExpense,
+                Asset = Asset,
+                Liabilities = Liabilities,
+                NowCardId = null,
+                NowCardValue = null,
+            };
             Res.Success = true;
             Res.Code = (int)ResponseStatusCode.Success;
             return Res;

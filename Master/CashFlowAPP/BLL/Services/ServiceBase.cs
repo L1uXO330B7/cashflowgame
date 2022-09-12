@@ -3,6 +3,7 @@ using Common.Methods;
 using Common.Model;
 using DPL.EF;
 using MailKit.Net.Smtp;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
 using System.Text;
@@ -63,6 +64,24 @@ namespace BLL.Services
             Res.Message = "成功寄出";
             Res.Data = JWTcode;
             return Res;
+        }
+
+        /// <summary>
+        /// 參考 https://dotblogs.com.tw/yc421206/2020/06/28/how_to_read_config_appsettings_json_via_net_core_31
+        /// </summary>
+        /// <returns></returns>
+        protected virtual CashFlowDbContext GetDbContext()
+        {
+            var Builder = new ConfigurationBuilder()
+                  .SetBasePath(Directory.GetCurrentDirectory())
+                  .AddJsonFile("appsettings.json");
+            var Config = Builder.Build();
+
+            // [Optional] ConnectionMode connectionMode
+            var OptionsBuilder = new DbContextOptionsBuilder<CashFlowDbContext>();
+            var ConnectionString = Config["ConnectionStrings:OnlineCashFlow"];
+            OptionsBuilder.UseSqlServer(ConnectionString);
+            return new CashFlowDbContext(OptionsBuilder.Options);
         }
     }
 }

@@ -100,11 +100,12 @@ namespace API.Controllers.ClientSide
                 var UserFiInfo = _MemoryCache.GetOrCreate(Req.Args, async (not) =>
                 {
                     Res = await _ClientSideService.ReadFiInfo(Req);
-                    _MemoryCache.Set(
-                    Req.Args, Res.Data,
-                        new MemoryCacheEntryOptions()
-                       .SetPriority(CacheItemPriority.NeverRemove));
-                    return Res.Data;
+                    FiInfo Data = (FiInfo)Res.Data;
+                    //_MemoryCache.Set(
+                    //Req.Args, Data,
+                    //    new MemoryCacheEntryOptions()
+                    //   .SetPriority(CacheItemPriority.NeverRemove));
+                    return Data;
                 });
 
                 // Todo: Cache count
