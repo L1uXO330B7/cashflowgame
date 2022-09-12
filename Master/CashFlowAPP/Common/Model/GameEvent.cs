@@ -7,11 +7,10 @@ using System.Threading.Tasks;
 namespace Common.Model
 {
     public class CategoryMix
-    { 
+    {
         public List<AssetAndCategoryModel> Assets { get; set; }
         public List<CashFlowAndCategoryModel> CashFlows { get; set; }
     }
-
     public class AssetAndCategoryModel
     {
         public int Id { get; set; }
@@ -35,5 +34,16 @@ namespace Common.Model
         public int CashFlowCategoryId { get; set; }
         public int ParentId { get; set; }
         public string GuidCode { get; set; }
+    }
+    public class FiInfo
+    {
+        public int UserId { get; set; }
+        public decimal CurrentMoney { get; set; }
+        public List<CashFlowAndCategoryModel> CashFlowIncome { get; set; }
+        public List<CashFlowAndCategoryModel> CashFlowExpense { get; set; }
+        public List<AssetAndCategoryModel> Asset { get; set; }
+        public List<AssetAndCategoryModel> Liabilities { get; set; }
+        public int NowCardId { get; set; }
+        public decimal NowCardValue { get; set; }
     }
 }

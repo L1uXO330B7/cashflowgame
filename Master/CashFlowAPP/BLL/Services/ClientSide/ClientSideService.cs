@@ -6,16 +6,21 @@ using Common.Model.AdminSide;
 using DPL.EF;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace BLL.Services.ClientSide
 {
     public class ClientSideService : IClientSideService
     {
-        // db
+        private readonly IMemoryCache _MemoryCache;
         private readonly CashFlowDbContext _CashFlowDbContext;
-        public ClientSideService(CashFlowDbContext cashFlowDbContext)
+        public ClientSideService(
+            CashFlowDbContext cashFlowDbContext,
+            IMemoryCache memoryCache
+        )
         {
             _CashFlowDbContext = cashFlowDbContext;
+            _MemoryCache = memoryCache;
         }
 
         /// <summary>
@@ -173,12 +178,12 @@ namespace BLL.Services.ClientSide
                 answerQuestions.Add(answerQuestion);
             }
 
-            _CashFlowDbContext.AddRange(answerQuestions);   
+            _CashFlowDbContext.AddRange(answerQuestions);
             if (Req.Args[0].UserId != -1)
             {
-              _CashFlowDbContext.SaveChanges();
+                _CashFlowDbContext.SaveChanges();
             }
-           
+
             // 不做銷毀 Dispose 動作，交給 DI 容器處理
 
             // 此處 SaveChanges 後 SQL Server 會 Tracking 回傳新增後的 Id
@@ -195,8 +200,6 @@ namespace BLL.Services.ClientSide
 
         public async Task<ApiResponse> ReadFiInfo(ApiRequest<int?> Req)
         {
-
-
             var Assets = _CashFlowDbContext.Assets
                 .Where(x => x.Status == (int)StatusCode.Enable)
                 .AsNoTracking()
@@ -233,12 +236,12 @@ namespace BLL.Services.ClientSide
 
 
             var Res = new ApiResponse();
-            var CashFlowResult = new List<dynamic>();
-            var AssetResult = new List<dynamic>();
+            var CashFlowResult = new List<CashFlowAndCategoryModel>();
+            var AssetResult = new List<AssetAndCategoryModel>();
             var _Random = StaticRandom();
             // if (Req.Args == null) TODO: UserId問卷會影響初始值
             {
-               
+
 
                 // 先抽職業
                 var Jobs =
@@ -412,20 +415,19 @@ namespace BLL.Services.ClientSide
                 //    }
                 //}
             }
+
             Decimal CurrentMoney = _Random.Next(1, 20000);
-            var CashFlowIncome = new List<dynamic>();
-            var CashFlowExpense = new List<dynamic>();
-            var Asset = new List<dynamic>();
-            var Liabilities = new List<dynamic>();
+            var CashFlowIncome = new List<CashFlowAndCategoryModel>();
+            var CashFlowExpense = new List<CashFlowAndCategoryModel>();
+            var Asset = new List<AssetAndCategoryModel>();
+            var Liabilities = new List<AssetAndCategoryModel>();
 
             CashFlowIncome = CashFlowResult.Where(c => c.Value >= 0).ToList();
             CashFlowExpense = CashFlowResult.Where(c => c.Value < 0).ToList();
             Asset = AssetResult.Where(c => c.Value >= 0).ToList();
             Liabilities = AssetResult.Where(c => c.Value < 0).ToList();
 
-
-
-            Res.Data = new { CurrentMoney,CashFlowIncome, CashFlowExpense, Asset, Liabilities };
+            Res.Data = new { CurrentMoney, CashFlowIncome, CashFlowExpense, Asset, Liabilities };
             Res.Success = true;
             Res.Code = (int)ResponseStatusCode.Success;
             return Res;

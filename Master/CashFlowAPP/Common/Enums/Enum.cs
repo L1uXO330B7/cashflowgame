@@ -40,6 +40,7 @@ namespace Common.Enum
         /// </summary>
         Unauthorized = 2006,
     }
+
     public enum StatusCode
     {
         /// <summary>
@@ -52,4 +53,11 @@ namespace Common.Enum
         Disable = 0,
     }
 
+    public enum EffectTables
+    {
+        CashFlow = 1,
+        Asset = 2,
+        CashFlowCategories = 3,
+        AssetCategories = 4,
+    }
 }

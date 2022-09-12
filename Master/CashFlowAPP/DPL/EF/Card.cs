@@ -27,7 +27,7 @@ namespace DPL.EF
         /// </summary>
         public decimal? Weight { get; set; }
         /// <summary>
-        /// 卡片類型 ex 交易機會 , 強迫中獎
+        /// 卡片類型 ex 交易機會 , 強迫中獎 , 天選之人
         /// </summary>
         public string Type { get; set; }
 

@@ -25,6 +25,10 @@ namespace DPL.EF
         /// 影響資料表流水號 ( 外鍵 )
         /// </summary>
         public int EffectTableId { get; set; }
+        /// <summary>
+        /// 影響值
+        /// </summary>
+        public decimal? Value { get; set; }
 
         public virtual Card Card { get; set; }
         public virtual EffectTable EffectTable { get; set; }

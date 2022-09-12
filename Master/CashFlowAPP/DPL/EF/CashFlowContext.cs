@@ -123,7 +123,7 @@ namespace DPL.EF
 
                 entity.Property(e => e.Status).HasComment("狀態 0. 停用 1. 啟用 2. 刪除");
 
-                entity.Property(e => e.Type).HasComment("卡片類型 ex 交易機會 , 強迫中獎");
+                entity.Property(e => e.Type).HasComment("卡片類型 ex 交易機會 , 強迫中獎 , 天選之人");
 
                 entity.Property(e => e.Weight)
                     .HasColumnType("decimal(18, 0)")
@@ -143,6 +143,10 @@ namespace DPL.EF
                 entity.Property(e => e.EffectTableId).HasComment("影響資料表流水號 ( 外鍵 )");
 
                 entity.Property(e => e.TableId).HasComment("影響類別內流水號 ( 外鍵 )");
+
+                entity.Property(e => e.Value)
+                    .HasColumnType("money")
+                    .HasComment("影響值");
 
                 entity.HasOne(d => d.Card)
                     .WithMany(p => p.CardEffects)

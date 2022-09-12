@@ -4,6 +4,7 @@ using Common.Model;
 using DPL.EF;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
 using System.Text;
 using System.Timers;
@@ -28,7 +29,12 @@ namespace API.Hubs
         /// <summary>
         /// 建構子
         /// </summary>
-        public Hubs(IClientHubService ClientHubService, IHubContext<Hubs> hubContext, CashFlowDbContext cashFlowDbContext)
+        public Hubs(
+            IClientHubService ClientHubService,
+            IHubContext<Hubs> hubContext,
+            CashFlowDbContext cashFlowDbContext,
+            IMemoryCache memoryCache
+        )
         {
             _ClientHubService = ClientHubService;
             _CashFlowDbContext = cashFlowDbContext;
@@ -54,29 +60,30 @@ namespace API.Hubs
         /// <returns></returns>
         public override async Task OnConnectedAsync()
         {
-            var Token = Context.GetHttpContext().Request.Query["token"];
-            if (Token.Count == 0)
+            _UserObject.ConnectionId = Context.ConnectionId;
+
+            // 第一次連線
+            if (!ConnIDList.Any(x => x == Context.ConnectionId))
             {
-                var Stranger = Context.GetHttpContext().Request.Query["stranger"];
+                ConnIDList.Add(Context.ConnectionId);
+            }
+
+            var Token = Context.GetHttpContext().Request.Query["token"];
+            if (Token.Count == 0) // 遊客
+            {
+                var Stranger = Context.GetHttpContext().Request.Query["stranger"]; // 暱稱
                 _UserObject.Name = (string)Stranger + "$$$";
             }
-            else
+            else // 用戶
             {
-                //string value = !string.IsNullOrEmpty(Token.ToString()) ? Token.ToString() : "default";
                 _UserObject = Jose.JWT.Decode<UserInfo>(
                        Token, Encoding.UTF8.GetBytes("錢董"),
                        Jose.JwsAlgorithm.HS256);
-            }
 
-            if (ConnIDList.Where(p => p == Context.ConnectionId).FirstOrDefault() == null)
-            {
-                ConnIDList.Add(Context.ConnectionId);
-
-            }
-
-            if (_UserObject != null)
-            {
-                UserList.Add(_UserObject);
+                if (_UserObject != null)
+                {
+                    UserList.Add(_UserObject);
+                }
             }
 
             // 更新連線 ID 列表
@@ -180,13 +187,13 @@ namespace API.Hubs
             {
                 timer.Stop();
 
-                foreach (var ID in ConnIDList)
+                foreach (var User in UserList)
                 {
+                    // 透過後端儲存抽到的卡片，前端只負責顯示
                     var CardByRandom = Method.RandomWithWeight(CardList);
-
                     var YourCard = Cards.FirstOrDefault(x => x.Id == CardByRandom);
-
-                    await _hubContext.Clients.Client(ID).SendAsync("DrawCard", YourCard);
+                    var CardInfo = _ClientHubService.ProcessCardInfo(YourCard, UserList, User.Id);
+                    await _hubContext.Clients.Client(User.ConnectionId).SendAsync("DrawCard", YourCard);
                 }
 
                 timer.Start();
@@ -198,7 +205,7 @@ namespace API.Hubs
         }
 
         /// <summary>
-        /// 卡片抉擇
+        /// 卡片抉擇，結果回傳
         /// </summary>
         /// <returns></returns>
         public async Task ChoiceOfCard(FromClientChat package)
@@ -216,14 +223,6 @@ namespace API.Hubs
                 // 發送人
                 await Clients.Client(Context.ConnectionId).SendAsync("UpdContent", "你向 " + package.sendToID + " 私訊說: " + package.message);
             }
-        }
-        /// <summary>
-        /// 抽卡結果回傳
-        /// </summary>
-        /// <returns></returns>
-        public async Task CardResult()
-        {
-            // 寫一隻 Service 執行抽卡結果判斷與影響
         }
 
         #endregion

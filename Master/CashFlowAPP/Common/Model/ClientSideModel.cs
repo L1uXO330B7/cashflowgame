@@ -36,7 +36,12 @@ namespace Common.Model
         public string JwtCode { get; set; }
     }
     public class UserInfo
-    {   /// <summary>
+    {
+        /// <summary>
+        /// 連線 Id
+        /// </summary>
+        public string ConnectionId { get; set; }
+        /// <summary>
         /// 使用者流水號
         /// </summary>
         public int Id { get; set; }

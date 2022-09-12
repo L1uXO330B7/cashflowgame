@@ -17,13 +17,14 @@ namespace API.Controllers.ClientSide
         private readonly IMemoryCache _MemoryCache;
         public static SmtpConfig _SmtpConfig = new SmtpConfig();
 
-        public ClientSideController(
-
+        public ClientSideController
+        (
           IClientSideService ClientSideService,
           IConfiguration Configuration,
           IMemoryCache memoryCache
         )
         {
+            _MemoryCache = memoryCache;
             _ClientSideService = ClientSideService;
             //_SmtpConfig.Port = Configuration["SMTP:Port"];
             //_SmtpConfig.IsSSL = Configuration["SMTP:IsSSL"];
@@ -32,8 +33,6 @@ namespace API.Controllers.ClientSide
             //_SmtpConfig.Account = Configuration["SMTP:Account"];
             //_SmtpConfig.Password = Configuration["SMTP:Password"];
             //_SmtpConfig.SenderEmail = Configuration["SMTP:SenderEmail"];
-            _MemoryCache = memoryCache;
-
         }
 
         /// <summary>
@@ -72,6 +71,7 @@ namespace API.Controllers.ClientSide
         {
             return await _ClientSideService.UserLogin(Req);
         }
+
         /// <summary>
         /// 使用者答案全刪全建
         /// </summary>
@@ -82,6 +82,7 @@ namespace API.Controllers.ClientSide
         {
             return await _ClientSideService.UserAnswersUpdate(Req);
         }
+
         /// <summary>
         /// 讀取用戶財報
         /// </summary>
@@ -91,12 +92,13 @@ namespace API.Controllers.ClientSide
         public async Task<ApiResponse> ReadFiInfo([FromBody] ApiRequest<int?> Req)
         {
             var Res = new ApiResponse();
-            
+
             if (Req.Args != null)
             {
                 // Req.Args 是 UserId，用 UserId 來作為快取記憶體的 key
                 // 如找無此 Key 就空出一個單位的記憶體來儲存
-                var UserFiInfo = _MemoryCache.GetOrCreate(Req.Args, async (not) => {
+                var UserFiInfo = _MemoryCache.GetOrCreate(Req.Args, async (not) =>
+                {
                     Res = await _ClientSideService.ReadFiInfo(Req);
                     _MemoryCache.Set(
                     Req.Args, Res.Data,
@@ -104,6 +106,7 @@ namespace API.Controllers.ClientSide
                        .SetPriority(CacheItemPriority.NeverRemove));
                     return Res.Data;
                 });
+
                 // Todo: Cache count
                 Res.Success = true;
                 Res.Code = (int)ResponseStatusCode.Success;
@@ -116,9 +119,8 @@ namespace API.Controllers.ClientSide
             return Res;
         }
 
-
-      
         // Todo remove cache
+
         #endregion
     }
 }
