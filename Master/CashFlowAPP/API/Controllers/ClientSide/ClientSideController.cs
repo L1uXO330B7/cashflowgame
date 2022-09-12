@@ -105,6 +105,8 @@ namespace API.Controllers.ClientSide
                     //Req.Args, Data,
                     //    new MemoryCacheEntryOptions()
                     //   .SetPriority(CacheItemPriority.NeverRemove));
+                    //
+                    //   <= 這樣是正常的但是 UserFiInfo 會變成 Task 包住導致解出來時還要再包層 Task，把滑鼠移上去看
                     return Data;
                 });
 
