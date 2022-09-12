@@ -17,7 +17,7 @@ namespace DPL.EF
         /// <summary>
         /// 卡片名稱
         /// </summary>
-        public string Name { get; set; } = null!;
+        public string Name { get; set; }
         /// <summary>
         /// 狀態 0. 停用 1. 啟用 2. 刪除
         /// </summary>
@@ -26,6 +26,10 @@ namespace DPL.EF
         /// 權重
         /// </summary>
         public decimal? Weight { get; set; }
+        /// <summary>
+        /// 卡片類型 ex 交易機會 , 強迫中獎
+        /// </summary>
+        public string Type { get; set; }
 
         public virtual ICollection<CardEffect> CardEffects { get; set; }
     }

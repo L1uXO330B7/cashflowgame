@@ -18,7 +18,7 @@ namespace DPL.EF
         /// <summary>
         /// 權限角色名稱 管理員、玩家
         /// </summary>
-        public string Name { get; set; } = null!;
+        public string Name { get; set; }
         /// <summary>
         /// 狀態 0. 停用 1. 啟用 2. 刪除
         /// </summary>

@@ -37,6 +37,7 @@ namespace BLL.Services.AdminSide
                 card.Name = Arg.Name;
                 card.Status = Arg.Status;
                 card.Weight = Arg.Weight;
+                card.Type = Arg.Type;
 
                 cards.Add(card);
             }
@@ -121,6 +122,7 @@ namespace BLL.Services.AdminSide
                     card.Name = Arg.Name;
                     card.Status = Arg.Status;
                     card.Weight = Arg.Weight;
+                    card.Type = Arg.Type;
 
                     _CashFlowDbContext.SaveChanges();
                     SussList.Add(card.Id);

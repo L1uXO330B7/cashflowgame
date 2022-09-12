@@ -10,20 +10,22 @@ using System.Threading.Tasks;
 
 namespace Common.Model.AdminSide
 {
-    public class CreateCardArgs : Card
+    public class CreateCardArgs
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public byte Status { get; set; }
         public decimal Weight { get; set; }
+        public string Type { get; set; }
     }
 
-    public class UpdateCardArgs : Card
+    public class UpdateCardArgs
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public byte Status { get; set; }
         public decimal Weight { get; set; }
+        public string Type { get; set; }
     }
 
     /// <summary>

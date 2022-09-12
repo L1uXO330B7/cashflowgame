@@ -17,7 +17,7 @@ namespace DPL.EF
         /// <summary>
         /// 現金流類別名稱
         /// </summary>
-        public string Name { get; set; } = null!;
+        public string Name { get; set; }
         /// <summary>
         /// 父類別流水號
         /// </summary>

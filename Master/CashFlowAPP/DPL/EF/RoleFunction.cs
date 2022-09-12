@@ -18,7 +18,7 @@ namespace DPL.EF
         /// </summary>
         public int FunctionId { get; set; }
 
-        public virtual Function Function { get; set; } = null!;
-        public virtual Role Role { get; set; } = null!;
+        public virtual Function Function { get; set; }
+        public virtual Role Role { get; set; }
     }
 }

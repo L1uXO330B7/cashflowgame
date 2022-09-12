@@ -12,7 +12,7 @@ namespace DPL.EF
         /// <summary>
         /// 現金流名稱
         /// </summary>
-        public string Name { get; set; } = null!;
+        public string Name { get; set; }
         /// <summary>
         /// 現金流價值
         /// </summary>
@@ -28,12 +28,12 @@ namespace DPL.EF
         /// <summary>
         /// 描述
         /// </summary>
-        public string Description { get; set; } = null!;
+        public string Description { get; set; }
         /// <summary>
         /// 權重
         /// </summary>
         public decimal? Weight { get; set; }
 
-        public virtual CashFlowCategory CashFlowCategory { get; set; } = null!;
+        public virtual CashFlowCategory CashFlowCategory { get; set; }
     }
 }

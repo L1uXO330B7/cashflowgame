@@ -5,4 +5,5 @@ export class CardArgs {
   Name: string | undefined;
   Status: number | undefined;
   Weight:number|undefined;
+  Type: string | undefined;
 }
