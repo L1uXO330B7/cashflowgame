@@ -3,8 +3,8 @@
       <p>{{CardData.Name}}</p>
     </div>
     <div class="CardFooter">
-      <button class="btn btn-primary mx-2" *ngIf="CardData.Type=='強迫中獎'">好喔</button>
-      <button class="btn btn-success mx-2" *ngIf="CardData.Type!='強迫中獎'">是</button>
-      <button class="btn btn-danger mx-2"  *ngIf="CardData.Type!='強迫中獎'">否</button>
+      <button class="btn btn-primary mx-2" *ngIf="CardData.Type=='強迫中獎'||CardData.Type=='天選之人'">好喔</button>
+      <button class="btn btn-success mx-2" *ngIf="CardData.Type=='交易機會'">是</button>
+      <button class="btn btn-danger mx-2"  *ngIf="CardData.Type=='交易機會'">否</button>
     </div>
 </div>

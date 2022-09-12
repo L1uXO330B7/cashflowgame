@@ -26,7 +26,6 @@ namespace BLL.Services.ClientSide
             var YourCardEffects = _CashFlowDbContext
                 .CardEffects
                 .Where(x => x.CardId == YourCard.Id)
-                .AsNoTracking()
                 .ToList();
 
             // 取得所有人的快取
