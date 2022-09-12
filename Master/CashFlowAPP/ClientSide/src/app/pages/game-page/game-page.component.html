@@ -2,7 +2,7 @@
 
   <div class="row">
     <div class="col p-0">
-      <div class="UserBoard col-6"></div>
+      <div class="UserBoard col-10 bg-dark"></div>
       <button class="ChatRoomToggle  col-10" (click)="ToggleChatRoom()" [class.active]="!OpenChatRoom"><i
           class="fa-solid fa-comment-dollar"></i>
         聊天室 <i class="fa-solid fa-angle-down" *ngIf="OpenChatRoom"></i>
@@ -29,13 +29,13 @@
     </div>
     <div class="col p-0">
       <div class="d-flex">
-        <div class="col-5 p-0"></div>
+        <div class="col-4 p-0"></div>
         <button class="col-1 p-0 InfoToggle" (click)="ToggleInfo()" [class.active]="!OpenInfo"><i
             class="fa-solid fa-circle-info"></i>
           <h5 class="text-center py-2">您的財務狀況</h5><i class="fa-solid fa-angle-left" *ngIf="!OpenInfo"></i><i
             class="fa-solid fa-angle-right" *ngIf="OpenInfo"></i>
         </button>
-        <div class="col-6 p-0 UserGameInfo">
+        <div class="col-7 p-0 UserGameInfo">
           <h5 class="text-center mt-3">您好!</h5>
           <h2 class="UserName text-center mt-3" *ngIf="UserData.Name!=undefined">{{UserData.Name}}</h2>
           <h2 class="UserName text-center mt-3" *ngIf="UserData.Name==undefined">{{UserData}}</h2>
