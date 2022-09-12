@@ -94,7 +94,8 @@ namespace API.Controllers.ClientSide
             
             if (Req.Args != null)
             {
-                
+                // Req.Args 是 UserId，用 UserId 來作為快取記憶體的 key
+                // 如找無此 Key 就空出一個單位的記憶體來儲存
                 var UserFiInfo = _MemoryCache.GetOrCreate(Req.Args, async (not) => {
                     Res = await _ClientSideService.ReadFiInfo(Req);
                     _MemoryCache.Set(
@@ -114,6 +115,9 @@ namespace API.Controllers.ClientSide
             }
             return Res;
         }
+
+
+      
         // Todo remove cache
         #endregion
     }

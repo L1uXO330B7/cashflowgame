@@ -412,6 +412,7 @@ namespace BLL.Services.ClientSide
                 //    }
                 //}
             }
+            int CurrentMoney = 0;
             var CashFlowIncome = new List<dynamic>();
             var CashFlowExpense = new List<dynamic>();
             var Asset = new List<dynamic>();
@@ -424,7 +425,7 @@ namespace BLL.Services.ClientSide
 
 
 
-            Res.Data = new { CashFlowIncome, CashFlowExpense, Asset, Liabilities };
+            Res.Data = new { CurrentMoney,CashFlowIncome, CashFlowExpense, Asset, Liabilities };
             Res.Success = true;
             Res.Code = (int)ResponseStatusCode.Success;
             return Res;
