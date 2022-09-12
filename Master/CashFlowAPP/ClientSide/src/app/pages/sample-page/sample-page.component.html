@@ -1,1 +1,14 @@
-<p>sample-page works!</p>
+<button (click)="open(Modal)">打開</button>
+<ng-template #Modal let-modal>
+  <div class="modal-header">
+    <h3 class="modal-title" id="modal-basic-title">用戶資料</h3>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+
+  </div>
+  <div class="modal-footer">
+
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">取消</button>
+  </div>
+</ng-template>

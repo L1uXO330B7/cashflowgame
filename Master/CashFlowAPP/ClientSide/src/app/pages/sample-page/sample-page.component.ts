@@ -1,6 +1,7 @@
 import { SignalrHubService } from './../../service/signalr-hub.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-sample-page',
@@ -9,25 +10,34 @@ import { environment } from 'src/environments/environment';
 })
 export class SamplePageComponent implements OnInit {
 
-  constructor(public _Signalr:SignalrHubService) { }
+  constructor(private modalService: NgbModal) { }
 
   ngOnInit(): void {
-    this.test();
   }
-  UserToken:any=localStorage.getItem("Token");
-  Param:any="";
-  test(){
-    this.Param = `token=${this.UserToken}`
-    if(this.UserToken==null||undefined||""){
-      this.UserToken = localStorage.getItem("StrangerName");
-      this.Param = `stranger=${this.UserToken}`
-    }
-    this._Signalr.Connect(`${this.Param}`);
-    this._Signalr.OnObservable("UpdList").subscribe((res:any)=>{
-      let list = JSON.parse(res[0]);
-    });
-    this._Signalr.OnObservable("UpdContent").subscribe((res:any)=>{
-    });
- }
 
+
+
+// modal
+@ViewChild('Modal', { static: true }) modalDOM: any;
+closeResult = '';
+open(content: any) {
+  this.modalService.open(content, {
+    size:'xl',
+    scrollable: true,
+    ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
+    this.closeResult = `Closed with: ${result}`;
+  }, (reason) => {
+    this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+  });
+}
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
+  }
 }
