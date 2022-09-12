@@ -186,7 +186,7 @@ namespace API.Hubs
 
                     var YourCard = Cards.FirstOrDefault(x => x.Id == CardByRandom);
 
-                    await _hubContext.Clients.Client(ID).SendAsync("Okay", YourCard);
+                    await _hubContext.Clients.Client(ID).SendAsync("DrawCard", YourCard);
                 }
 
                 timer.Start();
@@ -198,14 +198,25 @@ namespace API.Hubs
         }
 
         /// <summary>
-        /// 抽卡
+        /// 卡片抉擇
         /// </summary>
         /// <returns></returns>
-        public void DrawCard()
+        public async Task ChoiceOfCard(FromClientChat package)
         {
-            // 寫一隻 Service 執行抽卡
-        }
+            //string selfID, string message, string sendToID
+            if (string.IsNullOrEmpty(package.sendToID))
+            {
+                await Clients.All.SendAsync("UpdContent", package.selfID + " 說: " + package.message);
+            }
+            else
+            {
+                // 接收人
+                await Clients.Client(package.sendToID).SendAsync("UpdContent", package.selfID + " 私訊向你說: " + package.message);
 
+                // 發送人
+                await Clients.Client(Context.ConnectionId).SendAsync("UpdContent", "你向 " + package.sendToID + " 私訊說: " + package.message);
+            }
+        }
         /// <summary>
         /// 抽卡結果回傳
         /// </summary>

@@ -235,10 +235,10 @@ namespace BLL.Services.ClientSide
             var Res = new ApiResponse();
             var CashFlowResult = new List<dynamic>();
             var AssetResult = new List<dynamic>();
-
+            var _Random = StaticRandom();
             // if (Req.Args == null) TODO: UserId問卷會影響初始值
             {
-                var _Random = StaticRandom();
+               
 
                 // 先抽職業
                 var Jobs =
@@ -412,7 +412,7 @@ namespace BLL.Services.ClientSide
                 //    }
                 //}
             }
-            int CurrentMoney = 0;
+            Decimal CurrentMoney = _Random.Next(1, 20000);
             var CashFlowIncome = new List<dynamic>();
             var CashFlowExpense = new List<dynamic>();
             var Asset = new List<dynamic>();

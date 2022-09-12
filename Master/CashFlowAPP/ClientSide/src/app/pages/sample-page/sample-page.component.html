@@ -5,16 +5,17 @@
     <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
   </div>
   <div class="modal-body">
-    <nav>
-      <ul>
-        <li>
-          房地產
-        </li>
-        <li>
-          股票
-        </li>
-      </ul>
-    </nav>
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="#">房地產</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">股票</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">我的資產</a>
+      </li>
+    </ul>
     <table id="customers">
       <tr>
         <th>Company</th>
