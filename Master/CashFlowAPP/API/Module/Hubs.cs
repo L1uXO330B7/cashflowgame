@@ -192,7 +192,7 @@ namespace API.Hubs
                     // 透過後端儲存抽到的卡片，前端只負責顯示
                     var CardByRandom = Method.RandomWithWeight(CardList);
                     var YourCard = Cards.FirstOrDefault(x => x.Id == CardByRandom);
-                    var CardInfo = await _ClientHubService.ProcessCardInfo(YourCard, UserList, User.Id);
+                    var CardInfo =  _ClientHubService.ProcessCardInfo(YourCard, UserList, User.Id);
                     YourCard.Name += $"\n{CardInfo.Value}";
                     if (YourCard.Type == "強迫中獎")
                     {
