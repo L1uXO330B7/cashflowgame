@@ -5,6 +5,6 @@ namespace BLL.IServices
 {
     public interface IClientHubService
     {
-        Task<string> ProcessCardInfo(Card YourCard, List<UserInfo> UsersInfos, int YourUserId);
+        Task<CardInfo> ProcessCardInfo(Card YourCard, List<UserInfo> UsersInfos, int YourUserId);
     }
 }

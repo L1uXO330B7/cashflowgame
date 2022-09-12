@@ -241,8 +241,6 @@ namespace BLL.Services.ClientSide
             var _Random = StaticRandom();
             // if (Req.Args == null) TODO: UserId問卷會影響初始值
             {
-
-
                 // 先抽職業
                 var Jobs =
                       CashFlowAndCategory
@@ -382,11 +380,13 @@ namespace BLL.Services.ClientSide
                     if (YourAssets.AssetCategoryId == 48)
                     {
                         var GuidCode = System.Guid.NewGuid().ToString("N");
-                        // 金融商品筆數
-                        var InvestCount = AssetAndCategory.Where(x => x.ParentId == 46).ToList().Count;
-                        // 定存價值=薪水*隨機數字*
-                        var Dice = _Random.Next(1, InvestCount);
-                        YourAssets.Value = (YourJob.Value - DailyExpenese.Value) * Dice;
+                        //// 金融商品筆數
+                        //var InvestCount = AssetAndCategory.Where(x => x.ParentId == 46).ToList().Count;
+                        //// 定存價值=薪水*隨機數字*
+                        //var Dice = _Random.Next(1, InvestCount);
+                        //YourAssets.Value = (YourJob.Value - DailyExpenese.Value) * Dice;
+                        YourAssets.Value = new MathMethodService(_CashFlowDbContext)
+                            .FoundationCount(YourJob.Value, DailyExpenese.Value);
                         YourAssets.GuidCode = GuidCode;
                     }
 

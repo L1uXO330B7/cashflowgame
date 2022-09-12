@@ -11,6 +11,7 @@ namespace Common.Model
         public List<AssetAndCategoryModel> Assets { get; set; }
         public List<CashFlowAndCategoryModel> CashFlows { get; set; }
     }
+
     public class AssetAndCategoryModel
     {
         public int Id { get; set; }
@@ -23,6 +24,7 @@ namespace Common.Model
         public int ParentId { get; set; }
         public string GuidCode { get; set; }
     }
+
     public class CashFlowAndCategoryModel
     {
         public int Id { get; set; }
@@ -45,5 +47,10 @@ namespace Common.Model
         public List<AssetAndCategoryModel> Liabilities { get; set; }
         public int NowCardId { get; set; }
         public decimal NowCardValue { get; set; }
+    }
+
+    public class CardInfo
+    {
+        public decimal Value { get; set; }
     }
 }
