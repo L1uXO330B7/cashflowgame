@@ -20,7 +20,7 @@
         你在第 {{JoinRound}} 圈加入
       </div>
 
-      <div>
+      <div *ngIf="!Flag">
         <button class="CardToggle" [class.active]="!OpenCard" (click)="ToggleCard()"><i
             class="fa-solid fa-circle-exclamation"></i> 你的機會 <i class="fa-solid fa-angle-down" *ngIf="OpenCard"></i>
           <i class="fa-solid fa-angle-up" *ngIf="!OpenCard"></i></button>
