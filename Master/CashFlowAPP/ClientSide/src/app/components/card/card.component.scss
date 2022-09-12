@@ -7,6 +7,9 @@
   .CardBody{
     height: 50vh;
     background-color: antiquewhite;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   .CardFooter{
     display: flex;

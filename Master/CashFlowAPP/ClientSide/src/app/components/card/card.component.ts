@@ -14,9 +14,18 @@ export class CardComponent implements OnInit {
     this.OnCard();
   }
 
+  CardData:any={Name:"人生，就是由一連s串的選擇所組成，一連串的巧合，成就現在的你"};
+  FirstTime = false;
   OnCard() {
     this._Signalr.OnObservable("Okay").subscribe((Res: any) => {
       console.log(Res,"CardResponese");
+      this.CardData=Res[0];
     });
+  }
+  Agree(){
+
+  }
+  DisAgree(){
+
   }
 }

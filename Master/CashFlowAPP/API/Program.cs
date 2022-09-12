@@ -52,7 +52,9 @@ try
 
 
     // 加入 SignalR
-    builder.Services.AddSignalR();
+    builder.Services.AddSignalR().AddJsonProtocol(options => {
+        options.PayloadSerializerOptions.PropertyNamingPolicy = null;
+    }); ;
 
     // 註冊 Cors 策略
     //[CorsPolicy 指定來源](https://www.cnblogs.com/myzony/p/10511492.html)
@@ -77,12 +79,18 @@ try
         config.Filters.Add(new ExceptionFilter());
         config.Filters.Add(new MiniProfilerActionFilter(Db));
         config.Filters.Add(new ModelStateErrorActionFilter());
+
     });
 
     // Add services to the container.
     builder.Services.AddControllers()
         // 回傳資料大寫開頭 ( 預設小寫 )
-        .AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
+        .AddJsonOptions((options) => { 
+            options.JsonSerializerOptions.PropertyNamingPolicy = null; 
+        });
+
+
+
 
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     builder.Services.AddEndpointsApiExplorer();

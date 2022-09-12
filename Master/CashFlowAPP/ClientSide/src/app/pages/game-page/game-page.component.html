@@ -16,7 +16,9 @@
       <div class="d-flex Hamster">
         現在是第 {{CurrentRound}} 圈
         <app-hamster-wheel *ngIf="!Flag"></app-hamster-wheel>
-        <h4 *ngIf="Flag">請等待下一圈的到來</h4>
+        <div *ngIf="Flag" class="d-flex mt-3"><div class="spinner-border" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div><h3 class="ms-2">請等待下一圈的到來</h3></div>
         你在第 {{JoinRound}} 圈加入
       </div>
 
