@@ -16,7 +16,7 @@ namespace Common.Model.AdminSide
         public string Name { get; set; }
         public byte Status { get; set; }
         public decimal Weight { get; set; }
-        public string Type { get; set; }
+        public string Type { get; set; } = "交易機會";
     }
 
     public class UpdateCardArgs
@@ -25,7 +25,7 @@ namespace Common.Model.AdminSide
         public string Name { get; set; }
         public byte Status { get; set; }
         public decimal Weight { get; set; }
-        public string Type { get; set; }
+        public string Type { get; set; } = "交易機會";
     }
 
     /// <summary>
