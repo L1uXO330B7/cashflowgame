@@ -1,8 +1,10 @@
 ﻿using Common.Enum;
 using Common.Methods;
 using Common.Model;
+using Dapper;
 using DPL.EF;
 using MailKit.Net.Smtp;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
@@ -12,6 +14,16 @@ namespace BLL.Services
 {
     public class ServiceBase
     {
+        public string ConnectionString;
+        public ServiceBase()
+        {
+            var Builder = new ConfigurationBuilder()
+                  .SetBasePath(Directory.GetCurrentDirectory())
+                  .AddJsonFile("appsettings.json");
+            var Config = Builder.Build();
+            ConnectionString = Config["ConnectionStrings:OnlineCashFlow"];
+        }
+
         public async Task<ApiResponse> SendMail(SmtpConfig smtp, Mail mail)
         {
             var JWTcode = "";
@@ -72,16 +84,29 @@ namespace BLL.Services
         /// <returns></returns>
         protected virtual CashFlowDbContext GetDbContext()
         {
-            var Builder = new ConfigurationBuilder()
-                  .SetBasePath(Directory.GetCurrentDirectory())
-                  .AddJsonFile("appsettings.json");
-            var Config = Builder.Build();
-
             // [Optional] ConnectionMode connectionMode
             var OptionsBuilder = new DbContextOptionsBuilder<CashFlowDbContext>();
-            var ConnectionString = Config["ConnectionStrings:OnlineCashFlow"];
             OptionsBuilder.UseSqlServer(ConnectionString);
             return new CashFlowDbContext(OptionsBuilder.Options);
+        }
+
+        public ApiResponse GetSqlServerConnectionDetail()
+        {
+            var Result = new ApiResponse();
+
+            using (var conn = new SqlConnection(ConnectionString))
+            {
+                var Response = conn.Query(@"
+USE master
+SELECT c.session_id, c.connect_time, s.login_time, c.client_net_address, s.login_name, s.status
+FROM sys.dm_exec_connections c left join sys.dm_exec_sessions s on c.session_id = s.session_id
+");
+                Result.Data = Response;
+                Result.TotalDataCount = Response.Count();
+                Result.Success = true;
+            }
+
+            return Result;
         }
     }
 }

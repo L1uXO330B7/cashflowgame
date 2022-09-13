@@ -19,6 +19,7 @@ export class ChatroomComponent implements OnInit {
   ngOnInit(): void {
     this.DistinguishUser();
   }
+
   ShowToast(Msg: string, CssClass: string, Header: string) {
     this._ToastService.show(Msg, {
       className: CssClass,

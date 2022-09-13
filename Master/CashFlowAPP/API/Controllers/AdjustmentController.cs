@@ -1,8 +1,7 @@
 ﻿using BLL.IServices;
+using BLL.Services;
 using Common.Model;
-using DPL.EF;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Memory;
 
 namespace API.Controllers
 {
@@ -23,7 +22,6 @@ namespace API.Controllers
         [HttpPost]
         public async Task<ApiResponse> ReadFiInfo([FromBody] ApiRequest<int?> Req)
         {
-
             Req.Args = null;
             return await _ClientSideService.ReadFiInfo(Req);
         }
@@ -36,6 +34,16 @@ namespace API.Controllers
         public async Task<ApiResponse> SupportCardDev()
         {
             return await _ClientSideService.SupportCardDev();
+        }
+
+        /// <summary>
+        /// Sql Server 目前連線明細
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public ApiResponse GetSqlServerConnectionDetail()
+        {
+            return new ServiceBase().GetSqlServerConnectionDetail();
         }
     }
 }

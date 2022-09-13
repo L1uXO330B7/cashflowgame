@@ -81,11 +81,11 @@ export class GamePageComponent implements OnInit {
 
     if (this.UserId != "" && this.UserId != null) {
       this._SharedService.SharedData.subscribe((Res) => {
-      this.UserData = Res;
-    })
+        this.UserData = Res;
+      })
       this.IsLogin = true;
     }
-    else{
+    else {
       this.UserData.Name = localStorage.getItem("StrangerName");
     }
   }

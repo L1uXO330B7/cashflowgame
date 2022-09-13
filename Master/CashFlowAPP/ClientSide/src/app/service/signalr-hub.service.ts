@@ -10,11 +10,12 @@ import { environment } from 'src/environments/environment';
 export class SignalrHubService {
 
   constructor() {
-   }
-  IsConnected:boolean=false;
+  }
+
+  IsConnected: boolean = false;
   Connection: HubConnection | any;
   ConnectionID: string | undefined;
-  ConnectionUser:string | undefined;
+  ConnectionUser: string | undefined;
   Connect(UserToken: string) {
     this.Connection =
       new HubConnectionBuilder()
@@ -23,25 +24,22 @@ export class SignalrHubService {
         .build();
 
     // Starts the connection.
-    if(this.ConnectionID==undefined){
+    if (this.ConnectionID == undefined) {
       this.Connection.on("UpdSelfID", (ConnectId: any, SelfObj: any) => {
         this.ConnectionID = ConnectId;
         this.ConnectionUser = SelfObj.name;
       });
-     this.Connection.start().then((res:any) => {
-      this.IsConnected=true;
-    })
-    .catch(function (err:any) {
-      //failed to connect
-      return console.error(err.toString());
-    });;
+      this.Connection.start().then((res: any) => {
+        this.IsConnected = true;
+      })
+        .catch(function (err: any) {
+          //failed to connect
+          return console.error(err.toString());
+        });;
     }
   }
 
-
-
   OnObservable(method: string): Observable<any> {
-
 
     // Establishes a Hub Connection with specified url.
 
@@ -51,6 +49,8 @@ export class SignalrHubService {
     this.Connection.on(method, (...args: any[]) => {
       // Multicast the event.
       subject.next(args);
+      console.log('method',method);
+      console.log('args',args);
     });
 
     // When the connection is closed.
@@ -64,15 +64,15 @@ export class SignalrHubService {
       }
     });
 
-
-
     // To be subscribed to by multiple components
     return subject;
   }
+
   //invoke()
-  Invoke(Method:string,Arg:any){
-          this.Connection.invoke(Method,Arg).catch(function (err: any) {
+  Invoke(Method: string, Arg: any) {
+    this.Connection.invoke(Method, Arg).catch(function (err: any) {
       alert('傳送錯誤: ' + err.toString());
     });
   }
+
 }
