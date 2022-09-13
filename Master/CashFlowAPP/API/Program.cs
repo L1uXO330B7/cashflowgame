@@ -2,6 +2,7 @@ using API.Filter;
 using API.Hubs;
 using API.Module;
 using BLL.IServices;
+using BLL.Services;
 using BLL.Services.ClientSide;
 using Common.Methods;
 using DPL.EF;
@@ -32,16 +33,18 @@ try
     Serilog.Log.Information("建立 WebApplicationBuilder 物件");
 
     // 註冊 DbContext
-    var RootPath = System.IO.Directory.GetCurrentDirectory();
-    string Conn;
-    if (RootPath.ToUpper().Contains("DESK") || RootPath.ToUpper().Contains("WWW") || RootPath.ToUpper().Contains("CODE"))
-    {
-        Conn = "OnlineCashFlow";
-    }
-    else
-    {
-        Conn = "LocalMDF";
-    }
+    //var RootPath = System.IO.Directory.GetCurrentDirectory();
+    //string Conn;
+    //if (RootPath.ToUpper().Contains("DESK") || RootPath.ToUpper().Contains("WWW") || RootPath.ToUpper().Contains("CODE"))
+    //{
+    //    Conn = "OnlineCashFlow";
+    //}
+    //else
+    //{
+    //    Conn = "LocalMDF";
+    //}
+
+    string Conn = new ServiceBase().ConnectionString;
     builder.Services.AddDbContext<CashFlowDbContext>(options =>
            options.UseSqlServer(builder.Configuration.GetConnectionString(Conn)));
 

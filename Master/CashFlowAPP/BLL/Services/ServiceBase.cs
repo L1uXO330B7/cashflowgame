@@ -15,23 +15,10 @@ namespace BLL.Services
     public class ServiceBase
     {
         public string ConnectionString;
+
         public ServiceBase()
         {
-            var Builder = new ConfigurationBuilder()
-                  .SetBasePath(Directory.GetCurrentDirectory())
-                  .AddJsonFile("appsettings.json");
-            var Config = Builder.Build();
-            var RootPath = System.IO.Directory.GetCurrentDirectory();
-            string Conn;
-            if (RootPath.ToUpper().Contains("DESK") || RootPath.ToUpper().Contains("WWW") || RootPath.ToUpper().Contains("CODE"))
-            {
-                Conn = "OnlineCashFlow";
-            }
-            else
-            {
-                Conn = "LocalMDF";
-            }
-            ConnectionString = Config[$"ConnectionStrings:{Conn}"];
+            ConnectionString = GetRootConnectionString();
         }
 
         public async Task<ApiResponse> SendMail(SmtpConfig smtp, Mail mail)
@@ -117,6 +104,28 @@ FROM sys.dm_exec_connections c left join sys.dm_exec_sessions s on c.session_id 
             }
 
             return Result;
+        }
+
+        public string GetRootConnectionString()
+        {
+            var Builder = new ConfigurationBuilder()
+                  .SetBasePath(Directory.GetCurrentDirectory())
+                  .AddJsonFile("appsettings.json");
+            var Config = Builder.Build();
+            var RootPath = System.IO.Directory.GetCurrentDirectory();
+
+            string Conn;
+
+            if (RootPath.ToUpper().Contains("DESK") || RootPath.ToUpper().Contains("WWW") || RootPath.ToUpper().Contains("CODE"))
+            {
+                Conn = "OnlineCashFlow";
+            }
+            else
+            {
+                Conn = "LocalMDF";
+            }
+
+            return Config[$"ConnectionStrings:{Conn}"];
         }
     }
 }
