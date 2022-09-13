@@ -3,7 +3,7 @@
   <div class="row">
     <div class="col p-0">
       <div class="UserBoard col-10 bg-dark"></div>
-      <button class="ChatRoomToggle  col-10" (click)="ToggleChatRoom()" [class.active]="!OpenChatRoom"><i
+      <button class="ChatRoomToggle  col-10 bg-secondary" (click)="ToggleChatRoom()" [class.active]="!OpenChatRoom"><i
           class="fa-solid fa-comment-dollar"></i>
         聊天室 <i class="fa-solid fa-angle-down" *ngIf="OpenChatRoom"></i>
         <i class="fa-solid fa-angle-up" *ngIf="!OpenChatRoom"></i></button>
