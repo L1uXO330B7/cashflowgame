@@ -49,8 +49,7 @@ export class SignalrHubService {
     this.Connection.on(method, (...args: any[]) => {
       // Multicast the event.
       subject.next(args);
-      console.log('method',method);
-      console.log('args',args);
+      console.log(`method:${method}`, args);
     });
 
     // When the connection is closed.
