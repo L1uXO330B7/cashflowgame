@@ -21,7 +21,17 @@ namespace BLL.Services
                   .SetBasePath(Directory.GetCurrentDirectory())
                   .AddJsonFile("appsettings.json");
             var Config = Builder.Build();
-            ConnectionString = Config["ConnectionStrings:OnlineCashFlow"];
+            var RootPath = System.IO.Directory.GetCurrentDirectory();
+            string Conn;
+            if (RootPath.ToUpper().Contains("DESK") || RootPath.ToUpper().Contains("WWW") || RootPath.ToUpper().Contains("CODE"))
+            {
+                Conn = "OnlineCashFlow";
+            }
+            else
+            {
+                Conn = "LocalMDF";
+            }
+            ConnectionString = Config[$"ConnectionStrings:{Conn}"];
         }
 
         public async Task<ApiResponse> SendMail(SmtpConfig smtp, Mail mail)
