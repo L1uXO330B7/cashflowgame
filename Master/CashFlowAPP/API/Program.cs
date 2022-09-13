@@ -5,6 +5,7 @@ using BLL.IServices;
 using BLL.Services.ClientSide;
 using Common.Methods;
 using DPL.EF;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Serilog;
@@ -33,7 +34,7 @@ try
     // 註冊 DbContext
     var RootPath = System.IO.Directory.GetCurrentDirectory();
     string Conn;
-    if (RootPath.ToUpper().Contains("DESK") || RootPath.ToUpper().Contains("WWW")|| RootPath.ToUpper().Contains("CODE"))
+    if (RootPath.ToUpper().Contains("DESK") || RootPath.ToUpper().Contains("WWW") || RootPath.ToUpper().Contains("CODE"))
     {
         Conn = "OnlineCashFlow";
     }
@@ -44,17 +45,19 @@ try
     builder.Services.AddDbContext<CashFlowDbContext>(options =>
            options.UseSqlServer(builder.Configuration.GetConnectionString(Conn)));
 
-
     // 加入 MemoryCache
- 
     builder.Services.AddMemoryCache();
 
-
-
     // 加入 SignalR
-    builder.Services.AddSignalR().AddJsonProtocol(options => {
+    builder.Services
+    .AddSignalR(options =>
+    {
+        options.AddFilter<HubFilter>();
+    })
+    .AddJsonProtocol(options =>
+    {
         options.PayloadSerializerOptions.PropertyNamingPolicy = null;
-    }); ;
+    });
 
     // 註冊 Cors 策略
     //[CorsPolicy 指定來源](https://www.cnblogs.com/myzony/p/10511492.html)
@@ -85,12 +88,10 @@ try
     // Add services to the container.
     builder.Services.AddControllers()
         // 回傳資料大寫開頭 ( 預設小寫 )
-        .AddJsonOptions((options) => { 
-            options.JsonSerializerOptions.PropertyNamingPolicy = null; 
+        .AddJsonOptions((options) =>
+        {
+            options.JsonSerializerOptions.PropertyNamingPolicy = null;
         });
-
-
-
 
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     builder.Services.AddEndpointsApiExplorer();
@@ -135,8 +136,7 @@ try
         });
 
         c.AddSecurityRequirement(new OpenApiSecurityRequirement()
-        {
-        {
+        {{
             new OpenApiSecurityScheme
             {
                 Reference = new OpenApiReference
@@ -149,15 +149,13 @@ try
                 In = ParameterLocation.Header,
              },
              new List<string>()
-        }
-        });
+        }});
 
         var FilePath = Path.Combine(AppContext.BaseDirectory, "API.xml");
         c.IncludeXmlComments(FilePath);
     });
 
     // 註冊 Services
-
     builder.Services.AddScoped<IClientSideService, ClientSideService>();
     builder.Services.AddScoped<IClientHubService, ClientHubService>();
 
