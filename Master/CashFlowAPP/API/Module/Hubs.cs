@@ -60,13 +60,10 @@ namespace API.Hubs
         /// <returns></returns>
         public override async Task OnConnectedAsync()
         {
-            _UserObject.ConnectionId = Context.ConnectionId;
-
             // 第一次連線
             if (!ConnIDList.Any(x => x == Context.ConnectionId))
             {
                 ConnIDList.Add(Context.ConnectionId);
-                _UserObject.ConnectionId = Context.ConnectionId;
             }
 
             var Token = Context.GetHttpContext().Request.Query["token"];
@@ -74,6 +71,7 @@ namespace API.Hubs
             {
                 var Stranger = Context.GetHttpContext().Request.Query["stranger"]; // 暱稱
                 _UserObject.Name = (string)Stranger + "$$$";
+                _UserObject.ConnectionId = Context.ConnectionId;
             }
             else // 用戶
             {
@@ -83,6 +81,7 @@ namespace API.Hubs
 
                 if (_UserObject != null)
                 {
+                    _UserObject.ConnectionId = Context.ConnectionId;
                     UserList.Add(_UserObject);
                 }
             }

@@ -89,14 +89,14 @@ export class GamePageComponent implements OnInit {
       this.UserData.Name = localStorage.getItem("StrangerName");
     }
   }
-  UserFiInfo: any = {}
 
+  UserFiInfo: any = {}
   GetFiInfo() {
     let Req = new ApiRequest<any>();
     Req.Args = this.UserId;
     this._ApiService.GetFiInfo(Req).subscribe((Res) => {
       if (Res.Success) {
-        this.UserFiInfo = Res.Data.Result;
+        this.UserFiInfo = Res.Data;
       }
     });
   }

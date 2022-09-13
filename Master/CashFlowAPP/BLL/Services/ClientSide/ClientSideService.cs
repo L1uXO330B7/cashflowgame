@@ -430,7 +430,7 @@ namespace BLL.Services.ClientSide
             Res.Data = new FiInfo
             {
                 UserId = Req.Args,
-                CurrentMoney = null,
+                CurrentMoney = 0,
                 CashFlowIncome = CashFlowIncome,
                 CashFlowExpense = CashFlowExpense,
                 Asset = Asset,
