@@ -66,6 +66,7 @@ namespace API.Hubs
             if (!ConnIDList.Any(x => x == Context.ConnectionId))
             {
                 ConnIDList.Add(Context.ConnectionId);
+                _UserObject.ConnectionId = Context.ConnectionId;
             }
 
             var Token = Context.GetHttpContext().Request.Query["token"];

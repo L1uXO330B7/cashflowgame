@@ -34,95 +34,97 @@ namespace BLL.Services.ClientSide
                     var FiInfos = new List<FiInfo>();
                     foreach (var UserInfos in UsersInfos)
                     {
-                        var UserFiInfo = _MemoryCache.Get(UserInfos.Id);
-                        var UserFiInfo2 = _MemoryCache.Get<FiInfo>(UserInfos.Id);
-                        var UserFiInfo3 =  _MemoryCache.Get<FiInfo?>(UserInfos.Id);
-                        //if (UserFiInfo != null)
-                        //{
-                        //    UserFiInfo.UserId = UserInfos.Id;
-                        //    FiInfos.Add(UserFiInfo);
-                        //}
+                        //var UserFiInfo = _MemoryCache.Get(UserInfos.Id);
+                        //var UserFiInfo2 = _MemoryCache.Get<FiInfo>(UserInfos.Id);
+                        var UserFiInfo = _MemoryCache.Get<FiInfo?>(UserInfos.Id);
+                        if (UserFiInfo != null)
+                        {
+                            UserFiInfo.UserId = UserInfos.Id;
+                            FiInfos.Add(UserFiInfo);
+                        }
                     }
 
-                    // 抽卡人的快取
-                    var YourFiInfo = FiInfos.FirstOrDefault(x => x.UserId == YourUserId);
-                    var YourJob = YourFiInfo.CashFlowIncome.FirstOrDefault(x => x.CashFlowCategoryName == "工作薪水");
-                    var DailyExpenese = YourFiInfo.CashFlowExpense.FirstOrDefault(x => x.CashFlowCategoryName == "生活花費");
-
-                    // Todo 影響交易紀錄快取
-
-                    foreach (var YourCardEffect in YourCardEffects)
+                    if (FiInfos.Count > 0)
                     {
-                        var _CashFlow = new CashFlow();
-                        var _Asset = new Asset();
-                        var _CashFlowCategory = new CashFlowCategory();
-                        var _AssetCategory = new AssetCategory();
+                        // 抽卡人的快取
+                        var YourFiInfo = FiInfos.FirstOrDefault(x => x.UserId == YourUserId);
+                        var YourJob = YourFiInfo.CashFlowIncome.FirstOrDefault(x => x.CashFlowCategoryName == "工作薪水");
+                        var DailyExpenese = YourFiInfo.CashFlowExpense.FirstOrDefault(x => x.CashFlowCategoryName == "生活花費");
 
-                        if (YourCardEffect.EffectTableId == (int)Common.Enum.EffectTables.CashFlow)
+                        // Todo 影響交易紀錄快取
+
+                        foreach (var YourCardEffect in YourCardEffects)
                         {
-                            _CashFlow = Db.CashFlows
-                                 .FirstOrDefault(x => x.Id == YourCardEffect.TableId);
-                            if (YourCard.Type == "交易機會") // 給抽卡人選擇
+                            var _CashFlow = new CashFlow();
+                            var _Asset = new Asset();
+                            var _CashFlowCategory = new CashFlowCategory();
+                            var _AssetCategory = new AssetCategory();
+
+                            if (YourCardEffect.EffectTableId == (int)Common.Enum.EffectTables.CashFlow)
                             {
-                            }
-                            if (YourCard.Type == "強迫中獎") // 強迫中獎 直接影響目前資料
-                            {
-                            }
-                            if (YourCard.Type == "天選之人") // 直接影響當前抽卡人資料
-                            {
-                            }
-                        }
-                        if (YourCardEffect.EffectTableId == (int)Common.Enum.EffectTables.Asset)
-                        {
-                            _Asset = Db.Assets
-                                .FirstOrDefault(x => x.Id == YourCardEffect.TableId);
-                            if (YourCard.Type == "交易機會") // 給抽卡人選擇
-                            {
-                                if (_Asset.AssetCategoryId == 48) // 基金
+                                _CashFlow = Db.CashFlows
+                                     .FirstOrDefault(x => x.Id == YourCardEffect.TableId);
+                                if (YourCard.Type == "交易機會") // 給抽卡人選擇
                                 {
-                                    var Value = new MathMethodService()
-                                     .FoundationCount(YourJob.Value, DailyExpenese.Value);
-                                    Result.Value = -1 * Value;
+                                }
+                                if (YourCard.Type == "強迫中獎") // 強迫中獎 直接影響目前資料
+                                {
+                                }
+                                if (YourCard.Type == "天選之人") // 直接影響當前抽卡人資料
+                                {
                                 }
                             }
-                            if (YourCard.Type == "強迫中獎") // 強迫中獎 直接影響目前資料
+                            if (YourCardEffect.EffectTableId == (int)Common.Enum.EffectTables.Asset)
                             {
+                                _Asset = Db.Assets
+                                    .FirstOrDefault(x => x.Id == YourCardEffect.TableId);
+                                if (YourCard.Type == "交易機會") // 給抽卡人選擇
+                                {
+                                    if (_Asset.AssetCategoryId == 48) // 基金
+                                    {
+                                        var Value = new MathMethodService()
+                                         .FoundationCount(YourJob.Value, DailyExpenese.Value);
+                                        Result.Value = -1 * Value;
+                                    }
+                                }
+                                if (YourCard.Type == "強迫中獎") // 強迫中獎 直接影響目前資料
+                                {
+                                }
+                                if (YourCard.Type == "天選之人") // 直接影響當前抽卡人資料
+                                {
+                                }
                             }
-                            if (YourCard.Type == "天選之人") // 直接影響當前抽卡人資料
+                            if (YourCardEffect.EffectTableId == (int)Common.Enum.EffectTables.CashFlowCategories)
                             {
+                                _CashFlowCategory = Db.CashFlowCategories
+                                    .FirstOrDefault(x => x.Id == YourCardEffect.TableId);
+                                if (YourCard.Type == "交易機會") // 給抽卡人選擇
+                                {
+                                }
+                                if (YourCard.Type == "強迫中獎") // 強迫中獎 直接影響目前資料
+                                {
+                                }
+                                if (YourCard.Type == "天選之人") // 直接影響當前抽卡人資料
+                                {
+                                }
                             }
-                        }
-                        if (YourCardEffect.EffectTableId == (int)Common.Enum.EffectTables.CashFlowCategories)
-                        {
-                            _CashFlowCategory = Db.CashFlowCategories
-                                .FirstOrDefault(x => x.Id == YourCardEffect.TableId);
-                            if (YourCard.Type == "交易機會") // 給抽卡人選擇
+                            if (YourCardEffect.EffectTableId == (int)Common.Enum.EffectTables.AssetCategories)
                             {
-                            }
-                            if (YourCard.Type == "強迫中獎") // 強迫中獎 直接影響目前資料
-                            {
-                            }
-                            if (YourCard.Type == "天選之人") // 直接影響當前抽卡人資料
-                            {
-                            }
-                        }
-                        if (YourCardEffect.EffectTableId == (int)Common.Enum.EffectTables.AssetCategories)
-                        {
-                            _AssetCategory = Db.AssetCategories
-                                .FirstOrDefault(x => x.Id == YourCardEffect.TableId);
-                            if (YourCard.Type == "交易機會") // 給抽卡人選擇
-                            {
-                            }
-                            if (YourCard.Type == "強迫中獎") // 強迫中獎 直接影響目前資料
-                            {
-                            }
-                            if (YourCard.Type == "天選之人") // 直接影響當前抽卡人資料
-                            {
+                                _AssetCategory = Db.AssetCategories
+                                    .FirstOrDefault(x => x.Id == YourCardEffect.TableId);
+                                if (YourCard.Type == "交易機會") // 給抽卡人選擇
+                                {
+                                }
+                                if (YourCard.Type == "強迫中獎") // 強迫中獎 直接影響目前資料
+                                {
+                                }
+                                if (YourCard.Type == "天選之人") // 直接影響當前抽卡人資料
+                                {
+                                }
                             }
                         }
                     }
                 }
-
             }
             catch (Exception ex)
             {
