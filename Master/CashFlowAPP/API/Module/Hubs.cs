@@ -94,7 +94,7 @@ namespace API.Hubs
             await Clients.Client(Context.ConnectionId).SendAsync("UpdSelfID", Context.ConnectionId, UserList.Where(x => x.Id == _UserObject.Id).FirstOrDefault());
 
             // 更新聊天內容
-            await Clients.All.SendAsync("UpdContent", "新連線玩家: " + _UserObject.Name);
+            await Clients.All.SendAsync("UpdContent", DateTime.Now.ToString("[yyyy/MM/dd HH:mm:ss]") + "新連線玩家: " + _UserObject.Name);
 
             await base.OnConnectedAsync();
         }
@@ -120,7 +120,7 @@ namespace API.Hubs
             await Clients.All.SendAsync("UpdList", jsonString, UserList.Select(x => x.Name).ToList());
 
             // 更新聊天內容
-            await Clients.All.SendAsync("UpdContent", "已離線玩家: " + _UserObject.Name);
+            await Clients.All.SendAsync("UpdContent", DateTime.Now.ToString("[yyyy/MM/dd HH:mm:ss]") + "已離線玩家: " + _UserObject.Name);
 
             await base.OnDisconnectedAsync(ex);
         }
@@ -136,7 +136,7 @@ namespace API.Hubs
             //string selfID, string message, string sendToID
             if (string.IsNullOrEmpty(package.sendToID))
             {
-                await Clients.All.SendAsync("UpdContent", package.selfID + " 說: " + package.message);
+                await Clients.All.SendAsync("UpdContent",DateTime.Now.ToString("[yyyy/MM/dd HH:mm:ss]") + package.selfID + " 說: " + package.message);
             }
             else
             {
@@ -196,7 +196,7 @@ namespace API.Hubs
                     YourCard.Name += $"\n{CardInfo.Value}";
                     if (YourCard.Type == "強迫中獎")
                     {
-                        await Clients.All.SendAsync("UpdContent", $"玩家: {_UserObject.Name} 抽到 {YourCard.Name}");
+                        await _hubContext.Clients.All.SendAsync("UpdContent", $"玩家: {_UserObject.Name} 抽到 {YourCard.Name}");
                     }
                     else
                     {

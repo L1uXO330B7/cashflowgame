@@ -27,14 +27,30 @@ namespace API.Filter
         // Optional method
         public Task OnConnectedAsync(HubLifetimeContext context, Func<HubLifetimeContext, Task> next)
         {
-            return next(context);
+            try
+            {
+                return next(context);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Exception calling '{next.Method.Name}': {ex}");
+                throw;
+            }
         }
 
         // Optional method
         public Task OnDisconnectedAsync(
             HubLifetimeContext context, Exception exception, Func<HubLifetimeContext, Exception, Task> next)
         {
-            return next(context, exception);
+            try
+            {
+                return next(context, exception);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Exception calling '{next.Method.Name}': {ex}");
+                throw;
+            }
         }
     }
 }
