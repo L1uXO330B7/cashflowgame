@@ -87,6 +87,10 @@ namespace BLL.Services
             return new CashFlowDbContext(OptionsBuilder.Options);
         }
 
+        /// <summary>
+        /// 用 Dapper 取得 SQL Server 連線細節
+        /// </summary>
+        /// <returns></returns>
         public ApiResponse GetSqlServerConnectionDetail()
         {
             var Result = new ApiResponse();
@@ -105,9 +109,15 @@ FROM sys.dm_exec_connections c left join sys.dm_exec_sessions s on c.session_id 
 
             return Result;
         }
-
+        
+        /// <summary>
+        /// 取得 appsetting 中的 Configuration 的 連線字串
+        /// </summary>
+        /// <returns></returns>
         public string GetRootConnectionString()
         {
+
+            // 取出 Configuration
             var Builder = new ConfigurationBuilder()
                   .SetBasePath(Directory.GetCurrentDirectory())
                   .AddJsonFile("appsettings.json");
@@ -116,6 +126,8 @@ FROM sys.dm_exec_connections c left join sys.dm_exec_sessions s on c.session_id 
 
             string Conn;
 
+
+            // 判斷專案路徑位置，給予不同的連線字串
             if (RootPath.ToUpper().Contains("DESK") || RootPath.ToUpper().Contains("WWW") || RootPath.ToUpper().Contains("CODE"))
             {
                 Conn = "OnlineCashFlow";

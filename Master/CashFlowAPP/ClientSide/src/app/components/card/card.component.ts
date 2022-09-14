@@ -21,7 +21,6 @@ export class CardComponent implements OnInit {
   FirstTime = false;
   OnCard() {
     this._Signalr.OnObservable("DrawCard").subscribe((Res: any) => {
-      console.log(Res,"CardResponese");
       this.CardData=Res[0];
     });
   }

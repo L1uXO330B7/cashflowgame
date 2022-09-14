@@ -1,6 +1,6 @@
 import { SharedService } from './../../service/shared.service';
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { GlobalToastService } from 'src/app/components/toast/global-toast.service';
 import { ApiRequest } from 'src/app/models/ApiRequest';
@@ -13,7 +13,7 @@ import { SignalrHubService } from 'src/app/service/signalr-hub.service';
   templateUrl: './game-page.component.html',
   styleUrls: ['./game-page.component.scss']
 })
-export class GamePageComponent implements OnInit {
+export class GamePageComponent implements OnInit,OnDestroy {
 
   constructor(
     public _HttpClient: HttpClient,
@@ -32,7 +32,9 @@ export class GamePageComponent implements OnInit {
     this.InitServer();
     this.RoundStart();
   }
-
+  ngOnDestroy():void{
+    this._Signalr.DisConnect();
+  }
   Flag = true;
   RoundStart() {
     let Round = setInterval(() => {
@@ -57,6 +59,7 @@ export class GamePageComponent implements OnInit {
       this.Param = `stranger=${this.UserToken}`
     }
     this._Signalr.Connect(`${this.Param}`);
+    console.log("init");
   }
 
   OpenChatRoom: boolean = false;

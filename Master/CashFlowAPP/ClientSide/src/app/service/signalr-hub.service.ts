@@ -24,7 +24,7 @@ export class SignalrHubService {
         .build();
 
     // Starts the connection.
-    if (this.ConnectionID == undefined) {
+    if (!this.IsConnected) {
       this.Connection.on("UpdSelfID", (ConnectId: any, SelfObj: any) => {
         this.ConnectionID = ConnectId;
         this.ConnectionUser = SelfObj.name;
@@ -37,6 +37,12 @@ export class SignalrHubService {
           return console.error(err.toString());
         });;
     }
+  }
+
+  DisConnect(){
+    console.log("stop");
+    this.Connection.stop();
+    this.IsConnected=false;
   }
 
   OnObservable(method: string): Observable<any> {

@@ -164,7 +164,7 @@ namespace API.Hubs
                 if (DateTime.Now.Second % 60 == 0)
                 {
                     var time = DateTime.Now.Second;
-                    timer = new System.Timers.Timer(2000);
+                    timer = new System.Timers.Timer(10000);
                     Count++;
                     flag = false;
                 }
@@ -186,21 +186,20 @@ namespace API.Hubs
             try
             {
                 timer.Stop();
-
+                
                 foreach (var User in UserList)
                 {
                     // 透過後端儲存抽到的卡片，前端只負責顯示
                     var CardByRandom = Method.RandomWithWeight(CardList);
                     var YourCard = Cards.FirstOrDefault(x => x.Id == CardByRandom);
                     var CardInfo = await _ClientHubService.ProcessCardInfo(YourCard, UserList, User.Id);
-                    YourCard.Name += $"\n{CardInfo.Value}";
                     if (YourCard.Type == "強迫中獎")
                     {
                         await _hubContext.Clients.All.SendAsync("UpdContent", $"玩家: {_UserObject.Name} 抽到 {YourCard.Name}");
                     }
                     else
                     {
-                        await _hubContext.Clients.Client(User.ConnectionId).SendAsync("DrawCard", YourCard);
+                        await _hubContext.Clients.Client(User.ConnectionId).SendAsync("DrawCard", YourCard, $"\n{CardInfo.Value}");
                     }
                 }
 

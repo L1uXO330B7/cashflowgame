@@ -23,6 +23,7 @@ namespace BLL.Services.ClientSide
 
             try
             {
+                // 因為 GetDbContext 是 protected，所以要使用基底類別呼叫
                 using (var Db = base.GetDbContext())
                 {
                     var YourCardEffects = Db

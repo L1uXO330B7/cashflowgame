@@ -43,10 +43,12 @@ try
     //{
     //    Conn = "LocalMDF";
     //}
+    // builder.Configuration.GetConnectionString(Conn)
+
 
     string Conn = new ServiceBase().ConnectionString;
     builder.Services.AddDbContext<CashFlowDbContext>(options =>
-           options.UseSqlServer(builder.Configuration.GetConnectionString(Conn)));
+           options.UseSqlServer(Conn));
 
     // 加入 MemoryCache
     builder.Services.AddMemoryCache();
@@ -76,7 +78,7 @@ try
     });
 
     var DbOptionsBuilder = new DbContextOptionsBuilder<CashFlowDbContext>();
-    DbOptionsBuilder.UseSqlServer(builder.Configuration.GetConnectionString(Conn));
+    DbOptionsBuilder.UseSqlServer(Conn);
     var Db = new CashFlowDbContext(DbOptionsBuilder.Options);
 
     // 註冊 AOP Filters

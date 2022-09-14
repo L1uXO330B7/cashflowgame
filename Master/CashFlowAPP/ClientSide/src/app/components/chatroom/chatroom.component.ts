@@ -47,6 +47,7 @@ export class ChatroomComponent implements OnInit {
       this.IDList = List;
       this.NameList = Res[1];
     });
+    console.log("update");
   }
 
   SelfID = "";

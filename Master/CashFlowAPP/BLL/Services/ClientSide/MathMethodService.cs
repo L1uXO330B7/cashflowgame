@@ -13,6 +13,7 @@ namespace BLL.Services.ClientSide
         public MathMethodService(
         )
         {
+            // 在建構子呼叫
             Db = base.GetDbContext();
         }
 
