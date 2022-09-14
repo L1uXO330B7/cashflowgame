@@ -77,8 +77,8 @@ export class GamePageComponent implements OnInit,OnDestroy {
     this.OpenCard = !this.OpenCard;
   }
   IsLogin: boolean = false;
-  UserData: any;
-  UserName: any;
+  UserData:any={Name:""};
+  // UserName: any;
   UserId = localStorage.getItem('UserId');
   LoginToUserInfo() {
 

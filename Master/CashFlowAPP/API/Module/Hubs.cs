@@ -72,6 +72,8 @@ namespace API.Hubs
                 var Stranger = Context.GetHttpContext().Request.Query["stranger"]; // 暱稱
                 _UserObject.Name = (string)Stranger + "$$$";
                 _UserObject.ConnectionId = Context.ConnectionId;
+                UserList.Add(_UserObject);
+
             }
             else // 用戶
             {
@@ -196,6 +198,8 @@ namespace API.Hubs
                     if (YourCard.Type == "強迫中獎")
                     {
                         await _hubContext.Clients.All.SendAsync("UpdContent", $"玩家: {_UserObject.Name} 抽到 {YourCard.Name}");
+
+                        await _hubContext.Clients.Client(User.ConnectionId).SendAsync("DrawCard", YourCard, $"恭喜你這個幸運兒");
                     }
                     else
                     {
