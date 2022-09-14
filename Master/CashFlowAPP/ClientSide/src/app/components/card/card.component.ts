@@ -18,10 +18,12 @@ export class CardComponent implements OnInit {
   }
 
   CardData:Card=new Card();
+  CardValue:any;
   FirstTime = false;
   OnCard() {
     this._Signalr.OnObservable("DrawCard").subscribe((Res: any) => {
       this.CardData=Res[0];
+      this.CardValue=Res[1];
     });
   }
   Agree(){
