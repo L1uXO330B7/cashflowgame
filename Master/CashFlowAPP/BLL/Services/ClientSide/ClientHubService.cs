@@ -90,6 +90,7 @@ namespace BLL.Services.ClientSide
                                 }
                                 if (YourCard.Type == "強迫中獎") // 強迫中獎 直接影響目前資料
                                 {
+
                                 }
                                 if (YourCard.Type == "天選之人") // 直接影響當前抽卡人資料
                                 {

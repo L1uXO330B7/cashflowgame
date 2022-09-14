@@ -1,7 +1,7 @@
 <div class="Card py-2">
     <div class="CardBody">
       <p>{{CardData.Name}}</p>
-      <p *ngIf="CardValue=='恭喜你這個幸運兒'">花費: {{CardValue}}</p>
+      <p><span *ngIf="CardData.Type!='強迫中獎'">花費:</span>{{CardValue}}</p>
     </div>
     <div class="CardFooter">
       <button class="btn btn-primary mx-2" *ngIf="CardData.Type=='強迫中獎'||CardData.Type=='天選之人'">好喔</button>

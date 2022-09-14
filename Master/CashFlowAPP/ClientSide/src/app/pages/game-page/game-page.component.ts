@@ -13,7 +13,7 @@ import { SignalrHubService } from 'src/app/service/signalr-hub.service';
   templateUrl: './game-page.component.html',
   styleUrls: ['./game-page.component.scss']
 })
-export class GamePageComponent implements OnInit,OnDestroy {
+export class GamePageComponent implements OnInit, OnDestroy {
 
   constructor(
     public _HttpClient: HttpClient,
@@ -31,17 +31,23 @@ export class GamePageComponent implements OnInit,OnDestroy {
     this.LoginToUserInfo();
     this.InitServer();
     this.RoundStart();
+    this.ReLogin();
   }
-  ngOnDestroy():void{
+  ngOnDestroy(): void {
     this._Signalr.DisConnect();
   }
 
 
-  ReLogin(){
+  ReLogin() {
     this._Signalr.OnObservable("ReLogin").subscribe((Res: any) => {
-      if(Res[0]=="此帳號已被從別處重複登入"){
+      if (Res[0] == "此帳號已被從別處重複登入") {
         this._Signalr.DisConnect();
         alert(Res[0]);
+        setTimeout(() => {
+                  localStorage.removeItem('UserId');
+        localStorage.removeItem('Token');
+        this._Router.navigateByUrl("/login");
+        }, 5000);
       }
     });
   }
@@ -49,12 +55,12 @@ export class GamePageComponent implements OnInit,OnDestroy {
 
 
   Flag = true;
-  WaitSeconds:any;
+  WaitSeconds: any;
   RoundStart() {
     let Round = setInterval(() => {
       this.Time = new Date();
       let Second = this.Time.getSeconds();
-      this.WaitSeconds=60-Second;
+      this.WaitSeconds = 60 - Second;
       if (Second % 60 == 0) {
         this.Flag = false;
         setInterval(() => { this.GameTimeRound(); }, 60000);
@@ -92,7 +98,7 @@ export class GamePageComponent implements OnInit,OnDestroy {
     this.OpenCard = !this.OpenCard;
   }
   IsLogin: boolean = false;
-  UserData:any={Name:""};
+  UserData: any = { Name: "" };
   // UserName: any;
   UserId = localStorage.getItem('UserId');
   LoginToUserInfo() {

@@ -61,7 +61,7 @@ namespace API.Hubs
             if (!_UserInfos.Select(x => x.ConnectionId).Any(x => x == Context.ConnectionId)) // 第一次連線
             {
                 var _UserInfo = new UserInfo();
-                _UserInfo.ConnectionId = Context.ConnectionId;
+               
 
                 var Token = Context.GetHttpContext().Request.Query["token"];
                 if (Token.Count == 0) // 遊客
@@ -76,6 +76,9 @@ namespace API.Hubs
                            Jose.JwsAlgorithm.HS256);
                 }
 
+
+
+                _UserInfo.ConnectionId = Context.ConnectionId;
                 // 同個 UserId 不能同時連線，會將前者離線在連後者
                 var RepeatUserId = _UserInfos.Select(x => x.UserId).FirstOrDefault(x => x == _UserInfo.UserId);
                 if (RepeatUserId != 0)
@@ -168,16 +171,16 @@ namespace API.Hubs
                     var CardByRandom = Method.RandomWithWeight(CardList);
                     var YourCard = Cards.FirstOrDefault(x => x.Id == CardByRandom);
                     var CardInfo = await _ClientHubService.ProcessCardInfo(YourCard, _UserInfos, _UserInfo.UserId);
+
+                    dynamic CardValue = CardInfo.Value;
                     if (YourCard.Type == "強迫中獎")
                     {
                         await _hubContext.Clients.All.SendAsync("UpdContent", $"玩家: {_UserInfo.Name} 抽到 {YourCard.Name}");
+                        CardValue = "恭喜你造成蝴蝶效應";
+                    }
 
-                        await _hubContext.Clients.Client(_UserInfo.ConnectionId).SendAsync("DrawCard", YourCard, $"恭喜你這個幸運兒");
-                    }
-                    else
-                    {
-                        await _hubContext.Clients.Client(_UserInfo.ConnectionId).SendAsync("DrawCard", YourCard, $"\n{CardInfo.Value}");
-                    }
+                        await _hubContext.Clients.Client(_UserInfo.ConnectionId).SendAsync("DrawCard", YourCard, $"{CardValue}");
+                    
                 }
 
                 timer.Start();
