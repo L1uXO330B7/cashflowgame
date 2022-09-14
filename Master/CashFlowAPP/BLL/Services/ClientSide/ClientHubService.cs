@@ -37,10 +37,10 @@ namespace BLL.Services.ClientSide
                     {
                         //var UserFiInfo = _MemoryCache.Get(UserInfos.Id);
                         //var UserFiInfo2 = _MemoryCache.Get<FiInfo>(UserInfos.Id);
-                        var UserFiInfo = _MemoryCache.Get<FiInfo?>(UserInfos.Id);
+                        var UserFiInfo = _MemoryCache.Get<FiInfo?>(UserInfos.UserId);
                         if (UserFiInfo != null)
                         {
-                            UserFiInfo.UserId = UserInfos.Id;
+                            UserFiInfo.UserId = UserInfos.UserId;
                             FiInfos.Add(UserFiInfo);
                         }
                     }

@@ -123,7 +123,7 @@ namespace BLL.Services.ClientSide
                 {
                     var UserInfo = new UserInfo();
 
-                    UserInfo.Id = user.Id;
+                    UserInfo.UserId = user.Id;
                     UserInfo.Name = user.Name;
                     UserInfo.Email = user.Email;
                     UserInfo.RoleId = user.RoleId;

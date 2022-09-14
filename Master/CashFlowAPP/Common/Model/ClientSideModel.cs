@@ -44,7 +44,7 @@ namespace Common.Model
         /// <summary>
         /// 使用者流水號
         /// </summary>
-        public int Id { get; set; }
+        public int UserId { get; set; }
         /// <summary>
         /// 信箱
         /// </summary>

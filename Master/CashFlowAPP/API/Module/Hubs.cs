@@ -20,9 +20,7 @@ namespace API.Hubs
         private readonly CashFlowDbContext _CashFlowDbContext;
         private System.Timers.Timer timer;
         public static Boolean TimerTrigger = false;
-        public static List<string> ConnIDList = new List<string>(); // 連線ID清單
-        public static List<UserInfo> UserList = new List<UserInfo>(); // 連線User清單
-        public static UserInfo _UserObject = new UserInfo(); // 使用者物件 Id 信箱 姓名 ...
+        public static List<UserInfo> _UserInfos = new List<UserInfo>(); // 連線 User 清單
         public static List<RandomItem<int>> CardList = new List<RandomItem<int>>();
         public static List<Card> Cards = new List<Card>();
 
@@ -60,69 +58,57 @@ namespace API.Hubs
         /// <returns></returns>
         public override async Task OnConnectedAsync()
         {
-            // 第一次連線
-            if (!ConnIDList.Any(x => x == Context.ConnectionId))
+            if (!_UserInfos.Select(x => x.ConnectionId).Any(x => x == Context.ConnectionId)) // 第一次連線
             {
-                ConnIDList.Add(Context.ConnectionId);
-            }
+                var _UserInfo = new UserInfo();
+                _UserInfo.ConnectionId = Context.ConnectionId;
 
-            var Token = Context.GetHttpContext().Request.Query["token"];
-            if (Token.Count == 0) // 遊客
-            {
-                var Stranger = Context.GetHttpContext().Request.Query["stranger"]; // 暱稱
-                _UserObject.Name = (string)Stranger + "$$$";
-                _UserObject.ConnectionId = Context.ConnectionId;
-                UserList.Add(_UserObject);
-
-            }
-            else // 用戶
-            {
-                _UserObject = Jose.JWT.Decode<UserInfo>(
-                       Token, Encoding.UTF8.GetBytes("錢董"),
-                       Jose.JwsAlgorithm.HS256);
-
-                if (_UserObject != null)
+                var Token = Context.GetHttpContext().Request.Query["token"];
+                if (Token.Count == 0) // 遊客
                 {
-                    _UserObject.ConnectionId = Context.ConnectionId;
-                    UserList.Add(_UserObject);
+                    var Stranger = Context.GetHttpContext().Request.Query["stranger"]; // 暱稱
+                    _UserInfo.Name = (string)Stranger + "$$$";
                 }
+                else // 用戶
+                {
+                    _UserInfo = Jose.JWT.Decode<UserInfo>(
+                           Token, Encoding.UTF8.GetBytes("錢董"),
+                           Jose.JwsAlgorithm.HS256);
+                }
+
+                // 同個 UserId 不能同時連線，會將前者離線在連後者
+                var RepeatUserId = _UserInfos.Select(x => x.UserId).FirstOrDefault(x => x == _UserInfo.UserId);
+                if (RepeatUserId != 0)
+                {
+                    var RepeatUserInfo = _UserInfos.FirstOrDefault(x => x.UserId == RepeatUserId);
+                    // 前端離線
+                    await _hubContext.Clients.Client(RepeatUserInfo.ConnectionId).SendAsync("Relogin", $"此帳號已被從別處重複登入");
+                }
+
+                _UserInfos.Add(_UserInfo);
+                // 更新聊天內容
+                await Clients.All.SendAsync("UpdContent", DateTime.Now.ToString("[yyyy/MM/dd HH:mm:ss]") + "新連線玩家: " + _UserInfo.Name);
             }
-
-            // 更新連線 ID 列表
-            string jsonString = JsonConvert.SerializeObject(ConnIDList);
-            await Clients.All.SendAsync("UpdList", jsonString, UserList.Select(x => x.Name).ToList());
-
-            // 更新個人 ID
-            await Clients.Client(Context.ConnectionId).SendAsync("UpdSelfID", Context.ConnectionId, UserList.Where(x => x.Id == _UserObject.Id).FirstOrDefault());
-
-            // 更新聊天內容
-            await Clients.All.SendAsync("UpdContent", DateTime.Now.ToString("[yyyy/MM/dd HH:mm:ss]") + "新連線玩家: " + _UserObject.Name);
 
             await base.OnConnectedAsync();
         }
 
         /// <summary>
         /// 離線事件
+        /// https://www.cnblogs.com/monster17/p/13537129.html
         /// </summary>
         /// <param name="ex"></param>
         /// <returns></returns>
         public override async Task OnDisconnectedAsync(Exception ex)
         {
-            string? id = ConnIDList.Where(p => p == Context.ConnectionId).FirstOrDefault();
-            var User = UserList.Where(user => user.Id == _UserObject.Id).FirstOrDefault();
-
-            if (id != null)
+            if (_UserInfos.Select(x => x.ConnectionId).Any(x => x == Context.ConnectionId))
             {
-                UserList.Remove(User);
-                ConnIDList.Remove(id);
+                var _UserInfo = _UserInfos.FirstOrDefault(x => x.ConnectionId == Context.ConnectionId);
+                _UserInfos.Remove(_UserInfo);
+
+                // 更新聊天內容
+                await Clients.All.SendAsync("UpdContent", $"{GetNowSrring()} 已離線玩家:{_UserInfo.Name}");
             }
-
-            // 更新連線 ID 列表
-            string jsonString = JsonConvert.SerializeObject(ConnIDList);
-            await Clients.All.SendAsync("UpdList", jsonString, UserList.Select(x => x.Name).ToList());
-
-            // 更新聊天內容
-            await Clients.All.SendAsync("UpdContent", DateTime.Now.ToString("[yyyy/MM/dd HH:mm:ss]") + "已離線玩家: " + _UserObject.Name);
 
             await base.OnDisconnectedAsync(ex);
         }
@@ -135,19 +121,7 @@ namespace API.Hubs
         /// <returns></returns>
         public async Task SendMessage(FromClientChat package)
         {
-            //string selfID, string message, string sendToID
-            if (string.IsNullOrEmpty(package.sendToID))
-            {
-                await Clients.All.SendAsync("UpdContent",DateTime.Now.ToString("[yyyy/MM/dd HH:mm:ss]") + package.selfID + " 說: " + package.message);
-            }
-            else
-            {
-                // 接收人
-                await Clients.Client(package.sendToID).SendAsync("UpdContent", package.selfID + " 私訊向你說: " + package.message);
-
-                // 發送人
-                await Clients.Client(Context.ConnectionId).SendAsync("UpdContent", "你向 " + package.sendToID + " 私訊說: " + package.message);
-            }
+            await Clients.All.SendAsync("UpdContent", DateTime.Now.ToString("[yyyy/MM/dd HH:mm:ss]") + package.selfID + " 說: " + package.message);
         }
 
         /// <summary>
@@ -160,7 +134,6 @@ namespace API.Hubs
             // Create a timer with a two second interval.
             while (flag)
             {
-
                 var time1 = DateTime.Now.Second;
 
                 if (DateTime.Now.Second % 60 == 0)
@@ -188,22 +161,22 @@ namespace API.Hubs
             try
             {
                 timer.Stop();
-                
-                foreach (var User in UserList)
+
+                foreach (var _UserInfo in _UserInfos)
                 {
                     // 透過後端儲存抽到的卡片，前端只負責顯示
                     var CardByRandom = Method.RandomWithWeight(CardList);
                     var YourCard = Cards.FirstOrDefault(x => x.Id == CardByRandom);
-                    var CardInfo = await _ClientHubService.ProcessCardInfo(YourCard, UserList, User.Id);
+                    var CardInfo = await _ClientHubService.ProcessCardInfo(YourCard, _UserInfos, _UserInfo.UserId);
                     if (YourCard.Type == "強迫中獎")
                     {
-                        await _hubContext.Clients.All.SendAsync("UpdContent", $"玩家: {_UserObject.Name} 抽到 {YourCard.Name}");
+                        await _hubContext.Clients.All.SendAsync("UpdContent", $"玩家: {_UserInfo.Name} 抽到 {YourCard.Name}");
 
-                        await _hubContext.Clients.Client(User.ConnectionId).SendAsync("DrawCard", YourCard, $"恭喜你這個幸運兒");
+                        await _hubContext.Clients.Client(_UserInfo.ConnectionId).SendAsync("DrawCard", YourCard, $"恭喜你這個幸運兒");
                     }
                     else
                     {
-                        await _hubContext.Clients.Client(User.ConnectionId).SendAsync("DrawCard", YourCard, $"\n{CardInfo.Value}");
+                        await _hubContext.Clients.Client(_UserInfo.ConnectionId).SendAsync("DrawCard", YourCard, $"\n{CardInfo.Value}");
                     }
                 }
 
@@ -221,19 +194,12 @@ namespace API.Hubs
         /// <returns></returns>
         public async Task ChoiceOfCard(FromClientChat package)
         {
-            //string selfID, string message, string sendToID
-            if (string.IsNullOrEmpty(package.sendToID))
-            {
-                await Clients.All.SendAsync("UpdContent", package.selfID + " 說: " + package.message);
-            }
-            else
-            {
-                // 接收人
-                await Clients.Client(package.sendToID).SendAsync("UpdContent", package.selfID + " 私訊向你說: " + package.message);
 
-                // 發送人
-                await Clients.Client(Context.ConnectionId).SendAsync("UpdContent", "你向 " + package.sendToID + " 私訊說: " + package.message);
-            }
+        }
+
+        public string GetNowSrring()
+        {
+            return DateTime.Now.ToString("[yyyy/MM/dd HH:mm:ss]");
         }
 
         #endregion
