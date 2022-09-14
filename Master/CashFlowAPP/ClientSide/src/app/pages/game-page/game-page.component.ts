@@ -35,11 +35,26 @@ export class GamePageComponent implements OnInit,OnDestroy {
   ngOnDestroy():void{
     this._Signalr.DisConnect();
   }
+
+
+  ReLogin(){
+    this._Signalr.OnObservable("ReLogin").subscribe((Res: any) => {
+      if(Res[0]=="此帳號已被從別處重複登入"){
+        this._Signalr.DisConnect();
+        alert(Res[0]);
+      }
+    });
+  }
+
+
+
   Flag = true;
+  WaitSeconds:any;
   RoundStart() {
     let Round = setInterval(() => {
       this.Time = new Date();
       let Second = this.Time.getSeconds();
+      this.WaitSeconds=60-Second;
       if (Second % 60 == 0) {
         this.Flag = false;
         setInterval(() => { this.GameTimeRound(); }, 60000);

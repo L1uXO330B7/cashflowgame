@@ -18,7 +18,7 @@
         <app-hamster-wheel *ngIf="!Flag"></app-hamster-wheel>
         <div *ngIf="Flag" class="d-flex mt-3"><div class="spinner-border" role="status">
           <span class="visually-hidden">Loading...</span>
-        </div><h3 class="ms-2">請等待下一圈的到來</h3></div>
+        </div><h5 class="ms-2">距離加入遊戲還有{{WaitSeconds}}秒</h5></div>
         你在第 {{JoinRound}} 圈加入
       </div>
 
