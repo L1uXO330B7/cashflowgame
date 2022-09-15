@@ -225,7 +225,7 @@ namespace API.Hubs
         /// </summary>
         /// <returns></returns>
         /// 
-        public async Task ChoiceOfCard()
+        public async Task ChoiceOfCard(int okay)
         {
             var UserId = _UserInfos
                 .FirstOrDefault(x => x.ConnectionId == Context.ConnectionId).UserId;
@@ -234,6 +234,7 @@ namespace API.Hubs
 
             await _hubContext.Clients.Client(Context.ConnectionId)
           .SendAsync("ReadFiInfo", YourFiInfo);
+
         }
 
         public string GetNowSrring()

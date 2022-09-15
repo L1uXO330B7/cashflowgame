@@ -347,9 +347,10 @@ namespace BLL.Services.ClientSide
         /// 
         /// </summary>
         /// <returns></returns>
-        public async Task<ApiResponse> ChoiceOfCard(int UserId, string ConnectId)
+        public async Task<ApiResponse> ChoiceOfCard(int UserId,string ConnectId)
         {
             FiInfo YourFiInfo = new FiInfo();
+
 
             var Res = new ApiResponse();
             if (UserId == 0)
@@ -360,10 +361,28 @@ namespace BLL.Services.ClientSide
             {
                 YourFiInfo = _MemoryCache.Get<FiInfo?>(UserId);
             }
-
+            if (YourFiInfo.NowCardAsset != null)
+            {
             YourFiInfo.Asset.Add(YourFiInfo.NowCardAsset);
+            }
+            if(YourFiInfo.ValueInterest != null)
+            {
             YourFiInfo.CashFlowIncome.Add(YourFiInfo.ValueInterest);
+            }
             YourFiInfo.CurrentMoney = YourFiInfo.CurrentMoney - YourFiInfo.NowCardAsset.Value;
+
+
+            if (UserId == 0)
+            {
+                _MemoryCache.Set(ConnectId, YourFiInfo,
+                   new MemoryCacheEntryOptions().SetPriority(CacheItemPriority.NeverRemove));
+            }
+            else
+            {
+                _MemoryCache.Set(UserId, YourFiInfo,
+                 new MemoryCacheEntryOptions().SetPriority(CacheItemPriority.NeverRemove));
+            }
+
             Res.Data = YourFiInfo;
             return Res;
         }

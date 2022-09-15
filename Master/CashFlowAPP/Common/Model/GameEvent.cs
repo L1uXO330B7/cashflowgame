@@ -47,9 +47,9 @@ namespace Common.Model
         public List<AssetAndCategoryModel> Asset { get; set; }
         public List<AssetAndCategoryModel> Liabilities { get; set; }
         public int? NowCardId { get; set; }
-        public AssetAndCategoryModel? NowCardAsset { get; set; } = null;
+        public AssetAndCategoryModel? NowCardAsset { get; set; }
 
-        public CashFlowAndCategoryModel? ValueInterest { get; set; } = null;
+        public CashFlowAndCategoryModel? ValueInterest { get; set; }
     }
 
     public class CardInfo

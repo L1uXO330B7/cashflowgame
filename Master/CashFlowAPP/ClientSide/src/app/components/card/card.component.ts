@@ -32,7 +32,7 @@ export class CardComponent implements OnInit {
     });
   }
   Agree(){
-
+    this._Signalr.Invoke("ChoiceOfCard",5);
   }
   DisAgree(){
 

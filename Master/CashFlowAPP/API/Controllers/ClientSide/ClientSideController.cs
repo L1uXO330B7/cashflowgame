@@ -84,51 +84,51 @@ namespace API.Controllers.ClientSide
         }
 
         /// <summary>
-        /// 讀取用戶財報
+        /// 讀取用戶財報，已抽到 hub
         /// </summary>
         /// <param name="Req"></param>
         /// <returns></returns>
-        [HttpPost]
-        public async Task<ApiResponse> ReadFiInfo([FromBody] ApiRequest<int?> Req)
-        {
-            var Res = new ApiResponse();
+        //[HttpPost]
+        //public async Task<ApiResponse> ReadFiInfo([FromBody] ApiRequest<int?> Req)
+        //{
+        //    var Res = new ApiResponse();
 
-            if (Req.Args != null)
-            {
-                // Req.Args 是 UserId，用 UserId 來作為快取記憶體的 key
-                // 如找無此 Key 就空出一個單位的記憶體來儲存
-                //var UserFiInfo = _MemoryCache.GetOrCreate(Req.Args, async (not) =>
-                //{
-                //Res = await _ClientSideService.ReadFiInfo(Req);
-                //FiInfo Data = (FiInfo)Res.Data;
-                //_MemoryCache.Set(
-                //Req.Args, Data,
-                //    new MemoryCacheEntryOptions()
-                //   .SetPriority(CacheItemPriority.NeverRemove));
-                //
-                //   <= 這樣是正常的但是 UserFiInfo 會變成 Task 包住導致解出來時還要再包層 Task，把滑鼠移上去看
-                //return Data;
-                //});
+        //    if (Req.Args != null)
+        //    {
+        //        // Req.Args 是 UserId，用 UserId 來作為快取記憶體的 key
+        //        // 如找無此 Key 就空出一個單位的記憶體來儲存
+        //        //var UserFiInfo = _MemoryCache.GetOrCreate(Req.Args, async (not) =>
+        //        //{
+        //        //Res = await _ClientSideService.ReadFiInfo(Req);
+        //        //FiInfo Data = (FiInfo)Res.Data;
+        //        //_MemoryCache.Set(
+        //        //Req.Args, Data,
+        //        //    new MemoryCacheEntryOptions()
+        //        //   .SetPriority(CacheItemPriority.NeverRemove));
+        //        //
+        //        //   <= 這樣是正常的但是 UserFiInfo 會變成 Task 包住導致解出來時還要再包層 Task，把滑鼠移上去看
+        //        //return Data;
+        //        //});
 
-                Res.Data = _MemoryCache.Get<FiInfo>(Req.Args);
-                if (Res.Data == null)
-                {
-                    Res = await _ClientSideService.ReadFiInfo(Req);
-                    FiInfo Data = (FiInfo)Res.Data;
-                    _MemoryCache.Set(Req.Args, Data,
-                        new MemoryCacheEntryOptions().SetPriority(CacheItemPriority.NeverRemove));
-                }
+        //        Res.Data = _MemoryCache.Get<FiInfo>(Req.Args);
+        //        if (Res.Data == null)
+        //        {
+        //            Res = await _ClientSideService.ReadFiInfo(Req);
+        //            FiInfo Data = (FiInfo)Res.Data;
+        //            _MemoryCache.Set(Req.Args, Data,
+        //                new MemoryCacheEntryOptions().SetPriority(CacheItemPriority.NeverRemove));
+        //        }
 
-                // Todo: Cache count
-                Res.Success = true;
-                Res.Code = (int)ResponseStatusCode.Success;
-            }
-            else
-            {
-                Res = await _ClientSideService.ReadFiInfo(Req);
-            }
-            return Res;
-        }
+        //        // Todo: Cache count
+        //        Res.Success = true;
+        //        Res.Code = (int)ResponseStatusCode.Success;
+        //    }
+        //    else
+        //    {
+        //        Res = await _ClientSideService.ReadFiInfo(Req);
+        //    }
+        //    return Res;
+        //}
 
         // Todo remove cache
 
