@@ -32,5 +32,32 @@ namespace BLL.Services.ClientSide
             var ResultValue = (YourJobValue - DailyExpeneseValue) * Dice;
             return ResultValue;
         }
+
+        public decimal FoundationInterest(decimal FoundationCount)
+        {
+            var SavingInterest = Math.Round(FoundationCount / 1200, 0);
+
+            return SavingInterest;
+
+        }
+
+        public decimal CarLoanCount(decimal YourJobValue)
+        {
+            var _Random = StaticRandom();
+            var GuidCode = System.Guid.NewGuid().ToString("N");
+            var CarValue = Math.Round((YourJobValue * 8), 0); // 車子價格大約是薪水*10
+            var Ratio = _Random.Next((int)(YourJobValue * 2), (int)CarValue);
+            var CarLoan = (decimal)Ratio * -1;
+
+            // 車貸利息 => (貸款總金額 + 貸款總利息) / 貸款總期數 = 每月月付金
+            return CarLoan;
+
+        }
+        public decimal CarInterest(decimal CarLoan)
+        {   var Ratio = CarLoan * -1;
+            var CarInterestValue = Math.Round((((decimal)Ratio * 28 / 1000 / 12) + ((decimal)Ratio / 60)), 0) * -1;
+
+            return CarInterestValue;
+        }
     }
 }

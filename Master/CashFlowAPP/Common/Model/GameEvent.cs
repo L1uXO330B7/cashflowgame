@@ -39,6 +39,7 @@ namespace Common.Model
     }
     public class FiInfo
     {
+        public string ConnectId { get; set; }
         public int? UserId { get; set; }
         public decimal? CurrentMoney { get; set; }
         public List<CashFlowAndCategoryModel> CashFlowIncome { get; set; }
@@ -51,6 +52,6 @@ namespace Common.Model
 
     public class CardInfo
     {
-        public decimal Value { get; set; }
+        public dynamic? Value { get; set; }
     }
 }

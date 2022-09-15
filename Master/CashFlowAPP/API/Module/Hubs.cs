@@ -160,7 +160,7 @@ namespace API.Hubs
                 if (DateTime.Now.Second % 60 == 0)
                 {
                     var time = DateTime.Now.Second;
-                    timer = new System.Timers.Timer(60000);
+                    timer = new System.Timers.Timer(10000);
                     Count++;
                     flag = false;
                 }
@@ -188,7 +188,7 @@ namespace API.Hubs
                     // 透過後端儲存抽到的卡片，前端只負責顯示
                     var CardByRandom = Method.RandomWithWeight(CardList);
                     var YourCard = Cards.FirstOrDefault(x => x.Id == CardByRandom);
-                    var CardInfo = await _ClientHubService.ProcessCardInfo(YourCard, _UserInfos, _UserInfo.UserId);
+                    var CardInfo = await _ClientHubService.ProcessCardInfo(YourCard, _UserInfos, _UserInfo.UserId,_UserInfo.ConnectionId);
 
 
 
@@ -203,8 +203,13 @@ namespace API.Hubs
                         CardValue = "恭喜你造成蝴蝶效應";
                     }
 
-                        await _hubContext.Clients.Client(_UserInfo.ConnectionId).SendAsync("DrawCard", YourCard, $"{CardValue}");
-                    
+                    await _hubContext.Clients.Client(_UserInfo.ConnectionId).SendAsync("DrawCard", YourCard, $"{CardValue}");
+
+                    var UserFiInfo = await _ClientHubService.ReadFiInfo(_UserInfo.UserId, _UserInfo.ConnectionId);
+
+                    await _hubContext.Clients.Client(_UserInfo.ConnectionId)
+                   .SendAsync("ReadFiInfo", UserFiInfo);
+
                 }
 
                 timer.Start();
