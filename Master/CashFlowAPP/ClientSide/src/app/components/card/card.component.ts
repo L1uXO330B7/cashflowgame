@@ -23,7 +23,12 @@ export class CardComponent implements OnInit {
   OnCard() {
     this._Signalr.OnObservable("DrawCard").subscribe((Res: any) => {
       this.CardData=Res[0];
-      this.CardValue=Res[1];
+      if(typeof(Res[0])==typeof(1)){
+        this.CardValue=Math.round(Res[1]);
+      }
+      else{
+              this.CardValue=Res[1];
+      }
     });
   }
   Agree(){
