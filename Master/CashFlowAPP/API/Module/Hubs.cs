@@ -224,9 +224,16 @@ namespace API.Hubs
         /// 卡片抉擇，結果回傳
         /// </summary>
         /// <returns></returns>
-        public async Task ChoiceOfCard(FromClientChat package)
+        /// 
+        public async Task ChoiceOfCard()
         {
+            var UserId = _UserInfos
+                .FirstOrDefault(x => x.ConnectionId == Context.ConnectionId).UserId;
 
+            var YourFiInfo = await _ClientHubService.ChoiceOfCard(UserId, Context.ConnectionId);
+
+            await _hubContext.Clients.Client(Context.ConnectionId)
+          .SendAsync("ReadFiInfo", YourFiInfo);
         }
 
         public string GetNowSrring()

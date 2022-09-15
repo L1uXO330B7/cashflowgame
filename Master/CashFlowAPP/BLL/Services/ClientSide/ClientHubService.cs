@@ -72,6 +72,9 @@ namespace BLL.Services.ClientSide
                         var DailyExpenese = YourFiInfo.CashFlowExpense.FirstOrDefault(x => x.CashFlowCategoryName == "生活花費");
 
                         // Todo 影響交易紀錄快取
+                        YourFiInfo.NowCardAsset = null;
+                        YourFiInfo.ValueInterest = null;
+
 
                         foreach (var YourCardEffect in YourCardEffects)
                         {
@@ -124,7 +127,7 @@ namespace BLL.Services.ClientSide
                                         NewAsset.Id = _Asset.Id;
                                         NewAsset.Name = _Asset.Name;
                                         NewAsset.ParentId = Category.ParentId;
-                                        NewAsset.Value = Value;
+                                        NewAsset.Value = Math.Round(Value);
                                         NewAsset.GuidCode = GuidCode;
                                         NewAsset.Weight = (decimal)_Asset.Weight;
                                         NewAsset.AssetCategoryId = _Asset.AssetCategoryId;
@@ -132,7 +135,9 @@ namespace BLL.Services.ClientSide
                                         NewAsset.Description = _Asset.Description;
 
 
-                                     // YourFiInfo.Asset.Add(NewAsset);
+                                        // YourFiInfo.Asset.Add(NewAsset);
+
+                                        Result.NowCardAsset = NewAsset;
 
                                         Result.Value = $"需花費:{Math.Round(-1 * Value,0)}";
                                     }
@@ -152,7 +157,7 @@ namespace BLL.Services.ClientSide
                                         NewAsset.Id = _Asset.Id;
                                         NewAsset.Name = _Asset.Name;
                                         NewAsset.ParentId = Category.ParentId;
-                                        NewAsset.Value = Value;
+                                        NewAsset.Value = Math.Round(Value,0);
                                         NewAsset.GuidCode = GuidCode;
                                         NewAsset.Weight = (decimal)_Asset.Weight;
                                         NewAsset.AssetCategoryId = _Asset.AssetCategoryId;
@@ -160,9 +165,8 @@ namespace BLL.Services.ClientSide
                                         NewAsset.Description = _Asset.Description;
 
                                         // YourFiInfo.Asset.Add(NewAsset)
-                                        Result.Value = $"需花費:{Math.Round(-1 * Value,0)}";
 
-
+                                       
                                         // 定存利息
 
                                         var NewCashFlow = new CashFlowAndCategoryModel();
@@ -178,13 +182,16 @@ namespace BLL.Services.ClientSide
                                         NewCashFlow.Id = CashFlow.Id;
                                         NewCashFlow.Name = CashFlow.Name;
                                         NewCashFlow.ParentId = CashFlowCategory.ParentId;
-                                        NewCashFlow.Value = CashFlowValue;
+                                        NewCashFlow.Value = Math.Round(CashFlowValue);
                                         NewCashFlow.GuidCode = GuidCode;
                                         NewCashFlow.Weight = (decimal)CashFlow.Weight;
                                         NewCashFlow.CashFlowCategoryId = CashFlow.CashFlowCategoryId;
                                         NewCashFlow.CashFlowCategoryName = CashFlowCategory.Name;
                                         NewCashFlow.Description = CashFlow.Description;
 
+                                        Result.Value = $"需花費:{Math.Round(-1 * Value,0)}";
+                                        Result.NowCardAsset = NewAsset;
+                                        Result.ValueInterest = NewCashFlow;
 
                                     }
                                 }
@@ -212,7 +219,7 @@ namespace BLL.Services.ClientSide
                                         NewAsset.Id = _Asset.Id;
                                         NewAsset.Name = _Asset.Name;
                                         NewAsset.ParentId = Category.ParentId;
-                                        NewAsset.Value = Value;
+                                        NewAsset.Value = Math.Round(Value);
                                         NewAsset.GuidCode = GuidCode;
                                         NewAsset.Weight = (decimal)_Asset.Weight;
                                         NewAsset.AssetCategoryId = _Asset.AssetCategoryId;
@@ -237,7 +244,7 @@ namespace BLL.Services.ClientSide
                                         NewCashFlow.Id = CashFlow.Id;
                                         NewCashFlow.Name = CashFlow.Name;
                                         NewCashFlow.ParentId = CashFlowCategory.ParentId;
-                                        NewCashFlow.Value = CashFlowValue;
+                                        NewCashFlow.Value = Math.Round(CashFlowValue);
                                         NewCashFlow.GuidCode = GuidCode;
                                         NewCashFlow.Weight = (decimal)CashFlow.Weight;
                                         NewCashFlow.CashFlowCategoryId = CashFlow.CashFlowCategoryId;
@@ -318,6 +325,10 @@ namespace BLL.Services.ClientSide
                 throw;
             }
 
+            YourFiInfo.NowCardId = YourCard.Id;
+            YourFiInfo.NowCardAsset = Result.NowCardAsset;
+            YourFiInfo.ValueInterest = Result.ValueInterest;
+
             if (YourUserId == 0)
             {
                 _MemoryCache.Set(YourConnectId, YourFiInfo,
@@ -330,6 +341,36 @@ namespace BLL.Services.ClientSide
             }
             return Result;
         }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public async Task<ApiResponse> ChoiceOfCard(int UserId, string ConnectId)
+        {
+            FiInfo YourFiInfo = new FiInfo();
+
+            var Res = new ApiResponse();
+            if (UserId == 0)
+            {
+                YourFiInfo = _MemoryCache.Get<FiInfo?>(ConnectId);
+            }
+            else
+            {
+                YourFiInfo = _MemoryCache.Get<FiInfo?>(UserId);
+            }
+
+            YourFiInfo.Asset.Add(YourFiInfo.NowCardAsset);
+            YourFiInfo.CashFlowIncome.Add(YourFiInfo.ValueInterest);
+            YourFiInfo.CurrentMoney = YourFiInfo.CurrentMoney - YourFiInfo.NowCardAsset.Value;
+            Res.Data = YourFiInfo;
+            return Res;
+        }
+
+
+
+
         public async Task<ApiResponse> ReadFiInfo(int UserId, string ConnectId)
         {
             var Res = new ApiResponse();
@@ -580,7 +621,7 @@ namespace BLL.Services.ClientSide
                         Asset = Asset,
                         Liabilities = Liabilities,
                         NowCardId = null,
-                        NowCardValue = null,
+                        NowCardAsset = null,
                     };
                     Res.Success = true;
                     Res.Code = (int)ResponseStatusCode.Success;

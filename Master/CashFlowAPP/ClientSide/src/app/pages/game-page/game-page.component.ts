@@ -124,7 +124,6 @@ export class GamePageComponent implements OnInit, OnDestroy {
     // });
     this._Signalr.OnObservable("ReadFiInfo").subscribe((Res: any) => {
       this.UserFiInfo = Res[0].Data;
-      this.UserFiInfo.CurrentMoney=Math.round()
     });
   }
 

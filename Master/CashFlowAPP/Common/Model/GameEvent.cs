@@ -47,11 +47,20 @@ namespace Common.Model
         public List<AssetAndCategoryModel> Asset { get; set; }
         public List<AssetAndCategoryModel> Liabilities { get; set; }
         public int? NowCardId { get; set; }
-        public decimal? NowCardValue { get; set; }
+        public AssetAndCategoryModel? NowCardAsset { get; set; } = null;
+
+        public CashFlowAndCategoryModel? ValueInterest { get; set; } = null;
     }
 
     public class CardInfo
     {
-        public dynamic? Value { get; set; }
+        // 秀到前端
+        public dynamic? Value { get; set; } = null;
+
+        // 計算的整包資產
+        public AssetAndCategoryModel? NowCardAsset { get; set; } = null;
+
+        // 計算的整包利息
+        public CashFlowAndCategoryModel? ValueInterest { get; set; } = null;
     }
 }
