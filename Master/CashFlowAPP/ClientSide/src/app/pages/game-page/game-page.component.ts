@@ -116,12 +116,14 @@ export class GamePageComponent implements OnInit, OnDestroy {
 
   UserFiInfo: any = {}
   GetFiInfo() {
-    let Req = new ApiRequest<any>();
-    Req.Args = this.UserId;
-    this._ApiService.GetFiInfo(Req).subscribe((Res) => {
-      if (Res.Success) {
-        this.UserFiInfo = Res.Data;
-      }
+    // Req.Args = this.UserId;
+    // this._ApiService.GetFiInfo(Req).subscribe((Res) => {
+    //   if (Res.Success) {
+    //     this.UserFiInfo = Res.Data;
+    //   }
+    // });
+    this._Signalr.OnObservable("ReadFiInfo").subscribe((Res: any) => {
+      this.UserFiInfo = Res[0];
     });
   }
 

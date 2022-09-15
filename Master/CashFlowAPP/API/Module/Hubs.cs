@@ -58,8 +58,17 @@ namespace API.Hubs
         /// <returns></returns>
         public override async Task OnConnectedAsync()
         {
+
             if (!_UserInfos.Select(x => x.ConnectionId).Any(x => x == Context.ConnectionId)) // 第一次連線
             {
+
+                // 做 _MemoryCache FiInfo Init
+                // FiInfo UserId 改 string
+                // 遊客塞 ConnectId，用戶塞 UserId
+                // 一建立連線就返回資料
+                // iis 啟動只有第一個位連線受影響，倒數完才看得到資料
+                // 
+
                 var _UserInfo = new UserInfo();
                
 
@@ -79,6 +88,7 @@ namespace API.Hubs
 
 
                 _UserInfo.ConnectionId = Context.ConnectionId;
+
                 // 同個 UserId 不能同時連線，會將前者離線在連後者
                 var RepeatUserId = _UserInfos.Select(x => x.UserId).FirstOrDefault(x => x == _UserInfo.UserId);
                 if (RepeatUserId != 0)
@@ -87,6 +97,14 @@ namespace API.Hubs
                     // 前端離線
                     await _hubContext.Clients.Client(RepeatUserInfo.ConnectionId).SendAsync("Relogin", $"此帳號已被從別處重複登入");
                 }
+
+                // 拿到玩家財務報表，並初始化快取
+                var UserFiInfo = await _ClientHubService.ReadFiInfo(_UserInfo.UserId,_UserInfo.ConnectionId);
+
+
+                // 個人財報回傳前端
+                await _hubContext.Clients.Client(_UserInfo.ConnectionId)
+                    .SendAsync("ReadFiInfo", UserFiInfo);
 
                 _UserInfos.Add(_UserInfo);
                 // 更新聊天內容
@@ -171,6 +189,12 @@ namespace API.Hubs
                     var CardByRandom = Method.RandomWithWeight(CardList);
                     var YourCard = Cards.FirstOrDefault(x => x.Id == CardByRandom);
                     var CardInfo = await _ClientHubService.ProcessCardInfo(YourCard, _UserInfos, _UserInfo.UserId);
+
+
+
+
+
+
 
                     dynamic CardValue = CardInfo.Value;
                     if (YourCard.Type == "強迫中獎")
