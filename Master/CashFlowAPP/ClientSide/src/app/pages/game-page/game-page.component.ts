@@ -140,4 +140,10 @@ export class GamePageComponent implements OnInit, OnDestroy {
       this.ToggleCard();
     }, 1800);
   }
+
+
+  SaleAsset(AssetId:number){
+    this._Signalr.Invoke("SaleAsset",AssetId);
+  }
+
 }

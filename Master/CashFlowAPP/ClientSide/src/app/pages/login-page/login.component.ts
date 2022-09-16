@@ -105,10 +105,18 @@ export class LoginComponent implements OnInit {
         this.VerificationCode = Res.Data;
       });
   }
-
+  ShowToast(Msg: string, CssClass: string, Header: string) {
+    this._ToastService.show(Msg, {
+      className: CssClass,
+      delay: 10000,
+      HeaderTxt: Header,
+    });
+  }
   UserSignUp() {
+    this.IsLoading=true;
     if (this._ClientUserLogin.CheckPassword != this._ClientUserLogin.Password) {
-      alert("請確認密碼");
+      this.ShowToast("兩次密碼不相同","註冊通知","bg-danger")
+      this.IsLoading=false;
       return
     }
     let Req = new ApiRequest<any>();
@@ -118,6 +126,10 @@ export class LoginComponent implements OnInit {
     this._ApiService.UserSignUp(Req).subscribe((Res) => {
         if(Res.Success){
           this.changeLogin();
+          this.IsLoading=false;
+        }
+        else{
+          this.IsLoading=false;
         }
       });
   }

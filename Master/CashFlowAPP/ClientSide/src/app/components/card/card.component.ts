@@ -20,8 +20,12 @@ export class CardComponent implements OnInit {
   CardData:Card=new Card();
   CardValue:any;
   FirstTime = false;
+  IsAnswered = false;
+
+
   OnCard() {
     this._Signalr.OnObservable("DrawCard").subscribe((Res: any) => {
+      this.IsAnswered = false;
       this.CardData=Res[0];
       if(typeof(Res[0])==typeof(1)){
         this.CardValue=Math.round(Res[1]);
@@ -33,8 +37,9 @@ export class CardComponent implements OnInit {
   }
   Agree(){
     this._Signalr.Invoke("ChoiceOfCard",5);
+    this.IsAnswered = true;
   }
   DisAgree(){
-
+    this.IsAnswered = true;
   }
 }

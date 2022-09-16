@@ -273,9 +273,9 @@ namespace BLL.Services.ClientSide
                                     if (YourCard.Id == 90 || YourCard.Id == 93)
                                     {
                                         // 現金扣錢
-                                        YourFiInfo.CurrentMoney = YourFiInfo.CurrentMoney +
-                                            Math.Round(YourJob.Value * Math.Round((decimal)YourCardEffect.Value,0),0);
-                                        Result.Value = $"需花費:{Math.Round(YourJob.Value * Math.Round((decimal)YourCardEffect.Value,0),0)}";
+                                        YourFiInfo.CurrentMoney = Math.Round((decimal)YourFiInfo.CurrentMoney +
+                                          ((decimal)YourJob.Value * (decimal)YourCardEffect.Value),0);
+                                        Result.Value = $"{Math.Round(YourJob.Value * (decimal)YourCardEffect.Value,0)}";
                                     }
                                 }
                             }

@@ -73,7 +73,7 @@
             <h5 class="text-center py-2 m-0">資產項目</h5>
             <ul class="IncomeList">
               <li *ngFor="let item of UserFiInfo.Asset">
-                <p>{{item.Name}} :</p><span>{{item.Value}}</span>
+                <p>{{item.Name}}<button (click)="SaleAsset(item.Id)">賣出</button> :</p><span>{{item.Value}}</span>
               </li>
             </ul>
             <h5 class="text-center my-2">負債項目</h5>
