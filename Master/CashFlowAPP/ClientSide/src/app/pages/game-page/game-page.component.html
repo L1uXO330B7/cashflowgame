@@ -31,13 +31,13 @@
     </div>
     <div class="col p-0">
       <div class="d-flex">
-        <div class="col-4 p-0"></div>
+        <div class="col-1 p-0"></div>
         <button class="col-1 p-0 InfoToggle" (click)="ToggleInfo()" [class.active]="!OpenInfo"><i
             class="fa-solid fa-circle-info"></i>
           <h5 class="text-center py-2">您的財務狀況</h5><i class="fa-solid fa-angle-left" *ngIf="!OpenInfo"></i><i
             class="fa-solid fa-angle-right" *ngIf="OpenInfo"></i>
         </button>
-        <div class="col-7 p-0 UserGameInfo">
+        <div class="col-10 p-3 UserGameInfo">
           <h5 class="text-center mt-3">您好!</h5>
           <h2 class="UserName text-center mt-3" *ngIf="UserData.Name!=undefined">{{UserData.Name}}</h2>
           <h2 class="UserName text-center mt-3" *ngIf="UserData.Name==undefined">{{UserData}}</h2>
@@ -46,13 +46,13 @@
               <h4>現金 :</h4><span>NT$ {{(UserFiInfo.CurrentMoney)}}</span>
             </li>
             <li>
-              <h4>月收入 :</h4><span>NT$ 777</span>
+              <h4>月收入 :</h4><span>NT$ {{UserFiInfo.TotalIncomce}}</span>
             </li>
             <li>
-              <h4>月支出 :</h4><span>NT$ -777</span>
+              <h4>月支出 :</h4><span>NT$ {{UserFiInfo.TotalExpense}}</span>
             </li>
             <li>
-              <h4>月結餘 :</h4><span>0</span>
+              <h4>月結餘 :</h4><span>NT$ {{UserFiInfo.TotalEarnings}}</span>
             </li>
           </ul>
           <div class="IcomeExpense mt-2">
@@ -73,13 +73,13 @@
             <h5 class="text-center py-2 m-0">資產項目</h5>
             <ul class="IncomeList">
               <li *ngFor="let item of UserFiInfo.Asset">
-                <p>{{item.Name}}<button (click)="SaleAsset(item.Id)">賣出</button> :</p><span>{{item.Value}}</span>
+                <p>{{item.Name}} : <button (click)="SaleAsset(item)">賣出</button></p><span>{{item.Value}}</span>
               </li>
             </ul>
             <h5 class="text-center my-2">負債項目</h5>
             <ul class="ExpenseList">
               <li *ngFor="let item of UserFiInfo.Liabilities">
-                <p>{{item.Name}} :</p><span>{{item.Value}}</span>
+                <p>{{item.Name}} :<button (click)="SaleLiabilities(item)">賣出</button></p><span>{{item.Value}}</span>
               </li>
             </ul>
           </div>

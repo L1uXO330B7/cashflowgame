@@ -101,7 +101,6 @@ namespace API.Hubs
                 // 拿到玩家財務報表，並初始化快取
                 var UserFiInfo = await _ClientHubService.ReadFiInfo(_UserInfo.UserId,_UserInfo.ConnectionId);
 
-
                 // 個人財報回傳前端
                 await _hubContext.Clients.Client(_UserInfo.ConnectionId)
                     .SendAsync("ReadFiInfo", UserFiInfo);
@@ -238,12 +237,33 @@ namespace API.Hubs
         }
 
      
-        public async Task AssetSales(int AssetId)
+        public async Task AssetSales(AssetAndCategoryModel Asset)
         {
-           
+            // 賣正資產
+            var UserId = _UserInfos
+               .FirstOrDefault(x => x.ConnectionId == Context.ConnectionId).UserId;
+
+            var YourFiInfo = await _ClientHubService.AssetSale(UserId, Context.ConnectionId, Asset);
+
+            await _hubContext.Clients.Client(Context.ConnectionId)
+   .SendAsync("ReadFiInfo", YourFiInfo);
+
+
         }
 
+        public async Task LiabilitieSales(AssetAndCategoryModel Liabilitie)
+        {
+            // 賣負資產
+            var UserId = _UserInfos
+               .FirstOrDefault(x => x.ConnectionId == Context.ConnectionId).UserId;
 
+            var YourFiInfo = await _ClientHubService.LiabilitieSale(UserId, Context.ConnectionId, Liabilitie);
+
+            await _hubContext.Clients.Client(Context.ConnectionId)
+   .SendAsync("ReadFiInfo", YourFiInfo);
+
+
+        }
 
         public string GetNowSrring()
         {

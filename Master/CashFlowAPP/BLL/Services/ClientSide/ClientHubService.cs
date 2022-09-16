@@ -329,6 +329,10 @@ namespace BLL.Services.ClientSide
             YourFiInfo.NowCardAsset = Result.NowCardAsset;
             YourFiInfo.ValueInterest = Result.ValueInterest;
 
+            YourFiInfo.CurrentMoney = YourFiInfo.CurrentMoney + YourFiInfo.TotalEarnings;
+
+            YourFiInfo = FiInfoAccounting(YourFiInfo);
+
             if (YourUserId == 0)
             {
                 _MemoryCache.Set(YourConnectId, YourFiInfo,
@@ -371,6 +375,8 @@ namespace BLL.Services.ClientSide
             }
             YourFiInfo.CurrentMoney = YourFiInfo.CurrentMoney - YourFiInfo.NowCardAsset.Value;
 
+            YourFiInfo = FiInfoAccounting(YourFiInfo);
+
 
             if (UserId == 0)
             {
@@ -387,15 +393,165 @@ namespace BLL.Services.ClientSide
             return Res;
         }
 
+        /// <summary>
+        /// 賣資產
+        /// </summary>
+        /// <returns></returns>
+        public async Task<ApiResponse> AssetSale(int UserId, string ConnectId, AssetAndCategoryModel Asset)
+        {
+            // 負資產
+
+            var Res = new ApiResponse();
+            FiInfo YourFiInfo = new FiInfo();
+            if (UserId == 0)
+            {
+                YourFiInfo = _MemoryCache.Get<FiInfo?>(ConnectId);
+            }
+            else
+            {
+                YourFiInfo = _MemoryCache.Get<FiInfo?>(UserId);
+            }
+
+            // 找資產出來賣
+
+            var YourAsset = YourFiInfo.Asset.FirstOrDefault(x => x.GuidCode == Asset.GuidCode);
+
+            YourFiInfo.CurrentMoney = Math.Round((decimal)YourFiInfo.CurrentMoney + (decimal)YourAsset.Value,0);
+
+            if(YourAsset.AssetCategoryId == 47)
+            {
+                var SavingInterest = YourFiInfo.CashFlowIncome
+                    .FirstOrDefault(x => x.GuidCode == Asset.GuidCode);
+                YourFiInfo.CashFlowIncome.Remove(SavingInterest);
+
+            }
+            YourFiInfo.Asset.Remove(YourAsset);
 
 
+
+
+            YourFiInfo = FiInfoAccounting(YourFiInfo);
+
+
+            if (UserId == 0)
+            {
+                _MemoryCache.Set(ConnectId, YourFiInfo,
+                   new MemoryCacheEntryOptions().SetPriority(CacheItemPriority.NeverRemove));
+            }
+            else
+            {
+                _MemoryCache.Set(UserId, YourFiInfo,
+                 new MemoryCacheEntryOptions().SetPriority(CacheItemPriority.NeverRemove));
+            }
+
+
+            Res.Data = YourFiInfo;
+            return Res;
+
+        }
+        public async Task<ApiResponse> LiabilitieSale(int UserId, string ConnectId, AssetAndCategoryModel Liabilitie)
+        {
+            // 負資產
+
+            var Res = new ApiResponse();
+            FiInfo YourFiInfo = new FiInfo();
+            if (UserId == 0)
+            {
+                YourFiInfo = _MemoryCache.Get<FiInfo?>(ConnectId);
+            }
+            else
+            {
+                YourFiInfo = _MemoryCache.Get<FiInfo?>(UserId);
+            }
+
+            // 找資產出來賣
+
+            var YourAsset = YourFiInfo.Liabilities.FirstOrDefault(x => x.GuidCode == Liabilitie.GuidCode);
+
+            YourFiInfo.CurrentMoney = Math.Round((decimal)YourFiInfo.CurrentMoney + (decimal)YourAsset.Value, 0);
+
+            if (YourAsset.AssetCategoryId == 24)
+            {
+                var Interest = YourFiInfo.CashFlowExpense
+                    .FirstOrDefault(x => x.GuidCode == Liabilitie.GuidCode);
+                YourFiInfo.CashFlowExpense.Remove(Interest);
+
+            }
+            YourFiInfo.Liabilities.Remove(YourAsset);
+
+
+
+
+
+            YourFiInfo = FiInfoAccounting(YourFiInfo);
+
+            if (UserId == 0)
+            {
+                _MemoryCache.Set(ConnectId, YourFiInfo,
+                   new MemoryCacheEntryOptions().SetPriority(CacheItemPriority.NeverRemove));
+            }
+            else
+            {
+                _MemoryCache.Set(UserId, YourFiInfo,
+                 new MemoryCacheEntryOptions().SetPriority(CacheItemPriority.NeverRemove));
+            }
+
+            Res.Data = YourFiInfo;
+            return Res;
+
+        }
+
+
+        /// <summary>
+        /// 計算 FiInfo 月收支
+        /// </summary>
+        /// <param name="YourFiInfo"></param>
+        /// <returns></returns>
+        public FiInfo FiInfoAccounting(FiInfo YourFiInfo)
+        {
+            try
+            {
+                decimal TotalIncomce = 0;
+                decimal TotalExpense = 0;
+                decimal TotalEarnings = 0;
+
+                foreach (var Income in YourFiInfo.CashFlowIncome)
+                {
+                    TotalIncomce += Math.Round(Income.Value, 0);
+                }
+                foreach (var Expense in YourFiInfo.CashFlowExpense)
+                {
+                    TotalExpense += Math.Round(Expense.Value, 0);
+                }
+
+                TotalEarnings = TotalIncomce + TotalExpense;
+
+                YourFiInfo.TotalIncomce = TotalIncomce;
+                YourFiInfo.TotalExpense = TotalExpense;
+                YourFiInfo.TotalEarnings = TotalEarnings;
+
+
+                return YourFiInfo;
+            }
+            catch(Exception ex)
+            {
+                throw;
+            }
+        }
 
         public async Task<ApiResponse> ReadFiInfo(int UserId, string ConnectId)
         {
             var Res = new ApiResponse();
 
             // 取快取
-            Res.Data = _MemoryCache.Get<FiInfo>(UserId);
+            if (UserId == 0)
+            {
+                Res.Data = _MemoryCache.Get<FiInfo>(ConnectId);
+            }
+            else
+            {
+                Res.Data = _MemoryCache.Get<FiInfo>(UserId);
+            }
 
             // 沒資料就初始化
             if (Res.Data == null)
@@ -649,6 +805,11 @@ namespace BLL.Services.ClientSide
             }
 
             FiInfo Data = (FiInfo)Res.Data;
+            Data.UserId = UserId;
+            Data.ConnectId = ConnectId;
+
+            // 計算收支
+            Data = FiInfoAccounting(Data);
 
 
             // UserId = 0 時，為遊客， key 改為 ConnectId

@@ -42,6 +42,10 @@ namespace Common.Model
         public string ConnectId { get; set; }
         public int? UserId { get; set; }
         public decimal? CurrentMoney { get; set; }
+        public decimal? TotalIncomce { get; set; }
+
+        public decimal? TotalEarnings { get; set; }
+        public decimal? TotalExpense { get; set; }
         public List<CashFlowAndCategoryModel> CashFlowIncome { get; set; }
         public List<CashFlowAndCategoryModel> CashFlowExpense { get; set; }
         public List<AssetAndCategoryModel> Asset { get; set; }

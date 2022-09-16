@@ -38,6 +38,15 @@ export class GamePageComponent implements OnInit, OnDestroy {
   }
 
 
+  ShowToast(Msg: string, CssClass: string, Header: string) {
+    this._ToastService.show(Msg, {
+      className: CssClass,
+      delay: 10000,
+      HeaderTxt: Header,
+    });
+  }
+
+
   ReLogin() {
     this._Signalr.OnObservable("ReLogin").subscribe((Res: any) => {
       if (Res[0] == "此帳號已被從別處重複登入") {
@@ -80,7 +89,6 @@ export class GamePageComponent implements OnInit, OnDestroy {
       this.Param = `stranger=${this.UserToken}`
     }
     this._Signalr.Connect(`${this.Param}`);
-    console.log("init");
   }
 
   OpenChatRoom: boolean = false;
@@ -124,7 +132,6 @@ export class GamePageComponent implements OnInit, OnDestroy {
     // });
     this._Signalr.OnObservable("ReadFiInfo").subscribe((Res: any) => {
       this.UserFiInfo = Res[0].Data;
-      console.log(this.UserFiInfo,"userfi");
     });
   }
 
@@ -142,8 +149,14 @@ export class GamePageComponent implements OnInit, OnDestroy {
   }
 
 
-  SaleAsset(AssetId:number){
-    this._Signalr.Invoke("SaleAsset",AssetId);
+  SaleAsset(Asset:any){
+    this._Signalr.Invoke("AssetSales",Asset);
+    this.ShowToast("成功賣出資產","bg-success text-light text-shadow","錢董通知")
   }
 
+  SaleLiabilities(Liabilities:any){
+    this._Signalr.Invoke("LiabilitieSales",Liabilities);
+    this.ShowToast("成功還清負債","bg-success text-light text-shadow","錢董通知")
+
+  }
 }
