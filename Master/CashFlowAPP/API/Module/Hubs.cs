@@ -238,7 +238,10 @@ namespace API.Hubs
         }
 
      
-
+        public async Task AssetSales(int AssetId)
+        {
+           
+        }
 
 
 
