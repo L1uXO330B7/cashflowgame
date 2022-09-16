@@ -1,0 +1,68 @@
+<p>Line Chart</p>
+<canvas baseChart width="400" height="400"
+[type]="'line'"
+[data]="lineChartData"
+[options]="lineChartOptions"
+[legend]="lineChartLegend">
+</canvas>
+
+<p>Pie Chart</p>
+<canvas baseChart
+  [type]="'pie'"
+  [datasets]="pieChartDatasets"
+  [labels]="pieChartLabels"
+  [options]="pieChartOptions"
+  [plugins]="pieChartPlugins"
+  [legend]="pieChartLegend">
+</canvas>
+
+<p>Bar Chart</p>
+<canvas baseChart
+        [data]="barChartData"
+        [options]="barChartOptions"
+        [plugins]="barChartPlugins"
+        [legend]="barChartLegend"
+        [type]="'bar'">
+</canvas>
+
+<p>Doughnut Chart</p>
+<canvas baseChart
+        [labels]="doughnutChartLabels"
+        [datasets]="doughnutChartDatasets"
+        [options]="doughnutChartOptions"
+        [legend]="true"
+        [type]="'doughnut'">
+</canvas>
+
+<p>Radar Chart</p>
+<canvas baseChart
+        [datasets]="radarChartDatasets"
+        [options]="radarChartOptions"
+        [labels]="radarChartLabels"
+        [type]="'radar'">
+</canvas>
+
+<p>Polar Area Chart</p>
+<canvas baseChart
+        [datasets]="polarAreaChartDatasets"
+        [labels]="polarAreaChartLabels"
+        [legend]="polarAreaLegend"
+        [options]="polarAreaOptions"
+        [type]="'polarArea'">
+</canvas>
+
+<p>Bubble Chart</p>
+<canvas baseChart
+        [datasets]="bubbleChartDatasets"
+        [options]="bubbleChartOptions"
+        [legend]="bubbleChartLegend"
+        [type]="'bubble'">
+</canvas>
+
+<p>Scatter Chart</p>
+<canvas baseChart
+        [datasets]="scatterChartDatasets"
+        [options]="scatterChartOptions"
+        [type]="'scatter'">
+</canvas>
+

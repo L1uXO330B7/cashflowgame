@@ -26,6 +26,8 @@ import { RoleFunctionsTableComponent } from './pages/rolefunctions-table/rolefun
 import { RolesTableComponent } from './pages/roles-table/role-table.component';
 import { UserBoardsTableComponent } from './pages/userboards-table/userboard-table.component';
 import { CashFlowCategoryType, LogActionPipe, QustioneTypePipe, StatusPipe } from './common/pipes/base.pipe';
+import { HomepageComponent } from './pages/home-page/homepage.component';
+import { NgChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -52,6 +54,7 @@ import { CashFlowCategoryType, LogActionPipe, QustioneTypePipe, StatusPipe } fro
     StatusPipe,
     LogActionPipe,
     CashFlowCategoryType,
+    HomepageComponent,
   ],
   imports: [
     BrowserModule,
@@ -60,6 +63,7 @@ import { CashFlowCategoryType, LogActionPipe, QustioneTypePipe, StatusPipe } fro
     SharedMaterialModule,
     HttpClientModule,
     FormsModule,
+    NgChartsModule,
   ],
   providers: [
     {

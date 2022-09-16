@@ -19,33 +19,36 @@ import { RoleFunctionsTableComponent } from './pages/rolefunctions-table/rolefun
 import { RolesTableComponent } from './pages/roles-table/role-table.component';
 import { UserBoardsTableComponent } from './pages/userboards-table/userboard-table.component';
 import { AuthGuard } from './common/services/auth.guard';
+import { HomepageComponent } from './pages/home-page/homepage.component';
 
 const routes: Routes = [
-  { path: 'dashboard',
+  {
+    path: 'dashboard',
     component: DashboardPageComponent,
     canActivate: [AuthGuard],
     children: [
-      {path:'users',component:UsersTableComponent},
-      {path:'answer-questions',component:AnswerQuestionsTableComponent},
-      {path:'asset-categorys',component:AssetCategorysTableComponent},
-      {path:'assets',component:AssetsTableComponent},
-      {path:'card-effects',component:CardEffectsTableComponent},
-      {path:'cards',component:CardsTableComponent},
-      {path:'cash-flow-categorys',component:CashFlowCategorysTableComponent},
-      {path:'cash-flows',component:CashFlowsTableComponent},
-      {path:'effect',component:EffectTablesTableComponent},
-      {path:'functions',component:FunctionsTableComponent},
-      {path:'logs',component:LogsTableComponent},
-      {path:'questions',component:QuestionsTableComponent},
-      {path:'qustion-effects',component:QustionEffectsTableComponent},
-      {path:'role-functions',component:RoleFunctionsTableComponent},
-      {path:'roles',component:RolesTableComponent},
-      {path:'user-boards',component:UserBoardsTableComponent},
+      { path: 'users', component: UsersTableComponent },
+      { path: 'answer-questions', component: AnswerQuestionsTableComponent },
+      { path: 'asset-categorys', component: AssetCategorysTableComponent },
+      { path: 'assets', component: AssetsTableComponent },
+      { path: 'card-effects', component: CardEffectsTableComponent },
+      { path: 'cards', component: CardsTableComponent },
+      { path: 'cash-flow-categorys', component: CashFlowCategorysTableComponent },
+      { path: 'cash-flows', component: CashFlowsTableComponent },
+      { path: 'effect', component: EffectTablesTableComponent },
+      { path: 'functions', component: FunctionsTableComponent },
+      { path: 'logs', component: LogsTableComponent },
+      { path: 'questions', component: QuestionsTableComponent },
+      { path: 'qustion-effects', component: QustionEffectsTableComponent },
+      { path: 'role-functions', component: RoleFunctionsTableComponent },
+      { path: 'roles', component: RolesTableComponent },
+      { path: 'user-boards', component: UserBoardsTableComponent },
+      { path: '', component: HomepageComponent },
     ]
   },
   {
-    path:'login',
-    component:LoginPageComponent
+    path: 'login',
+    component: LoginPageComponent
   },
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   { path: '**', redirectTo: '/dashboard', pathMatch: 'full' },
