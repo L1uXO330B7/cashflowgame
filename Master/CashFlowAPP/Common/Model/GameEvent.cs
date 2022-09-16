@@ -58,9 +58,9 @@ namespace Common.Model
         public dynamic? Value { get; set; } = null;
 
         // 計算的整包資產
-        public AssetAndCategoryModel? NowCardAsset { get; set; } = null;
+        public AssetAndCategoryModel? NowCardAsset { get; set; } 
 
         // 計算的整包利息
-        public CashFlowAndCategoryModel? ValueInterest { get; set; } = null;
+        public CashFlowAndCategoryModel? ValueInterest { get; set; }
     }
 }

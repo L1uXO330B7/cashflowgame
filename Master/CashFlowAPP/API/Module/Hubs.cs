@@ -160,7 +160,7 @@ namespace API.Hubs
                 if (DateTime.Now.Second % 60 == 0)
                 {
                     var time = DateTime.Now.Second;
-                    timer = new System.Timers.Timer(10000);
+                    timer = new System.Timers.Timer(60000);
                     Count++;
                     flag = false;
                 }
