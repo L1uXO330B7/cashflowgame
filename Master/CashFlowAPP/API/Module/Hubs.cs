@@ -162,7 +162,7 @@ namespace API.Hubs
         /// <returns></returns>
         public async Task SendMessage(FromClientChat package)
         {
-            await Clients.All.SendAsync("UpdContent", DateTime.Now.ToString("[yyyy/MM/dd HH:mm:ss]") + package.selfID + " 說: " + package.message);
+            await Clients.All.SendAsync("UpdContent", DateTime.Now.ToString("[yyyy/MM/dd HH:mm:ss]") + package.UserName + $"說: " + package.message);
         }
 
         /// <summary>

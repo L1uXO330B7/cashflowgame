@@ -4,6 +4,7 @@ namespace Common.Model
 {
     public class FromClientChat
     {
+        public string UserName { get; set; }
         public string sendToID { get; set; }
         public string selfID { get; set; }
         public string message { get; set; }

@@ -1,10 +1,9 @@
 import { SignalrHubService } from './../../service/signalr-hub.service';
 import { Component, OnInit } from '@angular/core';
 import { GlobalToastService } from '../toast/global-toast.service';
-import * as signalR from "@microsoft/signalr";
 import { FromClientChat } from 'src/app/models/FromClientChat';
-import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
+import { SharedService } from 'src/app/service/shared.service';
 
 
 @Component({
@@ -14,10 +13,11 @@ import { HttpClient } from '@angular/common/http';
 })
 export class ChatroomComponent implements OnInit {
 
-  constructor(public _ToastService: GlobalToastService, private http: HttpClient, public _Signalr: SignalrHubService) { }
+  constructor(public _ToastService: GlobalToastService, private http: HttpClient, public _Signalr: SignalrHubService,private _SharedService:SharedService) { }
 
   ngOnInit(): void {
     this.DistinguishUser();
+    this.LoginToUserInfo();
   }
 
   ShowToast(Msg: string, CssClass: string, Header: string) {
@@ -69,10 +69,25 @@ export class ChatroomComponent implements OnInit {
   }
 
   FromClientChat = new FromClientChat()
+  IsLogin: boolean = false;
+  UserData: any = { Name: "" };
+  // UserName: any;
+  UserId = localStorage.getItem('UserId');
+  LoginToUserInfo() {
+
+    if (this.UserId != "" && this.UserId != null) {
+      this._SharedService.SharedData.subscribe((Res) => {
+        this.UserData = Res;
+      })
+      this.IsLogin = true;
+    }
+    else {
+      this.UserData.Name = localStorage.getItem("StrangerName");
+    }
+  }
   SendMsg() {
-    let selfID: any = document.querySelector('#SelfID')?.innerHTML;
-    this.FromClientChat.selfID = selfID;
     let UserToken: any = localStorage.getItem("Token");
+    this.FromClientChat.UserName = this.UserData.Name;
     this.FromClientChat.Token = UserToken;
     // invoke 去 call 後端 function 靠 名字
     this._Signalr.Invoke("SendMessage", this.FromClientChat);

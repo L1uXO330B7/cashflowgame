@@ -1,6 +1,5 @@
 export class FromClientChat {
-  sendToID: string="";
-  selfID: string="";
+  UserName:string="";
   message: string="";
   Token: string="";
 }
