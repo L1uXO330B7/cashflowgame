@@ -76,5 +76,7 @@ export class ChatroomComponent implements OnInit {
     this.FromClientChat.Token = UserToken;
     // invoke 去 call 後端 function 靠 名字
     this._Signalr.Invoke("SendMessage", this.FromClientChat);
+
+    this.FromClientChat.message="";
   }
 }

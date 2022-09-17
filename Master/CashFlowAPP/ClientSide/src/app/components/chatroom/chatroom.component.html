@@ -17,7 +17,7 @@
     <div class="px-2" id="Content" [innerHTML]="Content|safeHtml">
     </div>
   </div>
-  <div class="input-group px-2 TypeBox">
+  <div class="input-group TypeBox">
     <input type="text" class="form-control" id="message" [(ngModel)]="this.FromClientChat.message">
     <button class="btn btn-dark" type="button" id="sendButton" (click)="SendMsg()">送出訊息</button>
   </div>

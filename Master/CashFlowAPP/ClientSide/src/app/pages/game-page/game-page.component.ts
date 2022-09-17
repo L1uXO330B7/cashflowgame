@@ -93,6 +93,13 @@ export class GamePageComponent implements OnInit, OnDestroy {
     this._Signalr.Connect(`${this.Param}`);
   }
 
+
+  OpenUserBoard: boolean = true;
+  ToggleUserBoard(){
+    this.OpenUserBoard = !this.OpenUserBoard;
+  }
+
+
   OpenChatRoom: boolean = false;
   ToggleChatRoom() {
     this.OpenChatRoom = !this.OpenChatRoom;
@@ -140,12 +147,13 @@ export class GamePageComponent implements OnInit, OnDestroy {
 
 
 
-
+GotUserBoard=false;
 UserBoard:any;
 ReadTopUsers()
 {
   this._Signalr.OnObservable("TopUserInBoard").subscribe((Res: any) => {
     this.UserBoard = Res[0].Data;
+    this.GotUserBoard=true;
   });
 }
 

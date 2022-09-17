@@ -1,15 +1,16 @@
 .MainView {
   overflow: hidden;
   max-height: 100vh;
+  background-color: #2e5c6e;
 }
 .col {
   height: 100vh;
 }
 .UserBoard {
   height: 50vh;
-  background: #fff;
+  background: rgba(0, 0, 0, 0.9);
 }
-.Hamster{
+.Hamster {
   align-items: center;
   justify-content: space-around;
 }
@@ -18,7 +19,6 @@
   text-align: center;
   outline: none;
   border: none;
-  border-radius: 0px 15px 0px 0px;
   transition: all 1.5s;
   vertical-align: middle;
   &.active {
@@ -27,7 +27,7 @@
 }
 .ChatRoom {
   height: 45vh;
-  background-color: red;
+  background-color: rgba(255, 255, 255, 0.3);
   transition: all 2s;
   position: relative;
 }
@@ -85,7 +85,7 @@
   }
 }
 .CardToggle {
-  margin-top:1vh;
+  margin-top: 1vh;
   transition: all 1.5s;
   height: 6vh;
   width: 100%;
@@ -95,9 +95,58 @@
   &.active {
     margin-top: 79.5vh;
   }
-  .NameBox{
-    input{
+  .NameBox {
+    input {
       width: 60px;
     }
+  }
+}
+.position-relative {
+  position: relative;
+}
+.UserBoard {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 50px;
+  transition: all 1.5s;
+  border-radius: 5px;
+  &.active {
+    transition: all 1.5s;
+    width: 0;
+  }
+}
+.BoardLoading{
+  color: white;
+  display: flex;
+  align-items: center;
+  margin: 0 auto;
+  text-shadow: rgba(0, 0, 0, 0.7);
+
+}
+.TopUsersList {
+
+  padding: 0 15px;
+    li {
+    display: flex;
+    align-items: center;
+    padding: 0;
+    list-style: none;
+    color: rgba(255, 255, 255, 0.7);
+    text-shadow: rgba(0, 0, 0, 0.7);
+    span{
+      margin-left: 10px;
+    }
+  }
+}
+.UserBoardToggle {
+  position: absolute;
+  top: 0;
+  transition: all 1.5s;
+  width: 100%;
+  &.active {
+    transition: all 1.5s;
+    width: 300px;
   }
 }
