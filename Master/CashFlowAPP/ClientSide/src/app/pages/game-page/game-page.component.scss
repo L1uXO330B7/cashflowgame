@@ -22,7 +22,7 @@
   transition: all 1.5s;
   vertical-align: middle;
   &.active {
-    margin-top: 45vh;
+    margin-top: 41vh;
   }
 }
 .ChatRoom {
@@ -114,7 +114,11 @@
   border-radius: 5px;
   &.active {
     transition: all 1.5s;
-    width: 0;
+    margin-left: -85%;
+  }
+  h3{
+    color: rgba(255, 255, 255, 0.7);
+    text-shadow: rgba(0, 0, 0, 0.7);
   }
 }
 .BoardLoading{
@@ -126,12 +130,13 @@
 
 }
 .TopUsersList {
+  border-bottom: 5px solid  rgba(255, 255, 255, 0.7);;
 
-  padding: 0 15px;
+  padding: 0 15px 15px 15px;
     li {
     display: flex;
     align-items: center;
-    padding: 0;
+    padding: 1px 10px;
     list-style: none;
     color: rgba(255, 255, 255, 0.7);
     text-shadow: rgba(0, 0, 0, 0.7);
@@ -141,12 +146,15 @@
   }
 }
 .UserBoardToggle {
-  position: absolute;
-  top: 0;
+  height: 4vh;
   transition: all 1.5s;
-  width: 100%;
   &.active {
     transition: all 1.5s;
-    width: 300px;
   }
+}
+.YourBoard{
+  padding: 0;
+  list-style: none;
+  color: rgba(255, 255, 255, 0.7);
+  text-shadow: rgba(0, 0, 0, 0.7);
 }
