@@ -19,6 +19,81 @@ namespace BLL.Services.ClientSide
             _MemoryCache = memoryCache;
         }
 
+
+
+        public async Task<ApiResponse> TopUserInBoard(List<UserInfo> UsersInfos)
+        {
+            var Res = new ApiResponse();
+
+            // 取得所有用戶快取
+            var FiInfos = new List<FiInfo>();
+            foreach (var UserInfos in UsersInfos)
+            {
+                FiInfo UserFiInfo = new FiInfo();
+
+
+                if (UserInfos.UserId != 0)
+                {
+                    UserFiInfo = _MemoryCache.Get<FiInfo?>(UserInfos.UserId);
+                }
+                if (UserFiInfo != null)
+                {
+                    FiInfos.Add(UserFiInfo);
+                }
+
+            }
+
+            var TotoalNetProfitUser = FiInfos
+                .Where(x => x.TotoalNetProfit== FiInfos.Max(c=>c.TotoalNetProfit))
+                .FirstOrDefault();
+
+            TopTotoalNetProfit TopTotoalNetProfitUser = new TopTotoalNetProfit();
+            TopTotoalNetProfitUser.UserId = TotoalNetProfitUser.UserId;
+            TopTotoalNetProfitUser.UserName = TotoalNetProfitUser.UserName;
+            TopTotoalNetProfitUser.UserValue = (decimal)TotoalNetProfitUser.TotoalNetProfit;
+
+
+            var DebtUser = FiInfos
+                .FirstOrDefault(x => x.Debt == FiInfos.Min(x => x.Debt));
+
+            TopDebt TopDebtUser = new TopDebt();
+            TopDebtUser.UserId = DebtUser.UserId;
+            TopDebtUser.UserName = DebtUser.UserName;
+            TopDebtUser.UserValue = (decimal)DebtUser.Debt;
+
+
+            var RevenueUser = FiInfos
+           .FirstOrDefault(x => x.Revenue == FiInfos.Min(x => x.Revenue));
+
+            TopRevenue TopRevenueUser = new TopRevenue();
+            TopRevenueUser.UserId = RevenueUser.UserId;
+            TopRevenueUser.UserName = RevenueUser.UserName;
+            TopRevenueUser.UserValue = (decimal)RevenueUser.Revenue;
+
+
+
+
+            var NetProfitUser = FiInfos
+           .FirstOrDefault(x => x.NetProfit == FiInfos.Min(x => x.NetProfit));
+
+            TopNetProfit TopNetProfitUserUser = new TopNetProfit();
+            TopNetProfitUserUser.UserId = NetProfitUser.UserId;
+            TopNetProfitUserUser.UserName = NetProfitUser.UserName;
+            TopNetProfitUserUser.UserValue = (decimal)NetProfitUser.NetProfit;
+
+
+            TopUser TopUsers = new TopUser();
+
+            TopUsers.TotoalNetProfitUser = TopTotoalNetProfitUser;
+            TopUsers.DebtUser = TopDebtUser;
+            TopUsers.RevenueUser = TopRevenueUser;
+            TopUsers.NetProfitUser = TopNetProfitUserUser;
+
+            Res.Data = TopUsers;
+
+            return Res;
+        }
+
         public async Task<CardInfo> ProcessCardInfo(Card YourCard, List<UserInfo> UsersInfos, int YourUserId, string YourConnectId)
         {
             var Result = new CardInfo();
@@ -95,13 +170,13 @@ namespace BLL.Services.ClientSide
                                 }
                                 if (YourCard.Type == "天選之人") // 直接影響當前抽卡人資料
                                 {
-                                    if (YourCard.Id == 86||YourCard.Id == 89)
-                                    {   
+                                    if (YourCard.Id == 86 || YourCard.Id == 89)
+                                    {
                                         // 工作薪水影響
                                         YourJob.Value
-                                         = Math.Round(YourJob.Value * (decimal)  YourCardEffect.Value,0);
+                                         = Math.Round(YourJob.Value * (decimal)YourCardEffect.Value, 0);
                                         Result.Value = $"調為: {Math.Round(YourJob.Value, 0)}";
-                                        
+
                                     }
                                 }
                             }
@@ -139,9 +214,9 @@ namespace BLL.Services.ClientSide
 
                                         Result.NowCardAsset = NewAsset;
 
-                                        Result.Value = $"需花費:{Math.Round(-1 * Value,0)}";
+                                        Result.Value = $"需花費:{Math.Round(-1 * Value, 0)}";
                                     }
-                                    if ( _Asset.AssetCategoryId == 47)
+                                    if (_Asset.AssetCategoryId == 47)
                                     {
                                         var Category =
                                      Db.AssetCategories
@@ -157,7 +232,7 @@ namespace BLL.Services.ClientSide
                                         NewAsset.Id = _Asset.Id;
                                         NewAsset.Name = _Asset.Name;
                                         NewAsset.ParentId = Category.ParentId;
-                                        NewAsset.Value = Math.Round(Value,0);
+                                        NewAsset.Value = Math.Round(Value, 0);
                                         NewAsset.GuidCode = GuidCode;
                                         NewAsset.Weight = (decimal)_Asset.Weight;
                                         NewAsset.AssetCategoryId = _Asset.AssetCategoryId;
@@ -166,7 +241,7 @@ namespace BLL.Services.ClientSide
 
                                         // YourFiInfo.Asset.Add(NewAsset)
 
-                                       
+
                                         // 定存利息
 
                                         var NewCashFlow = new CashFlowAndCategoryModel();
@@ -176,7 +251,7 @@ namespace BLL.Services.ClientSide
                                         var CashFlow = Db.CashFlows
                                             .FirstOrDefault(x => x.Name == "定存利息");
                                         var CashFlowCategory = Db.CashFlowCategories
-                                            .FirstOrDefault(x => x.Id ==  CashFlow.CashFlowCategoryId);
+                                            .FirstOrDefault(x => x.Id == CashFlow.CashFlowCategoryId);
 
 
                                         NewCashFlow.Id = CashFlow.Id;
@@ -189,7 +264,7 @@ namespace BLL.Services.ClientSide
                                         NewCashFlow.CashFlowCategoryName = CashFlowCategory.Name;
                                         NewCashFlow.Description = CashFlow.Description;
 
-                                        Result.Value = $"需花費:{Math.Round(-1 * Value,0)}";
+                                        Result.Value = $"需花費:{Math.Round(-1 * Value, 0)}";
                                         Result.NowCardAsset = NewAsset;
                                         Result.ValueInterest = NewCashFlow;
 
@@ -200,7 +275,7 @@ namespace BLL.Services.ClientSide
 
                                 }
                                 if (YourCard.Type == "天選之人") // 直接影響當前抽卡人資料
-                                {   
+                                {
 
                                     // 車貸
                                     if (_Asset.Id == 10)
@@ -228,7 +303,7 @@ namespace BLL.Services.ClientSide
 
 
                                         YourFiInfo.Liabilities.Add(NewAsset);
-                                        
+
 
                                         // 車貸利息
                                         var NewCashFlow = new CashFlowAndCategoryModel();
@@ -253,7 +328,7 @@ namespace BLL.Services.ClientSide
 
 
                                         YourFiInfo.CashFlowExpense.Add(NewCashFlow);
-                                        Result.Value = $"車貸本金:{Math.Round(Value, 0)}，及利息${Math.Round(NewCashFlow.Value,0)}";
+                                        Result.Value = $"車貸本金:{Math.Round(Value, 0)}，及利息${Math.Round(NewCashFlow.Value, 0)}";
 
                                     }
                                 }
@@ -274,8 +349,8 @@ namespace BLL.Services.ClientSide
                                     {
                                         // 現金扣錢
                                         YourFiInfo.CurrentMoney = Math.Round((decimal)YourFiInfo.CurrentMoney +
-                                          ((decimal)YourJob.Value * (decimal)YourCardEffect.Value),0);
-                                        Result.Value = $"{Math.Round(YourJob.Value * (decimal)YourCardEffect.Value,0)}";
+                                          ((decimal)YourJob.Value * (decimal)YourCardEffect.Value), 0);
+                                        Result.Value = $"{Math.Round(YourJob.Value * (decimal)YourCardEffect.Value, 0)}";
                                     }
                                 }
                             }
@@ -294,7 +369,7 @@ namespace BLL.Services.ClientSide
                                     foreach (var UserInfos in FiInfos)
                                     {
 
-                                    var AllAssets = UserInfos.Asset.Where(x => x.AssetCategoryId == YourCardEffect.TableId).ToList();
+                                        var AllAssets = UserInfos.Asset.Where(x => x.AssetCategoryId == YourCardEffect.TableId).ToList();
                                         foreach (var Asset in AllAssets)
                                         {
                                             Asset.Value = Math.Round(Asset.Value * (decimal)YourCardEffect.Value);
@@ -351,7 +426,7 @@ namespace BLL.Services.ClientSide
         /// 
         /// </summary>
         /// <returns></returns>
-        public async Task<ApiResponse> ChoiceOfCard(int UserId,string ConnectId)
+        public async Task<ApiResponse> ChoiceOfCard(int UserId, string ConnectId)
         {
             FiInfo YourFiInfo = new FiInfo();
 
@@ -367,11 +442,11 @@ namespace BLL.Services.ClientSide
             }
             if (YourFiInfo.NowCardAsset != null)
             {
-            YourFiInfo.Asset.Add(YourFiInfo.NowCardAsset);
+                YourFiInfo.Asset.Add(YourFiInfo.NowCardAsset);
             }
-            if(YourFiInfo.ValueInterest != null)
+            if (YourFiInfo.ValueInterest != null)
             {
-            YourFiInfo.CashFlowIncome.Add(YourFiInfo.ValueInterest);
+                YourFiInfo.CashFlowIncome.Add(YourFiInfo.ValueInterest);
             }
             YourFiInfo.CurrentMoney = YourFiInfo.CurrentMoney - YourFiInfo.NowCardAsset.Value;
 
@@ -416,9 +491,9 @@ namespace BLL.Services.ClientSide
 
             var YourAsset = YourFiInfo.Asset.FirstOrDefault(x => x.GuidCode == Asset.GuidCode);
 
-            YourFiInfo.CurrentMoney = Math.Round((decimal)YourFiInfo.CurrentMoney + (decimal)YourAsset.Value,0);
+            YourFiInfo.CurrentMoney = Math.Round((decimal)YourFiInfo.CurrentMoney + (decimal)YourAsset.Value, 0);
 
-            if(YourAsset.AssetCategoryId == 47)
+            if (YourAsset.AssetCategoryId == 47)
             {
                 var SavingInterest = YourFiInfo.CashFlowIncome
                     .FirstOrDefault(x => x.GuidCode == Asset.GuidCode);
@@ -531,13 +606,62 @@ namespace BLL.Services.ClientSide
                 YourFiInfo.TotalEarnings = TotalEarnings;
 
 
+                if (YourFiInfo.UserId != 0)
+                {
+                    // 最高現金
+                    YourFiInfo.TotoalNetProfit = YourFiInfo.TotoalNetProfit <= YourFiInfo.CurrentMoney ? YourFiInfo.CurrentMoney : YourFiInfo.TotoalNetProfit;
+
+                    // 最高支出  -1>-2 
+                    YourFiInfo.Debt = YourFiInfo.Debt > YourFiInfo.TotalExpense ? YourFiInfo.TotalExpense : YourFiInfo.Debt;
+
+                    // 最高收入
+                    YourFiInfo.Revenue = YourFiInfo.Revenue <= YourFiInfo.TotalIncomce ?
+                        YourFiInfo.TotalIncomce : YourFiInfo.Revenue;
+                    // 最高淨收入
+                    YourFiInfo.NetProfit = YourFiInfo.NetProfit <= YourFiInfo.TotalEarnings ?
+                        YourFiInfo.TotalEarnings : YourFiInfo.NetProfit;
+                }
+
+
+
                 return YourFiInfo;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw;
             }
         }
+
+
+        public async void SavingBoard(int UserId)
+        {
+            var YourFiInfo = _MemoryCache.Get<FiInfo>(UserId);
+            using (var _CashFlowDbContext = base.GetDbContext())
+            {
+                var YourBoard = _CashFlowDbContext.UserBoards.FirstOrDefault(x => x.UserId == UserId);
+
+                if (YourBoard == null)
+                {
+                    YourBoard = new UserBoard();
+                    YourBoard.UserId = UserId;
+                    YourBoard.NetProfit = YourFiInfo.NetProfit;
+                    YourBoard.Revenue = YourFiInfo.Revenue;
+                    YourBoard.Debt = YourFiInfo.Debt;
+                    YourBoard.TotoalNetProfit = YourFiInfo.TotoalNetProfit;
+                    _CashFlowDbContext.UserBoards.Add(YourBoard);
+                }
+                else
+                {
+                YourBoard.NetProfit = YourFiInfo.NetProfit;
+                YourBoard.Revenue = YourFiInfo.Revenue;
+                YourBoard.Debt = YourFiInfo.Debt;
+                YourBoard.TotoalNetProfit = YourFiInfo.TotoalNetProfit;
+                }
+                _CashFlowDbContext.SaveChanges();
+            }
+        }
+
+
 
         public async Task<ApiResponse> ReadFiInfo(int UserId, string ConnectId)
         {
@@ -552,12 +676,13 @@ namespace BLL.Services.ClientSide
             {
                 Res.Data = _MemoryCache.Get<FiInfo>(UserId);
             }
-
-            // 沒資料就初始化
-            if (Res.Data == null)
+            using (var _CashFlowDbContext = base.GetDbContext())
             {
-                using (var _CashFlowDbContext = base.GetDbContext())
+                // 沒資料就初始化
+                if (Res.Data == null)
                 {
+
+
 
 
                     var Assets = _CashFlowDbContext.Assets
@@ -787,9 +912,15 @@ namespace BLL.Services.ClientSide
                     Asset = AssetResult.Where(c => c.Value >= 0).ToList();
                     Liabilities = AssetResult.Where(c => c.Value < 0).ToList();
 
+                    var UserName = _CashFlowDbContext.Users
+                        .Where(x => x.Id == UserId)
+                        .Select(x => x.Name)
+                        .FirstOrDefault();
+
                     Res.Data = new FiInfo
                     {
                         UserId = UserId,
+                        UserName = UserName,
                         CurrentMoney = 0,
                         CashFlowIncome = CashFlowIncome,
                         CashFlowExpense = CashFlowExpense,
@@ -797,36 +928,76 @@ namespace BLL.Services.ClientSide
                         Liabilities = Liabilities,
                         NowCardId = null,
                         NowCardAsset = null,
+
+
                     };
+
+
+
+
+
                     Res.Success = true;
                     Res.Code = (int)ResponseStatusCode.Success;
 
                 }
+
+
+
+                // 從資料庫取出個人排行版放快取
+
+                FiInfo Data = (FiInfo)Res.Data;
+                Data.UserId = UserId;
+                Data.ConnectId = ConnectId;
+
+                if (UserId != 0)
+                {
+                    var YourBoard = _CashFlowDbContext.UserBoards
+                       .FirstOrDefault(x => x.UserId == UserId);
+
+
+                    //is this condition true ? yes : no
+                    if (YourBoard != null)
+                    {
+                        Data.TotoalNetProfit = YourBoard.TotoalNetProfit == null ? 0 : YourBoard.TotoalNetProfit;
+
+                        Data.Debt = YourBoard.Debt == null ? 0 : YourBoard.Debt;
+
+                        Data.Revenue = YourBoard.Revenue == null ? 0 : YourBoard.Revenue;
+
+                        Data.NetProfit = YourBoard.NetProfit == null ? 0 : YourBoard.NetProfit;
+                    }
+
+                }
+
+
+
+
+
+
+
+
+
+
+
+                // 計算收支
+                Data = FiInfoAccounting(Data);
+
+
+                // UserId = 0 時，為遊客， key 改為 ConnectId
+                if (UserId == 0)
+                {
+                    _MemoryCache.Set(ConnectId, Data,
+                       new MemoryCacheEntryOptions().SetPriority(CacheItemPriority.NeverRemove));
+                }
+                else
+                {
+                    _MemoryCache.Set(UserId, Data,
+                     new MemoryCacheEntryOptions().SetPriority(CacheItemPriority.NeverRemove));
+                }
+
+
+                return Res;
             }
-
-            FiInfo Data = (FiInfo)Res.Data;
-            Data.UserId = UserId;
-            Data.ConnectId = ConnectId;
-
-            // 計算收支
-            Data = FiInfoAccounting(Data);
-
-
-            // UserId = 0 時，為遊客， key 改為 ConnectId
-            if (UserId == 0)
-            {
-                _MemoryCache.Set(ConnectId, Data,
-                   new MemoryCacheEntryOptions().SetPriority(CacheItemPriority.NeverRemove));
-            }
-            else
-            {
-                _MemoryCache.Set(UserId, Data,
-                 new MemoryCacheEntryOptions().SetPriority(CacheItemPriority.NeverRemove));
-            }
-
-
-            return Res;
-
         }
 
         /// <summary>

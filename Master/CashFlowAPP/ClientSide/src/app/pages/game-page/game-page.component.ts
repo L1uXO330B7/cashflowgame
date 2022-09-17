@@ -1,3 +1,4 @@
+import { FiInfo } from './../../models/FiInfo';
 import { SharedService } from './../../service/shared.service';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
@@ -31,6 +32,7 @@ export class GamePageComponent implements OnInit, OnDestroy {
     this.GetFiInfo();
     this.LoginToUserInfo();
     this.RoundStart();
+    this.ReadTopUsers();
     this.ReLogin();
   }
   ngOnDestroy(): void {
@@ -122,7 +124,7 @@ export class GamePageComponent implements OnInit, OnDestroy {
     }
   }
 
-  UserFiInfo: any = {}
+  UserFiInfo = new FiInfo();
   GetFiInfo() {
     // Req.Args = this.UserId;
     // this._ApiService.GetFiInfo(Req).subscribe((Res) => {
@@ -131,9 +133,21 @@ export class GamePageComponent implements OnInit, OnDestroy {
     //   }
     // });
     this._Signalr.OnObservable("ReadFiInfo").subscribe((Res: any) => {
-      this.UserFiInfo = Res[0].Data;
+      this.UserFiInfo =Res[0].Data;
+      console.log(this.UserFiInfo,"userfi");
     });
   }
+
+
+
+
+UserBoard:any;
+ReadTopUsers()
+{
+  this._Signalr.OnObservable("TopUserInBoard").subscribe((Res: any) => {
+    this.UserBoard = Res[0].Data;
+  });
+}
 
 
   Time = new Date();

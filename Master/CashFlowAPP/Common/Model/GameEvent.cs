@@ -41,11 +41,31 @@ namespace Common.Model
     {
         public string ConnectId { get; set; }
         public int? UserId { get; set; }
-        public decimal? CurrentMoney { get; set; }
-        public decimal? TotalIncomce { get; set; }
+        public string? UserName { get; set; }
+        public decimal? CurrentMoney { get; set; } = 0;
+        public decimal? TotalIncomce { get; set; } = 0;
 
-        public decimal? TotalEarnings { get; set; }
-        public decimal? TotalExpense { get; set; }
+        public decimal? TotalEarnings { get; set; } = 0;
+        public decimal? TotalExpense { get; set; } = 0;
+
+        /// <summary>
+        /// 最高現金
+        /// </summary>
+        public decimal? TotoalNetProfit { get; set; } = 0;
+        /// <summary>
+        /// 最高負債
+        /// </summary>
+        public decimal? Debt { get; set; } = 0;
+        /// <summary>
+        /// 最高收入
+        /// </summary>
+        public decimal? Revenue { get; set; } = 0;
+        /// <summary>
+        /// 最高淨收入
+        /// </summary>
+        public decimal? NetProfit { get; set; } = 0;
+
+
         public List<CashFlowAndCategoryModel> CashFlowIncome { get; set; }
         public List<CashFlowAndCategoryModel> CashFlowExpense { get; set; }
         public List<AssetAndCategoryModel> Asset { get; set; }
@@ -62,9 +82,47 @@ namespace Common.Model
         public dynamic? Value { get; set; } = null;
 
         // 計算的整包資產
-        public AssetAndCategoryModel? NowCardAsset { get; set; } 
+        public AssetAndCategoryModel? NowCardAsset { get; set; }
 
         // 計算的整包利息
         public CashFlowAndCategoryModel? ValueInterest { get; set; }
+    }
+
+    public class TopTotoalNetProfit
+    {
+        public int? UserId { get; set; }
+        public string? UserName { get; set; }
+
+        public decimal UserValue { get; set; }
+    }
+    public class TopDebt
+    {
+        public int? UserId { get; set; }
+        public string? UserName { get; set; }
+
+        public decimal UserValue { get; set; }
+    }
+
+    public class TopRevenue
+    {
+        public int? UserId { get; set; }
+        public string? UserName { get; set; }
+        public decimal UserValue { get; set; }
+    }
+
+    public class TopNetProfit
+    {
+        public int? UserId { get; set; }
+        public string? UserName { get; set; }
+        public decimal UserValue { get; set; }
+    }
+    public class TopUser
+    {
+        public TopTotoalNetProfit? TotoalNetProfitUser { get; set; }
+        public TopDebt? DebtUser { get; set; }
+        public TopRevenue? RevenueUser { get; set; }
+
+        public TopNetProfit? NetProfitUser { get; set; }
+
     }
 }

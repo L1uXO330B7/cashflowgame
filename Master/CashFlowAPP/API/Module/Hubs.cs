@@ -101,6 +101,10 @@ namespace API.Hubs
                 // 拿到玩家財務報表，並初始化快取
                 var UserFiInfo = await _ClientHubService.ReadFiInfo(_UserInfo.UserId,_UserInfo.ConnectionId);
 
+
+          
+
+
                 // 個人財報回傳前端
                 await _hubContext.Clients.Client(_UserInfo.ConnectionId)
                     .SendAsync("ReadFiInfo", UserFiInfo);
@@ -108,6 +112,13 @@ namespace API.Hubs
                 _UserInfos.Add(_UserInfo);
                 // 更新聊天內容
                 await Clients.All.SendAsync("UpdContent", DateTime.Now.ToString("[yyyy/MM/dd HH:mm:ss]") + "新連線玩家: " + _UserInfo.Name);
+
+                // 取得排行榜最高玩家
+
+                var TopUserInBoard = await _ClientHubService.TopUserInBoard(_UserInfos);
+
+                await _hubContext.Clients.All.SendAsync("TopUserInBoard", TopUserInBoard);
+
             }
 
             await base.OnConnectedAsync();
@@ -121,9 +132,19 @@ namespace API.Hubs
         /// <returns></returns>
         public override async Task OnDisconnectedAsync(Exception ex)
         {
+
+          
+
+
             if (_UserInfos.Select(x => x.ConnectionId).Any(x => x == Context.ConnectionId))
             {
                 var _UserInfo = _UserInfos.FirstOrDefault(x => x.ConnectionId == Context.ConnectionId);
+
+                if (_UserInfo.UserId != 0)
+                {
+                    _ClientHubService.SavingBoard(_UserInfo.UserId);
+                }
+
                 _UserInfos.Remove(_UserInfo);
 
                 // 更新聊天內容
@@ -209,6 +230,12 @@ namespace API.Hubs
                     await _hubContext.Clients.Client(_UserInfo.ConnectionId)
                    .SendAsync("ReadFiInfo", UserFiInfo);
 
+
+                    // 取得排行榜最高玩家
+
+                    var TopUserInBoard = await _ClientHubService.TopUserInBoard(_UserInfos);
+
+                    await _hubContext.Clients.All.SendAsync("TopUserInBoard", TopUserInBoard);
                 }
 
                 timer.Start();
@@ -234,6 +261,12 @@ namespace API.Hubs
             await _hubContext.Clients.Client(Context.ConnectionId)
           .SendAsync("ReadFiInfo", YourFiInfo);
 
+
+            // 取得排行榜最高玩家
+
+            var TopUserInBoard = await _ClientHubService.TopUserInBoard(_UserInfos);
+
+            await _hubContext.Clients.All.SendAsync("TopUserInBoard", TopUserInBoard);
         }
 
      
@@ -248,6 +281,11 @@ namespace API.Hubs
             await _hubContext.Clients.Client(Context.ConnectionId)
    .SendAsync("ReadFiInfo", YourFiInfo);
 
+            // 取得排行榜最高玩家
+
+            var TopUserInBoard = await _ClientHubService.TopUserInBoard(_UserInfos);
+
+            await _hubContext.Clients.All.SendAsync("TopUserInBoard", TopUserInBoard);
 
         }
 
@@ -262,6 +300,11 @@ namespace API.Hubs
             await _hubContext.Clients.Client(Context.ConnectionId)
    .SendAsync("ReadFiInfo", YourFiInfo);
 
+            // 取得排行榜最高玩家
+
+            var TopUserInBoard = await _ClientHubService.TopUserInBoard(_UserInfos);
+
+            await _hubContext.Clients.All.SendAsync("TopUserInBoard", TopUserInBoard);
 
         }
 

@@ -11,5 +11,7 @@ namespace BLL.IServices
         Task<ApiResponse> AssetSale(int UserId, string ConnectId, AssetAndCategoryModel Asset);
         Task<ApiResponse> LiabilitieSale(int UserId, string ConnectId, AssetAndCategoryModel Liabilitie);
         FiInfo FiInfoAccounting(FiInfo YourFiInfo);
+        void SavingBoard(int UserId);
+        Task<ApiResponse> TopUserInBoard(List<UserInfo> UsersInfos);
     }
 }
