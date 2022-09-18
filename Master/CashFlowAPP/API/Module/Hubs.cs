@@ -134,10 +134,6 @@ namespace API.Hubs
         /// <returns></returns>
         public override async Task OnDisconnectedAsync(Exception ex)
         {
-
-
-
-
             if (_UserInfos.Select(x => x.ConnectionId).Any(x => x == Context.ConnectionId))
             {
                 var _UserInfo = _UserInfos.FirstOrDefault(x => x.ConnectionId == Context.ConnectionId);
@@ -351,6 +347,12 @@ namespace API.Hubs
             await _hubContext.Clients.Client(ResAssetBuy.SellerFiInfo.ConnectId)
                          .SendAsync("ReadFiInfo", Seller);
 
+            // 回傳訊息 buyer
+            await _hubContext.Clients.Client(Context.ConnectionId)
+                    .SendAsync("UpdContent", $"$$$ 您已購入 {Asset.BuyAsset.Name} 資產");
+            // 回傳訊息 seller
+            await _hubContext.Clients.Client(ResAssetBuy.SellerFiInfo.ConnectId)
+                    .SendAsync("UpdContent", $"-$$$ 您已賣出 {Asset.BuyAsset.Name} 資產");
 
             // 取得交易所清單
             var AssetTransactionList = await _ClientHubService.GetAssetTransactionList();
