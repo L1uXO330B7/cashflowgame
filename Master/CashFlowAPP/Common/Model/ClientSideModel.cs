@@ -14,6 +14,7 @@ namespace Common.Model
     {
         [Display(Name = "帳號")]
         [Required(ErrorMessage = "帳號為必填")]
+        [EmailAddress(ErrorMessage = "帳號格式錯誤，為 Email")]
         //[EmailAddress]
         public string Email { get; set; }
         [Display(Name = "密碼")]
@@ -26,10 +27,12 @@ namespace Common.Model
     {
         [Display(Name = "帳號")]
         [Required(ErrorMessage = "帳號為必填")]
+        [EmailAddress(ErrorMessage = "帳號格式錯誤，為 Email")]
         public string Email { get; set; }
         [Display(Name = "密碼")]
         [Required(ErrorMessage = "密碼為必填")]
         public string Password { get; set; }
+        [Required(ErrorMessage = "姓名為必填")]
         public string Name { get; set; }
         [Display(Name = "驗證碼")]
         [Required(ErrorMessage = "驗證碼為必填")]
