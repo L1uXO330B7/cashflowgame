@@ -276,7 +276,7 @@ namespace API.Hubs
         /// </summary>
         /// <param name="Asset"></param>
         /// <returns></returns>
-        public async Task AssetSales(AssetAndCategoryModel Asset)
+        public async Task AssetSales(SaleAsset Asset)
         {
             // 賣正資產
             var UserId = _UserInfos

@@ -469,7 +469,7 @@ namespace BLL.Services.ClientSide
         /// 賣資產
         /// </summary>
         /// <returns></returns>
-        public async Task<ApiResponse> AssetSale(int UserId, string ConnectId, AssetAndCategoryModel Asset)
+        public async Task<ApiResponse> AssetSale(int UserId, string ConnectId, SaleAsset Asset)
         {
             // 負資產
 
@@ -478,11 +478,6 @@ namespace BLL.Services.ClientSide
             {
                 AssetTransactionList = new List<AssetForTrading>();
             }
-
-
-
-
-
 
             var Res = new ApiResponse();
             FiInfo YourFiInfo = new FiInfo();
@@ -518,8 +513,6 @@ namespace BLL.Services.ClientSide
                         .FirstOrDefault(x => x.GuidCode == YourAsset.GuidCode);
                     AssetTransaction.ValueInterest = ValueInterest;
 
-
-
                     AssetTransactionList.Add(AssetTransaction);
                     _MemoryCache.Set("AssetTransactionList", AssetTransactionList);
                     Res.Success = true;
@@ -528,9 +521,8 @@ namespace BLL.Services.ClientSide
                 else
                 {
                     Res.Success = false;
-                    Res.Message="請先取消掛單，再執行";
+                    Res.Message = "請先取消掛單，再執行";
                 }
-
             }
             else
             {
@@ -555,7 +547,7 @@ namespace BLL.Services.ClientSide
                 else
                 {
                     _MemoryCache.Set(UserId, YourFiInfo,
-                     new MemoryCacheEntryOptions().SetPriority(CacheItemPriority.NeverRemove));
+                       new MemoryCacheEntryOptions().SetPriority(CacheItemPriority.NeverRemove));
                 }
             }
 
@@ -591,11 +583,8 @@ namespace BLL.Services.ClientSide
                 YourFiInfo.CashFlowExpense.Remove(Interest);
 
             }
+
             YourFiInfo.Liabilities.Remove(YourAsset);
-
-
-
-
 
             YourFiInfo = FiInfoAccounting(YourFiInfo);
 
@@ -612,7 +601,6 @@ namespace BLL.Services.ClientSide
 
             Res.Data = YourFiInfo;
             return Res;
-
         }
 
         /// <summary>
@@ -916,7 +904,7 @@ namespace BLL.Services.ClientSide
                                 YourAssets.Value = _Random.Next(160000, 400000);
                                 YourAssets.GuidCode = GuidCode;
                             }
-                            if(YourAssets.GuidCode==null)
+                            if (YourAssets.GuidCode == null)
                             {
                                 var GuidCode = System.Guid.NewGuid().ToString("N");
                                 YourAssets.GuidCode = GuidCode;
@@ -984,7 +972,6 @@ namespace BLL.Services.ClientSide
                     var YourBoard = _CashFlowDbContext.UserBoards
                        .FirstOrDefault(x => x.UserId == UserId);
 
-
                     //is this condition true ? yes : no
                     if (YourBoard != null)
                     {
@@ -999,19 +986,8 @@ namespace BLL.Services.ClientSide
 
                 }
 
-
-
-
-
-
-
-
-
-
-
                 // 計算收支
                 Data = FiInfoAccounting(Data);
-
 
                 // UserId = 0 時，為遊客， key 改為 ConnectId
                 if (UserId == 0)
@@ -1024,7 +1000,6 @@ namespace BLL.Services.ClientSide
                     _MemoryCache.Set(UserId, Data,
                      new MemoryCacheEntryOptions().SetPriority(CacheItemPriority.NeverRemove));
                 }
-
 
                 return Res;
             }
@@ -1122,6 +1097,11 @@ namespace BLL.Services.ClientSide
             {
                 seller.CashFlowIncome.Remove(Asset.ValueInterest);
             }
+
+            // 計算現金 buyer 扣 seller 加
+
+            buyer.CurrentMoney = buyer.CurrentMoney - Asset.BuyAsset.Value;
+            seller.CurrentMoney = seller.CurrentMoney + Asset.BuyAsset.Value;
 
             // 重設快取
             if (Asset.UserId == 0) // seller

@@ -134,4 +134,9 @@ namespace Common.Model
         public FiInfo BuyerFiInfo { get; set; }
         public FiInfo SellerFiInfo { get; set; }
     }
+
+    public class SaleAsset : AssetAndCategoryModel
+    {
+        public decimal SellingPrice { get; set; }
+    }
 }
