@@ -154,8 +154,8 @@ export class GamePageComponent implements OnInit, OnDestroy {
           console.log("賣出")
           this.ShowToast(Res[0].Message, "bg-success text-dark", "錢董通知")
         }
-        if (Res[0].Message.indexOf("您已購入")) { this.ShowToast(Res[0].Message, "bg-success text-dark", "錢董通知") }
-        if (Res[0].Message.indexOf("您已賣出")) { this.ShowToast(Res[0].Message, "bg-success text-dark", "錢董通知") }
+        if (Res[0].Message.indexOf("您已購入")!=-1) { this.ShowToast(Res[0].Message, "bg-success text-dark", "錢董通知") }
+        if (Res[0].Message.indexOf("您已賣出")!=-1) { this.ShowToast(Res[0].Message, "bg-success text-dark", "錢董通知") }
       }
 
     });
