@@ -199,7 +199,7 @@ export class GamePageComponent implements OnInit, OnDestroy {
   {
     Asset.Value = this.SaleAssetValue;
     this._Signalr.Invoke("AssetSales", Asset);
-    this.SaleModalDom.close();
+    this.modalService.dismissAll();
   }
 
   SaleLiabilities(Liabilities: any) {
