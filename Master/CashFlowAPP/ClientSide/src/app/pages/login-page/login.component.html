@@ -2,7 +2,7 @@
 <div class="BrandBox"><a [routerLink]="['/home']"><h1>錢 董</h1></a></div>
 <div class="container-fluid bg">
   <div class="container bar" #bar>
-    <div class="loginCard p-5" [style.transform]="Card" #card>
+    <div class="loginCard p-5 bg-light" [style.transform]="Card" #card>
       <label for="account" class="h3">Account</label>
       <input
         required
@@ -64,7 +64,7 @@
       <button
         (click)="changeLogin()"
         type="button"
-        class="btn btn-outline-primary mt-4"
+        class="btn btn-outline-secondary mt-4"
         *ngIf="!change"
       >
         註冊
@@ -72,7 +72,7 @@
       <button
         (click)="changeLogin()"
         type="button"
-        class="btn btn-outline-primary mt-4 loginBTN"
+        class="btn btn-outline-secondary mt-4 loginBTN"
         *ngIf="change"
       >
         登入

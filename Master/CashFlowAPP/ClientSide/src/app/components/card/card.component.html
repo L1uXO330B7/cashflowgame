@@ -1,4 +1,6 @@
 <div class="Card py-2">
+  <div class="CardBody" *ngIf="IsAnswered">
+  </div>
     <div class="CardBody" *ngIf="!IsAnswered">
       <p>{{CardData.Name}}</p>
       <p>{{CardValue}}</p>
@@ -6,7 +8,7 @@
     <div class="CardFooter" *ngIf="!IsAnswered">
       <button class="btn btn-primary mx-2" *ngIf="CardData.Type=='強迫中獎'||CardData.Type=='天選之人'">好喔</button>
       <button class="btn btn-success mx-2" *ngIf="CardData.Type=='交易機會'" (click)="Agree()">是</button>
-      <button class="btn btn-danger mx-2"  *ngIf="CardData.Type=='交易機會'">否</button>
+      <button class="btn btn-danger mx-2"  *ngIf="CardData.Type=='交易機會'" (click)="DisAgree()">否</button>
     </div>
     <div class="CardFooter" *ngIf="IsAnswered">
       <h5>請等下次抽卡</h5>

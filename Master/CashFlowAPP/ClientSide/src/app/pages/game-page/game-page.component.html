@@ -1,12 +1,13 @@
 <div class="container-fluid MainView">
-
   <div class="row">
+    <div class="money"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
     <div class="col p-0 ">
-      <button class="UserBoardToggle btn btn-primary col-10" [class.active]="!OpenUserBoard" (click)="ToggleUserBoard()">排行榜
-          <i class="fa-solid fa-minimize" *ngIf="OpenUserBoard"></i>
-          <i class="fa-solid fa-maximize" *ngIf="!OpenUserBoard"></i>
-        </button>
-      <div class="UserBoard col-10 position-relative" [class.active]="!OpenUserBoard">
+      <button class="UserBoardToggle btn btn-primary col-10" [class.active]="!OpenUserBoard"
+        (click)="ToggleUserBoard()">排行榜
+        <i class="fa-solid fa-minimize" *ngIf="OpenUserBoard"></i>
+        <i class="fa-solid fa-maximize" *ngIf="!OpenUserBoard"></i>
+      </button>
+      <div class="UserBoard col-10 position-relative bg-dark" [class.active]="!OpenUserBoard">
 
         <div *ngIf="!GotUserBoard" class="BoardLoading">
           <div class="spinner-border text-light me-2" role="status">
@@ -19,17 +20,25 @@
               {{UserBoard.TotoalNetProfitUser.UserValue}}</span></li>
           <li>遊戲內最多支出的玩家: <span>{{UserBoard.DebtUser.UserName}} , NT$ {{UserBoard.DebtUser.UserValue}}</span></li>
           <li>遊戲內最多收入的玩家: <span>{{UserBoard.RevenueUser.UserName}} , NT$ {{UserBoard.DebtUser.UserValue}}</span></li>
-          <li>遊戲內最多盈餘的玩家: <span>{{UserBoard.TotoalNetProfitUser.UserName}} , NT$ {{UserBoard.TotoalNetProfitUser.UserValue}}</span></li>
-        </ul>
-
-        <ul class="YourBoard" *ngIf="GotUserBoard">
-          <li><h3 class="text-center">以下為您的數據</h3></li>
-          <li>遊戲內最多現金: <span>{{UserBoard.TotoalNetProfitUser.UserName}} , NT$
+          <li>遊戲內最多盈餘的玩家: <span>{{UserBoard.TotoalNetProfitUser.UserName}} , NT$
               {{UserBoard.TotoalNetProfitUser.UserValue}}</span></li>
-          <li>遊戲內最多支出: <span>{{UserBoard.DebtUser.UserName}} , NT$ {{UserBoard.DebtUser.UserValue}}</span></li>
-          <li>遊戲內最多收入: <span>{{UserBoard.RevenueUser.UserName}} , NT$ {{UserBoard.DebtUser.UserValue}}</span></li>
-          <li>遊戲內最多盈餘: <span>{{UserBoard.TotoalNetProfitUser.UserName}} , NT$ {{UserBoard.TotoalNetProfitUser.UserValue}}</span></li>
         </ul>
+        <div *ngIf="UserId!=null">
+          <ul class="YourBoard" *ngIf="GotUserBoard">
+            <li>
+              <h3 class="text-center">以下為您的數據</h3>
+            </li>
+            <li>遊戲內最多現金: <span>{{UserBoard.TotoalNetProfitUser.UserName}} , NT$
+                {{UserBoard.TotoalNetProfitUser.UserValue}}</span></li>
+            <li>遊戲內最多支出: <span>{{UserBoard.DebtUser.UserName}} , NT$ {{UserBoard.DebtUser.UserValue}}</span></li>
+            <li>遊戲內最多收入: <span>{{UserBoard.RevenueUser.UserName}} , NT$ {{UserBoard.DebtUser.UserValue}}</span></li>
+            <li>遊戲內最多盈餘: <span>{{UserBoard.TotoalNetProfitUser.UserName}} , NT$
+                {{UserBoard.TotoalNetProfitUser.UserValue}}</span></li>
+          </ul>
+        </div>
+        <div *ngIf="UserId==null">
+          <h5 class="text-center text-light text-shadow">必須登入會員才能紀錄數據</h5>
+        </div>
       </div>
       <button class="ChatRoomToggle  col-10 btn btn-secondary" (click)="ToggleChatRoom()"
         [class.active]="!OpenChatRoom"><i class="fa-solid fa-comment-dollar"></i>
@@ -41,7 +50,7 @@
     </div>
     <div class="col p-0">
 
-      <div class="d-flex Hamster">
+      <div class="d-flex Hamster text-primary text-shadow">
         現在是第 {{CurrentRound}} 圈
         <app-hamster-wheel *ngIf="!Flag"></app-hamster-wheel>
         <div *ngIf="Flag" class="d-flex mt-3">
@@ -54,7 +63,7 @@
       </div>
 
       <div *ngIf="!Flag">
-        <button class="CardToggle" [class.active]="!OpenCard" (click)="ToggleCard()"><i
+        <button class="CardToggle btn btn-dark" [class.active]="!OpenCard" (click)="ToggleCard()"><i
             class="fa-solid fa-circle-exclamation"></i> 你的機會 <i class="fa-solid fa-angle-down" *ngIf="OpenCard"></i>
           <i class="fa-solid fa-angle-up" *ngIf="!OpenCard"></i></button>
         <app-card></app-card>
@@ -63,27 +72,33 @@
     <div class="col p-0">
       <div class="d-flex">
         <div class="col-1 p-0"></div>
-        <button class="col-1 p-0 InfoToggle" (click)="ToggleInfo()" [class.active]="!OpenInfo"><i
+        <button class="col-1 p-0 InfoToggle btn btn-secondary" (click)="ToggleInfo()" [class.active]="!OpenInfo"><i
             class="fa-solid fa-circle-info"></i>
           <h5 class="text-center py-2">您的財務狀況</h5><i class="fa-solid fa-angle-left" *ngIf="!OpenInfo"></i><i
             class="fa-solid fa-angle-right" *ngIf="OpenInfo"></i>
         </button>
         <div class="col-10 p-3 UserGameInfo">
           <h5 class="text-center mt-3">您好!</h5>
-          <h2 class="UserName text-center mt-3" *ngIf="UserData.Name!=undefined">{{UserData.Name}}</h2>
-          <h2 class="UserName text-center mt-3" *ngIf="UserData.Name==undefined">{{UserData}}</h2>
+          <h2 class="UserName text-center mt-3 text-light text-shadow" *ngIf="UserData.Name!=undefined">
+            {{UserData.Name}}</h2>
+          <h2 class="UserName text-center mt-3 text-light text-shadow" *ngIf="UserData.Name==undefined">{{UserData}}
+          </h2>
           <ul class="FinancialState">
             <li>
-              <h4>現金 :</h4><span>NT$ {{(UserFiInfo.CurrentMoney)}}</span>
+              <h4 class="text-light text-shadow">現金 :</h4><span class="text-light text-shadow">NT$
+                {{(UserFiInfo.CurrentMoney)}}</span>
             </li>
             <li>
-              <h4>月收入 :</h4><span>NT$ {{UserFiInfo.TotalIncomce}}</span>
+              <h4 class="text-light text-shadow">月收入 :</h4><span class="text-light text-shadow">NT$
+                {{UserFiInfo.TotalIncomce}}</span>
             </li>
             <li>
-              <h4>月支出 :</h4><span>NT$ {{UserFiInfo.TotalExpense}}</span>
+              <h4 class="text-light text-shadow">月支出 :</h4><span class="text-light text-shadow">NT$
+                {{UserFiInfo.TotalExpense}}</span>
             </li>
             <li>
-              <h4>月結餘 :</h4><span>NT$ {{UserFiInfo.TotalEarnings}}</span>
+              <h4 class="text-light text-shadow">月結餘 :</h4><span class="text-light text-shadow">NT$
+                {{UserFiInfo.TotalEarnings}}</span>
             </li>
           </ul>
           <div class="IcomeExpense mt-2">
@@ -104,13 +119,15 @@
             <h5 class="text-center py-2 m-0">資產項目</h5>
             <ul class="IncomeList">
               <li *ngFor="let item of UserFiInfo.Asset">
-                <p>{{item.Name}} : <button (click)="SaleAsset(item)">賣出</button></p><span>{{item.Value}}</span>
+                <p>{{item.Name}} : <button (click)="SaleAsset(item)" class="btn btn-primary p-1">賣出</button></p>
+                <span>{{item.Value}}</span>
               </li>
             </ul>
             <h5 class="text-center my-2">負債項目</h5>
             <ul class="ExpenseList">
               <li *ngFor="let item of UserFiInfo.Liabilities">
-                <p>{{item.Name}} :<button (click)="SaleLiabilities(item)">賣出</button></p><span>{{item.Value}}</span>
+                <p>{{item.Name}} :<button (click)="SaleLiabilities(item)" class="btn btn-secondary p-1">還清</button></p>
+                <span>{{item.Value}}</span>
               </li>
             </ul>
           </div>

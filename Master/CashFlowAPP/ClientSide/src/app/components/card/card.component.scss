@@ -1,12 +1,18 @@
+
+
+
+//
 .Card{
   width: 100%;
-  background-color: antiquewhite;
+  background-color: white;
+  box-shadow:1px 3px 10px rgba(0,0,0,0.5);
+  border-radius: 3px;
   h3{
     margin: 0;
   }
   .CardBody{
     height: 50vh;
-    background-color: antiquewhite;
+    background-color: white;
     display: flex;
     align-items: center;
     justify-content: center;

@@ -34,6 +34,7 @@ export class GamePageComponent implements OnInit, OnDestroy {
     this.RoundStart();
     this.ReadTopUsers();
     this.ReLogin();
+
   }
   ngOnDestroy(): void {
     this._Signalr.DisConnect();
@@ -181,4 +182,8 @@ ReadTopUsers()
     this.ShowToast("成功還清負債","bg-success text-light text-shadow","錢董通知")
 
   }
+
+
+  items:any=[];
+
 }
