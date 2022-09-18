@@ -145,12 +145,11 @@ export class GamePageComponent implements OnInit, OnDestroy {
     // });
     this._Signalr.OnObservable("ReadFiInfo").subscribe((Res: any) => {
       this.UserFiInfo = Res[0].Data;
-      console.log(Res,"aaa");
-      if(Res[0].Message=="請先取消掛單，再執行"){
-        this.ShowToast("請先取消掛單，再執行","bg-danger text-light text-shadow","錢董通知")
+      if (Res[0].Message == "請先取消掛單，再執行") {
+        this.ShowToast("請先取消掛單，再執行", "bg-danger text-light text-shadow", "錢董通知")
       }
-      if(Res[0].Message=="掛單成功，等待賣出"){
-        this.ShowToast("掛單成功，等待賣出","bg-success text-dark","錢董通知")
+      if (Res[0].Message == "掛單成功，等待賣出") {
+        this.ShowToast("掛單成功，等待賣出", "bg-success text-dark", "錢董通知")
       }
     });
   }
@@ -179,8 +178,21 @@ export class GamePageComponent implements OnInit, OnDestroy {
     }, 1800);
   }
 
-
   SaleAsset(Asset: any) {
+    if (
+      Asset.AssetCategoryId == 25 || // 股票
+      Asset.ParentId == 17 || // 房地產
+      Asset.AssetCategoryId == 28 || // 產業
+      Asset.ParentId == 28 // 產業
+    ) {
+
+    } else {
+      this._Signalr.Invoke("AssetSales", Asset);
+    }
+  }
+
+  SaleAssetSalfValue(Asset: any)
+  {
     this._Signalr.Invoke("AssetSales", Asset);
   }
 
@@ -189,16 +201,17 @@ export class GamePageComponent implements OnInit, OnDestroy {
     this.ShowToast("成功還清負債", "bg-success text-dark", "錢董通知")
   }
 
-  AssetTransactionList:any;
-  ReadAssetTransactionList(){
+  AssetTransactionList: any;
+  ReadAssetTransactionList() {
     this._Signalr.OnObservable("AssetTransactionList").subscribe((Res: any) => {
       this.AssetTransactionList = Res[0];
-    });  }
+    });
+  }
 
 
-    AssetBuy(Asset:any){
-      this._Signalr.Invoke("AssetBuy", Asset);
-    }
+  AssetBuy(Asset: any) {
+    this._Signalr.Invoke("AssetBuy", Asset);
+  }
 
   // 交易所
   @ViewChild('Modal', { static: true }) modalDOM: any;

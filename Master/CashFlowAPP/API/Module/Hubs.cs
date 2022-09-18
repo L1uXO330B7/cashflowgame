@@ -339,13 +339,18 @@ namespace API.Hubs
             var BuyerUserInfo = _UserInfos.FirstOrDefault(x => x.ConnectionId == Context.ConnectionId);
             var ResAssetBuy = await _ClientHubService.AssetBuy(Asset, BuyerUserInfo);
 
+            var Buyer = new ApiResponse();
+            Buyer.Data = ResAssetBuy.BuyerFiInfo;
+            var Seller = new ApiResponse();
+            Seller.Data = ResAssetBuy.SellerFiInfo;
+
             // 更新 buyer
             await _hubContext.Clients.Client(Context.ConnectionId)
-   .SendAsync("ReadFiInfo", ResAssetBuy.BuyerFiInfo);
-
+                         .SendAsync("ReadFiInfo", Buyer);
             // 更新 seller
-   //         await _hubContext.Clients.Client(Context.ConnectionId)
-   //.SendAsync("ReadFiInfo", ResAssetBuy.SellerFiInfo);
+            await _hubContext.Clients.Client(ResAssetBuy.SellerFiInfo.ConnectId)
+                         .SendAsync("ReadFiInfo", Seller);
+
 
             // 取得交易所清單
             var AssetTransactionList = await _ClientHubService.GetAssetTransactionList();

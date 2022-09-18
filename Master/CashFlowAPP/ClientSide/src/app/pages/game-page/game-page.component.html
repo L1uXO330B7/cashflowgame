@@ -164,7 +164,12 @@
             <td>{{item.BuyAsset.AssetCategoryName}}</td>
             <td>{{item.BuyAsset.Name}}</td>
             <td>{{item.BuyAsset.Value}}</td>
-            <td><button class="btn btn-success" (click)="AssetBuy(item)">買入</button></td>
+            <td>
+              <button *ngIf="item.ConnectId != UserFiInfo.ConnectId" class="btn btn-success"
+                (click)="AssetBuy(item)">買入</button>
+              <button *ngIf="item.ConnectId == UserFiInfo.ConnectId" class="btn btn-danger"
+                (click)="AssetBuy(item)">取消掛單</button>
+            </td>
           </tr>
         </tbody>
       </table>

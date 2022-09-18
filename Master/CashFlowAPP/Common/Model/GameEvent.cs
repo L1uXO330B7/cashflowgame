@@ -137,6 +137,5 @@ namespace Common.Model
 
     public class SaleAsset : AssetAndCategoryModel
     {
-        public decimal SellingPrice { get; set; }
     }
 }

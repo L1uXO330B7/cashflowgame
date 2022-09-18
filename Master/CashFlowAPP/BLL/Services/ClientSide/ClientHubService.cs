@@ -958,7 +958,6 @@ namespace BLL.Services.ClientSide
 
                     Res.Success = true;
                     Res.Code = (int)ResponseStatusCode.Success;
-
                 }
 
                 // 從資料庫取出個人排行版放快取
