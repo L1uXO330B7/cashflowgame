@@ -175,3 +175,15 @@
       </table>
     </div>
   </ng-template>
+  <ng-template #SaleModal let-modal>
+    <div class="modal-header">
+      <h3 class="modal-title" id="modal-basic-title">掛單價格</h3>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <div class="input-group mb-3">
+        <input type="number" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2">
+        <button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>
+      </div>
+    </div>
+  </ng-template>
