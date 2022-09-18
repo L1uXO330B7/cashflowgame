@@ -1103,10 +1103,12 @@ namespace BLL.Services.ClientSide
                 buyer.CashFlowIncome.Add(Asset.ValueInterest);
             }
 
-            seller.Asset.Remove(Asset.BuyAsset);
+            var RemoveAsset = seller.Asset.FirstOrDefault(x => x.GuidCode == Asset.BuyAsset.GuidCode);
+            seller.Asset.Remove(RemoveAsset);
             if (Asset.ValueInterest != null)
             {
-                seller.CashFlowIncome.Remove(Asset.ValueInterest);
+                var RemoveValueInterest = seller.CashFlowIncome.FirstOrDefault(x => x.GuidCode == Asset.BuyAsset.GuidCode);
+                seller.CashFlowIncome.Remove(RemoveValueInterest);
             }
 
             // 計算現金 buyer 扣 seller 加
