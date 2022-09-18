@@ -47,7 +47,7 @@ namespace Common.Model
         /// <summary>
         /// 資料時間
         /// </summary>
-        public DateTime DataTime { get; set; } = DateTime.Now;
+        public string DataTime { get; set; } = DateTime.Now.ToString("[yyyy/MM/dd HH:mm:ss]");
         /// <summary>
         /// 資料本體
         /// </summary>

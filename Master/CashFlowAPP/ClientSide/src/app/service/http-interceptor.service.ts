@@ -51,11 +51,11 @@ export class HttpInterceptorService implements HttpInterceptor {
           if (event.body !== undefined || null) {
             if (event.body.Success) {
               if (this.NewRequest.url.indexOf('Read') == -1) {
-                this.ShowToast(event.body.Message, 'bg-success text-light', '成功通知 From 錢董')
+                this.ShowToast(event.body.Message, 'bg-success text-dark', '成功通知 From 錢董')
               }
             }
             else {
-              this.ShowToast(event.body.Message, 'bg-danger text-light', '失敗通知 From 錢董')
+              this.ShowToast(event.body.Message, 'bg-danger text-dark', '失敗通知 From 錢董')
             }
           }
           return event;

@@ -473,6 +473,17 @@ namespace BLL.Services.ClientSide
         {
             // 負資產
 
+            var AssetTransactionList = _MemoryCache.Get<List<AssetForTrading>>("AssetTransactionList");
+            if (AssetTransactionList == null)
+            {
+                AssetTransactionList = new List<AssetForTrading>();
+            }
+
+
+
+
+
+
             var Res = new ApiResponse();
             FiInfo YourFiInfo = new FiInfo();
             if (UserId == 0)
@@ -494,24 +505,32 @@ namespace BLL.Services.ClientSide
                 YourAsset.AssetCategoryId == 28 || // 產業
                 YourAsset.ParentId == 28 // 產業
             )
-            {
-                var AssetTransaction = new AssetForTrading();
-                AssetTransaction.BuyAsset = YourAsset;
-                AssetTransaction.ConnectId = ConnectId;
-                AssetTransaction.UserId = UserId;
-
-                var ValueInterest = YourFiInfo.CashFlowIncome
-                    .FirstOrDefault(x => x.GuidCode == YourAsset.GuidCode);
-                AssetTransaction.ValueInterest = ValueInterest;
-
-                var AssetTransactionList = _MemoryCache.Get<List<AssetForTrading>>("AssetTransactionList");
-                if (AssetTransactionList == null)
+            {   // 已賣過，就要先取消掛單
+                var IsBuied = AssetTransactionList.Any(x => x.BuyAsset.GuidCode == Asset.GuidCode);
+                if (!IsBuied)
                 {
-                    AssetTransactionList = new List<AssetForTrading>();
+                    var AssetTransaction = new AssetForTrading();
+                    AssetTransaction.BuyAsset = YourAsset;
+                    AssetTransaction.ConnectId = ConnectId;
+                    AssetTransaction.UserId = UserId;
+
+                    var ValueInterest = YourFiInfo.CashFlowIncome
+                        .FirstOrDefault(x => x.GuidCode == YourAsset.GuidCode);
+                    AssetTransaction.ValueInterest = ValueInterest;
+
+
+
+                    AssetTransactionList.Add(AssetTransaction);
+                    _MemoryCache.Set("AssetTransactionList", AssetTransactionList);
+                    Res.Success = true;
+                    Res.Message = "掛單成功，等待賣出";
+                }
+                else
+                {
+                    Res.Success = false;
+                    Res.Message="請先取消掛單，再執行";
                 }
 
-                AssetTransactionList.Add(AssetTransaction);
-                _MemoryCache.Set("AssetTransactionList", AssetTransactionList);
             }
             else
             {
@@ -897,7 +916,11 @@ namespace BLL.Services.ClientSide
                                 YourAssets.Value = _Random.Next(160000, 400000);
                                 YourAssets.GuidCode = GuidCode;
                             }
-
+                            if(YourAssets.GuidCode==null)
+                            {
+                                var GuidCode = System.Guid.NewGuid().ToString("N");
+                                YourAssets.GuidCode = GuidCode;
+                            }
                             AssetResult.Add(YourAssets);
                         }
 

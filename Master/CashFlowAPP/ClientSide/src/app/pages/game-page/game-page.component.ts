@@ -36,6 +36,7 @@ export class GamePageComponent implements OnInit, OnDestroy {
     this.RoundStart();
     this.ReadTopUsers();
     this.ReLogin();
+    this.ReadAssetTransactionList();
 
   }
   ngOnDestroy(): void {
@@ -144,7 +145,12 @@ export class GamePageComponent implements OnInit, OnDestroy {
     // });
     this._Signalr.OnObservable("ReadFiInfo").subscribe((Res: any) => {
       this.UserFiInfo = Res[0].Data;
-      console.log(this.UserFiInfo, "userfi");
+      if(Res[0].Message=="請先取消掛單，再執行"){
+        this.ShowToast("請先取消掛單，再執行","bg-danger text-light text-shadow","錢董通知")
+      }
+      if(Res[0].Message=="掛單成功，等待賣出"){
+        this.ShowToast("掛單成功，等待賣出","bg-success text-dark","錢董通知")
+      }
     });
   }
 
@@ -175,15 +181,18 @@ export class GamePageComponent implements OnInit, OnDestroy {
 
   SaleAsset(Asset: any) {
     this._Signalr.Invoke("AssetSales", Asset);
-    this.ShowToast("成功賣出資產", "bg-success text-light text-shadow", "錢董通知")
   }
 
   SaleLiabilities(Liabilities: any) {
     this._Signalr.Invoke("LiabilitieSales", Liabilities);
-    this.ShowToast("成功還清負債", "bg-success text-light text-shadow", "錢董通知")
-
+    this.ShowToast("成功還清負債", "bg-success text-dark", "錢董通知")
   }
 
+  AssetTransactionList:any;
+  ReadAssetTransactionList(){
+    this._Signalr.OnObservable("AssetTransactionList").subscribe((Res: any) => {
+      this.AssetTransactionList = Res[0];
+    });  }
 
   items: any = [];
 
