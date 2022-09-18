@@ -1,5 +1,5 @@
 <h2 class="text-center">智慧運營</h2>
-<div class="container">
+<div class="container" style="margin:3rem 2rem">
   <div class="wrap">
     <div>
       <h5 class="text-center">線上人員組成</h5><canvas baseChart [type]="'pie'" [datasets]="pieChartDatasets"
@@ -22,23 +22,28 @@
       </canvas>
     </div>
 
-    <!--
-    <p>Polar Area Chart</p>
-    <canvas baseChart [datasets]="polarAreaChartDatasets" [labels]="polarAreaChartLabels" [legend]="polarAreaLegend"
-      [options]="polarAreaOptions" [type]="'polarArea'">
-    </canvas>
+    <div>
+      <h5 class="text-center">Polar Area Chart</h5>
+      <canvas baseChart [datasets]="polarAreaChartDatasets" [labels]="polarAreaChartLabels" [legend]="polarAreaLegend"
+        [options]="polarAreaOptions" [type]="'polarArea'">
+      </canvas>
+    </div>
 
-    <p>Bubble Chart</p>
-    <canvas baseChart [datasets]="bubbleChartDatasets" [options]="bubbleChartOptions" [legend]="bubbleChartLegend"
-      [type]="'bubble'">
-    </canvas>
+    <div>
+      <h5 class="text-center">Bubble Chart</h5>
+      <canvas baseChart [datasets]="bubbleChartDatasets" [options]="bubbleChartOptions" [legend]="bubbleChartLegend"
+        [type]="'bubble'">
+      </canvas>
+    </div>
 
-    <p>Scatter Chart</p>
-    <canvas baseChart [datasets]="scatterChartDatasets" [options]="scatterChartOptions" [type]="'scatter'">
-    </canvas> -->
+    <div>
+      <h5 class="text-center">Scatter Chart</h5>
+      <canvas baseChart [datasets]="scatterChartDatasets" [options]="scatterChartOptions" [type]="'scatter'">
+      </canvas>
+    </div>
   </div>
 
-  <canvas baseChart width="400" height="400" [type]="'line'" [data]="lineChartData" [options]="lineChartOptions"
+  <canvas baseChart width="800" height="400" [type]="'line'" [data]="lineChartData" [options]="lineChartOptions"
     [legend]="lineChartLegend" class="lineChart">
   </canvas>
 </div>

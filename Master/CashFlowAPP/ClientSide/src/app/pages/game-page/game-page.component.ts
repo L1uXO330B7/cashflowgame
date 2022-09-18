@@ -178,8 +178,8 @@ export class GamePageComponent implements OnInit, OnDestroy {
     }, 1800);
   }
 
-  SaleAssetItem:any;
-  SaleAssetValue:any;
+  SaleAssetItem: any;
+  SaleAssetValue: any;
   @ViewChild('SaleModal', { static: true }) SaleModalDom: any;
   SaleAsset(Asset: any) {
     if (
@@ -190,13 +190,13 @@ export class GamePageComponent implements OnInit, OnDestroy {
     ) {
       this.open(this.SaleModalDom);
       this.SaleAssetItem = Asset;
+      this.SaleAssetValue = JSON.parse(JSON.stringify(Asset.Value));
     } else {
       this._Signalr.Invoke("AssetSales", Asset);
     }
   }
 
-  SaleAssetSalfValue(Asset: any)
-  {
+  SaleAssetSalfValue(Asset: any) {
     Asset.Value = this.SaleAssetValue;
     this._Signalr.Invoke("AssetSales", Asset);
     this.modalService.dismissAll();
@@ -210,7 +210,7 @@ export class GamePageComponent implements OnInit, OnDestroy {
   AssetTransactionList: any;
   ReadAssetTransactionList() {
     this._Signalr.OnObservable("AssetTransactionList").subscribe((Res: any) => {
-      this.AssetTransactionList = Res[0];
+      this.AssetTransactionList = Res[0].Data;
     });
   }
 
@@ -242,5 +242,18 @@ export class GamePageComponent implements OnInit, OnDestroy {
     } else {
       return `with: ${reason}`;
     }
+  }
+
+  JudgeButtonDisplay(AssetTransaction: any, UserInfo: any) {
+
+    // item.ConnectId != UserFiInfo.ConnectId 買入
+    // item.ConnectId == UserFiInfo.ConnectId 取消掛單
+
+    if (UserInfo.UserId != 0) {
+      return UserInfo.UserId != AssetTransaction.UserId;
+    } else {
+      return UserInfo.ConnectId != AssetTransaction.ConnectId
+    }
+
   }
 }
