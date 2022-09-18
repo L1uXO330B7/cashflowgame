@@ -104,7 +104,7 @@ export class GamePageComponent implements OnInit, OnDestroy {
   }
 
 
-  OpenChatRoom: boolean = false;
+  OpenChatRoom: boolean = true;
   ToggleChatRoom() {
     this.OpenChatRoom = !this.OpenChatRoom;
   }
