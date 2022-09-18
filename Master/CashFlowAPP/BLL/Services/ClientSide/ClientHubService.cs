@@ -505,7 +505,19 @@ namespace BLL.Services.ClientSide
                 if (!IsBuied)
                 {
                     var AssetTransaction = new AssetForTrading();
-                    AssetTransaction.BuyAsset = YourAsset;
+
+                    var NewAssetTransaction = new AssetAndCategoryModel();
+                    NewAssetTransaction.Id = YourAsset.Id;
+                    NewAssetTransaction.Name = YourAsset.Name;
+                    NewAssetTransaction.Value = Asset.Value;
+                    NewAssetTransaction.Weight = YourAsset.Weight;
+                    NewAssetTransaction.Description = YourAsset.Description;
+                    NewAssetTransaction.AssetCategoryName = YourAsset.AssetCategoryName;
+                    NewAssetTransaction.AssetCategoryId = YourAsset.AssetCategoryId;
+                    NewAssetTransaction.ParentId = YourAsset.ParentId;
+                    NewAssetTransaction.GuidCode = YourAsset.GuidCode;
+                    AssetTransaction.BuyAsset = NewAssetTransaction;
+
                     AssetTransaction.ConnectId = ConnectId;
                     AssetTransaction.UserId = UserId;
 

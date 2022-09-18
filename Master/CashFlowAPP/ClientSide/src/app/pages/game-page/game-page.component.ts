@@ -178,6 +178,9 @@ export class GamePageComponent implements OnInit, OnDestroy {
     }, 1800);
   }
 
+  SaleAssetItem:any;
+  SaleAssetValue:any;
+  @ViewChild('SaleModal', { static: true }) SaleModalDom: any;
   SaleAsset(Asset: any) {
     if (
       Asset.AssetCategoryId == 25 || // 股票
@@ -185,7 +188,8 @@ export class GamePageComponent implements OnInit, OnDestroy {
       Asset.AssetCategoryId == 28 || // 產業
       Asset.ParentId == 28 // 產業
     ) {
-
+      this.open(this.SaleModalDom);
+      this.SaleAssetItem = Asset;
     } else {
       this._Signalr.Invoke("AssetSales", Asset);
     }
@@ -193,7 +197,9 @@ export class GamePageComponent implements OnInit, OnDestroy {
 
   SaleAssetSalfValue(Asset: any)
   {
+    Asset.Value = this.SaleAssetValue;
     this._Signalr.Invoke("AssetSales", Asset);
+    this.SaleModalDom.close();
   }
 
   SaleLiabilities(Liabilities: any) {
