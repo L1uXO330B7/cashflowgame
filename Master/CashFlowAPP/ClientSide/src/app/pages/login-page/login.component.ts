@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/service/api.service';
 import { GlobalToastService } from 'src/app/components/toast/global-toast.service';
+import { SharedService } from 'src/app/service/shared.service';
 
 
 @Component({
@@ -20,6 +21,7 @@ export class LoginComponent implements OnInit {
     private _Router: Router,
     public _ApiService: ApiService,
     public _ToastService : GlobalToastService,
+    public _SharedService:SharedService
     ) {
   }
 
@@ -93,6 +95,8 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('Token', Res.Data.JwtCode);
         localStorage.setItem('UserId', Res.Data.UserId);
         localStorage.removeItem('StrangerName');
+        this.UserId = localStorage.getItem("UserId");
+        this.ReadUserArg();
         this._Router.navigate(['/', 'survey']);
       }
     });
@@ -142,7 +146,36 @@ export class LoginComponent implements OnInit {
   //     });
   // }
 
-
+  IsLogin:boolean=false;
+  UserId = localStorage.getItem("UserId");
+  UserData:any;
+  UserDataName:string|any;
+  ReadUserArg(){
+    if(this.UserId!=null&&this.UserId!=""){
+      this.IsLogin = true;
+      let Req = new ApiRequest<any>();
+      let listInt = [this.UserId];
+      let Arg =
+      {
+        "Key": "Id",
+        "JsonString": JSON.stringify(listInt)
+      };
+      Req.Args = [Arg];
+      Req.PageIndex = 1;
+      Req.PageSize = 15;
+      this._ApiService.GetUserData(Req).subscribe((Res) => {
+        if (Res.Success) {
+        this.UserData = Res.Data.Users[0];
+        this.UserDataName = this.UserData.Name;
+        this._SharedService.SetShareData(this.UserData);
+        }
+      });
+    }
+    else{
+      let  StrangerName:any = localStorage.getItem("StrangerName");
+      this._SharedService.SetShareData(StrangerName);
+    }
+  }
   ngOnDestroy(): void {
     this._ToastService.clear();
   }

@@ -12,6 +12,7 @@ import { SharedService } from './service/shared.service';
 })
 export class AppComponent implements OnInit{
   ngOnInit(): void {
+    this.UserId = localStorage.getItem("UserId");
     this.ReadUserArg();
     }
   constructor(public _SharedService:SharedService,public _Router:Router,private _ApiService:ApiService){}
