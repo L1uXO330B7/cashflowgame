@@ -1,12 +1,13 @@
 import { FiInfo } from './../../models/FiInfo';
 import { SharedService } from './../../service/shared.service';
 import { HttpClient } from '@angular/common/http';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { GlobalToastService } from 'src/app/components/toast/global-toast.service';
 import { ApiRequest } from 'src/app/models/ApiRequest';
 import { ApiService } from 'src/app/service/api.service';
 import { SignalrHubService } from 'src/app/service/signalr-hub.service';
+import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
@@ -22,7 +23,8 @@ export class GamePageComponent implements OnInit, OnDestroy {
     public _ApiService: ApiService,
     public _ToastService: GlobalToastService,
     private _SharedService: SharedService,
-    public _Signalr: SignalrHubService
+    public _Signalr: SignalrHubService,
+    private modalService: NgbModal,
   ) {
 
   }
@@ -56,9 +58,9 @@ export class GamePageComponent implements OnInit, OnDestroy {
         this._Signalr.DisConnect();
         alert(Res[0]);
         setTimeout(() => {
-                  localStorage.removeItem('UserId');
-        localStorage.removeItem('Token');
-        this._Router.navigateByUrl("/login");
+          localStorage.removeItem('UserId');
+          localStorage.removeItem('Token');
+          this._Router.navigateByUrl("/login");
         }, 5000);
       }
     });
@@ -96,7 +98,7 @@ export class GamePageComponent implements OnInit, OnDestroy {
 
 
   OpenUserBoard: boolean = true;
-  ToggleUserBoard(){
+  ToggleUserBoard() {
     this.OpenUserBoard = !this.OpenUserBoard;
   }
 
@@ -141,22 +143,21 @@ export class GamePageComponent implements OnInit, OnDestroy {
     //   }
     // });
     this._Signalr.OnObservable("ReadFiInfo").subscribe((Res: any) => {
-      this.UserFiInfo =Res[0].Data;
-      console.log(this.UserFiInfo,"userfi");
+      this.UserFiInfo = Res[0].Data;
+      console.log(this.UserFiInfo, "userfi");
     });
   }
 
 
 
-GotUserBoard=false;
-UserBoard:any;
-ReadTopUsers()
-{
-  this._Signalr.OnObservable("TopUserInBoard").subscribe((Res: any) => {
-    this.UserBoard = Res[0].Data;
-    this.GotUserBoard=true;
-  });
-}
+  GotUserBoard = false;
+  UserBoard: any;
+  ReadTopUsers() {
+    this._Signalr.OnObservable("TopUserInBoard").subscribe((Res: any) => {
+      this.UserBoard = Res[0].Data;
+      this.GotUserBoard = true;
+    });
+  }
 
 
   Time = new Date();
@@ -172,18 +173,42 @@ ReadTopUsers()
   }
 
 
-  SaleAsset(Asset:any){
-    this._Signalr.Invoke("AssetSales",Asset);
-    this.ShowToast("成功賣出資產","bg-success text-light text-shadow","錢董通知")
+  SaleAsset(Asset: any) {
+    this._Signalr.Invoke("AssetSales", Asset);
+    this.ShowToast("成功賣出資產", "bg-success text-light text-shadow", "錢董通知")
   }
 
-  SaleLiabilities(Liabilities:any){
-    this._Signalr.Invoke("LiabilitieSales",Liabilities);
-    this.ShowToast("成功還清負債","bg-success text-light text-shadow","錢董通知")
+  SaleLiabilities(Liabilities: any) {
+    this._Signalr.Invoke("LiabilitieSales", Liabilities);
+    this.ShowToast("成功還清負債", "bg-success text-light text-shadow", "錢董通知")
 
   }
 
 
-  items:any=[];
+  items: any = [];
 
+  // 交易所
+  @ViewChild('Modal', { static: true }) modalDOM: any;
+  closeResult = '';
+  open(content: any) {
+    this.modalService.open(content, {
+      size: 'xl',
+      scrollable: true,
+      ariaLabelledBy: 'modal-basic-title'
+    }).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
+  }
 }

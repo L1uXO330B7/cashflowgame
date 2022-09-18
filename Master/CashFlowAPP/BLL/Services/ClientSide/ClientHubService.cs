@@ -19,8 +19,6 @@ namespace BLL.Services.ClientSide
             _MemoryCache = memoryCache;
         }
 
-
-
         public async Task<ApiResponse> TopUserInBoard(List<UserInfo> UsersInfos)
         {
             var Res = new ApiResponse();
@@ -44,7 +42,7 @@ namespace BLL.Services.ClientSide
             }
 
             var TotoalNetProfitUser = FiInfos
-                .Where(x => x.TotoalNetProfit== FiInfos.Max(c=>c.TotoalNetProfit))
+                .Where(x => x.TotoalNetProfit == FiInfos.Max(c => c.TotoalNetProfit))
                 .FirstOrDefault();
 
             TopTotoalNetProfit TopTotoalNetProfitUser = new TopTotoalNetProfit();
@@ -421,7 +419,6 @@ namespace BLL.Services.ClientSide
             return Result;
         }
 
-
         /// <summary>
         /// 
         /// </summary>
@@ -487,42 +484,65 @@ namespace BLL.Services.ClientSide
                 YourFiInfo = _MemoryCache.Get<FiInfo?>(UserId);
             }
 
-            // 找資產出來賣
+            // 找資產出來賣，如果是房地產或股票則上架到商品清單
 
             var YourAsset = YourFiInfo.Asset.FirstOrDefault(x => x.GuidCode == Asset.GuidCode);
 
-            YourFiInfo.CurrentMoney = Math.Round((decimal)YourFiInfo.CurrentMoney + (decimal)YourAsset.Value, 0);
-
-            if (YourAsset.AssetCategoryId == 47)
+            if (
+                YourAsset.AssetCategoryId == 25 || // 股票
+                YourAsset.ParentId == 17 || // 房地產
+                YourAsset.AssetCategoryId == 28 || // 產業
+                YourAsset.ParentId == 28 // 產業
+            )
             {
-                var SavingInterest = YourFiInfo.CashFlowIncome
-                    .FirstOrDefault(x => x.GuidCode == Asset.GuidCode);
-                YourFiInfo.CashFlowIncome.Remove(SavingInterest);
+                var AssetTransaction = new AssetForTrading();
+                AssetTransaction.BuyAsset = YourAsset;
+                AssetTransaction.ConnectId = ConnectId;
+                AssetTransaction.UserId = UserId;
 
-            }
-            YourFiInfo.Asset.Remove(YourAsset);
+                var ValueInterest = YourFiInfo.CashFlowIncome
+                    .FirstOrDefault(x => x.GuidCode == YourAsset.GuidCode);
+                AssetTransaction.ValueInterest = ValueInterest;
 
+                var AssetTransactionList = _MemoryCache.Get<List<AssetForTrading>>("AssetTransactionList");
+                if (AssetTransactionList == null)
+                {
+                    AssetTransactionList = new List<AssetForTrading>();
+                }
 
-
-
-            YourFiInfo = FiInfoAccounting(YourFiInfo);
-
-
-            if (UserId == 0)
-            {
-                _MemoryCache.Set(ConnectId, YourFiInfo,
-                   new MemoryCacheEntryOptions().SetPriority(CacheItemPriority.NeverRemove));
+                AssetTransactionList.Add(AssetTransaction);
+                _MemoryCache.Set("AssetTransactionList", AssetTransactionList);
             }
             else
             {
-                _MemoryCache.Set(UserId, YourFiInfo,
-                 new MemoryCacheEntryOptions().SetPriority(CacheItemPriority.NeverRemove));
+                YourFiInfo.CurrentMoney = Math.Round((decimal)YourFiInfo.CurrentMoney + (decimal)YourAsset.Value, 0);
+
+                if (YourAsset.AssetCategoryId == 47)
+                {
+                    var SavingInterest = YourFiInfo.CashFlowIncome
+                        .FirstOrDefault(x => x.GuidCode == Asset.GuidCode);
+                    YourFiInfo.CashFlowIncome.Remove(SavingInterest);
+                }
+
+                YourFiInfo.Asset.Remove(YourAsset);
+
+                YourFiInfo = FiInfoAccounting(YourFiInfo);
+
+                if (UserId == 0)
+                {
+                    _MemoryCache.Set(ConnectId, YourFiInfo,
+                       new MemoryCacheEntryOptions().SetPriority(CacheItemPriority.NeverRemove));
+                }
+                else
+                {
+                    _MemoryCache.Set(UserId, YourFiInfo,
+                     new MemoryCacheEntryOptions().SetPriority(CacheItemPriority.NeverRemove));
+                }
             }
 
-
             Res.Data = YourFiInfo;
-            return Res;
 
+            return Res;
         }
         public async Task<ApiResponse> LiabilitieSale(int UserId, string ConnectId, AssetAndCategoryModel Liabilitie)
         {
@@ -575,7 +595,6 @@ namespace BLL.Services.ClientSide
             return Res;
 
         }
-
 
         /// <summary>
         /// 計算 FiInfo 月收支
@@ -632,7 +651,6 @@ namespace BLL.Services.ClientSide
             }
         }
 
-
         public async void SavingBoard(int UserId)
         {
             var YourFiInfo = _MemoryCache.Get<FiInfo>(UserId);
@@ -652,17 +670,14 @@ namespace BLL.Services.ClientSide
                 }
                 else
                 {
-                YourBoard.NetProfit = YourFiInfo.NetProfit;
-                YourBoard.Revenue = YourFiInfo.Revenue;
-                YourBoard.Debt = YourFiInfo.Debt;
-                YourBoard.TotoalNetProfit = YourFiInfo.TotoalNetProfit;
+                    YourBoard.NetProfit = YourFiInfo.NetProfit;
+                    YourBoard.Revenue = YourFiInfo.Revenue;
+                    YourBoard.Debt = YourFiInfo.Debt;
+                    YourBoard.TotoalNetProfit = YourFiInfo.TotoalNetProfit;
                 }
                 _CashFlowDbContext.SaveChanges();
             }
         }
-
-
-
         public async Task<ApiResponse> ReadFiInfo(int UserId, string ConnectId)
         {
             var Res = new ApiResponse();
@@ -928,20 +943,12 @@ namespace BLL.Services.ClientSide
                         Liabilities = Liabilities,
                         NowCardId = null,
                         NowCardAsset = null,
-
-
                     };
-
-
-
-
 
                     Res.Success = true;
                     Res.Code = (int)ResponseStatusCode.Success;
 
                 }
-
-
 
                 // 從資料庫取出個人排行版放快取
 
@@ -1035,6 +1042,87 @@ namespace BLL.Services.ClientSide
             New.AssetCategoryId = Data.AssetCategoryId;
             New.ParentId = Data.ParentId;
             return New;
+        }
+
+        public async Task<ApiResponse> GetAssetTransactionList()
+        {
+            var Res = new ApiResponse();
+            var AssetTransactionList = _MemoryCache.Get<List<AssetForTrading>>("AssetTransactionList");
+            if (AssetTransactionList == null)
+            {
+                AssetTransactionList = new List<AssetForTrading>();
+            }
+
+            Res.Data = AssetTransactionList;
+            return Res;
+        }
+
+        public async Task<BuyAsset> AssetBuy(AssetForTrading Asset, UserInfo BuyerUserInfo)
+        {
+            var Res = new BuyAsset();
+
+            // 從商品清單移除
+            var AssetTransactionList = _MemoryCache.Get<List<AssetForTrading>>("AssetTransactionList");
+            var BuyAsset = AssetTransactionList.FirstOrDefault(x => x.BuyAsset.GuidCode == Asset.BuyAsset.GuidCode);
+            AssetTransactionList.Remove(BuyAsset);
+            _MemoryCache.Set("AssetTransactionList", AssetTransactionList);
+
+            // 取出兩者的 FiInfo 做交易
+            FiInfo seller = new FiInfo();
+            if (Asset.UserId == 0)
+            {
+                seller = _MemoryCache.Get<FiInfo?>(Asset.ConnectId);
+            }
+            else
+            {
+                seller = _MemoryCache.Get<FiInfo?>(Asset.UserId);
+            }
+
+            FiInfo buyer = new FiInfo();
+            if (BuyerUserInfo.UserId == 0)
+            {
+                buyer = _MemoryCache.Get<FiInfo?>(BuyerUserInfo.ConnectionId);
+            }
+            else
+            {
+                buyer = _MemoryCache.Get<FiInfo?>(BuyerUserInfo.UserId);
+            }
+
+            buyer.Asset.Add(Asset.BuyAsset);
+            if (Asset.ValueInterest != null)
+            {
+                buyer.CashFlowIncome.Add(Asset.ValueInterest);
+            }
+
+            seller.Asset.Remove(Asset.BuyAsset);
+            if (Asset.ValueInterest != null)
+            {
+                seller.CashFlowIncome.Remove(Asset.ValueInterest);
+            }
+
+            // 重設快取
+            if (Asset.UserId == 0) // seller
+            {
+                _MemoryCache.Set(Asset.ConnectId, seller);
+            }
+            else
+            {
+                _MemoryCache.Set(Asset.UserId, seller);
+            }
+
+            if (BuyerUserInfo.UserId == 0)
+            {
+                _MemoryCache.Set(BuyerUserInfo.ConnectionId, buyer);
+            }
+            else
+            {
+                _MemoryCache.Set(BuyerUserInfo.UserId, buyer);
+            }
+
+            Res.SellerFiInfo = seller;
+            Res.BuyerFiInfo = buyer;
+
+            return Res;
         }
     }
 

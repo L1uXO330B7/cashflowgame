@@ -19,12 +19,12 @@ namespace API.Controllers
             _ClientSideService = ClientSideService;
         }
 
-        //[HttpPost]
-        //public async Task<ApiResponse> ReadFiInfo([FromBody] ApiRequest<int?> Req)
-        //{
-        //    Req.Args = null;
-        //    return await _ClientSideService.ReadFiInfo(Req);
-        //}
+        [HttpPost]
+        public async Task<ApiResponse> ReadFiInfo([FromBody] ApiRequest<int?> Req)
+        {
+            Req.Args = null;
+            return await _ClientSideService.ReadFiInfo(Req);
+        }
 
         /// <summary>
         /// 卡片開發輔助

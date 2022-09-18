@@ -37,6 +37,7 @@ namespace Common.Model
         public int ParentId { get; set; }
         public string GuidCode { get; set; }
     }
+
     public class FiInfo
     {
         public string ConnectId { get; set; }
@@ -64,15 +65,12 @@ namespace Common.Model
         /// 最高淨收入
         /// </summary>
         public decimal? NetProfit { get; set; } = 0;
-
-
         public List<CashFlowAndCategoryModel> CashFlowIncome { get; set; }
         public List<CashFlowAndCategoryModel> CashFlowExpense { get; set; }
         public List<AssetAndCategoryModel> Asset { get; set; }
         public List<AssetAndCategoryModel> Liabilities { get; set; }
         public int? NowCardId { get; set; }
         public AssetAndCategoryModel? NowCardAsset { get; set; }
-
         public CashFlowAndCategoryModel? ValueInterest { get; set; }
     }
 
@@ -80,10 +78,8 @@ namespace Common.Model
     {
         // 秀到前端
         public dynamic? Value { get; set; } = null;
-
         // 計算的整包資產
         public AssetAndCategoryModel? NowCardAsset { get; set; }
-
         // 計算的整包利息
         public CashFlowAndCategoryModel? ValueInterest { get; set; }
     }
@@ -92,9 +88,9 @@ namespace Common.Model
     {
         public int? UserId { get; set; }
         public string? UserName { get; set; }
-
         public decimal UserValue { get; set; }
     }
+
     public class TopDebt
     {
         public int? UserId { get; set; }
@@ -116,13 +112,26 @@ namespace Common.Model
         public string? UserName { get; set; }
         public decimal UserValue { get; set; }
     }
+
     public class TopUser
     {
         public TopTotoalNetProfit? TotoalNetProfitUser { get; set; }
         public TopDebt? DebtUser { get; set; }
         public TopRevenue? RevenueUser { get; set; }
-
         public TopNetProfit? NetProfitUser { get; set; }
+    }
 
+    public class AssetForTrading
+    {
+        public AssetAndCategoryModel? BuyAsset { get; set; }
+        public CashFlowAndCategoryModel? ValueInterest { get; set; }
+        public int UserId { get; set; }
+        public string ConnectId { get; set; }
+    }
+
+    public class BuyAsset
+    {
+        public FiInfo BuyerFiInfo { get; set; }
+        public FiInfo SellerFiInfo { get; set; }
     }
 }

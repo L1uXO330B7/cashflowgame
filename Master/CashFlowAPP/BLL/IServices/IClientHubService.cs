@@ -13,5 +13,7 @@ namespace BLL.IServices
         FiInfo FiInfoAccounting(FiInfo YourFiInfo);
         void SavingBoard(int UserId);
         Task<ApiResponse> TopUserInBoard(List<UserInfo> UsersInfos);
+        Task<ApiResponse> GetAssetTransactionList();
+        Task<BuyAsset> AssetBuy(AssetForTrading Asset,UserInfo BuyerUserInfo);
     }
 }

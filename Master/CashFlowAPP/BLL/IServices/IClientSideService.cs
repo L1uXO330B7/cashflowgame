@@ -9,7 +9,7 @@ namespace BLL.IServices
         Task<ApiResponse> UserLogin(ApiRequest<ClientUserLogin> Req);
         Task<ApiResponse> GetJwtValidateCode();
         Task<ApiResponse> UserAnswersUpdate(ApiRequest<List<CreateAnswerQuestionArgs>> Req);
-        //Task<ApiResponse> ReadFiInfo(ApiRequest<int?> Req);
+        Task<ApiResponse> ReadFiInfo(ApiRequest<int?> Req);
         Task<ApiResponse> SupportCardDev();
     }
 }

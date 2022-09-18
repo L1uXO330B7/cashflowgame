@@ -70,7 +70,7 @@ namespace API.Hubs
                 // 
 
                 var _UserInfo = new UserInfo();
-               
+
 
                 var Token = Context.GetHttpContext().Request.Query["token"];
                 if (Token.Count == 0) // 遊客
@@ -99,10 +99,10 @@ namespace API.Hubs
                 }
 
                 // 拿到玩家財務報表，並初始化快取
-                var UserFiInfo = await _ClientHubService.ReadFiInfo(_UserInfo.UserId,_UserInfo.ConnectionId);
+                var UserFiInfo = await _ClientHubService.ReadFiInfo(_UserInfo.UserId, _UserInfo.ConnectionId);
 
 
-          
+
 
 
                 // 個人財報回傳前端
@@ -116,9 +116,11 @@ namespace API.Hubs
                 // 取得排行榜最高玩家
 
                 var TopUserInBoard = await _ClientHubService.TopUserInBoard(_UserInfos);
-
                 await _hubContext.Clients.All.SendAsync("TopUserInBoard", TopUserInBoard);
 
+                // 取得交易所清單
+                var AssetTransactionList = await _ClientHubService.GetAssetTransactionList();
+                await _hubContext.Clients.All.SendAsync("AssetTransactionList", AssetTransactionList);
             }
 
             await base.OnConnectedAsync();
@@ -133,7 +135,7 @@ namespace API.Hubs
         public override async Task OnDisconnectedAsync(Exception ex)
         {
 
-          
+
 
 
             if (_UserInfos.Select(x => x.ConnectionId).Any(x => x == Context.ConnectionId))
@@ -208,7 +210,7 @@ namespace API.Hubs
                     // 透過後端儲存抽到的卡片，前端只負責顯示
                     var CardByRandom = Method.RandomWithWeight(CardList);
                     var YourCard = Cards.FirstOrDefault(x => x.Id == CardByRandom);
-                    var CardInfo = await _ClientHubService.ProcessCardInfo(YourCard, _UserInfos, _UserInfo.UserId,_UserInfo.ConnectionId);
+                    var CardInfo = await _ClientHubService.ProcessCardInfo(YourCard, _UserInfos, _UserInfo.UserId, _UserInfo.ConnectionId);
 
 
 
@@ -269,7 +271,11 @@ namespace API.Hubs
             await _hubContext.Clients.All.SendAsync("TopUserInBoard", TopUserInBoard);
         }
 
-     
+        /// <summary>
+        /// 賣或上架資產
+        /// </summary>
+        /// <param name="Asset"></param>
+        /// <returns></returns>
         public async Task AssetSales(AssetAndCategoryModel Asset)
         {
             // 賣正資產
@@ -282,13 +288,19 @@ namespace API.Hubs
    .SendAsync("ReadFiInfo", YourFiInfo);
 
             // 取得排行榜最高玩家
-
             var TopUserInBoard = await _ClientHubService.TopUserInBoard(_UserInfos);
-
             await _hubContext.Clients.All.SendAsync("TopUserInBoard", TopUserInBoard);
 
+            // 取得交易所清單
+            var AssetTransactionList = await _ClientHubService.GetAssetTransactionList();
+            await _hubContext.Clients.All.SendAsync("AssetTransactionList", AssetTransactionList);
         }
 
+        /// <summary>
+        /// 清償負債
+        /// </summary>
+        /// <param name="Liabilitie"></param>
+        /// <returns></returns>
         public async Task LiabilitieSales(AssetAndCategoryModel Liabilitie)
         {
             // 賣負資產
@@ -308,9 +320,36 @@ namespace API.Hubs
 
         }
 
+        /// <summary>
+        /// 取得現在時間字串
+        /// </summary>
+        /// <returns></returns>
         public string GetNowSrring()
         {
             return DateTime.Now.ToString("[yyyy/MM/dd HH:mm:ss]");
+        }
+
+        /// <summary>
+        /// 購買資產
+        /// </summary>
+        /// <param name="Asset"></param>
+        /// <returns></returns>
+        public async Task AssetBuy(AssetForTrading Asset)
+        {
+            var BuyerUserInfo = _UserInfos.FirstOrDefault(x => x.ConnectionId == Context.ConnectionId);
+            var ResAssetBuy = await _ClientHubService.AssetBuy(Asset, BuyerUserInfo);
+
+            // 更新 buyer
+            await _hubContext.Clients.Client(Context.ConnectionId)
+   .SendAsync("ReadFiInfo", ResAssetBuy.BuyerFiInfo);
+
+            // 更新 seller
+            await _hubContext.Clients.Client(Context.ConnectionId)
+   .SendAsync("ReadFiInfo", ResAssetBuy.SellerFiInfo);
+
+            // 取得交易所清單
+            var AssetTransactionList = await _ClientHubService.GetAssetTransactionList();
+            await _hubContext.Clients.All.SendAsync("AssetTransactionList", AssetTransactionList);
         }
 
         #endregion
