@@ -61,7 +61,7 @@ namespace BLL.Services.ClientSide
 
 
             var RevenueUser = FiInfos
-           .FirstOrDefault(x => x.Revenue == FiInfos.Min(x => x.Revenue));
+           .FirstOrDefault(x => x.Revenue == FiInfos.Max(x => x.Revenue));
 
             TopRevenue TopRevenueUser = new TopRevenue();
             TopRevenueUser.UserId = RevenueUser.UserId;
@@ -72,7 +72,7 @@ namespace BLL.Services.ClientSide
 
 
             var NetProfitUser = FiInfos
-           .FirstOrDefault(x => x.NetProfit == FiInfos.Min(x => x.NetProfit));
+           .FirstOrDefault(x => x.NetProfit == FiInfos.Max(x => x.NetProfit));
 
             TopNetProfit TopNetProfitUserUser = new TopNetProfit();
             TopNetProfitUserUser.UserId = NetProfitUser.UserId;
