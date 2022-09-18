@@ -344,8 +344,8 @@ namespace API.Hubs
    .SendAsync("ReadFiInfo", ResAssetBuy.BuyerFiInfo);
 
             // 更新 seller
-            await _hubContext.Clients.Client(Context.ConnectionId)
-   .SendAsync("ReadFiInfo", ResAssetBuy.SellerFiInfo);
+   //         await _hubContext.Clients.Client(Context.ConnectionId)
+   //.SendAsync("ReadFiInfo", ResAssetBuy.SellerFiInfo);
 
             // 取得交易所清單
             var AssetTransactionList = await _ClientHubService.GetAssetTransactionList();

@@ -145,6 +145,7 @@ export class GamePageComponent implements OnInit, OnDestroy {
     // });
     this._Signalr.OnObservable("ReadFiInfo").subscribe((Res: any) => {
       this.UserFiInfo = Res[0].Data;
+      console.log(Res,"aaa");
       if(Res[0].Message=="請先取消掛單，再執行"){
         this.ShowToast("請先取消掛單，再執行","bg-danger text-light text-shadow","錢董通知")
       }
@@ -194,7 +195,10 @@ export class GamePageComponent implements OnInit, OnDestroy {
       this.AssetTransactionList = Res[0];
     });  }
 
-  items: any = [];
+
+    AssetBuy(Asset:any){
+      this._Signalr.Invoke("AssetBuy", Asset);
+    }
 
   // 交易所
   @ViewChild('Modal', { static: true }) modalDOM: any;
