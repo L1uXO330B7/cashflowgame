@@ -1,0 +1,21 @@
+h2{
+  margin-top: 10px;
+  font-size: 24px;
+}
+.container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.wrap{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  canvas{
+    margin: 0 100px;
+  }
+}
+.lineChart{
+  margin-top: 30px;
+}

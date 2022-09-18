@@ -27,7 +27,7 @@ export class HomepageComponent implements OnInit {
     datasets: [
       {
         data: [65, 59, 80, 81, 56, 55, 40],
-        label: 'Series A',
+        label: '單月上線人數',
         fill: true,
         tension: 0.5,
         borderColor: 'black',
@@ -44,9 +44,9 @@ export class HomepageComponent implements OnInit {
   public pieChartOptions: ChartOptions<'pie'> = {
     responsive: false,
   };
-  public pieChartLabels = [['Download', 'Sales'], ['In', 'Store', 'Sales'], 'Mail Sales'];
+  public pieChartLabels = ['用戶', '遊客', '管理員'];
   public pieChartDatasets = [{
-    data: [300, 500, 100]
+    data: [100, 50, 10],
   }];
   public pieChartLegend = true;
   public pieChartPlugins = [];
@@ -68,7 +68,7 @@ export class HomepageComponent implements OnInit {
   };
 
   // Doughnut Chat
-  public doughnutChartLabels: string[] = ['Download Sales', 'In-Store Sales', 'Mail-Order Sales'];
+  public doughnutChartLabels: string[] = ['1號機(內地)', '2號機(東亞)', '3號機(南亞)'];
   public doughnutChartDatasets: ChartConfiguration<'doughnut'>['data']['datasets'] = [
     { data: [350, 450, 100], label: 'Series A' },
     { data: [50, 150, 120], label: 'Series B' },
@@ -83,11 +83,11 @@ export class HomepageComponent implements OnInit {
   public radarChartOptions: ChartConfiguration<'radar'>['options'] = {
     responsive: false,
   };
-  public radarChartLabels: string[] = ['Eating', 'Drinking', 'Sleeping', 'Designing', 'Coding', 'Cycling', 'Running'];
+  public radarChartLabels: string[] = ['遊戲崩潰', '儲值障礙', '客服問題', '幣值轉換', '區塊鏈', '不明問題', '伺服器超載'];
 
   public radarChartDatasets: ChartConfiguration<'radar'>['data']['datasets'] = [
-    { data: [65, 59, 90, 81, 56, 55, 40], label: 'Series A' },
-    { data: [28, 48, 40, 19, 96, 27, 100], label: 'Series B' }
+    { data: [65, 59, 90, 81, 56, 55, 40], label: '用戶' },
+    { data: [28, 48, 40, 19, 96, 27, 100], label: '遊客' }
   ];
 
   // Polar Area Chart

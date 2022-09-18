@@ -1,68 +1,44 @@
-<p>Line Chart</p>
-<canvas baseChart width="400" height="400"
-[type]="'line'"
-[data]="lineChartData"
-[options]="lineChartOptions"
-[legend]="lineChartLegend">
-</canvas>
+<h2 class="text-center">智慧運營</h2>
+<div class="container">
+  <div class="wrap">
+    <div>
+      <h5 class="text-center">線上人員組成</h5><canvas baseChart [type]="'pie'" [datasets]="pieChartDatasets"
+        [labels]="pieChartLabels" [options]="pieChartOptions" [plugins]="pieChartPlugins" [legend]="pieChartLegend">
+      </canvas>
+    </div>
 
-<p>Pie Chart</p>
-<canvas baseChart
-  [type]="'pie'"
-  [datasets]="pieChartDatasets"
-  [labels]="pieChartLabels"
-  [options]="pieChartOptions"
-  [plugins]="pieChartPlugins"
-  [legend]="pieChartLegend">
-</canvas>
 
-<p>Bar Chart</p>
-<canvas baseChart
-        [data]="barChartData"
-        [options]="barChartOptions"
-        [plugins]="barChartPlugins"
-        [legend]="barChartLegend"
-        [type]="'bar'">
-</canvas>
+    <div>
+      <h5 class="text-center">單日伺服器負載</h5>
+      <canvas baseChart [labels]="doughnutChartLabels" [datasets]="doughnutChartDatasets"
+        [options]="doughnutChartOptions" [legend]="true" [type]="'doughnut'">
+      </canvas>
 
-<p>Doughnut Chart</p>
-<canvas baseChart
-        [labels]="doughnutChartLabels"
-        [datasets]="doughnutChartDatasets"
-        [options]="doughnutChartOptions"
-        [legend]="true"
-        [type]="'doughnut'">
-</canvas>
+    </div>
 
-<p>Radar Chart</p>
-<canvas baseChart
-        [datasets]="radarChartDatasets"
-        [options]="radarChartOptions"
-        [labels]="radarChartLabels"
-        [type]="'radar'">
-</canvas>
+    <div>
+      <h5 class="text-center">單日異常事件通報</h5> <canvas baseChart [datasets]="radarChartDatasets"
+        [options]="radarChartOptions" [labels]="radarChartLabels" [type]="'radar'">
+      </canvas>
+    </div>
 
-<p>Polar Area Chart</p>
-<canvas baseChart
-        [datasets]="polarAreaChartDatasets"
-        [labels]="polarAreaChartLabels"
-        [legend]="polarAreaLegend"
-        [options]="polarAreaOptions"
-        [type]="'polarArea'">
-</canvas>
+    <!--
+    <p>Polar Area Chart</p>
+    <canvas baseChart [datasets]="polarAreaChartDatasets" [labels]="polarAreaChartLabels" [legend]="polarAreaLegend"
+      [options]="polarAreaOptions" [type]="'polarArea'">
+    </canvas>
 
-<p>Bubble Chart</p>
-<canvas baseChart
-        [datasets]="bubbleChartDatasets"
-        [options]="bubbleChartOptions"
-        [legend]="bubbleChartLegend"
-        [type]="'bubble'">
-</canvas>
+    <p>Bubble Chart</p>
+    <canvas baseChart [datasets]="bubbleChartDatasets" [options]="bubbleChartOptions" [legend]="bubbleChartLegend"
+      [type]="'bubble'">
+    </canvas>
 
-<p>Scatter Chart</p>
-<canvas baseChart
-        [datasets]="scatterChartDatasets"
-        [options]="scatterChartOptions"
-        [type]="'scatter'">
-</canvas>
+    <p>Scatter Chart</p>
+    <canvas baseChart [datasets]="scatterChartDatasets" [options]="scatterChartOptions" [type]="'scatter'">
+    </canvas> -->
+  </div>
 
+  <canvas baseChart width="400" height="400" [type]="'line'" [data]="lineChartData" [options]="lineChartOptions"
+    [legend]="lineChartLegend" class="lineChart">
+  </canvas>
+</div>
