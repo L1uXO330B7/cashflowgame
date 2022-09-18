@@ -337,9 +337,11 @@ namespace API.Hubs
 
             var Buyer = new ApiResponse();
             Buyer.Data = ResAssetBuy.BuyerFiInfo;
+            Buyer.Message = $"您已購入 {Asset.BuyAsset.Name} 資產";
+            
             var Seller = new ApiResponse();
             Seller.Data = ResAssetBuy.SellerFiInfo;
-
+            Seller.Message = $"您已賣出 {Asset.BuyAsset.Name} 資產";
             // 更新 buyer
             await _hubContext.Clients.Client(Context.ConnectionId)
                          .SendAsync("ReadFiInfo", Buyer);
